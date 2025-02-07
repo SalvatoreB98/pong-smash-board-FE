@@ -1,0 +1,232 @@
+// Global Styles
+@use 'variables' as *;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    overflow-x: hidden;
+    background-color: $dark;
+}
+
+body {
+    font-family: 'Parkinsans', 'Arial', sans-serif;
+    background-color: $dark;
+    color: $primary-ultra-light;
+}
+
+// Main Content
+main {
+    transition: all 0.5s ease-in-out, filter 0.2s ease-in-out;
+}
+
+#page-container {
+    padding-top: 75px;
+}
+
+// Navigation
+nav {
+    height: 75px;
+    background-color: black;
+    color: white;
+    font-size: 1em;
+    font-weight: 500;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 102;
+    padding-left: 1em;
+    a {
+        all: unset;
+        cursor: pointer;
+        font-size: 1.5em;
+    }
+
+    .logo {
+        max-width: 75px;
+    }
+    .title {
+        text-align: center;
+        font-family: 'LarkenBlack', sans-serif;
+        color: #f1f5f6;
+        span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: var(--orange);
+            border-radius: 10px;
+        }
+    }
+    .fa {
+        font-size: 1.5em;
+    }
+}
+h2 {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    font-family: LarkenRegular, sans-serif;
+    font-weight: 100;
+    text-align: center;
+    font-size: 2em;
+}
+// Buttons
+.add-button-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 1em;
+
+    .add-match {
+        all: unset;
+        cursor: pointer;
+        border-radius: $border-radius;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $primary;
+        color: $primary-ultra-light;
+        width: 100%;
+        min-height: 50px;
+        transition: transform 0.1s ease-in-out;
+        &:hover {
+            transform: scale(0.97);
+        }
+    }
+    
+}
+
+// Sections
+section {
+    margin-bottom: 2em;
+    padding: 0 1em;
+}
+.description {
+    color: rgb(97, 99, 109);
+}
+// Scrollbar Styling
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 5px;
+
+    &:hover {
+        background: $primary;
+    }
+}
+
+// Input Fields
+input,
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: block;
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: $border-radius;
+    margin-bottom: 1em;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+input[type="tel"],
+input[type="date"] {
+    color: black;
+    text-align: center;
+}
+
+select {
+    font-weight: 700;
+    color: black;
+    text-align-last: center;
+}
+
+.my-modal input {
+    max-width: 100%;
+    width: 100%;
+}
+
+// Input Containers
+.input-top,
+.input-bottom {
+    margin-bottom: 0;
+    border-radius: 20px 20px 0 0;
+}
+
+.input-bottom {
+    border-radius: 0 0 20px 20px;
+    width: 10px;
+}
+
+#input-container-wrapper {
+    display: flex;
+    overflow-x: scroll;
+    padding-bottom: 0.5em;
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $primary-ultra-light;
+    }
+
+    .input-container {
+        min-width: 70px;
+        max-width: 80px;
+        margin: 0.1em;
+        margin-right: 0.5em;
+    }
+}
+
+input[type="checkbox"] {
+    appearance: auto;
+    margin: initial;
+    padding: initial;
+    border: none;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    width: 1.5em;
+
+    &:checked {
+        background-color: $primary !important;
+        color: $primary-ultra-light;
+    }
+}
+
+.wrapper-points {
+    min-height: 102px;
+}
+[data-toggle] {
+    cursor: cell;
+}
+@media screen and (min-width: 1000px) {
+    nav {
+        height: 100px;
+    }
+    #page-container {
+        padding-top: 100px;
+    }
+}
+
+
+[page=players] {
+    margin: 1em;
+    text-align: center;
+}
+[page=stats] {
+    margin: 1em;
+}
