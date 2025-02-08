@@ -21,7 +21,15 @@ export class MatchesComponent implements OnInit {
 
   ngAfterViewInit() {
     if (this.matchesSlider) {
-      this.slider = new Slider('slider-container', this.matchesSlider.nativeElement);
+      this.slider = new Slider('slider', this.matchesSlider.nativeElement);
+    }
+  }
+  private sliderInitialized = false;
+
+  ngAfterViewChecked() {
+    if (!this.sliderInitialized && this.matchesSlider?.nativeElement.querySelectorAll('.match').length) {
+      this.slider = new Slider('slider', this.matchesSlider.nativeElement);
+      this.sliderInitialized = true;
     }
   }
   onMatchClick(matchId: string): void {
