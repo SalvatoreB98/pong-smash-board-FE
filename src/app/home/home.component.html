@@ -1,18 +1,16 @@
 <app-navbar></app-navbar>
 <div class="wrapper">
-    <section>
-        <app-matches [matches]="matches"></app-matches>
+    <section style="padding: 0;">
+        <app-matches [matches]="matches" (matchEmitter)="setClickedMatch($event)"></app-matches>
         <div class="add-button-container">
-            <button (click)="modalService.openModal(MODALS['ADD_MATCH'])" class="add-match">Aggiungi Partita <span class="m-1"></span> <i
+            <button (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">Aggiungi Partita <span class="m-1"></span> <i
                     class="fa-solid fa-plus"></i></button>
         </div>
-
-        <app-modal *ngIf="isActiveModal(MODALS['ADD_MATCH'])">
-            <app-add-match-modal ></app-add-match-modal>
-        </app-modal>
-
-        <app-modal *ngIf="isActiveModal(MODALS['SHOW_MATCH'])">
-            <app-show-match-modal></app-show-match-modal>
-        </app-modal>
     </section>
 </div>
+<app-modal *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])">
+    <app-add-match-modal></app-add-match-modal>
+</app-modal>
+<app-modal *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])">
+    <app-show-match-modal [match]="clickedMatch"></app-show-match-modal>
+  </app-modal>

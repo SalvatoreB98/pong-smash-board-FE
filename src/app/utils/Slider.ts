@@ -31,7 +31,7 @@ export class Slider {
     this.addEventListeners();
   }
 
-  private updateUI(): void {
+  public updateUI(): void {
     this.updateSliderPosition();
     this.updateArrowState();
   }

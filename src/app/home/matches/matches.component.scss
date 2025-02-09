@@ -30,6 +30,11 @@
     font-size: 0.75em;
 }
 
+
+.win {
+    color: var(--primary-light);
+    font-weight: 700;
+}
 .data {
     font-size: 0.75em;
     font-weight: 100;
@@ -38,9 +43,4 @@
     opacity: 0.7;
     position: relative;
     bottom: 10px;
-}
-
-.win {
-    color: var(--primary-light);
-    font-weight: 700;
 }

@@ -10,6 +10,7 @@ import { ShowMatchModalComponent } from './show-match-modal/show-match-modal.com
 import { ModalService } from '../../services/modal.service';
 import { CommonModule } from '@angular/common';
 import { MODALS } from '../utils/enum';
+
 @Component({
   selector: 'app-home',
   imports: [CommonModule, NavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent],
@@ -20,23 +21,15 @@ export class HomeComponent {
   matches: any;
   isAddMatchModalOpen: boolean = false;
   isShowMatchModalOpen: boolean = false;
-  MODALS = MODALS;  
+  clickedMatch: IMatch | undefined;
   constructor(private dataService: DataService, public modalService: ModalService) {
     this.dataService.fetchDataAndCalculateStats().then((res: any) => {
       this.matches = res.matches;
     });
   }
-  isActiveModal(modalName: string) {
-    let isActive = false;
-    this.modalService.activeModal$.subscribe(activeModal => {
-      isActive = activeModal === modalName;
-    });
-    return isActive;
-  }
-  closeModal() {
 
+  setClickedMatch(match: IMatch) {
+    this.clickedMatch = match;
   }
-  openAddMatchModal() {
 
-  }
 }
