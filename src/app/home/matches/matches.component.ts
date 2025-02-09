@@ -19,7 +19,7 @@ export class MatchesComponent {
   slider: Slider | undefined;
   clickedMatch: any;
   @Output() matchEmitter: EventEmitter<IMatch> = new EventEmitter<IMatch>();
-  maxMatchesToShow: number = 10;
+  maxMatchesToShow: number = 25;
   constructor(public modalService: ModalService) { }
 
   ngAfterViewInit() {
