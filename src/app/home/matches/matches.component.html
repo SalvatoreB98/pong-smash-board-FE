@@ -18,7 +18,7 @@
           <div class="punteggio-container">
             <div class="punteggio" [class.win]="match.p1 > match.p2">{{ match.p1 }}</div>
             <div class="punteggio"> <span>:</span> </div>
-            <div class="punteggio">{{ match.p2 }}</div>
+            <div class="punteggio" [class.win]="match.p2 > match.p1">{{ match.p2 }}</div>
           </div>
           <div class="giocatore-container">
             <div class="text-center">
