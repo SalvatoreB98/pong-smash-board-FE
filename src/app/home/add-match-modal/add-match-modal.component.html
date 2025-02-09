@@ -1,0 +1,61 @@
+<div class="modal-overlay" *ngIf="isVisible">
+    <div class="my-modal">
+        <button class="close" (click)="closeModal()">×</button>
+        <h2>Aggiungi una partita</h2>
+        <div class="modal-content">
+            <form [formGroup]="matchForm" (ngSubmit)="addMatch()">
+                <div>
+                    <label for="date">Data</label>
+                    <input type="date" formControlName="date" required>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col">
+                        <label for="player1">Giocatore 1</label>
+                        <select formControlName="player1" required>
+                            <option *ngFor="let player of players" [value]="player">{{ player }}</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="player2">Giocatore 2</label>
+                        <select formControlName="player2" required>
+                            <option *ngFor="let player of players" [value]="player">{{ player }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <input type="number" formControlName="p1Score" min="1" max="99" placeholder="Punteggio 1"
+                            (input)="updateContainers()">
+                    </div>
+                    <div class="col-6">
+                        <input type="number" formControlName="p2Score" min="1" max="99" placeholder="Punteggio 2"
+                            (input)="updateContainers()">
+                    </div>
+                </div>
+
+                <label class="d-flex mt-4 mb-3 justify-content-center">
+                    <span style="margin-right: 1em">Aggiungi i punti dei set</span>
+                    <input type="checkbox" formControlName="isShowSetsPointsTrue" (change)="updateContainers()">
+                </label>
+
+                <div class="row" *ngIf="isShowSetsPointsTrue">
+                    <div class="wrapper-points">
+                        <div class="input-container-wrapper" style="display: flex;">
+                            <div class="input-container" *ngFor="let set of setsPoints.controls; let i = index">
+                                <input class="input-top" type="number" formControlName="player1-set-{{i}}" min="0" max="21">
+                                <input class="input-bottom" type="number" formControlName="player2-set-{{i}}" min="0" max="21">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-buttons d-flex justify-content-between mt-3">
+            <button type="button" class="button-close" (click)="closeModal()">Annulla</button>
+            <button type="submit" [disabled]="matchForm.invalid">Aggiungi partita</button>
+        </div>
+    </div>
+</div>

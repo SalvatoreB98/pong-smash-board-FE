@@ -23,14 +23,14 @@ interface MatchData extends IMatchResponse {
   providedIn: 'root'
 })
 export class DataService {
-  private matches: IMatch[] = [];
-  private wins: Record<string, number> = {};
-  private totPlayed: Record<string, number> = {};
-  private raw: any = {};
-  private monthlyWinRates: Record<string, number> = {};
-  private badges: Record<string, any> = {};
-  private players: string[] = [];
-  private loader!: LoaderComponent;
+  matches: IMatch[] = [];
+  wins: Record<string, number> = {};
+  totPlayed: Record<string, number> = {};
+  raw: any = {};
+  monthlyWinRates: Record<string, number> = {};
+  badges: Record<string, any> = {};
+  players: string[] = [];
+  loader!: LoaderComponent;
   points: any;
   setLoader(loader: LoaderComponent): void {
     this.loader = loader;

@@ -1,4 +1,11 @@
 <app-navbar></app-navbar>
 <div class="wrapper">
-    <app-matches [matches]="matches"></app-matches>
+    <section>
+        <app-matches [matches]="matches"></app-matches>
+        <div class="add-button-container">
+            <button (click)="openModal()" class="add-match">Aggiungi Partita <span class="m-1"></span> <i
+                    class="fa-solid fa-plus"></i></button>
+        </div>
+        <app-add-match-modal [isVisible]="isAddMatchModalOpen" (closeModalEvent)="closeModal()"></app-add-match-modal>
+    </section>
 </div>
