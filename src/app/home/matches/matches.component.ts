@@ -20,7 +20,7 @@ export class MatchesComponent {
   clickedMatch: any;
   @Output() matchEmitter: EventEmitter<IMatch> = new EventEmitter<IMatch>();
   maxMatchesToShow: number = 10;
-  constructor(public modalService: ModalService) {}
+  constructor(public modalService: ModalService) { }
 
   ngAfterViewInit() {
     if (this.matchesSlider) {
@@ -28,7 +28,7 @@ export class MatchesComponent {
     }
   }
   private sliderInitialized = false;
-  
+
   ngAfterViewChecked() {
     if (!this.sliderInitialized && this.matchesSlider?.nativeElement.querySelectorAll('.match').length) {
       this.slider = new Slider('slider', this.matchesSlider.nativeElement);
@@ -54,8 +54,11 @@ export class MatchesComponent {
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/default-player.png';
   }
-
+  trackByIndex(index: number, item: any) {
+    return index;
+  }
   getMatchesToRender() {
+    if (!this.matches) return [];
     return this.matches.slice().reverse().slice(0, this.maxMatchesToShow);
   }
 }
