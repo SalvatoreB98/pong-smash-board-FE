@@ -5,26 +5,38 @@ import { IMatch } from '../interfaces/matchesInterfaces';
 import { IMatchResponse } from '../interfaces/responsesInterfaces';
 import { DataService } from '../../services/data.service';
 import { AddMatchModalComponent } from './add-match-modal/add-match-modal.component';
-
+import { ModalComponent } from '../common/modal/modal.component';
+import { ShowMatchModalComponent } from './show-match-modal/show-match-modal.component';
+import { ModalService } from '../../services/modal.service';
+import { CommonModule } from '@angular/common';
+import { MODALS } from '../utils/enum';
 @Component({
   selector: 'app-home',
-  imports: [NavbarComponent, MatchesComponent, AddMatchModalComponent],
+  imports: [CommonModule, NavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   matches: any;
   isAddMatchModalOpen: boolean = false;
-  
-  constructor(private dataService: DataService) {
+  isShowMatchModalOpen: boolean = false;
+  MODALS = MODALS;  
+  constructor(private dataService: DataService, public modalService: ModalService) {
     this.dataService.fetchDataAndCalculateStats().then((res: any) => {
       this.matches = res.matches;
     });
   }
-  closeModal() {
-    this.isAddMatchModalOpen = false;
+  isActiveModal(modalName: string) {
+    let isActive = false;
+    this.modalService.activeModal$.subscribe(activeModal => {
+      isActive = activeModal === modalName;
+    });
+    return isActive;
   }
-  openModal() {
-    this.isAddMatchModalOpen = true;
+  closeModal() {
+
+  }
+  openAddMatchModal() {
+
   }
 }

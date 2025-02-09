@@ -49,3 +49,8 @@ export const MONTH_MAP: Record<string, string> = {
   "Novembre": "11",
   "Dicembre": "12",
 };
+
+export const MODALS: { [key: string]: string } = {
+  ADD_MATCH: 'addMatchModal',
+  SHOW_MATCH: 'showMatchModal',
+};

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-add-match-modal',
@@ -10,14 +11,13 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ReactiveFormsModule] // ✅ Import ReactiveFormsModule
 })
 export class AddMatchModalComponent implements OnInit {
-  @Input() isVisible: boolean = false;
   @Output() closeModalEvent = new EventEmitter<void>();
 
   matchForm!: FormGroup;
   players: string[] = ['Player 1', 'Player 2', 'Player 3'];
   isShowSetsPointsTrue = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private modalService: ModalService) {}
 
   ngOnInit() {
     this.initializeForm();
@@ -69,6 +69,6 @@ export class AddMatchModalComponent implements OnInit {
   }
 
   closeModal() {
-    this.closeModalEvent.emit();
+    this.modalService.closeModal();
   }
 }

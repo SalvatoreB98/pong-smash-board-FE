@@ -3,9 +3,16 @@
     <section>
         <app-matches [matches]="matches"></app-matches>
         <div class="add-button-container">
-            <button (click)="openModal()" class="add-match">Aggiungi Partita <span class="m-1"></span> <i
+            <button (click)="modalService.openModal(MODALS['ADD_MATCH'])" class="add-match">Aggiungi Partita <span class="m-1"></span> <i
                     class="fa-solid fa-plus"></i></button>
         </div>
-        <app-add-match-modal [isVisible]="isAddMatchModalOpen" (closeModalEvent)="closeModal()"></app-add-match-modal>
+
+        <app-modal *ngIf="isActiveModal(MODALS['ADD_MATCH'])">
+            <app-add-match-modal ></app-add-match-modal>
+        </app-modal>
+
+        <app-modal *ngIf="isActiveModal(MODALS['SHOW_MATCH'])">
+            <app-show-match-modal></app-show-match-modal>
+        </app-modal>
     </section>
 </div>
