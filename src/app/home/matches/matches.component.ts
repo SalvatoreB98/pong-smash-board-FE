@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ShowMatchModalComponent } from '../show-match-modal/show-match-modal.component';
 import { ModalService } from '../../../services/modal.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
+import { environment } from '../../../enviroments/environment';
 
 @Component({
   selector: 'app-matches',
@@ -23,6 +24,7 @@ export class MatchesComponent {
   constructor(public modalService: ModalService) { }
 
   ngAfterViewInit() {
+    console.log(environment.production)
     if (this.matchesSlider) {
       this.slider = new Slider('slider', this.matchesSlider.nativeElement);
     }
@@ -52,7 +54,7 @@ export class MatchesComponent {
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = 'assets/default-player.png';
+    (event.target as HTMLImageElement).src = '/default-player.jpg';
   }
   trackByIndex(index: number, item: any) {
     return index;

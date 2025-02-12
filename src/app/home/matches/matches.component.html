@@ -9,24 +9,24 @@
     <div class="matches-slider" #matchesSlider>
       <div *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex" class="match" [id]="match.id" (click)="onMatchClick(match.id)">
         <div>
-          <div class="data">{{ match.data }}</div>
+          <div class="data">{{ match.created | date: 'dd/MM/yyyy HH:mm' }}</div>
         </div>
         <div class="d-flex">
           <div class="giocatore-container">
             <div class="text-center">
               <div><img [src]="match.giocatore1 + '.png'" (error)="onImageError($event)" alt=""></div>
-              <div><span class="name">{{ match.giocatore1 }}</span></div>
+              <div><span class="name">{{ match.player1_name }}</span></div>
             </div>
           </div>
           <div class="punteggio-container">
-            <div class="punteggio" [class.win]="match.p1 > match.p2">{{ match.p1 }}</div>
+            <div class="punteggio" [class.win]="match.score_p1 > match.score_p2">{{ match.score_p1 }}</div>
             <div class="punteggio"> <span>:</span> </div>
-            <div class="punteggio" [class.win]="match.p2 > match.p1">{{ match.p2 }}</div>
+            <div class="punteggio" [class.win]="match.score_p2 > match.score_p1">{{ match.score_p2 }}</div>
           </div>
           <div class="giocatore-container">
             <div class="text-center">
               <div><img [src]="match.giocatore2 + '.png'" (error)="onImageError($event)" alt=""></div>
-              <div><span class="name">{{ match.giocatore2 }}</span></div>
+              <div><span class="name">{{ match.player2_name }}</span></div>
             </div>
           </div>
         </div>
