@@ -1,23 +1,23 @@
 <div class="modal-content dettagli-partita">
     <p>{{ match?.desc || '' }}</p>
-    <div class="data">{{ match?.data }}</div>
+    <div class="data">{{ match.created | date: 'dd/MM/yyyy HH:mm' }}</div>
     <div class="match-container">
         <div class="player player-1">
             <div class="p-3">
-                <img [src]="match?.giocatore1 + '.png'" [alt]="match?.giocatore1">
+                <img [src]="match?.player1 + '.png'" (error)="onImageError($event)">
             </div>
-            <div class="text-center">{{ match?.giocatore1 }}</div>
-            <div class="score">{{ match?.p1 }}</div>
+            <div class="text-center">{{ match?.player1_name }}</div>
+            <div class="score">{{ match?.player1_score }}</div>
         </div>
         <div class="vs">
             <img src="/vs.svg" alt="VS">
         </div>
         <div class="player player-2">
             <div class="p-3">
-                <img [src]="match?.giocatore2 + '.png'" [alt]="match?.giocatore2">
+                <img [src]="match?.giocatore2 + '.png'" (error)="onImageError($event)">
             </div>
-            <div class="text-center">{{ match?.giocatore2 }}</div>
-            <div class="score">{{ match?.p2 }}</div>
+            <div class="text-center">{{ match?.player2_name }}</div>
+            <div class="score">{{ match?.player2_score }}</div>
         </div>
     </div>
     <div class="other" *ngIf="match?.setsPoints?.length > 1">

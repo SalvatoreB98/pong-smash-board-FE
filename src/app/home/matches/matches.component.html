@@ -19,9 +19,9 @@
             </div>
           </div>
           <div class="punteggio-container">
-            <div class="punteggio" [class.win]="match.score_p1 > match.score_p2">{{ match.score_p1 }}</div>
+            <div class="punteggio" [class.win]="match.player1_score > match.player2_score">{{ match.player1_score }}</div>
             <div class="punteggio"> <span>:</span> </div>
-            <div class="punteggio" [class.win]="match.score_p2 > match.score_p1">{{ match.score_p2 }}</div>
+            <div class="punteggio" [class.win]="match.player2_score > match.player1_score">{{ match.player2_score }}</div>
           </div>
           <div class="giocatore-container">
             <div class="text-center">

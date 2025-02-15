@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ModalService } from '../../../services/modal.service';
 import { MODALS } from '../../utils/enum';
+import { ModalComponent } from '../../common/modal/modal.component';
 
 @Component({
   selector: 'app-show-match-modal',
@@ -9,15 +10,13 @@ import { MODALS } from '../../utils/enum';
   templateUrl: './show-match-modal.component.html',
   styleUrl: './show-match-modal.component.scss'
 })
-export class ShowMatchModalComponent {
-  constructor(public modalService: ModalService) { }
+export class ShowMatchModalComponent extends ModalComponent {
+  constructor(public override modalService: ModalService) { 
+    super(modalService);
+  }
   @Input() match: any;
 
   showModal(match: any): void {
     this.match = match;
-  }
-
-  closeModal(): void {
-    this.modalService.closeModal();
   }
 }
