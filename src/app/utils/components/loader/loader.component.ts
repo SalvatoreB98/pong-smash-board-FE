@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MSG_TYPE } from '../../enum';
 import { CommonModule } from '@angular/common';
+import { LoaderService } from '../../../../services/loader.service';
 
 @Component({
   selector: 'app-loader',
@@ -15,6 +16,23 @@ export class LoaderComponent {
   toastClass: string = '';
   toastIcon: string = '';
 
+  constructor(private loaderService: LoaderService) {
+    // Subscribe to loader states
+    this.loaderService.isLoading$.subscribe(status => this.isLoading = status);
+    this.loaderService.isSmallLoading$.subscribe(status => this.isSmallLoading = status);
+
+    // Subscribe to toast messages
+    this.loaderService.toast$.subscribe(toast => {
+      if (toast) {
+        this.toastMessage = toast.message;
+        this.toastClass = toast.type.toLowerCase();
+        this.toastIcon = toast.type === MSG_TYPE.SUCCESS ? 'fa-circle-check' : 'fa-circle-xmark';
+
+        setTimeout(() => this.closeToast(), 5000);
+      }
+    });
+  }
+  
   startLoader() {
     this.isLoading = true;
   }

@@ -5,6 +5,7 @@ import { environment } from '../environments/environment';
 import { IMatch } from '../app/interfaces/matchesInterfaces';
 import { IMatchResponse } from '../app/interfaces/responsesInterfaces';
 import { LoaderComponent } from '../app/utils/components/loader/loader.component';
+import { LoaderService } from './loader.service';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
@@ -32,12 +33,13 @@ export class DataService {
   players: string[] = [];
   loader!: LoaderComponent;
   points: any;
-  setLoader(loader: LoaderComponent): void {
-    this.loader = loader;
-  }
+
+  constructor(private loaderService: LoaderService) { }
+
 
   async fetchDataAndCalculateStats(): Promise<IMatchResponse> {
     console.log("Fetching data...");
+    this.loaderService.startLoader();
     try {
       this.loader?.startLoader(); // 🟢 Show loader before request
       if (environment.mock) {
@@ -66,7 +68,7 @@ export class DataService {
 
       return this.generateReturnObject();
     } finally {
-      this.loader?.stopLoader(); // 🟢 Hide loader after request
+      this.loaderService.stopLoader();
     }
   }
 
