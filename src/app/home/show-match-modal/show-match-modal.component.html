@@ -4,7 +4,7 @@
     <div class="match-container">
         <div class="player player-1">
             <div class="p-3">
-                <img [src]="match?.player1 + '.png'" (error)="onImageError($event)">
+                <img [src]="match.player1_img" (error)="onImageError($event)">
             </div>
             <div class="text-center">{{ match?.player1_name }}</div>
             <div class="score">{{ match?.player1_score }}</div>
@@ -14,7 +14,7 @@
         </div>
         <div class="player player-2">
             <div class="p-3">
-                <img [src]="match?.giocatore2 + '.png'" (error)="onImageError($event)">
+                <img [src]="match.player2_img" (error)="onImageError($event)">
             </div>
             <div class="text-center">{{ match?.player2_name }}</div>
             <div class="score">{{ match?.player2_score }}</div>

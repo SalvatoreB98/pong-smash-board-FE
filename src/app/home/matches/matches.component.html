@@ -14,7 +14,7 @@
         <div class="d-flex">
           <div class="giocatore-container">
             <div class="text-center">
-              <div><img [src]="match.giocatore1 + '.png'" (error)="onImageError($event)" alt=""></div>
+              <div><img [src]="match.player1_img" (error)="onImageError($event)" alt=""></div>
               <div><span class="name">{{ match.player1_name }}</span></div>
             </div>
           </div>
@@ -25,7 +25,7 @@
           </div>
           <div class="giocatore-container">
             <div class="text-center">
-              <div><img [src]="match.giocatore2 + '.png'" (error)="onImageError($event)" alt=""></div>
+              <div><img [src]="match.player2_img" (error)="onImageError($event)" alt=""></div>
               <div><span class="name">{{ match.player2_name }}</span></div>
             </div>
           </div>

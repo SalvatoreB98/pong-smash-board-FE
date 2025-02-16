@@ -1,27 +1,63 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Output, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { DataService } from '../../../services/data.service';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-match-modal',
   standalone: true,
   templateUrl: './add-match-modal.component.html',
   styleUrls: ['./add-match-modal.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule] // ✅ Import ReactiveFormsModule
+  imports: [CommonModule, ReactiveFormsModule, MatSelectModule] // ✅ Added MatSelectModule
 })
 export class AddMatchModalComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
 
+  @ViewChild('player1Select', { static: true }) player1Select!: MatSelect;
+  @ViewChild('player2Select', { static: true }) player2Select!: MatSelect;
+
   matchForm!: FormGroup;
-  players: string[] = ['Player 1', 'Player 2', 'Player 3'];
+  players: any[] = [];
   isShowSetsPointsTrue = false;
 
-  constructor(private fb: FormBuilder, private modalService: ModalService, private dataService: DataService) {}
+  /** Player search controls */
+  public player1FilterCtrl = new FormControl<string | null>('');
+  public player2FilterCtrl = new FormControl<string | null>('');
+
+  /** Filtered players list */
+  public filteredPlayers1: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredPlayers2: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
+  /** Subject to manage unsubscriptions */
+  protected _onDestroy = new Subject<void>();
+
+  constructor(private fb: FormBuilder, private modalService: ModalService, private dataService: DataService) { }
 
   ngOnInit() {
     this.initializeForm();
+
+    // ✅ Load players from service
+    this.players = this.dataService.players || [];
+    this.filteredPlayers1.next(this.players.slice()); // Load initial player1 list
+    this.filteredPlayers2.next(this.players.slice()); // Load initial player2 list
+
+    // ✅ Subscribe to search filters
+    this.player1FilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe(() => {
+      this.filterPlayers(1);
+    });
+
+    this.player2FilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe(() => {
+      this.filterPlayers(2);
+    });
+  }
+
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
   }
 
   initializeForm() {
@@ -32,11 +68,11 @@ export class AddMatchModalComponent implements OnInit {
       p1Score: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
       p2Score: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
       isShowSetsPointsTrue: [],
-      setsPoints: this.fb.array([this.fb.control('')]),
+      setsPoints: this.fb.array([]), // ✅ Initially empty, managed dynamically
     });
   }
 
-  // ✅ Fix: Explicitly cast `setsPoints` to `FormArray`
+  /** Gets setsPoints as a FormArray */
   get setsPoints(): FormArray {
     return this.matchForm.get('setsPoints') as FormArray;
   }
@@ -45,7 +81,7 @@ export class AddMatchModalComponent implements OnInit {
     this.isShowSetsPointsTrue = this.matchForm.value.isShowSetsPointsTrue;
     const totalPoints = (this.matchForm.value.p1Score || 0) + (this.matchForm.value.p2Score || 0);
     const totalSets = this.isShowSetsPointsTrue ? Math.max(totalPoints, 1) : 0;
-  
+
     this.setsPoints.clear();
     for (let i = 0; i < totalSets; i++) {
       this.setsPoints.push(
@@ -56,7 +92,6 @@ export class AddMatchModalComponent implements OnInit {
       );
     }
   }
-  
 
   addMatch() {
     if (this.matchForm.invalid) return;
@@ -98,17 +133,32 @@ export class AddMatchModalComponent implements OnInit {
       setsPoints: this.setsPoints.value
     };
 
-    if (formData.player1 === formData.player2) {
-      alert(`I Giocatori devono essere diversi!`);
-      return;
-    }
-
-    // Show loader (replace with Angular service if needed)
     console.log('Saving match...', formData);
 
     this.dataService.addMatch(formData).then(() => {
       this.closeModal();
     });
+  }
+
+  /** Filters players based on search keyword */
+  protected filterPlayers(playerNumber: number) {
+    if (!this.players) return;
+
+    let searchValue = playerNumber === 1 ? this.player1FilterCtrl.value : this.player2FilterCtrl.value;
+
+    if (!searchValue) {
+      playerNumber === 1 ? this.filteredPlayers1.next(this.players.slice()) : this.filteredPlayers2.next(this.players.slice());
+      return;
+    }
+
+    searchValue = searchValue.toLowerCase();
+    const filtered = this.players.filter(player => player.name.toLowerCase().includes(searchValue));
+
+    if (playerNumber === 1) {
+      this.filteredPlayers1.next(filtered);
+    } else {
+      this.filteredPlayers2.next(filtered);
+    }
   }
 
   closeModal() {

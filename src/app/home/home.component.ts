@@ -10,10 +10,11 @@ import { ShowMatchModalComponent } from './show-match-modal/show-match-modal.com
 import { ModalService } from '../../services/modal.service';
 import { CommonModule } from '@angular/common';
 import { MODALS } from '../utils/enum';
+import { TranslatePipe } from '../utils/translate.pipe';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, NavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent],
+  imports: [CommonModule, NavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

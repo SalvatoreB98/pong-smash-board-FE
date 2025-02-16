@@ -1,0 +1,42 @@
+{
+    "add_match": {
+        "it": "Aggiungi una partita",
+        "en": "Add a match"
+    },
+    "date": {
+        "it": "Data",
+        "en": "Date"
+    },
+    "player1": {
+        "it": "Giocatore 1",
+        "en": "Player 1"
+    },
+    "select_player": {
+        "it": "Seleziona un giocatore",
+        "en": "Select a player"
+    },
+    "player2": {
+        "it": "Giocatore 2",
+        "en": "Player 2"
+    },
+    "score1": {
+        "it": "Punteggio 1",
+        "en": "Score 1"
+    },
+    "score2": {
+        "it": "Punteggio 2",
+        "en": "Score 2"
+    },
+    "add_set_points": {
+        "it": "Aggiungi i punti dei set",
+        "en": "Add set points"
+    },
+    "cancel": {
+        "it": "Annulla",
+        "en": "Cancel"
+    },
+    "add_match_cta": {
+        "it": "Aggiungi partita",
+        "en": "Add match"
+    }
+}
