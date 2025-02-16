@@ -6,22 +6,14 @@
         </div>
 
         <div class="row mt-3">
-            <div class="col select-player">
-                <label for="player1" class="mb-1">Giocatore 1</label>
-                <input type="text" [formControl]="player1FilterCtrl" placeholder="Cerca giocatore...">
-                <select formControlName="player1" required>
-                    <option *ngFor="let player of filteredPlayers1 | async" [value]="player.playerid">{{ player.name }}
-                    </option>
-                </select>
+            <div class="col-md-6">
+                <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'" (playerSelected)="setPlayer($event)"></app-select-player>
             </div>
-            <div class="col select-player">
-                <label for="player2" class="mb-1">Giocatore 2</label>
-                <input type="text" [formControl]="player2FilterCtrl" placeholder="Cerca giocatore...">
-                <select formControlName="player2" required>
-                    <option *ngFor="let player of filteredPlayers2 | async" [value]="player.playerid">{{ player.name }}
-                    </option>
-                </select>
+
+            <div class="col-md-6">
+                <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'" (playerSelected)="setPlayer($event)"></app-select-player>
             </div>
+
         </div>
 
         <div class="row mt-3">
@@ -55,5 +47,5 @@
 </div>
 <div class="modal-buttons d-flex justify-content-between mt-3">
     <button type="button" class="button-close" (click)="closeModal()">Annulla</button>
-    <button type="submit" [disabled]="matchForm.invalid" (click)="addMatch()">Aggiungi partita</button>
+    <button type="submit" (click)="addMatch()">Aggiungi partita</button>
 </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MSG_TYPE } from "../app/utils/enum";
 import mockData from '../app/utils/mock.json';
-import { environment } from '../enviroments/environment';
+import { environment } from '../environments/environment';
 import { IMatch } from '../app/interfaces/matchesInterfaces';
 import { IMatchResponse } from '../app/interfaces/responsesInterfaces';
 import { LoaderComponent } from '../app/utils/components/loader/loader.component';
@@ -40,7 +40,7 @@ export class DataService {
     console.log("Fetching data...");
     try {
       this.loader?.startLoader(); // 🟢 Show loader before request
-      if (!environment.production) {
+      if (environment.mock) {
         console.log("Using mock data in local environment.");
         this.assignData(mockData);
       } else {
@@ -127,5 +127,15 @@ export class DataService {
     } else {
       return Promise.reject("Invalid data");
     }
+  }
+  getLoggedInPlayerId(): number | null {
+    const userData = localStorage.getItem('loggedInPlayer'); // Example storage
+    return userData ? JSON.parse(userData).playerid : null;
+  }
+  setLoggedInPlayer(player: { playerid: number, name: string }) {
+    localStorage.setItem('loggedInPlayer', JSON.stringify(player));
+  }
+  logout() {
+    localStorage.removeItem('loggedInPlayer');
   }
 }

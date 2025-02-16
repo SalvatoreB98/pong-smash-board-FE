@@ -1,514 +1,148 @@
 {
     "players": [
-        "SALVO",
-        "RAFF",
-        "GIORGIO"
+        {
+            "playerid": 2,
+            "name": "gi",
+            "image_url": null
+        },
+        {
+            "playerid": 1,
+            "name": "sa",
+            "image_url": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png"
+        }
     ],
     "matches": [
         {
-            "id": "0",
-            "data": "18/11/2024",
-            "giocatore1": "RAFF",
-            "giocatore2": "SALVO",
-            "p1": "1",
-            "p2": "0",
-            "setsPoints": []
-        },
-        {
-            "id": "1",
-            "data": "19/11/2024",
-            "giocatore1": "GIORGIO",
-            "giocatore2": "RAFF",
-            "p1": "0",
-            "p2": "1",
-            "setsPoints": []
-        },
-        {
-            "id": "2",
-            "data": "19/11/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "GIORGIO",
-            "p1": "4",
-            "p2": "7",
-            "setsPoints": []
-        },
-        {
-            "id": "3",
-            "data": "19/11/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "1",
-            "p2": "1",
-            "setsPoints": []
-        },
-        {
-            "id": "4",
-            "data": "20/11/2024",
-            "giocatore1": "GIORGIO",
-            "giocatore2": "RAFF",
-            "p1": "7",
-            "p2": "6",
-            "setsPoints": []
-        },
-        {
-            "id": "5",
-            "data": "20/11/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "GIORGIO",
-            "p1": "3",
-            "p2": "4",
-            "setsPoints": []
-        },
-        {
-            "id": "6",
-            "data": "20/11/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "2",
-            "p2": "6",
-            "setsPoints": []
-        },
-        {
-            "id": "7",
-            "data": "21/11/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "1",
-            "p2": "3",
-            "setsPoints": []
-        },
-        {
-            "id": "8",
-            "data": "4/12/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "4",
-            "p2": "3",
-            "setsPoints": []
-        },
-        {
-            "id": "9",
-            "data": "5/12/2024",
-            "giocatore1": "GIORGIO",
-            "giocatore2": "RAFF",
-            "p1": "4",
-            "p2": "0",
-            "setsPoints": [
-                [
-                    21,
-                    10
-                ],
-                [
-                    21,
-                    15
-                ],
-                [
-                    11,
-                    21
-                ],
-                [
-                    15,
-                    21
-                ],
-                [
-                    21,
-                    19
-                ],
-                [
-                    19,
-                    21
-                ],
-                [
-                    21,
-                    18
-                ]
+            "player1_name": "sa",
+            "player2_name": "gi",
+            "player1_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "player2_img": null,
+            "id": 1,
+            "player1_id": 1,
+            "player2_id": 2,
+            "player1_score": 2,
+            "player2_score": 0,
+            "tournament_id": 1,
+            "created": "2025-02-11T23:02:12.00514",
+            "match_sets": [
+                {
+                    "id": 1,
+                    "match_id": 1,
+                    "player1_score": 11,
+                    "player2_score": 1
+                },
+                {
+                    "id": 2,
+                    "match_id": 1,
+                    "player1_score": 11,
+                    "player2_score": 10
+                }
             ]
         },
         {
-            "id": "10",
-            "data": "5/12/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "GIORGIO",
-            "p1": "2",
-            "p2": "1",
-            "setsPoints": [
-                [
-                    21,
-                    15
-                ],
-                [
-                    21,
-                    19
-                ],
-                [
-                    21,
-                    17
-                ],
-                [
-                    21,
-                    10
-                ]
+            "player1_name": "sa",
+            "player2_name": "gi",
+            "player1_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "player2_img": null,
+            "id": 1,
+            "player1_id": 1,
+            "player2_id": 2,
+            "player1_score": 2,
+            "player2_score": 0,
+            "tournament_id": 1,
+            "created": "2025-02-11T23:02:12.00514",
+            "match_sets": [
+                {
+                    "id": 1,
+                    "match_id": 1,
+                    "player1_score": 11,
+                    "player2_score": 1
+                },
+                {
+                    "id": 2,
+                    "match_id": 1,
+                    "player1_score": 11,
+                    "player2_score": 10
+                }
             ]
         },
         {
-            "id": "11",
-            "data": "5/12/2024",
-            "giocatore1": "GIORGIO",
-            "giocatore2": "RAFF",
-            "p1": "0",
-            "p2": "2",
-            "setsPoints": [
-                [
-                    21,
-                    15
-                ],
-                [
-                    21,
-                    15
-                ],
-                [
-                    21,
-                    18
-                ]
+            "player1_name": "sa",
+            "player2_name": "gi",
+            "player1_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "player2_img": null,
+            "id": 1,
+            "player1_id": 1,
+            "player2_id": 2,
+            "player1_score": 2,
+            "player2_score": 0,
+            "tournament_id": 1,
+            "created": "2025-02-11T23:02:12.00514",
+            "match_sets": [
+                {
+                    "id": 1,
+                    "match_id": 1,
+                    "player1_score": 11,
+                    "player2_score": 1
+                },
+                {
+                    "id": 2,
+                    "match_id": 1,
+                    "player1_score": 11,
+                    "player2_score": 10
+                }
             ]
         },
         {
-            "id": "12",
-            "data": "5/12/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "0",
-            "p2": "2",
-            "setsPoints": []
-        },
-        {
-            "id": "13",
-            "data": "5/12/2024",
-            "giocatore1": "GIORGIO",
-            "giocatore2": "RAFF",
-            "p1": "2",
-            "p2": "0",
-            "setsPoints": [
-                [
-                    19,
-                    21
-                ],
-                [
-                    19,
-                    12
-                ]
-            ]
-        },
-        {
-            "id": "14",
-            "data": "5/12/2024",
-            "giocatore1": "GIORGIO",
-            "giocatore2": "SALVO",
-            "p1": "5",
-            "p2": "4",
-            "setsPoints": [
-                [
-                    21,
-                    20
-                ],
-                [
-                    21,
-                    19
-                ]
-            ]
-        },
-        {
-            "id": "15",
-            "data": "6/12/2024",
-            "giocatore1": "GIORGIO",
-            "giocatore2": "RAFF",
-            "p1": "2",
-            "p2": "1",
-            "setsPoints": []
-        },
-        {
-            "id": "16",
-            "data": "6/12/2024",
-            "giocatore1": "RAFF",
-            "giocatore2": "GIORGIO",
-            "p1": "4",
-            "p2": "4",
-            "setsPoints": [
-                [
-                    21,
-                    17
-                ],
-                [
-                    18,
-                    21
-                ],
-                [
-                    21,
-                    18
-                ]
-            ]
-        },
-        {
-            "id": "17",
-            "data": "6/12/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "GIORGIO",
-            "p1": "4",
-            "p2": "5",
-            "setsPoints": []
-        },
-        {
-            "id": "18",
-            "data": "09/12/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "2",
-            "p2": "1",
-            "setsPoints": []
-        },
-        {
-            "id": "19",
-            "data": "09/12/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "3",
-            "p2": "3",
-            "setsPoints": [
-                [
-                    19,
-                    21
-                ],
-                [
-                    21,
-                    17
-                ],
-                [
-                    21,
-                    17
-                ]
-            ]
-        },
-        {
-            "id": "20",
-            "data": "09/12/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "1",
-            "p2": "2",
-            "setsPoints": [
-                [
-                    21,
-                    19
-                ],
-                [
-                    19,
-                    21
-                ],
-                [
-                    21,
-                    19
-                ],
-                [
-                    19,
-                    21
-                ],
-                [
-                    21,
-                    19
-                ],
-                [
-                    20,
-                    21
-                ]
-            ]
-        },
-        {
-            "id": "21",
-            "data": "09/12/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "1",
-            "p2": "0",
-            "setsPoints": [
-                [
-                    21,
-                    17
-                ]
-            ]
-        },
-        {
-            "id": "22",
-            "data": "09/12/2024",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "3",
-            "p2": "2",
-            "setsPoints": [
-                [
-                    13,
-                    21
-                ],
-                [
-                    20,
-                    21
-                ],
-                [
-                    21,
-                    19
-                ],
-                [
-                    21,
-                    19
-                ],
-                [
-                    21,
-                    19
-                ]
-            ]
-        },
-        {
-            "id": "23",
-            "data": "10/12/2024 - 10:21",
-            "giocatore1": "SALVO",
-            "giocatore2": "GIORGIO",
-            "p1": "0",
-            "p2": "4",
-            "setsPoints": [
-                [
-                    20,
-                    21
-                ],
-                [
-                    13,
-                    21
-                ],
-                [
-                    19,
-                    21
-                ],
-                [
-                    20,
-                    21
-                ]
-            ]
-        },
-        {
-            "id": "24",
-            "data": "10/12/2024 - 11:43",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "2",
-            "p2": "1",
-            "setsPoints": [
-                [
-                    21,
-                    19
-                ],
-                [
-                    19,
-                    21
-                ],
-                [
-                    21,
-                    18
-                ]
-            ]
-        },
-        {
-            "id": "25",
-            "data": "11/12/2024 - 15:45",
-            "giocatore1": "GIORGIO",
-            "giocatore2": "RAFF",
-            "p1": "4",
-            "p2": "2",
-            "setsPoints": [
-                [
-                    21,
-                    16
-                ],
-                [
-                    21,
-                    16
-                ],
-                [
-                    20,
-                    21
-                ],
-                [
-                    21,
-                    19
-                ],
-                [
-                    19,
-                    21
-                ],
-                [
-                    21,
-                    15
-                ]
-            ]
-        },
-        {
-            "id": "26",
-            "data": "11/12/2024 - 16:00",
-            "giocatore1": "SALVO",
-            "giocatore2": "RAFF",
-            "p1": "2",
-            "p2": "1",
-            "setsPoints": [
-                [
-                    21,
-                    17
-                ],
-                [
-                    11,
-                    21
-                ],
-                [
-                    21,
-                    16
-                ]
+            "player1_name": "sa",
+            "player2_name": "gi",
+            "player1_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "player2_img": null,
+            "id": 1,
+            "player1_id": 1,
+            "player2_id": 2,
+            "player1_score": 2,
+            "player2_score": 0,
+            "tournament_id": 1,
+            "created": "2025-02-11T23:02:12.00514",
+            "match_sets": [
+                {
+                    "id": 1,
+                    "match_id": 1,
+                    "player1_score": 11,
+                    "player2_score": 1
+                },
+                {
+                    "id": 2,
+                    "match_id": 1,
+                    "player1_score": 11,
+                    "player2_score": 10
+                }
             ]
         }
     ],
     "wins": {
-        "RAFF": 42,
-        "SALVO": 39,
-        "GIORGIO": 49
+        "1": null,
+        "2": null
     },
     "totPlayed": {
-        "RAFF": 87,
-        "SALVO": 91,
-        "GIORGIO": 82
+        "1": null,
+        "2": null
     },
     "points": {
-        "SALVO": "42.9",
-        "RAFF": "48.3",
-        "GIORGIO": "59.8"
+        "1": "0.0",
+        "2": "0.0"
     },
     "monthlyWinRates": {
-        "11": {
-            "RAFF": "62.1",
-            "SALVO": "33.3",
-            "GIORGIO": "56.3"
+        "1": {
+            "02": "0.0"
         },
-        "12": {
-            "SALVO": "48.3",
-            "RAFF": "41.4",
-            "GIORGIO": "62.0"
+        "2": {
+            "02": "0.0"
         }
     },
     "badges": {
-        "SALVO": [
-            "MAX_TOTAL",
-            "MAX_LOSSES"
-        ],
-        "RAFF": [
-            "CHAMPION_OF_THE_MONTH-11"
-        ],
-        "GIORGIO": [
-            "CHAMPION_OF_THE_MONTH-12",
-            "MAX_WIN_STREAK"
-        ]
+        "1": [],
+        "2": []
     }
 }

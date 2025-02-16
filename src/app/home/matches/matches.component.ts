@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ShowMatchModalComponent } from '../show-match-modal/show-match-modal.component';
 import { ModalService } from '../../../services/modal.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
-import { environment } from '../../../enviroments/environment';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-matches',

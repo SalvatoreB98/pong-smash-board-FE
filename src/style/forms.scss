@@ -2,7 +2,8 @@
 
 // Input Fields
 input,
-select {
+select,
+.input-field {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -14,6 +15,47 @@ select {
     margin-bottom: 1em;
     box-sizing: border-box;
     text-align: center;
+    .my-placeholder {
+        color: gray;
+    }
+}
+
+.input-field {
+    background-color: white;
+    color: black;
+}
+
+.dropdown {
+    position: absolute;
+    opacity: 0;
+    background-color: white;
+    border-radius: $border-radius;
+    visibility: hidden;
+    color: black;
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.1s ease-in-out;
+    border: 1px solid black;
+    input {
+        margin-bottom: 0;
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 10px;
+        top: 7px;
+    }
+    cursor: pointer;
+    .player-item {
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+        &:last-child {
+            border-bottom: none;
+        }
+        &:hover {
+            background-color: #cccccc81;
+        }
+    }
 }
 
 input[type="tel"],
@@ -77,17 +119,26 @@ input[type="checkbox"] {
         color: $primary-ultra-light;
     }
 }
-.select-player {
-    input {
-        padding-bottom: 0;
-        margin-bottom: 0;
-        border-radius: $border-radius $border-radius 0 0;
+
+.dropdown.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-12px);
+}
+@media screen and (max-width: 768px) {
+    .input-field {
+        overflow: hidden;
+        white-space: nowrap;
     }
-    select {
-        border-radius: 0 0 $border-radius $border-radius;
+    .dropdown {
+        width: 91%;
     }
 }
-select option:disabled {
-    color: gray;
-    font-style: italic;
-} 
+html {
+    background-color: red;
+}
+.wrapper-points {
+    .input-container {
+        padding: 3px;
+    }
+}

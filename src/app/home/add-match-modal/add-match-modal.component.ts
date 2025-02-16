@@ -3,61 +3,47 @@ import { FormArray, FormBuilder, FormGroup, Validators, FormControl, ReactiveFor
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { DataService } from '../../../services/data.service';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { SelectPlayerComponent } from '../../utils/components/select-player/select-player.component';
 
 @Component({
   selector: 'app-add-match-modal',
   standalone: true,
   templateUrl: './add-match-modal.component.html',
   styleUrls: ['./add-match-modal.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, MatSelectModule] // ✅ Added MatSelectModule
+  imports: [CommonModule, ReactiveFormsModule, SelectPlayerComponent]
 })
 export class AddMatchModalComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
-
-  @ViewChild('player1Select', { static: true }) player1Select!: MatSelect;
-  @ViewChild('player2Select', { static: true }) player2Select!: MatSelect;
 
   matchForm!: FormGroup;
   players: any[] = [];
   isShowSetsPointsTrue = false;
 
-  /** Player search controls */
-  public player1FilterCtrl = new FormControl<string | null>('');
-  public player2FilterCtrl = new FormControl<string | null>('');
-
   /** Filtered players list */
-  public filteredPlayers1: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public filteredPlayers2: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   /** Subject to manage unsubscriptions */
-  protected _onDestroy = new Subject<void>();
-
   constructor(private fb: FormBuilder, private modalService: ModalService, private dataService: DataService) { }
 
   ngOnInit() {
     this.initializeForm();
-
-    // ✅ Load players from service
     this.players = this.dataService.players || [];
-    this.filteredPlayers1.next(this.players.slice()); // Load initial player1 list
-    this.filteredPlayers2.next(this.players.slice()); // Load initial player2 list
-
-    // ✅ Subscribe to search filters
-    this.player1FilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe(() => {
-      this.filterPlayers(1);
-    });
-
-    this.player2FilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe(() => {
-      this.filterPlayers(2);
-    });
   }
 
   ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
+  }
+  getPlayers(player?: number): any[] {
+    if (!this.players || this.players.length === 0) return [];
+
+    const loggedInPlayerId = this.dataService.getLoggedInPlayerId(); // Assuming this method exists
+
+    let filteredPlayers = this.players.filter(p => p.playerid !== loggedInPlayerId);
+
+    if (player === 2) {
+      const selectedPlayer1 = this.matchForm.get('player1')?.value;
+      filteredPlayers = filteredPlayers.filter(p => p.playerid !== selectedPlayer1);
+    }
+
+    return filteredPlayers;
   }
 
   initializeForm() {
@@ -68,13 +54,16 @@ export class AddMatchModalComponent implements OnInit {
       p1Score: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
       p2Score: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
       isShowSetsPointsTrue: [],
-      setsPoints: this.fb.array([]), // ✅ Initially empty, managed dynamically
+      setsPoints: this.fb.array([]),
     });
   }
 
   /** Gets setsPoints as a FormArray */
   get setsPoints(): FormArray {
     return this.matchForm.get('setsPoints') as FormArray;
+  }
+  setPlayer(player: any) {
+    this.matchForm.get(`player${player.playerNumber}`)?.setValue(player.playerid); // Set value in formControl
   }
 
   updateContainers() {
@@ -138,27 +127,6 @@ export class AddMatchModalComponent implements OnInit {
     this.dataService.addMatch(formData).then(() => {
       this.closeModal();
     });
-  }
-
-  /** Filters players based on search keyword */
-  protected filterPlayers(playerNumber: number) {
-    if (!this.players) return;
-
-    let searchValue = playerNumber === 1 ? this.player1FilterCtrl.value : this.player2FilterCtrl.value;
-
-    if (!searchValue) {
-      playerNumber === 1 ? this.filteredPlayers1.next(this.players.slice()) : this.filteredPlayers2.next(this.players.slice());
-      return;
-    }
-
-    searchValue = searchValue.toLowerCase();
-    const filtered = this.players.filter(player => player.name.toLowerCase().includes(searchValue));
-
-    if (playerNumber === 1) {
-      this.filteredPlayers1.next(filtered);
-    } else {
-      this.filteredPlayers2.next(filtered);
-    }
   }
 
   closeModal() {
