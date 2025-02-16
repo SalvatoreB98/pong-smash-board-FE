@@ -230,6 +230,9 @@ section {
         &[type="submit"] {
             background-color: var(--primary);
             color: white;
+            &:disabled {
+                opacity: 0.5;
+            }
         }
         
     }
