@@ -1,10 +1,11 @@
 <div class="custom-select">
     <label for="">Giocatore {{playerNumber}}</label>
     <!-- Fake input field -->
-    <div class="input-field" (click)="toggleDropdown()" [class.open]="showDropdown">
-        <span *ngIf="!selectedPlayer" class="my-placeholder">Seleziona un giocatore...</span>
+    <div class="input-field position-relative" (click)="toggleDropdown()" [class.open]="showDropdown">
+        <span *ngIf="!selectedPlayer" class="my-placeholder">Seleziona un giocatore... </span>
         <span *ngIf="selectedPlayer"><strong>{{ selectedPlayer.name }}</strong></span>
         <span class="" [class.up]="showDropdown"></span> <!-- Toggle arrow -->
+        <span class="position-absolute" style="right: 1em;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
     </div>
 
     <!-- Dropdown menu -->

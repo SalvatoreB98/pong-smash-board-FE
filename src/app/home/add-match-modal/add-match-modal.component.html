@@ -47,5 +47,5 @@
 </div>
 <div class="modal-buttons d-flex justify-content-between mt-3">
     <button type="button" class="button-close" (click)="closeModal()">Annulla</button>
-    <button type="submit" (click)="addMatch()">Aggiungi partita</button>
+    <button type="submit" (click)="addMatch()" [disabled]="!matchForm.valid">Aggiungi partita</button>
 </div>

@@ -15,14 +15,15 @@ select,
     margin-bottom: 1em;
     box-sizing: border-box;
     text-align: center;
+    cursor: pointer;
+    background-color: white;
+    color: black;
     .my-placeholder {
         color: gray;
     }
-}
-
-.input-field {
-    background-color: white;
-    color: black;
+    &:hover .fa-caret-down {
+        transform: scale(1.5);
+    }
 }
 
 .dropdown {
@@ -124,6 +125,7 @@ input[type="checkbox"] {
     visibility: visible;
     opacity: 1;
     transform: translateY(-12px);
+    z-index: 5;
 }
 @media screen and (max-width: 768px) {
     .input-field {
