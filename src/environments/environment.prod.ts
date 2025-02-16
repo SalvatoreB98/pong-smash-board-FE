@@ -1,4 +1,5 @@
 export const environment = {
+  mock: false,
   production: true,
   apiUrl: 'https://pong-smash-board-be.vercel.app/',
   firebase: {
