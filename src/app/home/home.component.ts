@@ -11,10 +11,11 @@ import { ModalService } from '../../services/modal.service';
 import { CommonModule } from '@angular/common';
 import { MODALS } from '../utils/enum';
 import { TranslatePipe } from '../utils/translate.pipe';
+import { BottomNavbarComponent } from '../common/bottom-navbar/bottom-navbar.component';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, NavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe],
+  imports: [CommonModule, NavbarComponent, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

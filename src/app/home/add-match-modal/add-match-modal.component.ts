@@ -102,14 +102,8 @@ export class AddMatchModalComponent implements OnInit {
     let currentMinutes = '';
 
     const today = new Date();
-    if (
-      dateInput.getFullYear() === today.getFullYear() &&
-      dateInput.getMonth() === today.getMonth() &&
-      dateInput.getDate() === today.getDate()
-    ) {
-      currentHour = String(today.getHours()).padStart(2, '0');
-      currentMinutes = String(today.getMinutes()).padStart(2, '0');
-    }
+    currentHour = String(today?.getHours()).padStart(2, '0');
+    currentMinutes = String(today?.getMinutes()).padStart(2, '0');
 
     const formattedDate = dateInput.toLocaleDateString("en-GB");
 

@@ -1,6 +1,6 @@
-.loader,
-.ping-toast,
-.loader-small {
+$green: var(--green); // Define variables for colors
+
+.loader {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -10,17 +10,17 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   z-index: 1000;
-}
-.loader {
   padding: 0;
   width: 100vw;
   height: 100vh;
-  img{
+
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     filter: brightness(0.1);
   }
+
   .loading-text {
     position: absolute;
     top: 50%;
@@ -32,24 +32,49 @@
     filter: inherit;
   }
 }
+
 .ping-toast {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-}
-
-.error {
-  background: red;
-  color: white;
-}
-
-.warning {
-  background: orange;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 1em;
+  background-color: $green;
   color: black;
+  box-shadow: 0px 0px 5px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.error {
+    background-color: rgba(136, 43, 43, 0.799);
+    color: white;
+  }
+
+  &.success {
+    background-color: $green;
+  }
+
+  >div {
+    padding: 0.5em;
+  }
+
+  .close-toast {
+    all: unset;
+    padding: 1em 1.5em;
+    cursor: pointer;
+    border-left: 1px solid #00000017;
+  }
 }
 
-.success {
-  background: green;
-  color: white;
+.loader-small {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 1em;
+
+  >img {
+    filter: drop-shadow(0px 0px 10px black);
+    max-width: 100px;
+    max-height: 100px;
+  }
 }

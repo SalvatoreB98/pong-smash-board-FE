@@ -106,6 +106,7 @@ export class DataService {
 
   async addMatch(data: { p1Score: number; p2Score: number;[key: string]: any }): Promise<void> {
     console.log(data);
+    this.loaderService.startLittleLoader();
     if ((data.p1Score !== undefined) && (data.p2Score !== undefined)) {
       try {
         const response = await fetch(`${environment.apiUrl}/api/add-match`, {
@@ -119,12 +120,13 @@ export class DataService {
         }
 
         const responseData = await response.json();
-        this.loader?.showToast("Salvato con successo!", 5000, MSG_TYPE.SUCCESS);
+        this.loaderService?.showToast("Salvato con successo!", MSG_TYPE.SUCCESS, 5000);
         console.log("Success:", responseData);
       } catch (error) {
-        this.loader?.showToast(`Match data not found ${error}`, 5000, MSG_TYPE.ERROR);
-        this.loader?.showToast(`Errore durante l'aggiunta del match ${error}`, 5000, MSG_TYPE.ERROR);
+        this.loaderService?.showToast(`Match data not found ${error}`, MSG_TYPE.ERROR);
         throw error;
+      } finally {
+        this.loaderService.stopLittleLoader();
       }
     } else {
       return Promise.reject("Invalid data");

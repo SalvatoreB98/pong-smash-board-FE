@@ -1,0 +1,59 @@
+@use '../../../style/variables.scss' as *;
+
+.bottom-navbar {
+    padding: 0.5em;
+    background-color: black;
+    height: 75px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    border-radius: $border-radius;
+    position: fixed;
+    bottom: 0;
+    width: 90%;
+    left: 50%;
+    bottom: 1em;
+    transform: translateX(-50%);
+    max-width: 600px;
+    filter: drop-shadow(0px 10px 10px black);
+
+    .bottom-navbar-item {
+        display: flex;
+
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    a {
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        font-weight: lighter;
+        text-transform: capitalize;
+        border-radius: 50%;
+        width: 75px;
+        height: 100%;
+        flex-grow: 1;
+        transition: all 0.1s linear;
+
+        &:hover {
+            transform: scale(1.1);
+            opacity: 0.6;
+        }
+
+        i {
+            font-size: 1.2em;
+        }
+
+        span {
+            font-size: 0.7em;
+            margin-top: 0.5em;
+        }
+    }
+}
+@media screen and (min-width: 768px) {
+    .bottom-navbar {
+        display: none;
+    }
+}

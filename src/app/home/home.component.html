@@ -3,8 +3,8 @@
     <section style="padding: 0;">
         <app-matches [matches]="matches" (matchEmitter)="setClickedMatch($event)"></app-matches>
         <div class="add-button-container">
-            <button (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">{{ "add_match" | translate}} <span class="m-1"></span> <i
-                    class="fa-solid fa-plus"></i></button>
+            <button (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">{{ "add_match"
+                | translate}} <span class="m-1"></span> <i class="fa-solid fa-plus"></i></button>
         </div>
     </section>
 </div>
@@ -13,4 +13,5 @@
 </app-modal>
 <app-modal *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])">
     <app-show-match-modal [match]="clickedMatch"></app-show-match-modal>
-  </app-modal>
+</app-modal>
+<app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
