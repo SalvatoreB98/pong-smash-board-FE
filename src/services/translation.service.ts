@@ -29,6 +29,7 @@ export class TranslationService {
 
   /** Ottiene la lingua corrente */
   getLanguage() {
+    console.log(this.currentLang.value);
     return this.currentLang.value;
   }
   private loadTranslations() {

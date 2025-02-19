@@ -7,10 +7,11 @@ import { ShowMatchModalComponent } from '../show-match-modal/show-match-modal.co
 import { ModalService } from '../../../services/modal.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
 import { environment } from '../../../environments/environment';
+import { TranslatePipe } from '../../utils/translate.pipe';
 
 @Component({
   selector: 'app-matches',
-  imports: [CommonModule],
+  imports: [CommonModule,TranslatePipe],
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.scss'
 })
