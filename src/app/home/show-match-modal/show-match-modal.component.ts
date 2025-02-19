@@ -3,10 +3,11 @@ import { Component, Input } from '@angular/core';
 import { ModalService } from '../../../services/modal.service';
 import { MODALS } from '../../utils/enum';
 import { ModalComponent } from '../../common/modal/modal.component';
+import { TranslatePipe } from '../../utils/translate.pipe';
 
 @Component({
   selector: 'app-show-match-modal',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './show-match-modal.component.html',
   styleUrl: './show-match-modal.component.scss'
 })

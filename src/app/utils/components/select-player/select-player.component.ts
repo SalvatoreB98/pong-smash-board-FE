@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Utils } from '../../Utils';
+import { TranslatePipe } from '../../translate.pipe';
 
 @Component({
   selector: 'app-select-player',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './select-player.component.html',
   styleUrl: './select-player.component.scss'
 })

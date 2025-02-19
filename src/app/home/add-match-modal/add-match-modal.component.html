@@ -18,17 +18,17 @@
 
         <div class="row mt-3">
             <div class="col-6">
-                <input type="number" formControlName="p1Score" min="1" max="99" placeholder="Punteggio 1"
+                <input type="number" formControlName="p1Score" min="1" max="99" [placeholder]="('score1' | translate)"
                     (input)="updateContainers()">
             </div>
             <div class="col-6">
-                <input type="number" formControlName="p2Score" min="1" max="99" placeholder="Punteggio 2"
+                <input type="number" formControlName="p2Score" min="1" max="99" [placeholder]="('score2' | translate)"
                     (input)="updateContainers()">
             </div>
         </div>
 
         <label class="d-flex mt-4 mb-3 justify-content-center">
-            <span style="margin-right: 1em">Aggiungi i punti dei set</span>
+            <span style="margin-right: 1em">{{"Add set points" | translate}}</span>
             <input type="checkbox" formControlName="isShowSetsPointsTrue" (change)="updateContainers()">
         </label>
 
@@ -46,6 +46,6 @@
     </form>
 </div>
 <div class="modal-buttons d-flex justify-content-between mt-3">
-    <button type="button" class="button-close" (click)="closeModal()">Annulla</button>
-    <button type="submit" (click)="addMatch()" [disabled]="!matchForm.valid">Aggiungi partita</button>
+    <button type="button" class="button-close" (click)="closeModal()">{{"cancel" | translate}}</button>
+    <button type="submit" (click)="addMatch()" [disabled]="!matchForm.valid">{{"add_match" | translate}}</button>
 </div>

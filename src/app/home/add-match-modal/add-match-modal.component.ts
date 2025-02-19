@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { DataService } from '../../../services/data.service';
 import { SelectPlayerComponent } from '../../utils/components/select-player/select-player.component';
+import { TranslatePipe } from '../../utils/translate.pipe';
 
 @Component({
   selector: 'app-add-match-modal',
   standalone: true,
   templateUrl: './add-match-modal.component.html',
   styleUrls: ['./add-match-modal.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, SelectPlayerComponent]
+  imports: [CommonModule, ReactiveFormsModule, SelectPlayerComponent, TranslatePipe]
 })
 export class AddMatchModalComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
