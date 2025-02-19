@@ -75,8 +75,8 @@ export class AddMatchModalComponent implements OnInit {
     for (let i = 0; i < totalSets; i++) {
       this.setsPoints.push(
         this.fb.group({
-          player1: [null, [Validators.min(0), Validators.max(21)]],
-          player2: [null, [Validators.min(0), Validators.max(21)]]
+          player1Points: [null, [Validators.min(0), Validators.max(21)]],
+          player2Points: [null, [Validators.min(0), Validators.max(21)]]
         })
       );
     }
