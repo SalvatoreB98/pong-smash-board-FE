@@ -19,7 +19,11 @@ export class TranslationService {
   private currentLang = new BehaviorSubject<string>('en'); // Default: Inglese
 
   constructor(private http: HttpClient) {
-    this.loadTranslations(); // ✅ Carica le traduzioni all'avvio
+    const userLanguage = navigator.language || navigator.languages[0] || 'en';
+    if (userLanguage.startsWith('it')) {
+      this.currentLang.next('it');
+    }
+    this.loadTranslations(); 
   }
 
   /** Cambia la lingua e aggiorna lo stato */

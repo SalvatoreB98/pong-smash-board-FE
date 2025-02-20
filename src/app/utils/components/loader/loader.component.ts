@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { MSG_TYPE } from '../../enum';
 import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../../../services/loader.service';
+import { TranslatePipe } from '../../translate.pipe';
 
 @Component({
   selector: 'app-loader',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './loader.component.html',
   styleUrl: './loader.component.scss'
 })

@@ -3,6 +3,10 @@
         "it": "Aggiungi una partita",
         "en": "Add a match"
     },
+    "matches": {
+        "it": "Ultime partite",
+        "en": "Last matches"
+    },
     "date": {
         "it": "Data",
         "en": "Date"
@@ -10,6 +14,10 @@
     "player1": {
         "it": "Giocatore 1",
         "en": "Player 1"
+    },
+    "players": {
+        "it": "Giocatori",
+        "en": "Players"
     },
     "select_player": {
         "it": "Seleziona un giocatore",
@@ -38,5 +46,21 @@
     "add_match_cta": {
         "it": "Aggiungi partita",
         "en": "Add match"
+    },
+    "loader": {
+        "it": "Caricamento in corso...",
+        "en": "Loading..."
+    },
+    "Loader": {
+        "it": "Caricamento in corso...",
+        "en": "Loading..."
+    },
+    "Search player": {
+        "it": "Cerca giocatore",
+        "en": "Search player"
+    },
+    "Select player": {
+        "it": "Cerca giocatore",
+        "en": "Search player"
     }
 }

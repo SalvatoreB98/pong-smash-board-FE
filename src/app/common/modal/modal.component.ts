@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ModalService } from '../../../services/modal.service';
+import { TranslatePipe } from '../../utils/translate.pipe';
 
 @Component({
   selector: 'app-modal',
-  imports: [],
+  imports: [TranslatePipe, CommonModule],
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })

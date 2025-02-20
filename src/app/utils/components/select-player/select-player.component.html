@@ -1,8 +1,8 @@
 <div class="custom-select">
-    <label for="">Giocatore {{playerNumber}}</label>
+    <label for="">{{"Player" | translate}} {{playerNumber}}</label>
     <!-- Fake input field -->
     <div class="input-field position-relative" (click)="toggleDropdown()" [class.open]="showDropdown">
-        <span *ngIf="!selectedPlayer" class="my-placeholder">Seleziona un giocatore... </span>
+        <span *ngIf="!selectedPlayer" class="my-placeholder">{{"Select a player" | translate}}... </span>
         <span *ngIf="selectedPlayer"><strong>{{ selectedPlayer.name }}</strong></span>
         <span class="" [class.up]="showDropdown"></span> <!-- Toggle arrow -->
         <span class="position-absolute" style="right: 1em;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
@@ -12,8 +12,8 @@
     <div class="dropdown" [class.visible]="showDropdown">
         <!-- Search input -->
         <div class="search-wrapper d-flex">
-            <input #searchInput type="text" [formControl]="searchCtrl" [placeholder]="('Cerca giocatore...' | translate)"
-                class="search-input">
+            <input #searchInput type="text" [formControl]="searchCtrl"
+                [placeholder]="('Search Player' | translate)" class="search-input">
             <span class="search-icon">🔍</span> <!-- Search icon -->
         </div>
 
