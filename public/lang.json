@@ -23,6 +23,10 @@
         "it": "Seleziona un giocatore",
         "en": "Select a player"
     },
+    "Select a player": {
+        "it": "Seleziona un giocatore",
+        "en": "Select a player"
+    },
     "player2": {
         "it": "Giocatore 2",
         "en": "Player 2"
@@ -36,6 +40,10 @@
         "en": "Score 2"
     },
     "add_set_points": {
+        "it": "Aggiungi i punti dei set",
+        "en": "Add set points"
+    },
+    "Add set points": {
         "it": "Aggiungi i punti dei set",
         "en": "Add set points"
     },
