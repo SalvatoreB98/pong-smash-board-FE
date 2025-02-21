@@ -82,6 +82,9 @@ export class AddMatchModalComponent implements OnInit {
       );
     }
   }
+  getSetFormGroup(index: number): FormGroup {
+    return this.setsPoints.at(index) as FormGroup;
+  }
 
   addMatch() {
     if (this.matchForm.invalid) return;

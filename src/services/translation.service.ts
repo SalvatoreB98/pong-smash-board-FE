@@ -7,11 +7,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TranslationService {
 
+  public languages = [{ code: "it", label: "italian" }, { code: "en", label: "english" }]
+
   /** Dizionario delle traduzioni */
   private translations: { [key: string]: { [lang: string]: string } } = {
     title: {
-      it: "Ciao Mondo",
-      en: "Hello World"
+      it: "",
+      en: "d"
     }
   };
 
@@ -23,7 +25,7 @@ export class TranslationService {
     if (userLanguage.startsWith('it')) {
       this.currentLang.next('it');
     }
-    this.loadTranslations(); 
+    this.loadTranslations();
   }
 
   /** Cambia la lingua e aggiorna lo stato */

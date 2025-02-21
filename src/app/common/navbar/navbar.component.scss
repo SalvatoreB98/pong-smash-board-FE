@@ -1,0 +1,29 @@
+@use "../../../style/variables.scss" as *;
+
+.lang {
+    all: unset;
+    cursor: pointer;
+    padding: 1em 2em 1em 2em;
+}
+
+.dropdown-lang {
+    select {
+        position: absolute;
+    }
+
+    button {
+        background-color: $dark;
+        color: white;
+        border: none;
+        transition: all 0.25 ease-in-out;
+
+        &:hover {
+            background-color: #374d87;
+        }
+    }
+
+    a {
+        font-size: 0.75em;
+        width: 80%;
+    }
+}
