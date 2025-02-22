@@ -4,3 +4,7 @@
 @use "style/slider.scss";
 @use "style/utility.scss";
 @use "style/forms.scss";
+ 
+* {
+    box-sizing: border-box;
+}

@@ -7,7 +7,7 @@ import { LoaderComponent } from './utils/components/loader/loader.component';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [HomeComponent, LoaderComponent]
+  imports: [LoaderComponent, RouterOutlet]
 })
 export class AppComponent {
   title = 'pong-smash-board';
