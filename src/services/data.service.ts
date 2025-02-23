@@ -133,13 +133,11 @@ export class DataService {
     }
   }
   getLoggedInPlayerId(): number | null {
-    const userData = localStorage.getItem('loggedInPlayer'); // Example storage
-    return userData ? JSON.parse(userData).playerid : null;
+    const userData = localStorage.getItem('user'); // Example storage
+    return userData ? JSON.parse(userData).id : null;
   }
   setLoggedInPlayer(player: { playerid: number, name: string }) {
     localStorage.setItem('loggedInPlayer', JSON.stringify(player));
   }
-  logout() {
-    localStorage.removeItem('loggedInPlayer');
-  }
+
 }

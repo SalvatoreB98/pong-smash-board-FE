@@ -6,6 +6,10 @@
     padding: 1em 2em 1em 2em;
 }
 
+#menu-button {
+    cursor: pointer;
+}
+
 .dropdown-lang {
     select {
         position: absolute;
@@ -26,4 +30,57 @@
         font-size: 0.75em;
         width: 80%;
     }
+}
+
+.curtain {
+    background-color: #000000;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    height: calc(100vh - 100px);
+    width: 100px;
+    animation: open 0.2s ease-in-out forwards;
+
+    ul {
+        li {
+            text-align: center;
+
+            &:hover {
+                filter: brightness(0.8);
+            }
+
+            a {
+                font-size: 0.75em;
+            }
+
+            &.clickable {
+                cursor: pointer;
+            }
+
+            i.fa {
+                font-size: 2em;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .curtain {
+        top: 75px;
+        height: calc(100vh - 75px);
+    }
+
+}
+
+@keyframes open {
+    from {
+        opacity: 0;
+        transform: translate(-100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0%);
+    }
+
 }

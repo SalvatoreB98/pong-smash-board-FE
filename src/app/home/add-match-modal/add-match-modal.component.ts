@@ -35,7 +35,7 @@ export class AddMatchModalComponent implements OnInit {
   getPlayers(player?: number): any[] {
     if (!this.players || this.players.length === 0) return [];
 
-    const loggedInPlayerId = this.dataService.getLoggedInPlayerId(); // Assuming this method exists
+    const loggedInPlayerId = this.dataService.getLoggedInPlayerId();
 
     let filteredPlayers = this.players.filter(p => p.playerid !== loggedInPlayerId);
 
