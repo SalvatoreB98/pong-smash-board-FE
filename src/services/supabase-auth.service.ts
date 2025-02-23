@@ -44,7 +44,7 @@ export class SupabaseAuthService {
     return this.supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/callback`, // Change this if needed
+        redirectTo: `${environment.apiUrl}/callback`,
       },
     });
   }
