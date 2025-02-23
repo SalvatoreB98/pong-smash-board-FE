@@ -14,6 +14,9 @@
         input {
             display: block;
             width: 100%;
+            background: #ffffff1b;
+            background: linear-gradient(0deg, #ffffff44 0%, #ffffff28 100%);
+            border: none;
         }
     }
 
@@ -24,10 +27,14 @@
         text-align: center;
         color: white;
         cursor: pointer;
-        padding: 1em;
+        padding: 0.5em;
         width: 250px;
         display: block;
         box-sizing: border-box;
+        transition: all 0.2s ease-in;
+        &:hover {
+            filter: brightness(1.5);
+        }
     }
 }
 
@@ -39,4 +46,29 @@
     background-size: cover;
     background-repeat: no-repeat;
     opacity: 0.1;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+#googleBtn {
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+
+    img {
+        width: auto;
+        height: 1.5em;
+        margin-right: 8px;
+    }
 }

@@ -39,4 +39,13 @@ export class SupabaseAuthService {
   async refreshSession() {
     return this.supabase.auth.refreshSession();
   }
+  /** Sign in with Google */
+  async signInWithGoogle() {
+    return this.supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/callback`, // Change this if needed
+      },
+    });
+  }
 }

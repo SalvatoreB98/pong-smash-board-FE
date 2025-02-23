@@ -32,4 +32,7 @@ export class RegisterComponent {
       this.router.navigate(['/']); // Redirect to home after successful registration
     }
   }
+  async googleSignIn() {
+    await this.authService.signInWithGoogle();
+  }
 }
