@@ -3,13 +3,26 @@
 <div class="register-container">
     <h2>Register</h2>
     <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-        <label>Email</label>
-        <input type="email" formControlName="email" placeholder="Enter your email" required>
-        <label>Password</label>
-        <input type="password" formControlName="password" placeholder="Enter your password" required>
+        <div class="input-container">
+            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+            <input type="email" formControlName="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="input-container">
+            <i class="fa fa-key" aria-hidden="true"></i>
+            <input type="password" formControlName="password" placeholder="Enter your password" required>
+        </div>
+        <div class="input-container">
+            <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+            <input type="password" formControlName="confirm-password" placeholder="Confirm your password" required>
+        </div>
+
+
         <div class="mt-4 text-center">
             <button type="submit" [disabled]="registerForm.invalid">Register</button>
-            <button id="googleBtn" (click)="googleSignIn()" class="mt-4"><img src="/google.png">Entra con Google</button>
+            <button id="googleBtn" (click)="googleSignIn()" class="mt-4"><img src="/google.png">
+                {{"register_google" | translate}}
+            </button>
         </div>
     </form>
 </div>

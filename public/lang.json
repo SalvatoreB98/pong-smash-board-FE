@@ -70,5 +70,17 @@
     "Select player": {
         "it": "Cerca giocatore",
         "en": "Search player"
+    },
+    "register": {
+        "it": "O registrati",
+        "en": "Or sign up"
+    },
+    "here": {
+        "it": "qui",
+        "en": "here"
+    },
+    "register_google": {
+        "it": "Registrati con Google",
+        "en": "Sign up with Google"
     }
 }

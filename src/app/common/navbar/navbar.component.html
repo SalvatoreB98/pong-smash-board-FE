@@ -1,4 +1,4 @@
-<nav>
+<nav class="p-3">
     <div class="title"><a href="/#home-page">Pong Board <span></span></a></div>
     <div class="d-flex justify-content-between align-items-center">
         <div class="dropdown-lang position-relative">
@@ -14,7 +14,7 @@
             </ul>
         </div>
 
-        <div class="p-3" id="menu-button">
+        <div *ngIf="auth.isLoggedIn()" class="p-3" id="menu-button">
             <i class="fa fa-bars " aria-hidden="true"></i>
         </div>
     </div>

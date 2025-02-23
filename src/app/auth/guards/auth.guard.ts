@@ -6,14 +6,18 @@ import { SupabaseAuthService } from '../../../services/supabase-auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: SupabaseAuthService, private router: Router) { }
+  constructor(private router: Router, private supabaseAuthService: SupabaseAuthService) { }
 
   async canActivate(): Promise<boolean> {
-    const { data } = await this.authService.getUser();
-    if (data?.user) {
-      this.router.navigate(['/']); // Redirect to home if already logged in
+    const session = await this.supabaseAuthService.getUserSession();
+
+    if (session?.data.session) {
+      // User is logged in, allow them to access the page
+      return true;
+    } else {
+      // User is not logged in, redirect them to login
+      this.router.navigate(['login']);
       return false;
     }
-    return true; // Allow access if NOT logged in
   }
 }

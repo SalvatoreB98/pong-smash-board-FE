@@ -48,4 +48,7 @@ export class SupabaseAuthService {
       },
     });
   }
+  async getUserSession() {
+    return await this.supabase.auth.getSession();
+  }
 }

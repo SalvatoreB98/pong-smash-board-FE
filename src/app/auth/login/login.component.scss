@@ -1,6 +1,6 @@
 @use '../../../style/variables.scss' as *;
 
-.register-container {
+.login-container {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -19,16 +19,7 @@
             border: none;
         }
     }
-    .input-container {
-        position: relative;
-        i {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            left: 10px;
-            color: white;
-        }
-    }
+
     button {
         all: unset;
         background-color: $primary;
@@ -41,13 +32,26 @@
         display: block;
         box-sizing: border-box;
         transition: all 0.2s ease-in;
+
         &:hover {
             filter: brightness(1.5);
         }
     }
+
+    .input-container {
+        position: relative;
+
+        i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 10px;
+            color: white;
+        }
+    }
 }
 
-.register-wrapper {
+.login-wrapper {
     width: 100vw;
     height: 100vh;
     background-image: url('/bg.gif');

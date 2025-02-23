@@ -4,32 +4,33 @@ import { SupabaseAuthService } from '../../../services/supabase-auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../utils/translate.pipe';
+import { NavbarComponent } from '../../common/navbar/navbar.component';
 
 @Component({
-  selector: 'app-register',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslatePipe],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  selector: 'app-login',
+imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslatePipe, NavbarComponent],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
-export class RegisterComponent {
-  registerForm: FormGroup;
+export class LoginComponent {
+  loginForm: FormGroup;
   constructor(private fb: FormBuilder, private authService: SupabaseAuthService, private router: Router) {
-    this.registerForm = this.fb.group({
+    this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  async onRegister() {
-    if (this.registerForm.invalid) return;
+  async onLogin() {
+    if (this.loginForm.invalid) return;
 
-    const { email, password } = this.registerForm.value;
+    const { email, password } = this.loginForm.value;
     const { data, error } = await this.authService.signUp(email, password);
 
     if (error) {
       console.error('Registration failed:', error.message);
     } else {
-      console.log('User registered:', data);
+      console.log('User logined:', data);
       this.router.navigate(['/']); // Redirect to home after successful registration
     }
   }

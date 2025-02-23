@@ -12,7 +12,6 @@ export class BottomNavbarComponent {
   constructor(private modalService: ModalService) {}  
 
   addMatchModal() {
-    console.log('add match modal');
     this.modalService.openModal(this.modalService.MODALS['ADD_MATCH'])
   
   }
