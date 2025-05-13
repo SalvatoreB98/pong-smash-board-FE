@@ -14,8 +14,6 @@
         input {
             display: block;
             width: 100%;
-            background: #ffffff1b;
-            background: linear-gradient(0deg, #ffffff44 0%, #ffffff28 100%);
             border: none;
         }
     }
@@ -46,7 +44,7 @@
             top: 50%;
             transform: translateY(-50%);
             left: 10px;
-            color: white;
+            color: black;
         }
     }
 }
@@ -73,11 +71,12 @@ button {
 }
 
 #googleBtn {
-    background-color: black;
+    background-color: white;
+    border: 2px solid black;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: rgb(0, 0, 0);
 
     img {
         width: auto;

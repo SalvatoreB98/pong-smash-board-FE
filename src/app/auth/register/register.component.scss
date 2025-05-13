@@ -14,8 +14,7 @@
         input {
             display: block;
             width: 100%;
-            background: #ffffff1b;
-            background: linear-gradient(0deg, #ffffff44 0%, #ffffff28 100%);
+            background: white;
             border: none;
         }
     }
@@ -26,7 +25,6 @@
             top: 50%;
             transform: translateY(-50%);
             left: 10px;
-            color: white;
         }
     }
     button {
