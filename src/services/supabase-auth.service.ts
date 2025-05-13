@@ -38,7 +38,7 @@ export class SupabaseAuthService {
     const isLocalhost = window.location.hostname === 'localhost';
 
     const redirectUrl = isLocalhost
-      ? 'http://localhost:3000/callback'
+      ? 'http://localhost:4200/callback'
       : environment.apiUrl + '/callback';
 
     return this.supabase.auth.signInWithOAuth({

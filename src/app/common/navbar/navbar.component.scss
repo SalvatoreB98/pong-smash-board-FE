@@ -35,14 +35,15 @@
 .curtain {
     background-color: #000000;
     position: absolute;
-    top: 100px;
-    left: 0;
-    height: calc(100vh - 100px);
+    top: 75px;
+    height: calc(100vh - 75px);
+    right: 0;
     width: 100px;
     animation: open 0.2s ease-in-out forwards;
 
     ul {
         li {
+            padding: 1em;
             text-align: center;
 
             &:hover {
@@ -64,10 +65,10 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+
+@media screen and (min-width: 768px) {
     .curtain {
-        top: 75px;
-        height: calc(100vh - 75px);
+        display: none;
     }
 
 }
@@ -75,7 +76,7 @@
 @keyframes open {
     from {
         opacity: 0;
-        transform: translate(-100%);
+        transform: translate(100%);
     }
 
     to {

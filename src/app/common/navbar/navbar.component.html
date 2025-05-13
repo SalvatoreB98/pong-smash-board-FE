@@ -1,10 +1,6 @@
 <nav class="p-3">
-    <div *ngIf="auth.isLoggedIn()" (click)="toggleMenu()" class="p-3" id="menu-button">
-        <i class="fa fa-bars " aria-hidden="true"></i>
-    </div>
     <div class="title"><a href="/#home-page">Pong Board <span></span></a></div>
     <div class="d-flex justify-content-between align-items-center">
-        <div><a href="">Logout</a></div>
         <div class="dropdown-lang position-relative">
             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
                 <i class="fa fa-language"></i> {{ translateService.getLanguage() }}
@@ -18,19 +14,29 @@
             </ul>
         </div>
 
-
-        <div *ngIf="isMenuOpen">
-            <div class="curtain">
-                <ul class="list-unstyled p-0 m-0">
-                    <li (click)="logout()" class="clickable">
-                        <div>
-                            <i class="fa fa-2x fa-sign-out" aria-hidden="true"></i>
+        <div>
+            <div *ngIf="(auth.isLoggedIn$ | async) && isMobile" (click)="toggleMenu()" class="p-3" id="menu-button">
+                <i class="fa fa-bars " aria-hidden="true"></i>
+            </div>
+            <div *ngIf="isMenuOpen">
+                <div class="curtain">
+                    <ul class="list-unstyled p-0 m-0">
+                        <li (click)="logout()" class="clickable">
                             <div>
-                                <a href="#">Log Out</a>
+                                <i class="fa fa-2x fa-sign-out" aria-hidden="true"></i>
+                                <div>
+                                    <a href="#">Log Out</a>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                        <li (click)="logout()" class="clickable">
+                            <i class="fa fa-2x fa-user" aria-hidden="true"></i>
+                            <div>
+                                <a href="#">{{"Profile" | translate}}</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

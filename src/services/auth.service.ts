@@ -3,17 +3,23 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { SupabaseAuthService } from './supabase-auth.service';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private supabaseAuthService: SupabaseAuthService, private router: Router) { }
-  isLoggedIn() {
-    return !!localStorage.getItem('user');
+  public isLoggedIn$ = new BehaviorSubject<boolean>(false);
+
+  constructor(private supabaseAuthService: SupabaseAuthService) {
+    this.checkAuth();
   }
-  logout() {
-    this.supabaseAuthService.signOut();
-    this.router.navigate(['callback']);
+
+  async checkAuth() {
+    const { data, error } = await this.supabaseAuthService.getUserSession();
+    this.isLoggedIn$.next(!!data?.session);
+  }
+
+  async logout() {
+    await this.supabaseAuthService.signOut();
+    this.isLoggedIn$.next(false);
   }
 }
