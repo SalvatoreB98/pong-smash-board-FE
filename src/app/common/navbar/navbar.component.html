@@ -13,6 +13,14 @@
                 </li>
             </ul>
         </div>
+        <div *ngIf="!isMobile" class="button-navbar">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <a href="#">{{"profile" | translate}}</a>
+        </div>
+        <div *ngIf="!isMobile" class="button-navbar">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <a href="#">Log Out</a>
+        </div>
 
         <div>
             <div *ngIf="(auth.isLoggedIn$ | async) && isMobile" (click)="toggleMenu()" class="p-3" id="menu-button">
@@ -21,19 +29,13 @@
             <div *ngIf="isMenuOpen">
                 <div class="curtain">
                     <ul class="list-unstyled p-0 m-0">
-                        <li (click)="logout()" class="clickable">
-                            <div>
-                                <i class="fa fa-2x fa-sign-out" aria-hidden="true"></i>
-                                <div>
-                                    <a href="#">Log Out</a>
-                                </div>
-                            </div>
+                        <li class="clickable">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            <a href="#">Log Out</a>
                         </li>
-                        <li (click)="logout()" class="clickable">
-                            <i class="fa fa-2x fa-user" aria-hidden="true"></i>
-                            <div>
-                                <a href="#">{{"Profile" | translate}}</a>
-                            </div>
+                        <li class="clickable">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <a href="#">{{"profile" | translate}}</a>
                         </li>
                     </ul>
                 </div>

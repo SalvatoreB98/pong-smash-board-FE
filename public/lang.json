@@ -82,5 +82,9 @@
     "register_google": {
         "it": "Registrati con Google",
         "en": "Sign up with Google"
+    },
+    "profile": {
+        "it": "Profilo",
+        "en": "Profile"
     }
 }

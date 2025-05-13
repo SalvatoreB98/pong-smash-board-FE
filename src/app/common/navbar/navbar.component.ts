@@ -15,9 +15,8 @@ import { Router, RouterOutlet } from '@angular/router';
 export class NavbarComponent {
   isDropdownOpen: boolean = false;
   isMenuOpen: boolean = false;
-  isMobile: boolean = false;
+  isMobile: boolean = window.innerWidth <= 768;
   constructor(public translateService: TranslationService, public auth: AuthService, public router: Router) { 
-    this.isMobile = navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i) ? true : false;;
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth <= 768;
     });

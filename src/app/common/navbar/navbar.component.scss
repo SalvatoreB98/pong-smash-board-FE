@@ -10,6 +10,14 @@
     cursor: pointer;
 }
 
+.button-navbar {
+    font-size: 0.75em;
+    padding: 0 1em;
+    i {
+        margin-right: 0.25em;
+    }
+
+}
 .dropdown-lang {
     select {
         position: absolute;
@@ -33,19 +41,23 @@
 }
 
 .curtain {
+    border-radius: 10px;
     background-color: #000000;
     position: absolute;
     top: 75px;
-    height: calc(100vh - 75px);
     right: 0;
-    width: 100px;
     animation: open 0.2s ease-in-out forwards;
 
     ul {
         li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 1em;
             text-align: center;
-
+            a, i {
+                margin-right: 0.5em;
+            }
             &:hover {
                 filter: brightness(0.8);
             }
@@ -76,12 +88,12 @@
 @keyframes open {
     from {
         opacity: 0;
-        transform: translate(100%);
+        transform: translateY(-10%);
     }
 
     to {
         opacity: 1;
-        transform: translate(0%);
+        transform: translateY(0%);
     }
 
 }
