@@ -25,12 +25,12 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
 
     const { email, password } = this.loginForm.value;
-    const { data, error } = await this.authService.signUp(email, password);
+    const { data, error } = await this.authService.signIn(email, password);
 
     if (error) {
-      console.error('Registration failed:', error.message);
+      console.error('Login failed:', error.message);
     } else {
-      console.log('User logined:', data);
+      console.log('User logged in:', data);
       this.router.navigate(['/']); // Redirect to home after successful registration
     }
   }
