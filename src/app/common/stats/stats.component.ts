@@ -1,9 +1,14 @@
-import { Component, Input } from '@angular/core';
-import { Observable, BehaviorSubject, combineLatest, map } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../../services/data.service';
-import { CommonModule } from '@angular/common';
 
+type StandingsType = 'WINRATE' | 'WINS';
 
+interface Match {
+  giocatore1: string;
+  giocatore2: string;
+  p1: number | string;
+  p2: number | string;
+}
 
 interface PlayerStanding {
   playerName: string;
@@ -13,64 +18,66 @@ interface PlayerStanding {
   winRate: number; // 0..100
 }
 
-interface Match { giocatore1: string; giocatore2: string; p1: number|string; p2: number|string; }
-interface HeadToHeadRow { player1: string; player2: string; scored1: number; scored2: number; }
+interface HeadToHeadRow {
+  player1: string;
+  player2: string;
+  scored1: number;
+  scored2: number;
+}
 
 @Component({
   selector: 'app-stats',
-  imports: [CommonModule],
   templateUrl: './stats.component.html',
-  styleUrl: './stats.component.scss'
+  styleUrls: ['./stats.component.scss']
 })
-export class StatsComponent {
-  // Input reattivo per il tipo classifica
-  private standingsType$ = new BehaviorSubject<any>('WINRATE');
-  @Input() set standingsType(v: any) { this.standingsType$.next(v ?? 'WINRATE'); }
-  
-  constructor(private data: DataService) {}
+export class StatsComponent implements OnInit {
+  // dati “materializzati” (non observable)
+  wins: Record<string, number> = {};
+  totPlayed: Record<string, number> = {};
+  points: Record<string, number> = {};
+  matches: Match[] = [];
 
-  // stream di base dal service
-  wins$!: Observable<Record<string, number>>;
-  totPlayed$!: Observable<Record<string, number>>;
-  points$!: Observable<Record<string, number>>;
-  matches$!: Observable<Match[]>;
+  standingsType: StandingsType = 'WINRATE';
 
-  ngOnInit(): void {
-    this.wins$ = this.data.winsObs;
-    this.totPlayed$ = this.data.totPlayedObs;
-    this.points$ = this.data.pointsObs;
-    this.matches$ = this.data.matchesObs;
+  // per il template
+  standings: PlayerStanding[] = [];
+  headToHeadData: HeadToHeadRow[] = [];
+
+  constructor(private dataService: DataService) {}
+
+  async ngOnInit() {
+    // prendo i dati dal tuo service (la tua API Promise resta com’è)
+    const res = await this.dataService.fetchDataAndCalculateStats();
+    this.wins = res.wins || {};
+    this.totPlayed = res.totPlayed || {};
+    this.points = (res.points as any) || {};
+    this.matches = (res.matches as any) || [];
+
+    // calcolo una volta
+    this.recalcAll();
   }
 
-  // derivati
-  standings$: Observable<PlayerStanding[]> = combineLatest([
-    this.wins$, this.totPlayed$, this.points$, this.standingsType$
-  ]).pipe(
-    map(([wins, totPlayed, points, type]) =>
-      this.calculateClassificaFrom(wins, totPlayed, points, type)
-    )
-  );
+  // se vuoi cambiare classifica (es. con bottoni), richiami questa
+  setStandingsType(type: StandingsType) {
+    this.standingsType = type;
+    this.recalcAll();
+  }
 
-  headToHeadData$: Observable<HeadToHeadRow[]> = this.matches$.pipe(
-    map(matches => this.calculateHeadToHead(matches))
-  );
+  private recalcAll() {
+    this.standings = this.calculateClassifica(this.standingsType);
+    this.headToHeadData = this.calculateHeadToHead(this.matches);
+  }
 
-
-  private calculateClassificaFrom(
-    wins: Record<string, number>,
-    totPlayed: Record<string, number>,
-    points: Record<string, number>,
-    type: any
-  ): PlayerStanding[] {
-    const players: PlayerStanding[] = Object.keys(wins).map(player => {
-      const w = wins[player] ?? 0;
-      const tp = totPlayed[player] ?? 0;
+  private calculateClassifica(standingsType: StandingsType): PlayerStanding[] {
+    const players: PlayerStanding[] = Object.keys(this.wins).map(player => {
+      const w = this.wins[player] ?? 0;
+      const tp = this.totPlayed[player] ?? 0;
       const lost = Math.max(tp - w, 0);
-      const winRate = (points[player] ?? 0) * 100;
+      const winRate = (this.points[player] ?? 0) * 100; // 0..100
       return { playerName: player, wins: w, lost, totalPlayed: tp, winRate };
     });
 
-    if (type === 'WINRATE') {
+    if (standingsType === 'WINRATE') {
       players.sort((a, b) => b.winRate - a.winRate);
     } else {
       players.sort((a, b) => {
@@ -85,16 +92,27 @@ export class StatsComponent {
 
   private calculateHeadToHead(matches: Match[]): HeadToHeadRow[] {
     const headToHead: Record<string, HeadToHeadRow> = {};
-    (matches || []).forEach(m => {
-      const { giocatore1, giocatore2 } = m;
-      const p1 = parseInt(String(m.p1), 10) || 0;
-      const p2 = parseInt(String(m.p2), 10) || 0;
+    (matches || []).forEach(match => {
+      const { giocatore1, giocatore2 } = match;
+      const p1 = parseInt(String(match.p1), 10) || 0;
+      const p2 = parseInt(String(match.p2), 10) || 0;
       const [a, b] = [giocatore1, giocatore2].sort();
       const key = `${a}-${b}`;
-      headToHead[key] ??= { player1: a, player2: b, scored1: 0, scored2: 0 };
+      if (!headToHead[key]) headToHead[key] = { player1: a, player2: b, scored1: 0, scored2: 0 };
       if (a === giocatore1) { headToHead[key].scored1 += p1; headToHead[key].scored2 += p2; }
       else { headToHead[key].scored1 += p2; headToHead[key].scored2 += p1; }
     });
     return Object.values(headToHead);
+  }
+
+  // helpers per il template
+  trackByPlayer(_i: number, p: PlayerStanding) { return p.playerName; }
+  winRateLabel(v: number) { return Math.max(0, Math.min(100, v)).toFixed(1) + '%'; }
+  barWidthPct(v: number) { return Math.max(0, Math.min(100, v)); } // numero per [style.width.%]
+  barColor(v: number) {
+    const frac = Math.max(0, Math.min(100, v)) / 100;
+    const r = Math.round(255 * (1 - frac));
+    const g = Math.round(255 * frac);
+    return `rgb(${r}, ${g}, 0)`;
   }
 }

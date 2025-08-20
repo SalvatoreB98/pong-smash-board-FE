@@ -7,6 +7,9 @@
                 | translate}} <span class="m-1"></span> <i class="fa-solid fa-plus"></i></button>
         </div>
     </section>
+    <section>
+        <app-stats></app-stats>
+    </section>
 </div>
 <app-modal *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])">
     <app-add-match-modal></app-add-match-modal>

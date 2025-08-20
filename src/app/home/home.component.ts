@@ -12,10 +12,11 @@ import { CommonModule } from '@angular/common';
 import { MODALS } from '../utils/enum';
 import { TranslatePipe } from '../utils/translate.pipe';
 import { BottomNavbarComponent } from '../common/bottom-navbar/bottom-navbar.component';
+import { StatsComponent } from '../common/stats/stats.component';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, NavbarComponent, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe],
+  imports: [CommonModule, NavbarComponent, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
