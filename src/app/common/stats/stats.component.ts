@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../../services/data.service';
+import { CommonModule } from '@angular/common';
 
 type StandingsType = 'WINRATE' | 'WINS';
 
@@ -27,6 +28,7 @@ interface HeadToHeadRow {
 
 @Component({
   selector: 'app-stats',
+  imports: [CommonModule],
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })

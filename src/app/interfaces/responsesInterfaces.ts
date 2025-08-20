@@ -1,4 +1,8 @@
 export interface IMatchResponse {
+  matches: any;
+  points: any;
+  totPlayed: {};
+  wins: {};
   id: string;
   data: string;
   giocatore1: string;

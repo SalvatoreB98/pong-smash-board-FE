@@ -40,105 +40,112 @@
             ]
         },
         {
-            "player1_name": "sa",
-            "player2_name": "gi",
-            "player1_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
-            "player2_img": null,
-            "id": 1,
-            "player1_id": 1,
-            "player2_id": 2,
-            "player1_score": 2,
-            "player2_score": 0,
+            "player1_name": "gi",
+            "player2_name": "sa",
+            "player1_img": null,
+            "player2_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "id": 17,
+            "player1_id": 2,
+            "player2_id": 1,
+            "player1_score": 1,
+            "player2_score": 1,
             "tournament_id": 1,
-            "created": "2025-02-11T23:02:12.00514",
-            "match_sets": [
-                {
-                    "id": 1,
-                    "match_id": 1,
-                    "player1_score": 11,
-                    "player2_score": 1
-                },
-                {
-                    "id": 2,
-                    "match_id": 1,
-                    "player1_score": 11,
-                    "player2_score": 10
-                }
-            ]
+            "created": "2025-02-16T16:36:00",
+            "match_sets": []
         },
         {
-            "player1_name": "sa",
-            "player2_name": "gi",
-            "player1_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
-            "player2_img": null,
-            "id": 1,
-            "player1_id": 1,
-            "player2_id": 2,
-            "player1_score": 2,
-            "player2_score": 0,
+            "player1_name": "gi",
+            "player2_name": "sa",
+            "player1_img": null,
+            "player2_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "id": 18,
+            "player1_id": 2,
+            "player2_id": 1,
+            "player1_score": 1,
+            "player2_score": 1,
             "tournament_id": 1,
-            "created": "2025-02-11T23:02:12.00514",
-            "match_sets": [
-                {
-                    "id": 1,
-                    "match_id": 1,
-                    "player1_score": 11,
-                    "player2_score": 1
-                },
-                {
-                    "id": 2,
-                    "match_id": 1,
-                    "player1_score": 11,
-                    "player2_score": 10
-                }
-            ]
+            "created": "2025-02-17T00:19:00",
+            "match_sets": []
         },
         {
-            "player1_name": "sa",
-            "player2_name": "gi",
-            "player1_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
-            "player2_img": null,
-            "id": 1,
-            "player1_id": 1,
-            "player2_id": 2,
-            "player1_score": 2,
-            "player2_score": 0,
+            "player1_name": "gi",
+            "player2_name": "sa",
+            "player1_img": null,
+            "player2_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "id": 19,
+            "player1_id": 2,
+            "player2_id": 1,
+            "player1_score": 1,
+            "player2_score": 1,
             "tournament_id": 1,
-            "created": "2025-02-11T23:02:12.00514",
-            "match_sets": [
-                {
-                    "id": 1,
-                    "match_id": 1,
-                    "player1_score": 11,
-                    "player2_score": 1
-                },
-                {
-                    "id": 2,
-                    "match_id": 1,
-                    "player1_score": 11,
-                    "player2_score": 10
-                }
-            ]
+            "created": "2025-02-17T00:48:00",
+            "match_sets": []
+        },
+        {
+            "player1_name": "gi",
+            "player2_name": "sa",
+            "player1_img": null,
+            "player2_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "id": 20,
+            "player1_id": 2,
+            "player2_id": 1,
+            "player1_score": 1,
+            "player2_score": 1,
+            "tournament_id": 1,
+            "created": "2025-05-13T23:13:00",
+            "match_sets": []
+        },
+        {
+            "player1_name": "gi",
+            "player2_name": "sa",
+            "player1_img": null,
+            "player2_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "id": 21,
+            "player1_id": 2,
+            "player2_id": 1,
+            "player1_score": 2,
+            "player2_score": 1,
+            "tournament_id": 1,
+            "created": "2025-05-13T00:32:00",
+            "match_sets": []
+        },
+        {
+            "player1_name": "gi",
+            "player2_name": "sa",
+            "player1_img": null,
+            "player2_img": "https://fhkmvhtwavswlhnroans.supabase.co/storage/v1/object/public/players-images//Salvatore%20Butera%20portrait%20alpha%20io%20me.png",
+            "id": 22,
+            "player1_id": 2,
+            "player2_id": 1,
+            "player1_score": 1,
+            "player2_score": 2,
+            "tournament_id": 1,
+            "created": "2025-08-20T10:20:00",
+            "match_sets": []
         }
     ],
     "wins": {
-        "1": null,
-        "2": null
+        "1": 9,
+        "2": 7
     },
     "totPlayed": {
-        "1": null,
-        "2": null
+        "1": 16,
+        "2": 16
     },
     "points": {
-        "1": "0.0",
-        "2": "0.0"
+        "1": "56.3",
+        "2": "43.8"
     },
     "monthlyWinRates": {
         "1": {
-            "02": "0.0"
+            "02": "62.5",
+            "05": "40.0",
+            "08": "66.7"
         },
         "2": {
-            "02": "0.0"
+            "02": "37.5",
+            "05": "60.0",
+            "08": "33.3"
         }
     },
     "badges": {
