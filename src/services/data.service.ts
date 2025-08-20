@@ -6,6 +6,7 @@ import { IMatch } from '../app/interfaces/matchesInterfaces';
 import { IMatchResponse } from '../app/interfaces/responsesInterfaces';
 import { LoaderComponent } from '../app/utils/components/loader/loader.component';
 import { LoaderService } from './loader.service';
+import { BehaviorSubject } from 'rxjs';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
@@ -33,27 +34,80 @@ export class DataService {
   players: string[] = [];
   loader!: LoaderComponent;
   points: any;
+  private winsSubject = new BehaviorSubject<Record<string, number>>({});
+  private totPlayedSubject = new BehaviorSubject<Record<string, number>>({});
+  private pointsSubject = new BehaviorSubject<Record<string, number>>({});
+  private matchesSubject = new BehaviorSubject<IMatch[]>([]);
+
+  public winsObs = this.winsSubject.asObservable();
+  public totPlayedObs = this.totPlayedSubject.asObservable();
+  public pointsObs = this.pointsSubject.asObservable();
+  public matchesObs = this.matchesSubject.asObservable();
+
+  private _loaded = false;                 // abbiamo già i dati?
+  private _lastLoadedAt = 0;               // timestamp dell’ultimo load
+  private _loadingPromise?: Promise<IMatchResponse>; // dedup calls
 
   constructor(private loaderService: LoaderService) { }
 
 
-  async fetchDataAndCalculateStats(): Promise<IMatchResponse> {
-    console.log("Fetching data...");
+
+  /**
+   * Carica i dati solo la prima volta (o se scaduti/forzati).
+   * options.force => forza il fetch
+   * options.ttlMs => time-to-live: se i dati sono più "giovani" di ttlMs, usa cache
+   */
+  async fetchDataAndCalculateStats(
+    options?: { force?: boolean; ttlMs?: number }
+  ): Promise<IMatchResponse> {
+    const force = !!options?.force;
+    const ttlMs = options?.ttlMs ?? 0;
+    const now = Date.now();
+
+    // 1) Cache hit (già caricati) e non forzato
+    if (!force && this._loaded) {
+      // Se c'è un TTL, verifica che non sia scaduto
+      if (ttlMs === 0 || (now - this._lastLoadedAt) < ttlMs) {
+        return this.generateReturnObject(); // ← usa stato in memoria
+      }
+    }
+
+    // 2) Se una richiesta è già in corso, riusa quella (coalescing)
+    if (this._loadingPromise) {
+      return this._loadingPromise;
+    }
+
+    // 3) Altrimenti fai il fetch “vero”
+    this._loadingPromise = this._fetchAndAssignInternal();
+    try {
+      const res = await this._loadingPromise;
+      this._loaded = true;
+      this._lastLoadedAt = Date.now();
+      return res;
+    } finally {
+      this._loadingPromise = undefined;
+    }
+  }
+
+  /** Forza un refresh (es. dopo addMatch) */
+  async refresh(): Promise<IMatchResponse> {
+    this._loaded = false;
+    return this.fetchDataAndCalculateStats({ force: true });
+  }
+
+  // -------------------------------------------------------
+  // IMPLEMENTAZIONE ORIGINALE spostata in un metodo privato
+  // -------------------------------------------------------
+  private async _fetchAndAssignInternal(): Promise<IMatchResponse> {
     this.loaderService.startLoader();
     try {
-      this.loader?.startLoader(); // 🟢 Show loader before request
+      this.loader?.startLoader();
+
       if (environment.mock) {
-        console.log("Using mock data in local environment.");
         this.assignData(mockData);
       } else {
-        const response = await fetch(`${environment.apiUrl}/api/get-matches`, {
-          headers: {},
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch data: ${response.statusText}`);
-        }
-
+        const response = await fetch(`${environment.apiUrl}/api/get-matches`, { headers: {} });
+        if (!response.ok) throw new Error(`Failed to fetch data: ${response.statusText}`);
         const data: IMatchResponse = await response.json();
         this.assignData(data);
       }
@@ -63,9 +117,8 @@ export class DataService {
       console.error("Error fetching data:", error);
       this.loader?.showToast(`Server Error. Using mock data.`, 5000, MSG_TYPE.ERROR);
 
-      // Fallback to mock data
+      // fallback mock
       this.assignData(mockData);
-
       return this.generateReturnObject();
     } finally {
       this.loaderService.stopLoader();
@@ -74,6 +127,7 @@ export class DataService {
 
   private assignData(data: any): void {
     this.raw = data;
+
     this.matches = data.matches || [];
     this.wins = data.wins || {};
     this.totPlayed = data.totPlayed || {};
@@ -81,6 +135,12 @@ export class DataService {
     this.players = data.players || [];
     this.monthlyWinRates = data.monthlyWinRates || {};
     this.badges = data.badges || {};
+
+    // 👉 aggiorna gli stream reattivi
+    this.matchesSubject.next(this.matches);
+    this.winsSubject.next(this.wins);
+    this.totPlayedSubject.next(this.totPlayed);
+    this.pointsSubject.next(this.points);
   }
 
   private generateReturnObject(): MatchData {
