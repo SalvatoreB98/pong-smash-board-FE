@@ -1,9 +1,4 @@
 <!-- Toggle esempio (facoltativo) -->
-<div class="mb-3">
-  <button (click)="setStandingsType('WINRATE')">Winrate</button>
-  <button (click)="setStandingsType('WINS')">Vittorie</button>
-</div>
-
 <!-- CLASSIFICA -->
 <div *ngFor="let player of standings; let i = index; trackBy: trackByPlayer" class="row align-items-center mt-2">
   <div class="col-auto"><i class="fa-solid fa-medal position-{{ i + 1 }}"></i></div>
