@@ -13,14 +13,14 @@
                 </li>
             </ul>
         </div>
-        <div *ngIf="!isMobile" class="button-navbar">
+        <a href="profile" *ngIf="!isMobile" class="button-navbar">
             <i class="fa fa-user" aria-hidden="true"></i>
-            <a href="#">{{"profile" | translate}}</a>
-        </div>
-        <div *ngIf="!isMobile" class="button-navbar">
+            <span>{{"profile" | translate}}</span>
+        </a>
+        <a href="#" *ngIf="!isMobile" class="button-navbar">
             <i class="fa fa-sign-out" aria-hidden="true"></i>
-            <a href="#">Log Out</a>
-        </div>
+            <span> Log Out</span>
+        </a>
 
         <div>
             <div *ngIf="(auth.isLoggedIn$ | async) && isMobile" (click)="toggleMenu()" class="p-3" id="menu-button">

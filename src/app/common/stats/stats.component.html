@@ -1,0 +1,79 @@
+<!-- CLASSIFICA -->
+<div class="standings">
+    <div
+      class="row align-items-center mt-2"
+      *ngFor="let player of (standings$ | async); let i = index;"
+    >
+      <div class="position col-auto">
+        <div class="medal position-{{ i + 1 }}"><i class="fa-solid fa-medal"></i></div>
+      </div>
+  
+      <div class="player col d-flex align-items-center" [class.winner]="i === 0" [attr.id]="player.playerName">
+        <div class="player-info d-flex align-items-center flex-grow-1">
+          <img [src]="'/' + player.playerName + '.png'" [alt]="player.playerName" />
+          <div class="name">{{ player.playerName }}</div>
+        </div>
+  
+        <div class="vittorie" title="Vittorie">{{ player.wins }}</div>
+        <div class="sconfitte" title="Sconfitte">{{ player.lost }}</div>
+        <div class="partite-tot" title="Partite totali giocate">{{ player.totalPlayed }}</div>
+  
+        <div class="win-rate" title="Punteggio per percentuale vittorie / partite giocate">
+          <div class="rate-wrap">
+            <div class="rate-label">a</div>
+            <div class="win-rate-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- SCONTRI DIRETTI -->
+  <h2 class="mb-3 mt-4">Scontri diretti</h2>
+  <div class="wrapper">
+    <div class="players-container mt-2" *ngFor="let hh of (headToHeadData$ | async)">
+      <div class="row">
+        <div class="player col-5">
+          <div class="image">
+            <img [src]="'/' + hh.player1 + '.png'" [alt]="hh.player1" />
+            <div class="name">{{ hh.player1 }}</div>
+          </div>
+          <div class="score text-center" [class.winner-color]="hh.scored1 > hh.scored2">
+            {{ hh.scored1 }}
+          </div>
+        </div>
+  
+        <div class="col-2 d-flex justify-content-center align-items-center">
+          <img width="50" class="m-auto" src="/vs.svg" alt="VS" />
+        </div>
+  
+        <div class="player opp col-5">
+          <div class="image">
+            <img [src]="'/' + hh.player2 + '.png'" [alt]="hh.player2" />
+            <div class="name">{{ hh.player2 }}</div>
+          </div>
+          <div class="score text-center" [class.winner-color]="hh.scored1 < hh.scored2">
+            {{ hh.scored2 }}
+          </div>
+        </div>
+      </div>
+  
+      <div class="win-bar-container d-flex align-items-center">
+        <ng-container>
+          <span class="col-2 percent1" [class.winner-color]="hh.scored1 > hh.scored2" [class.looser-color]="hh.scored1 < hh.scored2">
+            a
+          </span>
+  
+          <div class="bars d-flex justify-content-around m-3 flex-grow-1">
+            <div class="col-4 win-bar player1" [class.winner]="hh.scored1 > hh.scored2" [class.looser]="hh.scored1 < hh.scored2"></div>
+            <div class="col-4 win-bar player2" [class.winner]="hh.scored2 > hh.scored1" [class.looser]="hh.scored2 < hh.scored1"></div>
+          </div>
+  
+          <span class="col-2 percent2" [class.winner-color]="hh.scored2 > hh.scored1" [class.looser-color]="hh.scored2 < hh.scored1">
+            b
+          </span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  

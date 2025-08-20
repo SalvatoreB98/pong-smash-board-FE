@@ -11,12 +11,17 @@
 }
 
 .button-navbar {
+    margin: 0 0.5em;
+    border-radius: 1px;
     font-size: 0.75em;
-    padding: 0 1em;
+    padding: 0.75em 1em;
     i {
         margin-right: 0.25em;
     }
-
+    cursor: pointer;
+    background-color: $dark;
+    width: 80px;
+    text-align: center;
 }
 .dropdown-lang {
     select {
@@ -37,6 +42,8 @@
     a {
         font-size: 0.75em;
         width: 80%;
+        font-weight: lighter;
+        text-transform: capitalize;
     }
 }
 
