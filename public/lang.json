@@ -90,5 +90,9 @@
     "match_details": {
         "it": "Dettagli partita",
         "en": "Match details"
+    },
+    "Scontri set diretti": {
+        "it": "Scontri set diretti",
+        "en": "Direct set clashes"
     }
 }

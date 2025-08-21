@@ -1,8 +1,8 @@
 <div class="modal-content">
-    <form [formGroup]="matchForm" (ngSubmit)="addMatch()">
+    <form class="form-dark" [formGroup]="matchForm" (ngSubmit)="addMatch()">
         <div>
-            <label for="date">Data</label>
-            <input type="date" formControlName="date" required>
+            <label for="date" class="my-placeholder">Data</label>
+            <input class="my-placeholder" class="my-placeholder" id="date" type="date" formControlName="date" required>
         </div>
 
         <div class="row mt-3">

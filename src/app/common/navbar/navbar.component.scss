@@ -9,9 +9,10 @@
 #menu-button {
     cursor: pointer;
 }
-
+.buttons-container {
+    gap: 10px;
+}
 .button-navbar {
-    margin: 0 0.5em;
     border-radius: 1px;
     font-size: 0.75em;
     padding: 0.75em 1em;

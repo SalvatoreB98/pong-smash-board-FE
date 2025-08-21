@@ -14,7 +14,6 @@
         input {
             display: block;
             width: 100%;
-            background: white;
             border: none;
         }
     }
@@ -67,11 +66,12 @@ button {
 }
 
 #googleBtn {
-    background-color: black;
+    background-color: white;
+    border: 2px solid black;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: rgb(0, 0, 0);
 
     img {
         width: auto;

@@ -16,20 +16,25 @@ export class NavbarComponent {
   isDropdownOpen: boolean = false;
   isMenuOpen: boolean = false;
   isMobile: boolean = window.innerWidth <= 768;
-  constructor(public translateService: TranslationService, public auth: AuthService, public router: Router) { 
+
+  constructor(public translateService: TranslationService, public auth: AuthService, public router: Router) {
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth <= 768;
     });
   }
-
+  ngOnChanges() {
+    this.auth.checkAuth()
+  }
   langChange(e: any) {
     console.log(e)
   }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
+
   logout() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
     this.auth.logout();
   }
 }

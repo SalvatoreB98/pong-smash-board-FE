@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Slider } from '../../utils/Slider';
 import { Utils } from '../../utils/Utils';
 import { IMatchResponse } from '../../interfaces/responsesInterfaces';
@@ -11,17 +11,28 @@ import { TranslatePipe } from '../../utils/translate.pipe';
 
 @Component({
   selector: 'app-matches',
-  imports: [CommonModule,TranslatePipe],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.scss'
 })
 export class MatchesComponent {
   @Input() matches: any;
   @ViewChild('matchesSlider') matchesSlider!: ElementRef;
+
   slider: Slider | undefined;
   clickedMatch: any;
+
   @Output() matchEmitter: EventEmitter<IMatch> = new EventEmitter<IMatch>();
   maxMatchesToShow: number = 25;
+
+  isOverflowing: boolean = false;
+  width = 0;
+  @HostListener('window:resize')
+  onWinResize() {
+    this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
+    console.log(this.matchesSlider.nativeElement.scrollWidth, window.innerWidth);
+  }
+
   constructor(public modalService: ModalService) { }
 
   ngAfterViewInit() {
