@@ -5,13 +5,14 @@ import { RankingService } from '../../../services/ranking.service';
 import { inject } from '@angular/core';
 import { map } from 'rxjs';
 import { Match, PlayerStanding, HeadToHeadRow } from '../../interfaces/statsInterfaces';
+import { TranslatePipe } from '../../utils/translate.pipe';
 
 type StandingsType = 'WINRATE' | 'WINS';
 
 
 @Component({
   selector: 'app-stats',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })

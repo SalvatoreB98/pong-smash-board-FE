@@ -4,7 +4,7 @@
 <div class="slider-container">
   <div id="slider">
     <div class="arrow-container arrow-left">
-      <div class="arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+      <div *ngIf="isOverflowing" class="arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
     </div>
     <div class="matches-slider" #matchesSlider>
       <div *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex" class="match" [id]="match.id" (click)="onMatchClick(match.id)">
@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <div class="arrow-container arrow-right">
+    <div *ngIf="isOverflowing" class="arrow-container arrow-right">
       <div class="arrow"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
     </div>
   </div>

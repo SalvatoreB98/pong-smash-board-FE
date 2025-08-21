@@ -1,6 +1,6 @@
 <nav class="p-3">
     <div class="title"><a href="/#home-page">Pong Board <span></span></a></div>
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="buttons-container d-flex justify-content-between align-items-center">
         <div class="dropdown-lang position-relative">
             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
                 <i class="fa fa-language"></i> {{ translateService.getLanguage() }}
@@ -13,17 +13,17 @@
                 </li>
             </ul>
         </div>
-        <a href="profile" *ngIf="!isMobile" class="button-navbar">
+        <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" href="profile" class="button-navbar">
             <i class="fa fa-user" aria-hidden="true"></i>
             <span>{{"profile" | translate}}</span>
         </a>
-        <a href="#" *ngIf="!isMobile" class="button-navbar">
+        <a (click)="logout()" *ngIf="!isMobile && (auth.isLoggedIn$ | async)" class="button-navbar">
             <i class="fa fa-sign-out" aria-hidden="true"></i>
             <span> Log Out</span>
         </a>
 
-        <div>
-            <div *ngIf="(auth.isLoggedIn$ | async) && isMobile" (click)="toggleMenu()" class="p-3" id="menu-button">
+        <div *ngIf="auth.isLoggedIn$ | async">
+            <div *ngIf="isMobile" (click)="toggleMenu()" class="p-3" id="menu-button">
                 <i class="fa fa-bars " aria-hidden="true"></i>
             </div>
             <div *ngIf="isMenuOpen">
@@ -31,7 +31,7 @@
                     <ul class="list-unstyled p-0 m-0">
                         <li class="clickable">
                             <i class="fa fa-sign-out" aria-hidden="true"></i>
-                            <a href="#">Log Out</a>
+                            <a (click)="logout()">Log Out</a>
                         </li>
                         <li class="clickable">
                             <i class="fa fa-user" aria-hidden="true"></i>

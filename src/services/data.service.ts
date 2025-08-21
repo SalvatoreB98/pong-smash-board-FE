@@ -36,6 +36,7 @@ export interface IRankingResponse {
   providedIn: 'root'
 })
 export class DataService {
+
   matches: IMatch[] = [];
   wins: Record<string, number> = {};
   totPlayed: Record<string, number> = {};
@@ -45,6 +46,7 @@ export class DataService {
   players: string[] = [];
   loader!: LoaderComponent;
   points: any;
+
   private winsSubject = new BehaviorSubject<Record<string, number>>({});
   private totPlayedSubject = new BehaviorSubject<Record<string, number>>({});
   private pointsSubject = new BehaviorSubject<Record<string, number>>({});
@@ -58,11 +60,12 @@ export class DataService {
   private _loaded = false;                 // abbiamo già i dati?
   private _lastLoadedAt = 0;               // timestamp dell’ultimo load
   private _loadingPromise?: Promise<IMatchResponse>; // dedup calls
-
-  constructor(private loaderService: LoaderService) { }
-
-
-
+  private _id = Math.random().toString(36).slice(2);
+  
+  constructor(private loaderService: LoaderService) {
+    console.log('[DataService] ctor', this._id);
+  }
+  
   /**
    * Carica i dati solo la prima volta (o se scaduti/forzati).
    * options.force => forza il fetch
@@ -211,6 +214,6 @@ export class DataService {
     localStorage.setItem('loggedInPlayer', JSON.stringify(player));
   }
   getStats() {
-    
+
   }
 }

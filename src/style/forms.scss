@@ -1,143 +1,150 @@
 @use "variables" as *;
 
-// Input Fields
-input,
-select,
-.input-field {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    display: block;
-    width: 100%;
-    padding: 0.5em;
-    border: 1px solid #ccc;
-    border-radius: $border-radius;
-    margin-bottom: 1em;
-    box-sizing: border-box;
-    text-align: center;
-    cursor: pointer;
-    background-color: white;
-    color: black;
-    .my-placeholder {
-        color: gray;
-    }
-    &:hover .fa-caret-down {
-        transform: scale(1.5);
-    }
+// ---- Palette dark (puoi spostarla nel tuo file variables)
+$bg:      #0b1220;
+$surface: #0f172a;
+$field:   #111827;
+$text:    #e5e7eb;
+$muted:   #9ca3af;
+$border:  #1f2937;
+
+// ---- Tema
+:root { color-scheme: light dark; }
+
+@media (prefers-color-scheme: dark) {
+  body { background: $bg; color: $text; }
 }
 
+/* Forza dark solo dove serve (modale/form) */
+.form-dark {
+  color-scheme: dark;
+  color: $text;
+  accent-color: $primary;           /* checkbox/radio/range */
+}
+#email, #passwordConfirm, #password{
+  padding-left: 2.2em;
+}
+
+// ---- Campi base
+.form-dark input,
+.form-dark select,
+.form-dark textarea,
+.form-dark .input-field {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  display: block;
+  width: 100%;
+  padding: .9rem 1rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+
+  background: $field;
+  border: 1px solid $border;
+  border-radius: $border-radius;
+
+  color: $text;
+  -webkit-text-fill-color: $text;   /* Chrome/Safari */
+  caret-color: $text;
+}
+
+/* Placeholder */
+.form-dark input::placeholder,
+.form-dark textarea::placeholder {
+  color: $muted;
+  opacity: 1;                       /* Firefox */
+}
+
+/* Select placeholder tramite required+invalid */
+.form-dark select:required:invalid { color: $muted; }
+.form-dark select {
+  text-align-last: center;
+  font-weight: 600;
+}
+.form-dark select option {
+  color: $text;
+  background: $field;
+}
+.form-dark select option[disabled] { color: $muted; }
+
+/* Date input */
+.form-dark input[type="date"] { color-scheme: dark; text-align: center; }
+.form-dark input[type="date"]::-webkit-datetime-edit { color: $text; }
+.form-dark input[type="date"]:required:invalid::-webkit-datetime-edit { color: $muted; }
+.form-dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(.85);
+}
+
+/* Altri tipi centrati */
+.form-dark input[type="tel"] { text-align: center; }
+
+/* Checkbox semplice */
+.form-dark input[type="checkbox"] {
+  appearance: auto;
+  width: 1.25em;
+  height: 1.25em;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Dropdown (lista giocatori) */
 .dropdown {
-    position: absolute;
-    opacity: 0;
-    background-color: white;
-    border-radius: $border-radius;
-    visibility: hidden;
-    color: black;
-    text-align: center;
-    overflow: hidden;
-    transition: all 0.25s ease-in-out;
-    border: 1px solid black;
-    input {
-        margin-bottom: 0;
-    }
+  position: absolute;
+  z-index: 5;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(0);
 
-    .search-icon {
-        position: absolute;
-        right: 10px;
-        top: 7px;
-    }
-    cursor: pointer;
-    .player-item {
-        padding: 5px;
-        border-bottom: 1px solid #ccc;
-        &:last-child {
-            border-bottom: none;
-        }
-        &:hover {
-            background-color: #cccccc81;
-        }
-    }
+  background: $field;
+  color: $text;
+  border: 1px solid $border;
+  border-radius: $border-radius;
+  text-align: center;
+  overflow: hidden;
+  transition: opacity .2s ease, transform .2s ease, visibility .2s;
+
+  input { margin-bottom: 0; }
+  .search-icon { position: absolute; right: 10px; top: 7px; }
+  .player-item {
+    padding: .5rem;
+    &:last-child { border-bottom: none; }
+    &:hover { background: mix($field, #fff, 90%); }
+  }
 }
-
-input[type="tel"],
-input[type="date"] {
-    color: black;
-    text-align: center;
-}
-
-select {
-    font-weight: 700;
-    color: black;
-    text-align-last: center;
-}
-
-.my-modal input {
-    max-width: 100%;
-    width: 100%;
-}
-
-// Input Containers
-.input-top,
-.input-bottom {
-    margin-bottom: 0;
-    border-radius: 20px 20px 0 0;
-}
-
-.input-bottom {
-    border-radius: 0 0 20px 20px;
-    width: 10px;
-}
-
-#input-container-wrapper {
-    display: flex;
-    overflow-x: scroll;
-    padding-bottom: 0.5em;
-
-    &::-webkit-scrollbar-thumb {
-        background-color: $primary-ultra-light;
-    }
-
-    .input-container {
-        min-width: 70px;
-        max-width: 80px;
-        margin: 0.1em;
-        margin-right: 0.5em;
-    }
-}
-
-input[type="checkbox"] {
-    appearance: auto;
-    margin: initial;
-    padding: initial;
-    border: none;
-    width: auto;
-    height: auto;
-    cursor: pointer;
-    width: 1.5em;
-
-    &:checked {
-        background-color: $primary !important;
-        color: $primary-ultra-light;
-    }
-}
-
 .dropdown.visible {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(-12px);
-    z-index: 5;
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-12px);
 }
-@media screen and (max-width: 768px) {
-    .input-field {
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .dropdown {
-        width: 91%;
-    }
+
+/* Container input multipli (punti set) */
+#input-container-wrapper {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: .5rem;
+
+  &::-webkit-scrollbar-thumb { background-color: $primary-ultra-light; }
+
+  .input-container {
+    min-width: 70px;
+    max-width: 80px;
+    margin: .1rem .5rem .1rem .1rem;
+  }
 }
-.wrapper-points {
-    .input-container {
-        padding: 3px;
-    }
+
+/* Bordo arrotondato top/bottom in stack */
+form .input-top   { border-radius: 20px 20px 0 0; margin-bottom: 0; }
+form .input-bottom{ border-radius: 0 0 20px 20px; margin-bottom: 0; }
+
+/* Modal */
+.my-modal input { width: 100%; max-width: 100%; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .input-field { overflow: hidden; white-space: nowrap; }
+  .dropdown { width: 91%; }
 }
+
+/* Wrapper punti */
+.wrapper-points .input-container { padding: 3px; }

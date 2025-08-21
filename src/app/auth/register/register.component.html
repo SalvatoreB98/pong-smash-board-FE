@@ -1,20 +1,21 @@
+<app-registration-navbar></app-registration-navbar>
 <div class="register-wrapper">
 </div>
 <div class="register-container">
     <h2>Register</h2>
-    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <form class="form-dark"  [formGroup]="registerForm" (ngSubmit)="onRegister()">
         <div class="input-container">
             <i class="fa fa-envelope-o" aria-hidden="true"></i>
-            <input type="email" formControlName="email" placeholder="Enter your email" required>
+            <input id="email" type="email" formControlName="email" placeholder="Enter your email" required>
         </div>
 
         <div class="input-container">
             <i class="fa fa-key" aria-hidden="true"></i>
-            <input type="password" formControlName="password" placeholder="Enter your password" required>
+            <input id="password" type="password" formControlName="password" placeholder="Enter your password" required>
         </div>
         <div class="input-container">
             <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-            <input type="password" formControlName="confirm-password" placeholder="Confirm your password" required>
+            <input id="passwordConfirm" type="password" formControlName="confirmPassword" placeholder="Confirm your password" required>
         </div>
 
 

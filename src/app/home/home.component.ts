@@ -13,6 +13,7 @@ import { MODALS } from '../utils/enum';
 import { TranslatePipe } from '../utils/translate.pipe';
 import { BottomNavbarComponent } from '../common/bottom-navbar/bottom-navbar.component';
 import { StatsComponent } from '../common/stats/stats.component';
+import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -21,14 +22,19 @@ import { StatsComponent } from '../common/stats/stats.component';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  private dataService = inject(DataService);
+  matches$ = this.dataService.matchesObs;
+
   matches: any;
   isAddMatchModalOpen: boolean = false;
   isShowMatchModalOpen: boolean = false;
   clickedMatch: IMatch | undefined;
-  constructor(private dataService: DataService, public modalService: ModalService) {
-    this.dataService.fetchMatches().then((res: any) => {
-      this.matches = res.matches;
-    });
+
+  constructor(public modalService: ModalService) {}
+
+  ngOnInit() {
+    this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 }) // cache 5 minuti
+    .then(res => this.matches = res.matches);
   }
 
   setClickedMatch(match: IMatch) {

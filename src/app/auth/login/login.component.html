@@ -3,19 +3,19 @@
 </div>
 <div class="login-container">
     <h2>Login</h2>
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <form class="form-dark" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="input-container">
             <i class="fa fa-envelope-o" aria-hidden="true"></i>
-            <input type="email" formControlName="email" placeholder="Enter your email" required>
+            <input id="email" type="email" formControlName="email" placeholder="Enter your email" required>
         </div>
 
         <div class="input-container">
             <i class="fa fa-key" aria-hidden="true"></i>
-            <input type="password" formControlName="password" placeholder="Enter your password" required>
+            <input id="password" type="password" formControlName="password" placeholder="Enter your password" required>
         </div>
 
         <div class="mt-4 text-center">
-            <button type="submit" [disabled]="loginForm.invalid">Login</button>
+            <button (click)="onLogin()" type="submit" [disabled]="loginForm.invalid">Login</button>
             <button id="googleBtn" (click)="googleSignIn()" class="mt-4"><img src="/google.png">Entra con
                 Google</button>
         </div>
