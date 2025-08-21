@@ -1,30 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../../services/data.service';
 import { CommonModule } from '@angular/common';
+import { RankingService } from '../../../services/ranking.service';
+import { inject } from '@angular/core';
+import { map } from 'rxjs';
+import { Match, PlayerStanding, HeadToHeadRow } from '../../interfaces/statsInterfaces';
 
 type StandingsType = 'WINRATE' | 'WINS';
 
-interface Match {
-  giocatore1: string;
-  giocatore2: string;
-  p1: number | string;
-  p2: number | string;
-}
-
-interface PlayerStanding {
-  playerName: string;
-  wins: number;
-  lost: number;
-  totalPlayed: number;
-  winRate: number; // 0..100
-}
-
-interface HeadToHeadRow {
-  player1: string;
-  player2: string;
-  scored1: number;
-  scored2: number;
-}
 
 @Component({
   selector: 'app-stats',
@@ -33,6 +16,17 @@ interface HeadToHeadRow {
   styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit {
+  private dataService = inject(DataService);
+  private rankingService = inject(RankingService);
+
+  headToHead$ = this.dataService.matchesObs.pipe(
+    map(matches => this.calculateHeadToHead(matches.map(match => ({
+      ...match,
+      p1: match.player1_score,
+      p2: match.player2_score
+    }))))
+  );
+
   // dati “materializzati” (non observable)
   wins: Record<string, number> = {};
   totPlayed: Record<string, number> = {};
@@ -44,19 +38,24 @@ export class StatsComponent implements OnInit {
   // per il template
   standings: PlayerStanding[] = [];
   headToHeadData: HeadToHeadRow[] = [];
+  players: string[] | undefined;
 
-  constructor(private dataService: DataService) {}
+  constructor() {
+
+  }
 
   async ngOnInit() {
     // prendo i dati dal tuo service (la tua API Promise resta com’è)
-    const res = await this.dataService.fetchDataAndCalculateStats();
-    this.wins = res.wins || {};
-    this.totPlayed = res.totPlayed || {};
-    this.points = (res.points as any) || {};
-    this.matches = (res.matches as any) || [];
-
-    // calcolo una volta
-    this.recalcAll();
+    const res = await this.rankingService.fetchRanking();
+    this.standings = res.ranking.map(item => ({
+      image_url: item.image_url || '/default-player.jpg', // placeholder se non c'è
+      playerName: item.name,
+      wins: item.wins,
+      lost: item.played - item.wins || 0,
+      totalPlayed: item.played,
+      winRate: item.winrate ?? 0,
+      rating: item.rating || 0
+    }));
   }
 
   // se vuoi cambiare classifica (es. con bottoni), richiami questa
@@ -67,45 +66,55 @@ export class StatsComponent implements OnInit {
 
   private recalcAll() {
     this.standings = this.calculateClassifica(this.standingsType);
-    this.headToHeadData = this.calculateHeadToHead(this.matches);
+    this.headToHeadData = this.calculateHeadToHead(
+      (this.dataService.matches || []).map(match => ({
+        ...match,
+        p1: match.player1_score,
+        p2: match.player2_score
+      }))
+    );
   }
 
   private calculateClassifica(standingsType: StandingsType): PlayerStanding[] {
-    const players: PlayerStanding[] = Object.keys(this.wins).map(player => {
-      const w = this.wins[player] ?? 0;
-      const tp = this.totPlayed[player] ?? 0;
-      const lost = Math.max(tp - w, 0);
-      const winRate = (this.points[player] ?? 0) * 100; // 0..100
-      return { playerName: player, wins: w, lost, totalPlayed: tp, winRate };
-    });
-
-    if (standingsType === 'WINRATE') {
-      players.sort((a, b) => b.winRate - a.winRate);
-    } else {
-      players.sort((a, b) => {
-        if (b.wins !== a.wins) return b.wins - a.wins;
-        const ar = a.wins / (a.lost || 1);
-        const br = b.wins / (b.lost || 1);
-        return br - ar;
-      });
-    }
-    return players;
+    /** IMPLEMENTAZIONE */
+    return this.standings;
   }
 
   private calculateHeadToHead(matches: Match[]): HeadToHeadRow[] {
     const headToHead: Record<string, HeadToHeadRow> = {};
+
     (matches || []).forEach(match => {
-      const { giocatore1, giocatore2 } = match;
-      const p1 = parseInt(String(match.p1), 10) || 0;
-      const p2 = parseInt(String(match.p2), 10) || 0;
-      const [a, b] = [giocatore1, giocatore2].sort();
+      const { player1_name, player2_name, player1_img, player2_img } = match;
+      const p1 = parseInt(String(match.player1_score), 10) || 0;
+      const p2 = parseInt(String(match.player2_score), 10) || 0;
+
+      // ordino solo i nomi per la chiave
+      const [a, b] = [player1_name, player2_name].sort();
       const key = `${a}-${b}`;
-      if (!headToHead[key]) headToHead[key] = { player1: a, player2: b, scored1: 0, scored2: 0 };
-      if (a === giocatore1) { headToHead[key].scored1 += p1; headToHead[key].scored2 += p2; }
-      else { headToHead[key].scored1 += p2; headToHead[key].scored2 += p1; }
+
+      if (!headToHead[key]) {
+        headToHead[key] = {
+          player1: player1_name,
+          player2: player2_name,
+          scored1: 0,
+          scored2: 0,
+          player1_img,
+          player2_img
+        };
+      }
+
+      if (player1_name === headToHead[key].player1) {
+        headToHead[key].scored1 += p1;
+        headToHead[key].scored2 += p2;
+      } else {
+        headToHead[key].scored1 += p2;
+        headToHead[key].scored2 += p1;
+      }
     });
+
     return Object.values(headToHead);
   }
+
 
   // helpers per il template
   trackByPlayer(_i: number, p: PlayerStanding) { return p.playerName; }

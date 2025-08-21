@@ -10,6 +10,7 @@ import { TranslatePipe } from '../../utils/translate.pipe';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent {
+  @Input() label: string = '';
   constructor(public modalService: ModalService) { }
 
   onImageError(event: Event) {

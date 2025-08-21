@@ -1,0 +1,167 @@
+@use '../../../style/variables.scss' as *;
+
+img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.stats-container,
+.stats-header {
+    margin: auto;
+    display: grid;
+    grid-template-columns: 12% 12% repeat(6, 12.5%);
+    align-items: center;
+}
+
+.stats-header {
+    padding: 0 1em;
+    grid-template-columns: 12.5% 7.5% repeat(6, 12.5%);
+    text-align: center;
+}
+
+.stats-container {
+    background-color: rgba(0, 0, 0, 0.484);
+    background: linear-gradient(90deg,
+            #05000003 0%,
+            #05000080 7%,
+            #0500009d 14%,
+            #05000091 86%,
+            #05000080 93%,
+            #05000000 100%);
+    padding: 20px;
+    transform: skew(-20deg);
+
+    &>img,
+    div {
+        transform: skew(20deg);
+    }
+
+    .win-rate {
+        transform: skew(0);
+    }
+
+    .win-rate-bar {
+        height: 5px;
+        transform: skew(-20deg) !important;
+        opacity: 0.75;
+    }
+}
+
+.position-1 {
+    color: gold;
+}
+
+.position-3 {
+    color: brown;
+}
+
+.head-to-head {
+    margin: 0.5em;
+
+    h2 {
+        text-align: center;
+        font-family: LarkenRegular;
+    }
+
+    .players-container {
+        background: $gradient;
+        padding: 1em;
+        border-radius: var(--border-radius);
+        position: relative;
+    }
+
+    .player {
+        display: grid;
+        place-items: center;
+        .name {
+            margin-top: 0.5em;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        img {
+            width: 65px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    }
+}
+
+
+.headtohead {
+    display: grid;
+    gap: 0.5rem;
+    background: linear-gradient(180deg, #000 10%, #05131c 90%);
+    padding: 1em;
+    border-radius: $border-radius;
+  }
+  
+  .players {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .players .player img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .players .name {
+    font-size: 1.2em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+  
+  .players .score {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .vs img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .win-bar {
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .bars {
+    position: relative;
+    height: 12px;
+    display: flex;
+    transform: skew(-30deg);
+  }
+  
+  .bar {
+    height: 100%;
+  }
+  
+  .bar.player1 {
+    background: $primary;
+  }
+  
+  .bar.player2 {
+    background: $primary-light;
+  }
+  
+  .percent {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  
+  .winner-color {
+    color: $primary-light;
+    font-weight: bold;
+  }
+  

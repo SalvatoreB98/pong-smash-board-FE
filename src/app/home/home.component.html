@@ -11,10 +11,10 @@
         <app-stats></app-stats>
     </section>
 </div>
-<app-modal *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])">
+<app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])">
     <app-add-match-modal></app-add-match-modal>
 </app-modal>
-<app-modal *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])">
+<app-modal [label]="'match_details'" *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])">
     <app-show-match-modal [match]="clickedMatch"></app-show-match-modal>
 </app-modal>
 <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>

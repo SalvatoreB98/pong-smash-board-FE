@@ -19,7 +19,18 @@ interface MatchData extends IMatchResponse {
   giocatore1Score: number;
   giocatore2Score: number;
 }
-
+export interface IRankingItem {
+  playerid: number;
+  name: string;
+  image_url: string | null;
+  played: number;
+  wins: number;
+  winrate: number; // percentuale (es. 62.5)
+}
+export interface IRankingResponse {
+  ranking: IRankingItem[];
+  generatedAt: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +68,7 @@ export class DataService {
    * options.force => forza il fetch
    * options.ttlMs => time-to-live: se i dati sono più "giovani" di ttlMs, usa cache
    */
-  async fetchDataAndCalculateStats(
+  async fetchMatches(
     options?: { force?: boolean; ttlMs?: number }
   ): Promise<IMatchResponse> {
     const force = !!options?.force;
@@ -92,7 +103,7 @@ export class DataService {
   /** Forza un refresh (es. dopo addMatch) */
   async refresh(): Promise<IMatchResponse> {
     this._loaded = false;
-    return this.fetchDataAndCalculateStats({ force: true });
+    return this.fetchMatches({ force: true });
   }
 
   // -------------------------------------------------------
@@ -199,5 +210,7 @@ export class DataService {
   setLoggedInPlayer(player: { playerid: number, name: string }) {
     localStorage.setItem('loggedInPlayer', JSON.stringify(player));
   }
-
+  getStats() {
+    
+  }
 }
