@@ -94,5 +94,69 @@
     "Scontri set diretti": {
         "it": "Scontri set diretti",
         "en": "Direct set clashes"
+    },
+    "classifica": {
+        "it": "Classifica",
+        "en": "Standings"
+    },
+    "rank": {
+        "it": "Ranking",
+        "en": "Rank"
+    },
+    "partiteTot": {
+        "it": "TOT",
+        "en": "TOT."
+    },
+    "partiteTotTitle": {
+        "it": "Partite totali giocate",
+        "en": "Total matches played"
+    },
+    "vittorie": {
+        "it": "V",
+        "en": "W"
+    },
+    "vittorieTitle": {
+        "it": "Numero di vittorie",
+        "en": "Number of wins"
+    },
+    "sconfitte": {
+        "it": "S",
+        "en": "L"
+    },
+    "sconfitteTitle": {
+        "it": "Numero di sconfitte",
+        "en": "Number of losses"
+    },
+    "rating": {
+        "it": "Pt",
+        "en": "Pts"
+    },
+    "ratingTitle": {
+        "it": "Punteggio basato sulla percentuale di vittorie/partite giocate",
+        "en": "Score based on win percentage / matches played"
+    },
+    "ratingEloTitle": {
+        "it": "Rating ELO",
+        "en": "ELO Rating"
+    },
+    "winRate": {
+        "it": "Win Rate",
+        "en": "Win Rate"
+    },
+    "winRateTitle": {
+        "it": "Percentuale vittorie su partite giocate",
+        "en": "Win percentage over matches played"
+    },
+    "scontriDiretti": {
+        "it": "Scontri set diretti",
+        "en": "Head-to-head sets"
+    },
+    "vs": {
+        "it": "VS",
+        "en": "VS"
+    },
+    "nessunDato": {
+        "it": "Nessun dato",
+        "en": "No data"
     }
 }

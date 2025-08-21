@@ -1,38 +1,42 @@
-<!-- Toggle esempio (facoltativo) -->
 <!-- CLASSIFICA -->
-<h2 class="mb-3 mt-4">Classifica</h2>
-<div class="stats-header my-container ">
-  <div class="position">Rank</div>
+<h2 class="mb-3 mt-4">{{ "classifica" | translate }}</h2>
+<div class="stats-header my-container">
+  <div class="position">{{ "rank" | translate }}</div>
   <div class="image"></div>
   <div></div>
-  <div class="partite-tot" title="Partite totali giocate">Partite Tot.</div>
-  <div class="vittorie" title="Vittorie">Vittorie</div>
-  <div class="sconfitte" title="Sconfitte">Sconfitte</div>
-  <div class="win-rate" title="Punteggio per percentuale vittorie / partite giocate">Rating</div>
-  <div class="win-rate" title="Punteggio per percentuale vittorie / partite giocate">Win Rate</div>
-
+  <div class="partite-tot" title="{{ 'partiteTotTitle' | translate }}">{{ "partiteTot" | translate }}</div>
+  <div class="vittorie" title="{{ 'vittorieTitle' | translate }}">{{ "vittorie" | translate }}</div>
+  <div class="sconfitte" title="{{ 'sconfitteTitle' | translate }}">{{ "sconfitte" | translate }}</div>
+  <div class="win-rate" title="{{ 'ratingTitle' | translate }}">{{ "rating" | translate }}</div>
+  <div class="win-rate" title="{{ 'winRateTitle' | translate }}">{{ "winRate" | translate }}</div>
 </div>
-<div *ngFor="let player of standings; let i = index; trackBy: trackByPlayer" class="stats-container mt-2 my-container ">
-  <div><i *ngIf="i < 3" class="fa-solid fa-medal position-{{ i + 1 }}"></i> {{i+1}}</div>
+
+<div *ngFor="let player of standings; let i = index; trackBy: trackByPlayer" class="stats-container mt-2 my-container">
+  <div class="position">
+    <i *ngIf="i < 3" class="fa-solid fa-medal position-{{ i + 1 }}"></i> {{i+1}}
+  </div>
   <img [src]="player.image_url" [alt]="player.playerName" />
   <div class="name">{{ player.playerName }}</div>
-  <div class="partite-tot" title="Partite totali giocate">{{ player.totalPlayed }}</div>
-  <div class="vittorie" title="Vittorie">{{ player.wins }}</div>
-  <div class="sconfitte" title="Sconfitte">{{ player.lost }}</div>
-  <div class="partite-rating" title="Rating ELO">{{ (player.rating)?.toFixed(1) }}</div>
-  <div class="win-rate" title="Punteggio per percentuale vittorie / partite giocate">
+  <div class="partite-tot" title="{{ 'partiteTotTitle' | translate }}">{{ player.totalPlayed }}</div>
+  <div class="vittorie" title="{{ 'vittorieTitle' | translate }}">{{ player.wins }}</div>
+  <div class="sconfitte" title="{{ 'sconfitteTitle' | translate }}">{{ player.lost }}</div>
+  <div class="partite-rating" title="{{ 'ratingEloTitle' | translate }}">
+    <span class="mini-info">PT</span>
+    {{ (player.rating)?.toFixed(1) }}
+  </div>
+  <div class="win-rate" title="{{ 'winRateTitle' | translate }}">
+    <span class="mini-info">WR%</span>
     <div class="rate-label">{{ winRateLabel(player.winRate) }}</div>
-    <div class="win-rate-bar" [style.width.%]="barWidthPct(player.winRate)"
+    <div class="win-rate-bar"
+      [style.width.%]="barWidthPct(player.winRate)"
       [style.background-color]="barColor(player.winRate)">
     </div>
   </div>
-
-
 </div>
 
 <section class="mt-5">
   <!-- SCONTRI DIRETTI -->
-  <h2 class="mb-3 mt-4">{{ "Scontri set diretti" | translate }}</h2>
+  <h2 class="mb-3 mt-4">{{ "scontriDiretti" | translate }}</h2>
 
   <div *ngFor="let row of (headToHead$ | async)" class="headtohead my-container">
     <div class="players">
@@ -45,7 +49,7 @@
       </div>
 
       <div class="vs">
-        <img src="/vs.svg" alt="VS" />
+        <img src="/vs.svg" alt="{{ 'vs' | translate }}" />
       </div>
 
       <div class="player">
@@ -76,7 +80,7 @@
       </ng-container>
 
       <ng-template #zero>
-        <div class="no-data">Nessun dato</div>
+        <div class="no-data">{{ "nessunDato" | translate }}</div>
       </ng-template>
     </div>
   </div>

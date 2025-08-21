@@ -25,16 +25,23 @@ export class MatchesComponent {
   @Output() matchEmitter: EventEmitter<IMatch> = new EventEmitter<IMatch>();
   maxMatchesToShow: number = 25;
 
-  isOverflowing: boolean = false;
+  isOverflowing: boolean = true;
   width = 0;
   @HostListener('window:resize')
   onWinResize() {
     this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
+
     console.log(this.matchesSlider.nativeElement.scrollWidth, window.innerWidth);
   }
 
-  constructor(public modalService: ModalService) { }
+  constructor(public modalService: ModalService) {
 
+  }
+  ngOnInit() {
+    if(this.matchesSlider)
+    this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
+  }
+  
   ngAfterViewInit() {
     console.log(environment.production)
     if (this.matchesSlider) {
