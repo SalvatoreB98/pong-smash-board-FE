@@ -26,7 +26,7 @@ export class HomeComponent {
   isShowMatchModalOpen: boolean = false;
   clickedMatch: IMatch | undefined;
   constructor(private dataService: DataService, public modalService: ModalService) {
-    this.dataService.fetchDataAndCalculateStats().then((res: any) => {
+    this.dataService.fetchMatches().then((res: any) => {
       this.matches = res.matches;
     });
   }

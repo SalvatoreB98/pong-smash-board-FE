@@ -1,75 +1,83 @@
 <!-- Toggle esempio (facoltativo) -->
 <!-- CLASSIFICA -->
-<div *ngFor="let player of standings; let i = index; trackBy: trackByPlayer" class="row align-items-center mt-2">
-  <div class="col-auto"><i class="fa-solid fa-medal position-{{ i + 1 }}"></i></div>
+<h2 class="mb-3 mt-4">Classifica</h2>
+<div class="stats-header my-container ">
+  <div class="position">Rank</div>
+  <div class="image"></div>
+  <div></div>
+  <div class="partite-tot" title="Partite totali giocate">Partite Tot.</div>
+  <div class="vittorie" title="Vittorie">Vittorie</div>
+  <div class="sconfitte" title="Sconfitte">Sconfitte</div>
+  <div class="win-rate" title="Punteggio per percentuale vittorie / partite giocate">Rating</div>
+  <div class="win-rate" title="Punteggio per percentuale vittorie / partite giocate">Win Rate</div>
 
-  <div class="col d-flex align-items-center" [class.winner]="i === 0" [attr.id]="player.playerName">
-    <div class="d-flex align-items-center flex-grow-1">
-      <img [src]="'/' + player.playerName + '.png'" [alt]="player.playerName" />
-      <div class="name">{{ player.playerName }}</div>
-    </div>
-
-    <div class="vittorie" title="Vittorie">{{ player.wins }}</div>
-    <div class="sconfitte" title="Sconfitte">{{ player.lost }}</div>
-    <div class="partite-tot" title="Partite totali giocate">{{ player.totalPlayed }}</div>
-
-    <div class="win-rate" title="Punteggio per percentuale vittorie / partite giocate">
-      <div class="rate-label">{{ winRateLabel(player.winRate) }}</div>
-      <div class="win-rate-bar"
-           [style.width.%]="barWidthPct(player.winRate)"
-           [style.background-color]="barColor(player.winRate)">
-      </div>
+</div>
+<div *ngFor="let player of standings; let i = index; trackBy: trackByPlayer" class="stats-container mt-2 my-container ">
+  <div><i *ngIf="i < 3" class="fa-solid fa-medal position-{{ i + 1 }}"></i> {{i+1}}</div>
+  <img [src]="player.image_url" [alt]="player.playerName" />
+  <div class="name">{{ player.playerName }}</div>
+  <div class="partite-tot" title="Partite totali giocate">{{ player.totalPlayed }}</div>
+  <div class="vittorie" title="Vittorie">{{ player.wins }}</div>
+  <div class="sconfitte" title="Sconfitte">{{ player.lost }}</div>
+  <div class="partite-rating" title="Rating ELO">{{ (player.rating)?.toFixed(1) }}</div>
+  <div class="win-rate" title="Punteggio per percentuale vittorie / partite giocate">
+    <div class="rate-label">{{ winRateLabel(player.winRate) }}</div>
+    <div class="win-rate-bar" [style.width.%]="barWidthPct(player.winRate)"
+      [style.background-color]="barColor(player.winRate)">
     </div>
   </div>
+
+
 </div>
 
-<!-- SCONTRI DIRETTI -->
-<h2 class="mb-3 mt-4">Scontri diretti</h2>
-<div *ngFor="let hh of headToHeadData" class="players-container mt-2">
-  <div class="row">
-    <div class="player col-5">
-      <div class="image">
-        <img [src]="'/' + hh.player1 + '.png'" [alt]="hh.player1" />
-        <div class="name">{{ hh.player1 }}</div>
-      </div>
-      <div class="score text-center" [class.winner-color]="hh.scored1 > hh.scored2">{{ hh.scored1 }}</div>
-    </div>
+<section class="mt-5">
+  <!-- SCONTRI DIRETTI -->
+  <h2 class="mb-3 mt-4">Scontri set diretti</h2>
 
-    <div class="col-2 d-flex justify-content-center align-items-center">
-      <img width="50" class="m-auto" src="/vs.svg" alt="VS" />
-    </div>
-
-    <div class="player opp col-5">
-      <div class="image">
-        <img [src]="'/' + hh.player2 + '.png'" [alt]="hh.player2" />
-        <div class="name">{{ hh.player2 }}</div>
-      </div>
-      <div class="score text-center" [class.winner-color]="hh.scored2 > hh.scored1">{{ hh.scored2 }}</div>
-    </div>
-  </div>
-
-  <div class="win-bar-container d-flex align-items-center m-3">
-    <ng-container
-      *ngIf="(hh.scored1 + hh.scored2) as tot; else zero">
-      <span class="col-2 percent1" [class.winner-color]="hh.scored1>hh.scored2">
-        {{ (hh.scored1 * 100 / tot) }}%
-      </span>
-      <div class="d-flex justify-content-around flex-grow-1">
-        <div class="col-4 win-bar player1"
-             [class.winner]="hh.scored1>hh.scored2"
-             [style.width.%]="(hh.scored1 * 100 / tot)">
-        </div>
-        <div class="col-4 win-bar player2"
-             [class.winner]="hh.scored2>hh.scored1"
-             [style.width.%]="(hh.scored2 * 100 / tot)">
+  <div *ngFor="let row of (headToHead$ | async)" class="headtohead my-container">
+    <div class="players">
+      <div class="player">
+        <img [src]="row.player1_img || 'default-player.jpg'" [alt]="row.player1" />
+        <div class="name">{{ row.player1 }}</div>
+        <div class="score" [class.winner-color]="row.scored1 > row.scored2">
+          {{ row.scored1 }}
         </div>
       </div>
-      <span class="col-2 percent2" [class.winner-color]="hh.scored2>hh.scored1">
-        {{ (hh.scored2 * 100 / tot) }}%
-      </span>
-    </ng-container>
-    <ng-template #zero>
-      <span class="text-muted">Nessun dato</span>
-    </ng-template>
+
+      <div class="vs">
+        <img src="/vs.svg" alt="VS" />
+      </div>
+
+      <div class="player">
+        <img [src]="row.player2_img || 'default-player.jpg'" [alt]="row.player2" />
+        <div class="name">{{ row.player2 }}</div>
+        <div class="score" [class.winner-color]="row.scored2 > row.scored1">
+          {{ row.scored2 }}
+        </div>
+      </div>
+    </div>
+
+    <div class="win-bar">
+      <ng-container *ngIf="(row.scored1 + row.scored2) as tot; else zero">
+        <div class="percent" [class.winner-color]="row.scored1 > row.scored2">
+          {{ (row.scored1 * 100 / tot).toFixed(1) }}%
+        </div>
+
+        <div class="bars">
+          <div class="bar player1" [class.winner]="row.scored1 > row.scored2"
+            [style.width.%]="(row.scored1 * 100 / tot)"></div>
+          <div class="bar player2" [class.winner]="row.scored2 > row.scored1"
+            [style.width.%]="(row.scored2 * 100 / tot)"></div>
+        </div>
+
+        <div class="percent" [class.winner-color]="row.scored2 > row.scored1">
+          {{ (row.scored2 * 100 / tot).toFixed(1) }}%
+        </div>
+      </ng-container>
+
+      <ng-template #zero>
+        <div class="no-data">Nessun dato</div>
+      </ng-template>
+    </div>
   </div>
-</div>
+</section>

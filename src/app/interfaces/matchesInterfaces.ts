@@ -1,10 +1,10 @@
 export interface IMatch {
   id: string;
   data: string;
-  giocatore1: string;
-  giocatore2: string;
-  p1: number;
-  p2: number;
+  player1_name: string;
+  player2_name: string;
+  player1_score: number;
+  player2_score: number;
   setsPoints: number[][];
 }
 
