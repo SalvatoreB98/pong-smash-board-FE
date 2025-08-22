@@ -53,4 +53,5 @@ export const MONTH_MAP: Record<string, string> = {
 export const MODALS: { [key: string]: string } = {
   ADD_MATCH: 'addMatchModal',
   SHOW_MATCH: 'showMatchModal',
+  ADD_COMPETITION: 'addCompetitionModal',
 };

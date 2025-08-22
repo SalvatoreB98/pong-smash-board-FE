@@ -1,7 +1,13 @@
+@use "../style/variables.scss" as *;
 .title {
     font-family: 'LarkenBlack', sans-serif;
 }
+
 .my-container {
     max-width: 800px;
     margin: auto;
+}
+
+.page {
+    margin-top: $navbar-height;
 }
