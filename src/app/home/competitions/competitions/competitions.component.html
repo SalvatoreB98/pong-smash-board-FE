@@ -1,13 +1,14 @@
 <app-navbar></app-navbar>
 <div class="page">
     <section class="pt-5">
-        <h2 class="text-center">Competitions</h2>
+        <h2 class="text-center" style="text-transform: capitalize;">{{'competitions' | translate}}</h2>
         <div class="container">
             <div class="row">
                 <div class="add-button-container">
-                    <button (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])" class="add-match">{{
-                        "add_match"
-                        | translate}} <span class="m-1"></span> <i class="fa-solid fa-plus"></i></button>
+                    <button (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])" class="add-match">
+                        {{"add_competition"| translate}}
+                        <span class="m-1"></span>
+                        <i class="fa-solid fa-plus"></i></button>
                 </div>
             </div>
         </div>
@@ -15,5 +16,5 @@
 </div>
 
 <app-modal [label]="'Competitions'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])">
-    AAA
+    <app-add-competition-modal></app-add-competition-modal>
 </app-modal>

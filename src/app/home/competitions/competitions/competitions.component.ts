@@ -4,13 +4,24 @@ import { TranslatePipe } from '../../../utils/translate.pipe';
 import { ModalService } from '../../../../services/modal.service';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { AddCompetitionModalComponent } from '../add-competition-modal/add-competition-modal.component';
 
 @Component({
   selector: 'app-competitions',
-  imports: [NavbarComponent, TranslatePipe, ModalComponent, CommonModule],
+  imports: [NavbarComponent, TranslatePipe, ModalComponent, CommonModule, FormsModule, AddCompetitionModalComponent],
   templateUrl: './competitions.component.html',
   styleUrl: './competitions.component.scss'
 })
 export class CompetitionsComponent {
-  constructor(public modalService: ModalService) { }
+  form = new FormGroup({ name: new FormControl('') });
+  constructor(public modalService: ModalService, private fb: FormBuilder) {
+    this.createForm();
+  }
+
+  createForm() {
+    this.form = this.fb.group({
+      name: ['']
+    });
+  }
 }

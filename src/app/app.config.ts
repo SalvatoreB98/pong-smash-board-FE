@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { provideAnimations } from '@angular/platform-browser/animations'; // ✅ Import animations
 import { TranslationService } from '../services/translation.service';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { TranslatePipe } from './utils/translate.pipe';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +17,6 @@ export const appConfig: ApplicationConfig = {
     ModalService, 
     CommonModule,
     TranslationService,
+    TranslatePipe
   ],
 };

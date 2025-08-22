@@ -38,15 +38,16 @@ export class MatchesComponent {
 
   }
   ngOnInit() {
-    if(this.matchesSlider)
-    this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
+    if (this.matchesSlider)
+      this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
   }
-  
+
   ngAfterViewInit() {
     console.log(environment.production)
     if (this.matchesSlider) {
       this.slider = new Slider('slider', this.matchesSlider.nativeElement);
     }
+    this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50
   }
   private sliderInitialized = false;
 
