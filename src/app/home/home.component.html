@@ -1,14 +1,22 @@
 <app-navbar></app-navbar>
 <div class="wrapper">
+    <p *ngIf="matches?.length === 0" class="mt-4 text-center">
+        {{ "matches_not_found" | translate }}
+    </p>
     <section style="padding: 0;">
-        <app-matches [matches]="matches" (matchEmitter)="setClickedMatch($event)"></app-matches>
+        <app-matches *ngIf="matches?.length > 0" [matches]="matches"
+            (matchEmitter)="setClickedMatch($event)">
+        </app-matches>
         <div class="add-button-container">
-            <button (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">{{ "add_match"
-                | translate}} <span class="m-1"></span> <i class="fa-solid fa-plus"></i></button>
+            <button (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">
+                {{ "add_match" | translate}} 
+                <span class="m-1"></span> 
+                <i class="fa-solid fa-plus"></i>
+            </button>
         </div>
     </section>
     <section>
-        <app-stats></app-stats>
+        <app-stats *ngIf="matches?.length > 0"></app-stats>
     </section>
 </div>
 <app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])">

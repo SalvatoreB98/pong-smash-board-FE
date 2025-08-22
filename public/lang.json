@@ -158,5 +158,53 @@
     "nessunDato": {
         "it": "Nessun dato",
         "en": "No data"
+    },
+    "matches_not_found": {
+        "it": "Nessuna partita trovata, aggiungine una!",
+        "en": "No matches found"
+    },
+    "add_competition": {
+        "it": "Aggiungi competizione",
+        "en": "Add competition"
+    },
+    "competition_name_label": {
+        "it": "Nome della competizione",
+        "en": "Competition name"
+    },
+    "competition_name_placeholder": {
+        "it": "Es. Pong League 2025",
+        "en": "e.g., Pong League 2025"
+    },
+    "competition_name_error_minlength": {
+        "it": "Inserisci almeno 3 caratteri.",
+        "en": "Enter at least 3 characters."
+    },
+    "competition_type_label": {
+        "it": "Tipologia",
+        "en": "Type"
+    },
+    "competition_type_elimination": {
+        "it": "Eliminazione diretta",
+        "en": "Single elimination"
+    },
+    "competition_type_league": {
+        "it": "Campionato",
+        "en": "League"
+    },
+    "competition_sets_label": {
+        "it": "Set (meglio di)",
+        "en": "Sets (best of)"
+    },
+    "competition_points_label": {
+        "it": "Punti a",
+        "en": "Points to"
+    },
+    "competition_action_create": {
+        "it": "Crea",
+        "en": "Create"
+    },
+    "competitions": {
+        "it": "Competizioni",
+        "en": "Competitions"
     }
 }

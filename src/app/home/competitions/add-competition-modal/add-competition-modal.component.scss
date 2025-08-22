@@ -1,0 +1,160 @@
+@use "../../../../style/variables.scss" as *;
+
+:host {
+    display: block;
+    padding: 16px;
+}
+
+.form-card {
+    max-width: 720px;
+    margin: 0 auto;
+    border: 1px solid rgba(0, 0, 0, .06);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
+    display: grid;
+    gap: 18px;
+}
+
+h2 {
+    margin: 0 0 6px;
+    font-size: 1.25rem;
+}
+
+.field {
+    display: grid;
+    gap: 8px;
+}
+
+.label {
+    font-size: .9rem;
+    opacity: .85;
+}
+
+.input {
+    padding: 12px 14px;
+    border-radius: 12px;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.input:focus {
+    border-color: $primary-light;
+    box-shadow: 0 0 0 4px rgba(63, 81, 181, .12);
+}
+
+.error {
+    color: #c62828;
+}
+
+.segmented {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 10px;
+}
+
+.seg-item {
+    position: relative;
+    display: block;
+    border-radius: 12px;
+    user-select: none;
+}
+
+.seg-item>input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.seg-item>span {
+    display: grid;
+    place-items: center;
+    background-color: #00000053;
+    border: 1px solid #ffffff2f;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: border-color .15s, box-shadow .15s, background .15s, transform .02s;
+}
+
+.seg-item:active>span {
+    transform: scale(.99);
+}
+
+.seg-item>input:focus-visible+span {
+    outline: 2px solid $primary-light;
+    outline-offset: 2px;
+}
+
+.seg-item>input:checked+span {
+    border-color: $primary-light;
+    box-shadow: 0 0 0 4px rgba(63, 81, 181, .12);
+}
+
+.primary {
+    text-align: center;
+    height: 44px;
+    border: none;
+    padding: 0 16px;
+    font-weight: 700;
+    background: $primary-light;
+    color: #fff;
+    cursor: pointer;
+    transition: transform .02s, filter .15s, box-shadow .15s;
+    box-shadow: 0 6px 18px rgba(63, 81, 181, .25);
+}
+
+.primary:disabled {
+    filter: grayscale(.3) opacity(.7);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.primary:active {
+    transform: translateY(1px);
+}
+
+.preview {
+    margin: 6px 0 0;
+    background: #0f172a;
+    color: #e5e7eb;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: .85rem;
+    overflow: auto;
+}
+
+.large-img-select {
+    height: 100px;
+    object-fit: cover;
+    font-size: 0.75em;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    white-space: nowrap;
+
+    span {
+        padding: 5px;
+        text-align: center;
+        background: $dark;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    img,
+    svg {
+        transform: translate(0, 7px);
+    }
+
+    svg {
+        transform: translate(7px, 15px);
+    }
+}
+[type="text"] {
+    all: unset;
+    border-radius: 10px;
+    padding: 5px;
+    border: 1px solid #ffffff62;
+    background-color: black;
+}

@@ -6,8 +6,10 @@
     <div class="arrow-container arrow-left">
       <div *ngIf="isOverflowing" class="arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
     </div>
-    <div class="matches-slider" #matchesSlider>
-      <div *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex" class="match" [id]="match.id" (click)="onMatchClick(match.id)">
+    <div class="matches-slider" #matchesSlider
+      [ngStyle]="{ 'justify-content': !isOverflowing ? 'center' : 'flex-start' }">
+      <div *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex" class="match" [id]="match.id"
+        (click)="onMatchClick(match.id)">
         <div>
           <div class="data">{{ match.created | date: 'dd/MM/yyyy HH:mm' }}</div>
         </div>
@@ -19,9 +21,11 @@
             </div>
           </div>
           <div class="punteggio-container">
-            <div class="punteggio" [class.win]="match.player1_score > match.player2_score">{{ match.player1_score }}</div>
+            <div class="punteggio" [class.win]="match.player1_score > match.player2_score">{{ match.player1_score }}
+            </div>
             <div class="punteggio"> <span>:</span> </div>
-            <div class="punteggio" [class.win]="match.player2_score > match.player1_score">{{ match.player2_score }}</div>
+            <div class="punteggio" [class.win]="match.player2_score > match.player1_score">{{ match.player2_score }}
+            </div>
           </div>
           <div class="giocatore-container">
             <div class="text-center">
