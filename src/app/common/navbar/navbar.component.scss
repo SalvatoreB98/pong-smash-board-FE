@@ -112,6 +112,16 @@
 
 }
 
+@media screen and (max-width: 768px) {
+    .buttons-container {
+        height: 100%;
+
+        &>* {
+            padding: 0;
+        }
+    }
+}
+
 @keyframes open {
     from {
         opacity: 0;

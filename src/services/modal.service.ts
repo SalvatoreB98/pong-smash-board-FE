@@ -32,6 +32,7 @@ export class ModalService {
 
   setEffects() {
     document?.querySelector('html')?.style.setProperty('overflow', 'hidden');
+    document?.querySelector('html')?.style.setProperty('margin-right', '7px');
     let wrapper = document.querySelector('.wrapper') as HTMLElement;
     wrapper?.style.setProperty('filter', 'blur(10px)');
     wrapper?.style.setProperty('pointer-events', 'none');
@@ -39,6 +40,7 @@ export class ModalService {
   }
   removeEffects() {
     document?.querySelector('html')?.style.removeProperty('overflow');
+    document?.querySelector('html')?.style.setProperty('margin-right', '0');
     let wrapper = document.querySelector('.wrapper') as HTMLElement;
     wrapper.style.removeProperty('filter');
     wrapper.style.removeProperty('pointer-events');
