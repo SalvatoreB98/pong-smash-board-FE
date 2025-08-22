@@ -14,4 +14,5 @@ export const routes: Routes = [
   { path: 'callback', component: CallbackComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'competitions', component: CompetitionsComponent },
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

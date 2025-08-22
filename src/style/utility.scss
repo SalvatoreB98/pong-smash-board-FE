@@ -1,4 +1,5 @@
 @use "../style/variables.scss" as *;
+
 .title {
     font-family: 'LarkenBlack', sans-serif;
 }
@@ -9,5 +10,6 @@
 }
 
 .page {
+    position: relative;
     margin-top: $navbar-height;
 }

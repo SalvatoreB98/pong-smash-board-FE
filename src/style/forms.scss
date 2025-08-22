@@ -1,27 +1,36 @@
 @use "variables" as *;
 
 // ---- Palette dark (puoi spostarla nel tuo file variables)
-$bg:      #0b1220;
+$bg: #0b1220;
 $surface: #0f172a;
-$field:   #111827;
-$text:    #e5e7eb;
-$muted:   #9ca3af;
-$border:  #1f2937;
+$field: #111827;
+$text: #e5e7eb;
+$muted: #9ca3af;
+$border: #1f2937;
 
 // ---- Tema
-:root { color-scheme: light dark; }
+:root {
+  color-scheme: light dark;
+}
 
 @media (prefers-color-scheme: dark) {
-  body { background: $bg; color: $text; }
+  body {
+    background: $dark;
+    color: $text;
+  }
 }
 
 /* Forza dark solo dove serve (modale/form) */
 .form-dark {
   color-scheme: dark;
   color: $text;
-  accent-color: $primary;           /* checkbox/radio/range */
+  accent-color: $primary;
+  /* checkbox/radio/range */
 }
-#email, #passwordConfirm, #password{
+
+#email,
+#passwordConfirm,
+#password {
   padding-left: 2.2em;
 }
 
@@ -45,7 +54,8 @@ $border:  #1f2937;
   border-radius: $border-radius;
 
   color: $text;
-  -webkit-text-fill-color: $text;   /* Chrome/Safari */
+  -webkit-text-fill-color: $text;
+  /* Chrome/Safari */
   caret-color: $text;
 }
 
@@ -53,31 +63,51 @@ $border:  #1f2937;
 .form-dark input::placeholder,
 .form-dark textarea::placeholder {
   color: $muted;
-  opacity: 1;                       /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
 
 /* Select placeholder tramite required+invalid */
-.form-dark select:required:invalid { color: $muted; }
+.form-dark select:required:invalid {
+  color: $muted;
+}
+
 .form-dark select {
   text-align-last: center;
   font-weight: 600;
 }
+
 .form-dark select option {
   color: $text;
   background: $field;
 }
-.form-dark select option[disabled] { color: $muted; }
+
+.form-dark select option[disabled] {
+  color: $muted;
+}
 
 /* Date input */
-.form-dark input[type="date"] { color-scheme: dark; text-align: center; }
-.form-dark input[type="date"]::-webkit-datetime-edit { color: $text; }
-.form-dark input[type="date"]:required:invalid::-webkit-datetime-edit { color: $muted; }
+.form-dark input[type="date"] {
+  color-scheme: dark;
+  text-align: center;
+}
+
+.form-dark input[type="date"]::-webkit-datetime-edit {
+  color: $text;
+}
+
+.form-dark input[type="date"]:required:invalid::-webkit-datetime-edit {
+  color: $muted;
+}
+
 .form-dark input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1) opacity(.85);
 }
 
 /* Altri tipi centrati */
-.form-dark input[type="tel"] { text-align: center; }
+.form-dark input[type="tel"] {
+  text-align: center;
+}
 
 /* Checkbox semplice */
 .form-dark input[type="checkbox"] {
@@ -104,14 +134,29 @@ $border:  #1f2937;
   overflow: hidden;
   transition: opacity .2s ease, transform .2s ease, visibility .2s;
 
-  input { margin-bottom: 0; }
-  .search-icon { position: absolute; right: 10px; top: 7px; }
+  input {
+    margin-bottom: 0;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+  }
+
   .player-item {
     padding: .5rem;
-    &:last-child { border-bottom: none; }
-    &:hover { background: mix($field, #fff, 90%); }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background: mix($field, #fff, 90%);
+    }
   }
 }
+
 .dropdown.visible {
   visibility: visible;
   opacity: 1;
@@ -124,7 +169,9 @@ $border:  #1f2937;
   overflow-x: auto;
   padding-bottom: .5rem;
 
-  &::-webkit-scrollbar-thumb { background-color: $primary-ultra-light; }
+  &::-webkit-scrollbar-thumb {
+    background-color: $primary-ultra-light;
+  }
 
   .input-container {
     min-width: 70px;
@@ -134,17 +181,35 @@ $border:  #1f2937;
 }
 
 /* Bordo arrotondato top/bottom in stack */
-form .input-top   { border-radius: 20px 20px 0 0; margin-bottom: 0; }
-form .input-bottom{ border-radius: 0 0 20px 20px; margin-bottom: 0; }
+form .input-top {
+  border-radius: 20px 20px 0 0;
+  margin-bottom: 0;
+}
+
+form .input-bottom {
+  border-radius: 0 0 20px 20px;
+  margin-bottom: 0;
+}
 
 /* Modal */
-.my-modal input { width: 100%; max-width: 100%; }
+.my-modal input {
+  width: 100%;
+  max-width: 100%;
+}
 
 /* Mobile */
 @media (max-width: 768px) {
-  .input-field { overflow: hidden; white-space: nowrap; }
-  .dropdown { width: 91%; }
+  .input-field {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .dropdown {
+    width: 91%;
+  }
 }
 
 /* Wrapper punti */
-.wrapper-points .input-container { padding: 3px; }
+.wrapper-points .input-container {
+  padding: 3px;
+}

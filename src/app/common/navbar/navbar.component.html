@@ -36,16 +36,13 @@
                 <div class="curtain">
                     <ul class="list-unstyled p-0 m-0">
                         <li class="clickable">
-                            <i class="fa fa-sign-out" aria-hidden="true"></i>
-                            <a (click)="logout()">Log Out</a>
-                        </li>
-                        <li class="clickable">
-                            <i class="fa fa-user" aria-hidden="true"></i>
                             <a href="/profile">{{"profile" | translate}}</a>
                         </li>
                         <li class="clickable">
-                            <i class="fa fa-table" aria-hidden="true"></i>
                             <a href="/competitions"> {{"Competizioni" | translate}} </a>
+                        </li>
+                        <li class="clickable" style="color: #c76360;">
+                            <a (click)="logout()">Log Out</a>
                         </li>
                     </ul>
                 </div>
