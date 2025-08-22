@@ -6,10 +6,19 @@ import { ModalComponent } from '../../../common/modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { AddCompetitionModalComponent } from '../add-competition-modal/add-competition-modal.component';
+import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
 
 @Component({
   selector: 'app-competitions',
-  imports: [NavbarComponent, TranslatePipe, ModalComponent, CommonModule, FormsModule, AddCompetitionModalComponent],
+  imports: [
+    NavbarComponent,
+    TranslatePipe,
+    ModalComponent,
+    CommonModule,
+    FormsModule,
+    AddCompetitionModalComponent,
+    BottomNavbarComponent
+  ],
   templateUrl: './competitions.component.html',
   styleUrl: './competitions.component.scss'
 })

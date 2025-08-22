@@ -2,7 +2,7 @@
 
 .bottom-navbar {
     padding: 0.5em;
-    background-color: black;
+    background-color: #142733;
     height: 75px;
     display: flex;
     justify-content: space-around;
@@ -16,7 +16,7 @@
     bottom: 1em;
     transform: translateX(-50%);
     max-width: 600px;
-    filter: drop-shadow(0px 10px 10px black);
+    filter: drop-shadow(0px 0px 10px black);
 
     .bottom-navbar-item {
         display: flex;
@@ -32,7 +32,6 @@
         font-weight: lighter;
         text-transform: capitalize;
         border-radius: 50%;
-        width: 75px;
         height: 100%;
         flex-grow: 1;
         transition: all 0.1s linear;

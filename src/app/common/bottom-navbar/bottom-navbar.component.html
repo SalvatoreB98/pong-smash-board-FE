@@ -1,27 +1,23 @@
 <div>
     <div class="bottom-navbar">
         <div class="bottom-navbar-item">
-            <a href="/home" routerLinkActive="active">
+            <a href="/home-page" routerLinkActive="active">
                 <i class="fa-solid fa-home"></i>
-                <span>{{ "home" | translate }}</span>
             </a>
         </div>
         <div class="bottom-navbar-item">
             <a href="/competitions" routerLinkActive="active">
                 <i class="fa-solid fa-users"></i>
-                <span>{{ "competitions" | translate }}</span>
             </a>
         </div>
         <div class="bottom-navbar-item">
             <a href="/teams" routerLinkActive="active">
                 <i class="fa-solid fa-line-chart"></i>
-                <span>{{ "stats" | translate }}</span>
             </a>
         </div>
         <div class="bottom-navbar-item">
             <a (click)="addMatchModal()" routerLinkActive="active">
                 <i class="fa-solid fa-plus"></i>
-                <span style="white-space: nowrap">{{ "add_match" | translate }}</span>
             </a>
         </div>
     </div>
