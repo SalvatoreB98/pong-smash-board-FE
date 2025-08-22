@@ -2,6 +2,8 @@
     margin-top: 100px;
     padding-top: 1em;
     padding-bottom: 150px;
+    transition: filter 0.25s ease-in-out;
+    overflow-y: scroll;
 }
 @media screen and (max-width: 1000px) {
     .wrapper {

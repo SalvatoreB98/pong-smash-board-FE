@@ -32,7 +32,7 @@
 
     .score {
       color: $light;
-      font-size: 1em;
+      font-size: 1.5em;
       font-weight: 900;
     }
   }
@@ -83,7 +83,7 @@
     text-align: center;
 
     .won {
-      color: var(--secondary);
+      color: $primary;
       font-weight: bold;
     }
   }

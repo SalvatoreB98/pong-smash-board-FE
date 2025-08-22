@@ -12,12 +12,15 @@ import { TranslatePipe } from '../../utils/translate.pipe';
   styleUrl: './show-match-modal.component.scss'
 })
 export class ShowMatchModalComponent extends ModalComponent {
-  constructor(public override modalService: ModalService) { 
+  constructor(public override modalService: ModalService) {
     super(modalService);
   }
+
   @Input() match: any;
 
   showModal(match: any): void {
-    this.match = match;
+  }
+  ngAfterViewInit() {
+    console.log(this.match);
   }
 }
