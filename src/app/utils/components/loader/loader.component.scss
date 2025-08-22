@@ -1,4 +1,4 @@
-$green: var(--green); // Define variables for colors
+@use "../../../../style/variables.scss" as *;
 
 .loader {
   position: fixed;
@@ -75,6 +75,6 @@ $green: var(--green); // Define variables for colors
   >img {
     filter: drop-shadow(0px 0px 10px black);
     max-width: 100px;
-    max-height: 100px;
+    max-height: $navbar-height;
   }
 }

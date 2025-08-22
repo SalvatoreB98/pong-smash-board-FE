@@ -5,6 +5,7 @@ import { ModalComponent } from '../app/common/modal/modal.component';
 
 @Injectable({ providedIn: 'root' })
 export class ModalService {
+  
   private activeModalSubject = new BehaviorSubject<string | null>(null);
   activeModal$ = this.activeModalSubject.asObservable();
   public MODALS = MODALS;

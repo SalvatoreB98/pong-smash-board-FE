@@ -37,4 +37,7 @@ export class NavbarComponent {
     this.router.navigate(['/login']);
     this.auth.logout();
   }
+  
+  trackByLang = (_: number, l: { code: string }) => l.code;
+
 }
