@@ -5,6 +5,9 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import { TranslatePipe } from '../../../utils/translate.pipe';
+import { ModalComponent } from '../../../common/modal/modal.component';
+import { ModalService } from '../../../../services/modal.service';
+import { DataService } from '../../../../services/data.service';
 
 type CompetitionType = 'elimination' | 'league';
 
@@ -18,7 +21,8 @@ type CompetitionType = 'elimination' | 'league';
 export class AddCompetitionModalComponent {
   competitionForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, public modalService: ModalService, private dataService: DataService) {
+
     this.competitionForm = this.fb.group(
       {
         nameCtrl: ['', [Validators.required, Validators.minLength(3)]],
@@ -46,6 +50,39 @@ export class AddCompetitionModalComponent {
       bestOf: this.setsCtrl.value as number,
       pointsTo: this.pointsCtrl.value as number,
     };
-    console.log('✅ Create competition →', payload);
+    this.addCompetition();
+  }
+
+  addCompetition() {
+    if (this.competitionForm.invalid) return;
+    this.sendCompetition();
+    this.closeModal();
+  }
+
+  private sendCompetition() {
+    if (this.competitionForm.invalid) return;
+
+    const toYmd = (d: string | Date | null) =>
+      d ? new Date(d).toLocaleDateString("en-CA") : undefined; // → YYYY-MM-DD
+
+    const formValue = this.competitionForm.value;
+
+    const payload = {
+      name: formValue.nameCtrl,
+      type: formValue.typeCtrl,            // "league" | "elimination" ...
+      bestOf: formValue.setsCtrl,        // es. 3/5/7
+      pointsTo: formValue.pointsCtrl,    // es. 11/21
+      startDate: toYmd(formValue.startDate) ?? undefined,
+      endDate: toYmd(formValue.endDate) ?? undefined
+    };
+
+    console.log('Saving competition...', payload);
+    this.dataService.addCompetition(payload).then(() => {
+      this.closeModal();
+    });
+  }
+
+  closeModal() {
+    this.modalService.closeModal();
   }
 }

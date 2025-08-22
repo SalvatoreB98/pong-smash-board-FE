@@ -61,11 +61,11 @@ export class DataService {
   private _lastLoadedAt = 0;               // timestamp dell’ultimo load
   private _loadingPromise?: Promise<IMatchResponse>; // dedup calls
   private _id = Math.random().toString(36).slice(2);
-  
+
   constructor(private loaderService: LoaderService) {
     console.log('[DataService] ctor', this._id);
   }
-  
+
   /**
    * Carica i dati solo la prima volta (o se scaduti/forzati).
    * options.force => forza il fetch
@@ -206,14 +206,55 @@ export class DataService {
       return Promise.reject("Invalid data");
     }
   }
+  
   getLoggedInPlayerId(): number | null {
     const userData = localStorage.getItem('user'); // Example storage
     return userData ? JSON.parse(userData).id : null;
   }
+
   setLoggedInPlayer(player: { playerid: number, name: string }) {
     localStorage.setItem('loggedInPlayer', JSON.stringify(player));
   }
+
   getStats() {
 
   }
+
+  async addCompetition(data: {
+    name: string;
+    type: string;          // "league" | "elimination" | ecc.
+    bestOf: number;        // mappa su setsType
+    pointsTo: number;      // mappa su pointsType
+    startDate?: string;    // "YYYY-MM-DD" opzionale
+    endDate?: string;      // "YYYY-MM-DD" opzionale
+    [key: string]: any;
+  }): Promise<void> {
+    this.loaderService.startLittleLoader();
+    try {
+      // validazioni minime
+      if (!data?.name || !data?.type || data.bestOf == null || data.pointsTo == null) {
+        throw new Error("Missing fields: name, type, bestOf, pointsTo");
+      }
+
+      const response = await fetch(`${environment.apiUrl}/api/add-competition`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      this.loaderService?.showToast("Competizione creata!", MSG_TYPE.SUCCESS, 5000);
+      console.log("Success:", responseData);
+    } catch (error) {
+      this.loaderService?.showToast(`Competition not created: ${error}`, MSG_TYPE.ERROR);
+      throw error;
+    } finally {
+      this.loaderService.stopLittleLoader();
+    }
+  }
+
 }
