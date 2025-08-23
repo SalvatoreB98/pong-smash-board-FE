@@ -191,6 +191,10 @@
         "it": "Campionato",
         "en": "League"
     },
+    "competition_type_group_knockout": {
+        "it": "Misto",
+        "en": "Group and knockout"
+    },
     "competition_sets_label": {
         "it": "Set (meglio di)",
         "en": "Sets (best of)"

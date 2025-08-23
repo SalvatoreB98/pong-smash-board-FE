@@ -13,10 +13,23 @@
     <div class="field">
         <span class="label">{{ 'competition_type_label' | translate }}</span>
         <div class="segmented" role="radiogroup" [attr.aria-label]="'competition_type_label' | translate">
+            
             <label class="seg-item">
-                <input type="radio" value="elimination" formControlName="typeCtrl" /> <span
-                    class="large-img-select">
-                    <span>{{ 'competition_type_elimination' | translate }}</span>
+                <input type="radio" value="league" formControlName="typeCtrl" />
+                <span class="large-img-select">
+                    <span>{{ 'competition_type_league' | translate }}</span>
+                    <img width="50px" height="50px" src="/numbered-list.png" alt="">
+                </span>
+            </label>
+
+            <label class="seg-item disabled">
+                <!-- <input type="radio" value="elimination" formControlName="typeCtrl"/> -->
+                <span class="large-img-select">
+                    <span class="marquee">
+                        <span>
+                            {{ 'competition_type_elimination' | translate }}
+                        </span>
+                    </span>
                     <svg width="75" height="50" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                         <line x1="5" y1="5" x2="13" y2="5" />
@@ -32,13 +45,13 @@
                         <line x1="29" y1="14" x2="29" y2="14" />
                         <line x1="29" y1="14" x2="40" y2="14" />
                     </svg>
-
                 </span>
             </label>
-            <label class="seg-item">
-                <input type="radio" value="league" formControlName="typeCtrl" /> <span
-                    class="large-img-select">
-                    <span>{{ 'competition_type_league' | translate }}</span>
+            
+            <label class="seg-item disabled">
+                <!-- <input type="radio" value="hybrid" formControlName="typeCtrl" [disabled]="true" /> -->
+                <span class="large-img-select">
+                    <span>{{ 'competition_type_group_knockout' | translate }}</span>
                     <img width="50px" height="50px" src="/numbered-list.png" alt="">
                 </span>
             </label>
