@@ -11,11 +11,11 @@ import { LoaderComponent } from '../../utils/components/loader/loader.component'
   styleUrl: './callback.component.scss',
 })
 export class CallbackComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router, private supabaseService: SupabaseAuthService) { }
+  constructor(private authService: AuthService, private router: Router, private supabaseAuthService: SupabaseAuthService) { }
 
   async ngOnInit() {
     try {
-      const { data, error } = await this.supabaseService.getUserSession();
+      const { data, error } = await this.supabaseAuthService.getUserSession();
 
       if (error) {
         console.error('Error retrieving session:', error);

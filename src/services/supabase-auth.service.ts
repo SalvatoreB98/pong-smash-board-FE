@@ -48,7 +48,13 @@ export class SupabaseAuthService {
       },
     });
   }
+
   async getUserSession() {
     return await this.supabase.auth.getSession();
+  }
+  
+  async getAccessToken(): Promise<string | null> {
+    const session = (await this.getUserSession()).data.session;
+    return session?.access_token || null;
   }
 }

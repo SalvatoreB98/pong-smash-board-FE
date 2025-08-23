@@ -18,7 +18,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
   constructor(
     private fb: FormBuilder,
-    private authService: SupabaseAuthService,
+    private supabaseAuthService: SupabaseAuthService,
     private router: Router,
     private loaderService: LoaderService
   ) {
@@ -40,7 +40,7 @@ export class RegisterComponent {
     }
 
     const { email, password } = this.registerForm.value;
-    const { data, error } = await this.authService.signUp(email, password);
+    const { data, error } = await this.supabaseAuthService.signUp(email, password);
 
     if (error) {
       console.error('Registration failed:', error.message);
@@ -51,7 +51,7 @@ export class RegisterComponent {
     }
   }
   async googleSignIn() {
-    await this.authService.signInWithGoogle();
+    await this.supabaseAuthService.signInWithGoogle();
   }
   private readonly passwordsMatch: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     console.log(this.registerForm)
