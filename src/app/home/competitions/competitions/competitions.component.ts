@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { AddCompetitionModalComponent } from '../add-competition-modal/add-competition-modal.component';
 import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
+import { CompetitionsService, ICompetition } from '../../../../services/competitions.service';
 
 @Component({
   selector: 'app-competitions',
@@ -23,9 +24,22 @@ import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navb
   styleUrl: './competitions.component.scss'
 })
 export class CompetitionsComponent {
+
+  loading = true;
+  error: string | null = null;
+  competitions: ICompetition[] = [];
   form = new FormGroup({ name: new FormControl('') });
-  constructor(public modalService: ModalService, private fb: FormBuilder) {
+  constructor(public modalService: ModalService, private fb: FormBuilder, private competitionsService: CompetitionsService) {
     this.createForm();
+    this.competitionsService.getCompetitions().then((res) => {
+      console.log('Competitions fetched:', res);
+      this.competitions = res.competitions;
+      this.loading = false;
+    });
+
+  }
+
+  ngOnInit() {
   }
 
   createForm() {
@@ -33,4 +47,7 @@ export class CompetitionsComponent {
       name: ['']
     });
   }
+
+  trackById = (_: number, c: ICompetition) => c.id;
+
 }

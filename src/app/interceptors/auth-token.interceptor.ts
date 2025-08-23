@@ -12,7 +12,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   if (!isApi || req.method === 'OPTIONS') return next(req);
 
   if (req.method === 'GET') {
-    return next(req);
+    if (!(/\/api\/get-competitions$/.test(req.url))) return next(req);
   }
 
   const sbAuth = inject(SupabaseAuthService);
