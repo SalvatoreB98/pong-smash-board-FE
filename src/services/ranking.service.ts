@@ -45,7 +45,7 @@ export class RankingService {
   private _lastLoadedAt = 0;                       // timestamp ultimo load
   private _loadingPromise?: Promise<IRankingResponse>; // dedup delle chiamate
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Carica la ranking solo la prima volta (o se scaduta/forzata).
@@ -93,7 +93,7 @@ export class RankingService {
     try {
 
       const data = await firstValueFrom(
-        this.http.get<IRankingResponse>(`/api/add-match`)
+        this.http.get<IRankingResponse>(`/api/get-ranking`)
       );
 
       this.assignData(data);

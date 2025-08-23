@@ -189,7 +189,7 @@ export class DataService {
       return Promise.reject('Invalid data');
     }
 
-    const url = environment.apiUrl ? `${environment.apiUrl}/api/add-match` : `/api/add-match`;
+    const url = `/api/add-match`;
 
     try {
       // HttpClient serializza automaticamente in JSON
