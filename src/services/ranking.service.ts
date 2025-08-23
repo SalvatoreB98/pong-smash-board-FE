@@ -89,17 +89,11 @@ export class RankingService {
     return this.fetchRanking({ force: true });
   }
 
-  // -------------------------------------------------------
-  // IMPLEMENTAZIONE INTERNA (stile DataService)
-  // -------------------------------------------------------
   private async _fetchAndAssignInternal(): Promise<IRankingResponse> {
     try {
-      const url = environment.apiUrl
-        ? `${environment.apiUrl}/api/get-ranking`
-        : `/api/get-ranking`;
 
       const data = await firstValueFrom(
-        this.http.get<IRankingResponse>(url)
+        this.http.get<IRankingResponse>(`/api/add-match`)
       );
 
       this.assignData(data);
@@ -126,6 +120,6 @@ export class RankingService {
       ranking: this.ranking,
       generatedAt: this.generatedAt,
     };
-    // estendere qui.
+
   }
 }

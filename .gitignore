@@ -42,6 +42,8 @@ src/environments/environments.local.ts
 src/environments/environments.prod.ts
 src/environments/environments.ts
 
+src/proxy.conf.json
+
 # System files
 .DS_Store
 Thumbs.db
