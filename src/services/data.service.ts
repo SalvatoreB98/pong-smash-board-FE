@@ -6,7 +6,8 @@ import { IMatch } from '../app/interfaces/matchesInterfaces';
 import { IMatchResponse } from '../app/interfaces/responsesInterfaces';
 import { LoaderComponent } from '../app/utils/components/loader/loader.component';
 import { LoaderService } from './loader.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
@@ -62,7 +63,7 @@ export class DataService {
   private _loadingPromise?: Promise<IMatchResponse>; // dedup calls
   private _id = Math.random().toString(36).slice(2);
 
-  constructor(private loaderService: LoaderService) {
+  constructor(private loaderService: LoaderService, private http: HttpClient) {
     console.log('[DataService] ctor', this._id);
   }
 
@@ -109,9 +110,6 @@ export class DataService {
     return this.fetchMatches({ force: true });
   }
 
-  // -------------------------------------------------------
-  // IMPLEMENTAZIONE ORIGINALE spostata in un metodo privato
-  // -------------------------------------------------------
   private async _fetchAndAssignInternal(): Promise<IMatchResponse> {
     this.loaderService.startLoader();
     try {
@@ -120,10 +118,14 @@ export class DataService {
       if (environment.mock) {
         this.assignData(mockData);
       } else {
-        const response = await fetch(`${environment.apiUrl}/api/get-matches`, { headers: {} });
-        if (!response.ok) throw new Error(`Failed to fetch data: ${response.statusText}`);
-        const data: IMatchResponse = await response.json();
-        this.assignData(data);
+        try {
+          const data = await firstValueFrom(
+            this.http.get<IMatchResponse>('/api/get-matches')
+          );
+          this.assignData(data);
+        } catch (err: any) {
+          throw new Error(`Failed to fetch data: ${err?.message ?? 'Unknown error'}`);
+        }
       }
 
       return this.generateReturnObject();
@@ -181,32 +183,27 @@ export class DataService {
   async addMatch(data: { p1Score: number; p2Score: number;[key: string]: any }): Promise<void> {
     console.log(data);
     this.loaderService.startLittleLoader();
-    if ((data.p1Score !== undefined) && (data.p2Score !== undefined)) {
-      try {
-        const response = await fetch(`${environment.apiUrl}/api/add-match`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    if (data?.p1Score == null || data?.p2Score == null) {
+      this.loaderService.stopLittleLoader();
+      return Promise.reject('Invalid data');
+    }
 
-        const responseData = await response.json();
-        this.loaderService?.showToast("Salvato con successo!", MSG_TYPE.SUCCESS, 5000);
-        console.log("Success:", responseData);
-      } catch (error) {
-        this.loaderService?.showToast(`Match data not found ${error}`, MSG_TYPE.ERROR);
-        throw error;
-      } finally {
-        this.loaderService.stopLittleLoader();
-      }
-    } else {
-      return Promise.reject("Invalid data");
+    const url = environment.apiUrl ? `${environment.apiUrl}/api/add-match` : `/api/add-match`;
+
+    try {
+      // HttpClient serializza automaticamente in JSON
+      const responseData = await firstValueFrom(this.http.post<any>(url, data));
+      this.loaderService?.showToast('Salvato con successo!', MSG_TYPE.SUCCESS, 5000);
+      console.log('Success:', responseData);
+    } catch (error: any) {
+      this.loaderService?.showToast(`Match data not found ${error?.message ?? error}`, MSG_TYPE.ERROR);
+      throw error;
+    } finally {
+      this.loaderService.stopLittleLoader();
     }
   }
-  
+
   getLoggedInPlayerId(): number | null {
     const userData = localStorage.getItem('user'); // Example storage
     return userData ? JSON.parse(userData).id : null;
