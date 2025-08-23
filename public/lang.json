@@ -210,5 +210,9 @@
     "competitions": {
         "it": "Competizioni",
         "en": "Competitions"
+    },
+    "not_available": {
+        "it": "Work in progress",
+        "en": "work in progress"
     }
 }
