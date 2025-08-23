@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { TranslationService } from '../../../services/translation.service';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../utils/translate.pipe';
-import { SupabaseAuthService } from '../../../services/supabase-auth.service';
 import { AuthService } from '../../../services/auth.service';
 import { Router, RouterOutlet } from '@angular/router';
 

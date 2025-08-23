@@ -21,7 +21,7 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: SupabaseAuthService,
+    private supabaseAuthService: SupabaseAuthService,
     private router: Router,
     private auth: AuthService,
     private loaderService: LoaderService // Assuming you have a loader service for error handling
@@ -36,19 +36,20 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
 
     const { email, password } = this.loginForm.value;
-    const { data, error } = await this.authService.signIn(email, password);
+    const { data, error } = await this.supabaseAuthService.signIn(email, password);
 
     if (error) {
       console.error('Login failed:', error.message);
       this.loaderService.showToast(error.message || 'Login failed. Please try again.', MSG_TYPE.ERROR, 5000);
     } else {
       console.log('User logged in:', data);
+      this.loaderService.showToast('Login successful!', MSG_TYPE.SUCCESS, 3000);
       this.router.navigate(['/']); // Redirect to home after successful registration
       this.auth.checkAuth()
     }
   }
   async googleSignIn() {
-    await this.authService.signInWithGoogle();
+    await this.supabaseAuthService.signInWithGoogle();
   }
 
 }
