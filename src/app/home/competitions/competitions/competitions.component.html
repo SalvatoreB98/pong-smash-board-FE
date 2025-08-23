@@ -15,6 +15,17 @@
     </section>
     <section>
         <h2>Le mie competizioni</h2>
+        <ul>
+            <li *ngFor="let c of competitions; trackBy: trackById">
+                <strong>{{ c.name }}</strong>
+                <span>— {{ c.type }}</span>
+                <small *ngIf="c.start_date"> (dal {{ c.start_date }}<span *ngIf="c.end_date"> al {{ c.end_date
+                        }}</span>)</small>
+            </li>
+        </ul>
+        <div *ngIf="!loading && competitions.length == 0" class="text-center" style="max-width: 500px; margin: auto;">
+            {{'no_competitions' | translate}}
+        </div>
     </section>
 </div>
 

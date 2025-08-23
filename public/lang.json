@@ -214,5 +214,9 @@
     "not_available": {
         "it": "Work in progress",
         "en": "work in progress"
+    },
+    "no_competitions": {
+        "it": "Nessuna competizione ancora. Crea la tua prima competizione per iniziare a registrare partite, classifiche e statistiche.",
+        "en": "No competitions yet. Create your first competition to start tracking matches, standings and stats."
     }
 }

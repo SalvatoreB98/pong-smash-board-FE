@@ -227,31 +227,22 @@ export class DataService {
     [key: string]: any;
   }): Promise<void> {
     this.loaderService.startLittleLoader();
+
+    if (!data?.name || !data?.type || data.bestOf == null || data.pointsTo == null) {
+      this.loaderService?.showToast(`Match data missing`, MSG_TYPE.ERROR);
+    }
+
+    const url = `/api/add-competition`;
     try {
-      // validazioni minime
-      if (!data?.name || !data?.type || data.bestOf == null || data.pointsTo == null) {
-        throw new Error("Missing fields: name, type, bestOf, pointsTo");
-      }
-
-      const response = await fetch(`${environment.apiUrl}/api/add-competition`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const responseData = await response.json();
-      this.loaderService?.showToast("Competizione creata!", MSG_TYPE.SUCCESS, 5000);
-      console.log("Success:", responseData);
-    } catch (error) {
-      this.loaderService?.showToast(`Competition not created: ${error}`, MSG_TYPE.ERROR);
+      // HttpClient serializza automaticamente in JSON
+      const responseData = await firstValueFrom(this.http.post<any>(url, data));
+      this.loaderService?.showToast('Salvato con successo!', MSG_TYPE.SUCCESS, 5000);
+      console.log('Success:', responseData);
+    } catch (error: any) {
+      this.loaderService?.showToast(`Match data not found ${error?.message ?? error}`, MSG_TYPE.ERROR);
       throw error;
     } finally {
       this.loaderService.stopLittleLoader();
     }
   }
-
 }
