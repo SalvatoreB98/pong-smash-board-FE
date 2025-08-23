@@ -158,3 +158,26 @@ h2 {
     border: 1px solid #ffffff62;
     background-color: black;
 }
+.disabled.seg-item {
+    opacity: 0.4;
+    cursor: not-allowed;
+    &>input:checked+span {
+        border: 0px;
+        box-shadow: none
+    }
+}
+.disabled::after {
+    content: "Work in progress";
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff8a;
+    font-weight: bold;
+    filter: drop-shadow(0 0 10px #000000);
+}

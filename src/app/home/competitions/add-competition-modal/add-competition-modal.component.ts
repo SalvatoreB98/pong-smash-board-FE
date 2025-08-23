@@ -9,8 +9,7 @@ import { ModalComponent } from '../../../common/modal/modal.component';
 import { ModalService } from '../../../../services/modal.service';
 import { DataService } from '../../../../services/data.service';
 
-type CompetitionType = 'elimination' | 'league';
-
+type CompetitionType = 'elimination' | 'league' | 'group_knockout';
 @Component({
   selector: 'app-add-competition-modal',
   standalone: true,
@@ -36,6 +35,7 @@ export class AddCompetitionModalComponent {
   // Getter comodi per il template
   get nameCtrl() { return this.competitionForm.get('nameCtrl')!; }
   get typeCtrl() { return this.competitionForm.get('typeCtrl')!; }
+  get hybridCtrl() { return this.competitionForm.get('typeCtrl')!; }
   get setsCtrl() { return this.competitionForm.get('setsCtrl')!; }
   get pointsCtrl() { return this.competitionForm.get('pointsCtrl')!; }
 
