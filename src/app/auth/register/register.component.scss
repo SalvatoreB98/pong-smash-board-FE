@@ -17,8 +17,10 @@
             border: none;
         }
     }
+
     .input-container {
         position: relative;
+
         i {
             position: absolute;
             top: 50%;
@@ -26,6 +28,7 @@
             left: 10px;
         }
     }
+
     button {
         all: unset;
         background-color: $primary;
@@ -38,21 +41,14 @@
         display: block;
         box-sizing: border-box;
         transition: all 0.2s ease-in;
+
         &:hover {
-            filter: brightness(1.5);
+            opacity: 0.7;
         }
     }
 }
 
-.register-wrapper {
-    width: 100vw;
-    height: 100vh;
-    background-image: url('/bg.gif');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    opacity: 0.1;
-}
+
 
 button {
     width: 100%;

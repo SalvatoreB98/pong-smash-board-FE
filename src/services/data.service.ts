@@ -205,7 +205,7 @@ export class DataService {
   }
 
   getLoggedInPlayerId(): number | null {
-    const userData = localStorage.getItem('user'); // Example storage
+    const userData = localStorage.getItem('user');
     return userData ? JSON.parse(userData).id : null;
   }
 
@@ -213,6 +213,7 @@ export class DataService {
     localStorage.setItem('loggedInPlayer', JSON.stringify(player));
   }
 
+  
   getStats() {
 
   }

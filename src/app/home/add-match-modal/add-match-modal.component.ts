@@ -32,6 +32,7 @@ export class AddMatchModalComponent implements OnInit {
 
   ngOnDestroy() {
   }
+  
   getPlayers(player?: number): any[] {
     if (!this.players || this.players.length === 0) return [];
 

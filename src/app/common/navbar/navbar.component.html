@@ -7,7 +7,7 @@
             </button>
             <ul class="dropdown-menu">
                 <li *ngFor="let language of translateService.languages">
-                    <a class="dropdown-item" (click)="translateService.setLanguage(language.code)">
+                    <a class="dropdown-item" (click)="translateService.setLanguage(language.code, true)">
                         {{ language.label | translate }}
                     </a>
                 </li>

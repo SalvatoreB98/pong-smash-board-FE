@@ -22,15 +22,20 @@ export class TranslationService {
 
   constructor(private http: HttpClient) {
     const userLanguage = navigator.language || navigator.languages[0] || 'en';
-    if (userLanguage.startsWith('it')) {
+    if (!localStorage.getItem("selectedLanguage") && userLanguage.startsWith('it')) {
       this.currentLang.next('it');
+    } else {
+      this.currentLang.next(localStorage.getItem("selectedLanguage") || 'en');
     }
     this.loadTranslations();
   }
 
   /** Cambia la lingua e aggiorna lo stato */
-  setLanguage(lang: string) {
+  setLanguage(lang: string, isManuallySet = false) {
     this.currentLang.next(lang);
+    if (isManuallySet) {
+      localStorage.setItem("selectedLanguage", lang);
+    }
   }
 
   /** Ottiene la lingua corrente */
