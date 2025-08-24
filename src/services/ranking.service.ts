@@ -4,46 +4,28 @@ import { BehaviorSubject } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { IRankingItem, IRankingResponse } from './data.service';
+import { RankingData } from './interfaces/Interfaces';
+import { API_PATHS } from '../api/api.config';
 
-// Se già dichiari IRankingItem/IRankingResponse altrove, usa quell'import.
-// Qui le ri-dichiaro per completezza nel caso serva localmente.
-export interface IRankingItem {
-  rating: number;
-  img_player: string;
-  lost: number;
-  playerid: number;
-  name: string;
-  image_url: string | null;
-  played: number;
-  wins: number;
-  winrate: number; // percentuale (es. 62.5)
-}
-export interface IRankingResponse {
-  ranking: IRankingItem[];
-  generatedAt: string;
-}
 
-interface RankingData extends IRankingResponse {
-  // Estendibile se in futuro vuoi aggiungere altro stato derivato
-}
+
 
 @Injectable({ providedIn: 'root' })
 export class RankingService {
-  // ---- Stato in memoria (come in DataService) ----
+
   private ranking: IRankingItem[] = [];
   private generatedAt = '';
 
-  // Stream reattivi (facoltativi ma in linea con DataService)
   private rankingSubject = new BehaviorSubject<IRankingItem[]>([]);
   private generatedAtSubject = new BehaviorSubject<string>('');
 
   public rankingObs = this.rankingSubject.asObservable();
   public generatedAtObs = this.generatedAtSubject.asObservable();
 
-  // ---- Cache & coalescing (stessa struttura del DataService) ----
-  private _loaded = false;                         // abbiamo già i dati?
-  private _lastLoadedAt = 0;                       // timestamp ultimo load
-  private _loadingPromise?: Promise<IRankingResponse>; // dedup delle chiamate
+  private _loaded = false;                         
+  private _lastLoadedAt = 0;                       
+  private _loadingPromise?: Promise<IRankingResponse>; 
 
   constructor(private http: HttpClient) { }
 
@@ -93,7 +75,7 @@ export class RankingService {
     try {
 
       const data = await firstValueFrom(
-        this.http.get<IRankingResponse>(`/api/get-ranking`)
+        this.http.get<IRankingResponse>(API_PATHS.getRanking)
       );
 
       this.assignData(data);

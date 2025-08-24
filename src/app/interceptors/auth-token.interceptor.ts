@@ -1,19 +1,15 @@
+// auth-token.interceptor.ts
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { SupabaseAuthService } from '../../services/supabase-auth.service';
 import { from, switchMap } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { findApiConfig } from '../../api/api.config';
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  const isApi =
-    req.url.startsWith('/api') || req.url.startsWith(environment.apiUrl);
+  if (req.method === 'OPTIONS') return next(req);
 
-  // es. non toccare richieste non-API o le preflight
-  if (!isApi || req.method === 'OPTIONS') return next(req);
-
-  if (req.method === 'GET') {
-    if (!(/\/api\/get-competitions$/.test(req.url))) return next(req);
-  }
+  const apiCfg = findApiConfig(req.url, req.method);
+  if (!apiCfg || !apiCfg.needsAuth) return next(req);
 
   const sbAuth = inject(SupabaseAuthService);
   return from(sbAuth.getAccessToken()).pipe(
@@ -21,7 +17,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
       const authReq = token
         ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
         : req;
-      return next(authReq);
+      return next(authReq); 
     })
   );
 };

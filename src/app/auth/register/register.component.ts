@@ -47,7 +47,9 @@ export class RegisterComponent {
       this.loaderService.showToast(error.message || 'Registration failed. Please try again.', MSG_TYPE.ERROR, 5000);
     } else {
       console.log('User registered:', data);
-      this.router.navigate(['/profile']); // Redirect to home after successful registration
+      this.loaderService.showToast('Registration successful! Please check your email to verify your account.', MSG_TYPE.SUCCESS, 5000);
+      
+      this.router.navigate(['/profile']); 
     }
   }
   async googleSignIn() {

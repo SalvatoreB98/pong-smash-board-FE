@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment'; // adatta il path
 import { LoaderService } from './loader.service';
+import { API_PATHS } from '../api/api.config';
 
 // === Tipi di risposta dal BE ===
 export interface ICompetition {
@@ -55,9 +56,8 @@ export class CompetitionsService {
   private async _fetchAndAssignCompetitionsInternal(): Promise<ICompetitionsResponse> {
     try {
       this.loaderService.startLittleLoader();
-      const url = `/api/get-competitions`;
       const data = await firstValueFrom(
-        this.http.get<ICompetitionsResponse>(url)
+        this.http.get<ICompetitionsResponse>(API_PATHS.getCompetitions)
       );
 
       this.assignData(data);

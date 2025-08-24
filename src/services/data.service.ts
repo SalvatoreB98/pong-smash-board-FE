@@ -8,6 +8,7 @@ import { LoaderComponent } from '../app/utils/components/loader/loader.component
 import { LoaderService } from './loader.service';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { API_PATHS } from '../api/api.config';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
@@ -21,6 +22,7 @@ interface MatchData extends IMatchResponse {
   giocatore2Score: number;
 }
 export interface IRankingItem {
+  rating: number;
   playerid: number;
   name: string;
   image_url: string | null;
@@ -120,7 +122,7 @@ export class DataService {
       } else {
         try {
           const data = await firstValueFrom(
-            this.http.get<IMatchResponse>('/api/get-matches')
+            this.http.get<IMatchResponse>(API_PATHS.getMatches)
           );
           this.assignData(data);
         } catch (err: any) {
@@ -189,7 +191,7 @@ export class DataService {
       return Promise.reject('Invalid data');
     }
 
-    const url = `/api/add-match`;
+    const url = API_PATHS.addMatch;
 
     try {
       // HttpClient serializza automaticamente in JSON
