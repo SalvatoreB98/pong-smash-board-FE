@@ -44,20 +44,10 @@
             top: 50%;
             transform: translateY(-50%);
             left: 10px;
-            color: black;
         }
     }
 }
 
-.login-wrapper {
-    width: 100vw;
-    height: 100vh;
-    background-image: url('/bg.gif');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    opacity: 0.1;
-}
 
 button {
     width: 100%;
