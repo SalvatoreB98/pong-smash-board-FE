@@ -20,15 +20,15 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'complete-profile',
   standalone: true,
   imports: [CommonModule, NavbarComponent, TranslatePipe, FormsModule, ReactiveFormsModule],
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+  templateUrl: './complete-profile.component.html',
+  styleUrls: ['./complete-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class ProfileComponent implements OnInit {
+export class CompleteProfileComponent implements OnInit {
 
   previewUrl: string | null = null;
   private userService = inject(UserService);

@@ -161,7 +161,7 @@
     },
     "matches_not_found": {
         "it": "Nessuna partita trovata, aggiungine una!",
-        "en": "No matches found"
+        "en": "No matches found, add one!"
     },
     "add_competition": {
         "it": "Aggiungi competizione",
