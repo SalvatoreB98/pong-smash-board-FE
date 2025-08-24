@@ -7,7 +7,7 @@
         <app-matches *ngIf="matches?.length > 0" [matches]="matches"
             (matchEmitter)="setClickedMatch($event)">
         </app-matches>
-        <div class="add-button-container">
+        <div class="button-container">
             <button (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">
                 {{ "add_match" | translate}} 
                 <span class="m-1"></span> 

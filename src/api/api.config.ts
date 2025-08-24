@@ -6,14 +6,16 @@ export const API_PATHS = {
   getRanking: '/api/get-ranking',
   getMatches: '/api/get-matches',
   addMatch: '/api/add-match',
+  updateProfile: '/api/update-profile',
 }
 
 export const API_AUTH_CONFIG: Record<string, { needsAuth: boolean; methods?: string[] }> = {
   [API_PATHS.userState]: { needsAuth: true },
-  [API_PATHS.getCompetitions]: { needsAuth: false },
+  [API_PATHS.getCompetitions]: { needsAuth: true },
   [API_PATHS.getRanking]: { needsAuth: false },
   [API_PATHS.getMatches]: { needsAuth: false },
   [API_PATHS.addMatch]: { needsAuth: true, methods: ['POST'] },
+  [API_PATHS.updateProfile]: { needsAuth: true, methods: ['POST'] },
 };
 
 export function findApiConfig(url: string, method: string) {

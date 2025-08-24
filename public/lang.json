@@ -222,5 +222,29 @@
     "register_title": {
         "it": "Registrati",
         "en": "Signup"
+    },
+    "complete_profile": {
+        "it": "Completa il tuo profilo",
+        "en": "Complete your profile"
+    },
+    "edit_profile": {
+        "it": "Modifica profilo",
+        "en": "Edit profile"
+    },
+    "paragraph_complete" : {
+        "it": "Per iniziare a registrare partite, classifiche e statistiche, aggiungi un'immagine (opzionale) e scegli un nickname.",
+        "en": "To start tracking matches, standings and stats, complete your profile."
+    },
+    "nickname_label": {
+        "it": "Inserisci il tuo nickname",
+        "en": "Enter your nickname"
+    },
+    "nickname": {
+        "it": "Nickname",
+        "en": "Nickname"
+    },
+    "continue": {
+        "it": "Next step",
+        "en": "Vai al prossimo step"
     }
 }

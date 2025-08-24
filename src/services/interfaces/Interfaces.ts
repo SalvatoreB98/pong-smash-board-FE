@@ -22,6 +22,11 @@ export type UserProgressState =
   | 'profile_completed'
   | 'without_competition';
 
+export enum UserProgressStateEnum {
+  PROFILE_NOT_COMPLETED = 'profile_not_completed',
+  PROFILE_COMPLETED = 'profile_completed',
+  WITHOUT_COMPETITION = 'without_competition',
+}
 export interface IUserState {
   id: number;
   user_id: string; // UUID

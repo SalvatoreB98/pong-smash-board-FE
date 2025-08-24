@@ -86,12 +86,12 @@ h2 {
 }
 
 // Buttons
-.add-button-container {
+.button-container {
     max-width: 500px;
     margin: auto;
     padding: 1em;
 
-    .add-match {
+    button {
         all: unset;
         cursor: pointer;
         border-radius: $border-radius;
