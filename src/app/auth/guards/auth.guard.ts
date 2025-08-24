@@ -28,20 +28,17 @@ export class AuthGuard implements CanActivate {
     const progress = (s.state ?? 'profile_not_completed') as UserProgressState;
     const activeCompId = s.active_competition_id ?? null;
 
-    const targetUrl = state.url; // es: '/profile', '/competitions', '/'
+    const targetUrl = state.url; 
 
-    // 3) Routing condizionale
     if (progress === 'profile_not_completed') {
-      // Se sto già andando a /profile, lascia passare
-      if (targetUrl.startsWith('/profile')) return true;
-      return this.router.parseUrl('/profile');
+      if (targetUrl.startsWith('/complete-profile')) return true;
+      return this.router.parseUrl('/complete-profile');
     }
 
-    if (progress === 'profile_completed' && !activeCompId) {
-      // Se sto già andando a /competitions, lascia passare
-      if (targetUrl.startsWith('/competitions')) return true;
-      return this.router.parseUrl('/competitions');
-    }
+    // if (progress === 'profile_completed' && !activeCompId) {
+    //   if (targetUrl.startsWith('/competitions')) return true;
+    //   return this.router.parseUrl('/competitions');
+    // }
 
     // Altrimenti ok
     return true;

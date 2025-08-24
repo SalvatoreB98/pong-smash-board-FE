@@ -113,10 +113,8 @@ export class DataService {
   }
 
   private async _fetchAndAssignInternal(): Promise<IMatchResponse> {
-    this.loaderService.startLoader();
+    this.loaderService.startLittleLoader();
     try {
-      this.loader?.startLoader();
-
       if (environment.mock) {
         this.assignData(mockData);
       } else {
@@ -139,7 +137,7 @@ export class DataService {
       this.assignData(mockData);
       return this.generateReturnObject();
     } finally {
-      this.loaderService.stopLoader();
+      this.loaderService.stopLittleLoader();
     }
   }
 
@@ -235,7 +233,7 @@ export class DataService {
       this.loaderService?.showToast(`Match data missing`, MSG_TYPE.ERROR);
     }
 
-    const url = `/api/add-competition`;
+    const url = API_PATHS.addCompetition;
     try {
       // HttpClient serializza automaticamente in JSON
       const responseData = await firstValueFrom(this.http.post<any>(url, data));

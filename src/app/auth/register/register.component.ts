@@ -49,7 +49,7 @@ export class RegisterComponent {
       console.log('User registered:', data);
       this.loaderService.showToast('Registration successful! Please check your email to verify your account.', MSG_TYPE.SUCCESS, 5000);
       
-      this.router.navigate(['/profile']); 
+      this.router.navigate(['/complete-profile']); 
     }
   }
   async googleSignIn() {
