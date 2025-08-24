@@ -110,7 +110,49 @@ h2 {
     }
 
 }
-
+.large-button {
+    all: unset;
+    cursor: pointer;
+    border-radius: $border-radius;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: transform 0.1s ease-in-out;
+    filter: drop-shadow(0px 0px 10px #00000075);
+    position: relative;
+    overflow: hidden;
+    background-color: #0b1e2a;
+    &:hover {
+        transform: scale(0.97);
+        p {
+            display: grid;
+        }
+    }
+    p {
+        padding: 1em;
+        place-items: center;
+        text-align: center;
+        position: absolute;
+        top: 0%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 0.7em;
+        margin-bottom: 0;
+        display: none;
+        background-color: #0b1e2a;
+    }
+    div {
+        font-weight: 900;
+        margin: 1em;
+    }
+    i {
+        font-size: 2em;
+    }
+}
 // Sections
 section {
     margin-bottom: 2em;

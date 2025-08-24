@@ -7,6 +7,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { CompetitionsComponent } from './home/competitions/competitions/competitions.component';
 import { CompleteProfileComponent } from './profile/complete-profile/complete-profile.component';
+import { CompetitionStartComponent } from './profile/complete-profile/competition-start/competition-start.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -16,5 +17,6 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'complete-profile', component: CompleteProfileComponent, canActivate: [AuthGuard] },
   { path: 'competitions', component: CompetitionsComponent, canActivate: [AuthGuard] },
+  { path: 'competition-start', component: CompetitionStartComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
