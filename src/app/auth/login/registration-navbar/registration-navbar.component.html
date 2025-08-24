@@ -1,6 +1,19 @@
 <nav>
-    <a href="/login">
+    <a href="/login" style="cursor: pointer;">
         <i class="fa fa-arrow-left"></i>
         <span> Login </span>
     </a>
+    
+    <div class="dropdown-lang position-relative">
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="fa fa-language"></i> {{ translateService.getLanguage() }}
+        </button>
+        <ul class="dropdown-menu">
+            <li *ngFor="let language of translateService.languages">
+                <a class="dropdown-item" (click)="translateService.setLanguage(language.code, true)">
+                    {{ language.label | translate }}
+                </a>
+            </li>
+        </ul>
+    </div>
 </nav>

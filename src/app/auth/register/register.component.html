@@ -2,8 +2,8 @@
 <div class="register-wrapper">
 </div>
 <div class="register-container">
-    <h2>Register</h2>
-    <form class="form-dark"  [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <h2>{{"register_title"| translate}}</h2>
+    <form class="form-dark" [formGroup]="registerForm" (ngSubmit)="onRegister()">
         <div class="input-container">
             <i class="fa fa-envelope-o" aria-hidden="true"></i>
             <input id="email" type="email" formControlName="email" placeholder="Enter your email" required>
@@ -15,7 +15,8 @@
         </div>
         <div class="input-container">
             <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-            <input id="passwordConfirm" type="password" formControlName="confirmPassword" placeholder="Confirm your password" required>
+            <input id="passwordConfirm" type="password" formControlName="confirmPassword"
+                placeholder="Confirm your password" required>
         </div>
 
 

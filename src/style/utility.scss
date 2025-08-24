@@ -2,6 +2,10 @@
 
 .title {
     font-family: 'LarkenBlack', sans-serif;
+
+    a {
+        cursor: pointer;
+    }
 }
 
 .my-container {
@@ -33,6 +37,30 @@
         animation: scrollText 8s linear infinite alternate;
     }
 
+}
+
+.dropdown-lang {
+    select {
+        position: absolute;
+    }
+
+    button {
+        background-color: $dark;
+        color: white;
+        border: none;
+        transition: all 0.25 ease-in-out;
+
+        &:hover {
+            background-color: #374d87;
+        }
+    }
+
+    a {
+        font-size: 0.75em;
+        width: 80%;
+        font-weight: lighter;
+        text-transform: capitalize;
+    }
 }
 
 @keyframes scrollText {
