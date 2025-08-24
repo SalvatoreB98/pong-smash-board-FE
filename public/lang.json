@@ -231,7 +231,7 @@
         "it": "Modifica profilo",
         "en": "Edit profile"
     },
-    "paragraph_complete" : {
+    "paragraph_complete": {
         "it": "Per iniziare a registrare partite, classifiche e statistiche, aggiungi un'immagine (opzionale) e scegli un nickname.",
         "en": "To start tracking matches, standings and stats, complete your profile."
     },
@@ -243,8 +243,28 @@
         "it": "Nickname",
         "en": "Nickname"
     },
-    "continue": {
-        "it": "Next step",
-        "en": "Vai al prossimo step"
+    "competition_choice": {
+        "it": "Scegli se avviare una nuova competizione o unirti a una già esistente.",
+        "en": "Choose whether to start a new competition or join an existing one."
+    },
+    "starts_competition_title": {
+        "it": "Crea o partecipa a una competizione",
+        "en": "Create or join a competition"
+    },
+    "create_competition": {
+        "it": "Crea",
+        "en": "Create a competition"
+    },
+    "join_competition": {
+        "it": "Unisciti",
+        "en": "Join a competition"
+    },
+    "create_competition_info": {
+        "it": "Crea una nuova competizione per iniziare a registrare partite, classifiche e statistiche.",
+        "en": "Create a new competition to start tracking matches, standings and stats."
+    },
+    "join_competition_info": {
+        "it": "Unisciti a una competizione esistente per iniziare a registrare partite, classifiche e statistiche.",
+        "en": "Join an existing competition to start tracking matches, standings and stats."
     }
 }
