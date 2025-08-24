@@ -4,7 +4,7 @@
         <h2 class="text-center" style="text-transform: capitalize;">{{'competitions' | translate}}</h2>
         <div class="container">
             <div class="row">
-                <div class="add-button-container">
+                <div class="button-container">
                     <button (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])" class="add-match">
                         {{"add_competition"| translate}}
                         <span class="m-1"></span>
@@ -22,9 +22,9 @@
                         }}</span>)</small>
             </li>
         </ul>
-        <div *ngIf="!loading && competitions.length == 0" class="text-center" style="max-width: 500px; margin: auto;">
+        <p class="istructions" *ngIf="!loading && competitions.length == 0" class="text-center">
             {{'no_competitions' | translate}}
-        </div>
+        </p>
     </section>
 </div>
 
