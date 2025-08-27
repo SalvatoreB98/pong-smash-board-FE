@@ -185,8 +185,8 @@ export class DataService {
 
   async addMatch(data: { p1Score: number; p2Score: number;[key: string]: any }): Promise<void> {
     console.log(data);
-    this.loaderService.startLittleLoader();
 
+    this.loaderService.startLittleLoader();
     if (data?.p1Score == null || data?.p2Score == null) {
       this.loaderService.stopLittleLoader();
       return Promise.reject('Invalid data');

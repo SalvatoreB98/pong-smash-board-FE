@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { catchError, map, tap } from 'rxjs/operators';
-import { EMPTY, firstValueFrom, Observable, of } from 'rxjs';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
+import { EMPTY, firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { CompetitionStore } from '../stores/competition.store'; // adatta il path
 import { LoaderService } from '../services/loader.service';     // opzionale
 import { MSG_TYPE } from '../app/utils/enum';                   // opzionale
@@ -32,7 +32,7 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore nel caricamento competizioni', MSG_TYPE.ERROR);
         return of(this.store.snapshotList()); // restituisco ciò che ho
       }),
-      tap(() => this.loader?.stopLittleLoader())
+      finalize(() => this.loader?.stopLittleLoader())  // <-- SEMPRE chiamato
     );
   }
 
@@ -46,7 +46,8 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore nel caricamento competizione', MSG_TYPE.ERROR);
         return EMPTY;
       }),
-      tap(() => this.loader?.stopLittleLoader())
+      finalize(() => this.loader?.stopLittleLoader())  // <-- SEMPRE chiamato
+
     );
   }
 
@@ -68,9 +69,9 @@ export class CompetitionService {
       catchError(err => {
         console.error('[CompetitionService] add error:', err);
         this.loader?.showToast?.('Errore creazione competizione', MSG_TYPE.ERROR);
-        return EMPTY;
+        return throwError(() => err); // <-- errore propagato
       }),
-      tap(() => this.loader?.stopLittleLoader())
+      finalize(() => this.loader?.stopLittleLoader()) 
     );
   }
 
@@ -85,7 +86,7 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore aggiornamento competizione', MSG_TYPE.ERROR);
         return EMPTY;
       }),
-      tap(() => this.loader?.stopLittleLoader())
+      finalize(() => this.loader?.stopLittleLoader())  
     );
   }
 
@@ -103,7 +104,7 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore eliminazione competizione', MSG_TYPE.ERROR);
         return EMPTY;
       }),
-      tap(() => this.loader?.stopLittleLoader())
+      finalize(() => this.loader?.stopLittleLoader()) 
     );
   }
 
@@ -115,7 +116,7 @@ export class CompetitionService {
   getCompetitions(): Promise<ICompetition[]> {
     return firstValueFrom(this.load());
   }
-  
+
   addCompetition(dto: AddCompetitionDto): Promise<ICompetition> {
     return firstValueFrom(this.add(dto));
   }

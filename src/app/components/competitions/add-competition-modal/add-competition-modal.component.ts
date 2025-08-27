@@ -9,6 +9,7 @@ import { ModalComponent } from '../../../common/modal/modal.component';
 import { ModalService } from '../../../../services/modal.service';
 import { DataService } from '../../../../services/data.service';
 import { CompetitionService } from '../../../../services/competitions.service';
+import { LoaderService } from '../../../../services/loader.service';
 
 type CompetitionType = 'elimination' | 'league' | 'group_knockout';
 @Component({
@@ -21,7 +22,7 @@ type CompetitionType = 'elimination' | 'league' | 'group_knockout';
 export class AddCompetitionModalComponent {
   competitionForm: FormGroup;
 
-  constructor(private fb: FormBuilder, public modalService: ModalService, private competitionService: CompetitionService) {
+  constructor(private fb: FormBuilder, public modalService: ModalService, private competitionService: CompetitionService, private loaderService: LoaderService) {
 
     this.competitionForm = this.fb.group(
       {
@@ -63,30 +64,36 @@ export class AddCompetitionModalComponent {
   private sendCompetition() {
     if (this.competitionForm.invalid) return;
 
-    const toYmd = (d: string | Date | null) =>
-      d ? new Date(d).toLocaleDateString("en-CA") : undefined; // → YYYY-MM-DD
+    this.loaderService.startLittleLoader();
+    try {
+      const toYmd = (d: string | Date | null) =>
+        d ? new Date(d).toLocaleDateString("en-CA") : undefined; // → YYYY-MM-DD
 
-    const formValue = this.competitionForm.value;
+      const formValue = this.competitionForm.value;
 
-    const payload = {
-      name: formValue.nameCtrl,
-      type: formValue.typeCtrl,            // "league" | "elimination" ...
-      bestOf: formValue.setsCtrl,        // es. 3/5/7
-      pointsTo: formValue.pointsCtrl,    // es. 11/21
-      startDate: toYmd(formValue.startDate) ?? undefined,
-      endDate: toYmd(formValue.endDate) ?? undefined
-    };
+      const payload = {
+        name: formValue.nameCtrl,
+        type: formValue.typeCtrl,            // "league" | "elimination" ...
+        bestOf: formValue.setsCtrl,        // es. 3/5/7
+        pointsTo: formValue.pointsCtrl,    // es. 11/21
+        startDate: toYmd(formValue.startDate) ?? undefined,
+        endDate: toYmd(formValue.endDate) ?? undefined
+      };
 
-    console.log('Saving competition...', payload);
-    this.competitionService.addCompetition(payload).then((res) => {
-      console.log('Competition added:', res);
-      this.competitionService.add({
-        ...res,
-        bestOf: res['sets_type'],
-        pointsTo: res['points_type']
+      console.log('Saving competition...', payload);
+      console.log('Saving competition...', payload);
+      
+      this.competitionService.addCompetition(payload).then((res) => {
+        console.log('Competition added:', res);
+        this.closeModal();
       });
-      this.closeModal();
-    });
+
+    } catch (error) {
+      console.log(error)
+      this.loaderService.stopLittleLoader()
+    } finally {
+      this.loaderService.stopLittleLoader()
+    }
   }
 
   closeModal() {

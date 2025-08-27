@@ -33,8 +33,8 @@
     </section>
 
     <ng-container *ngIf="userState$ | async as state">
-        <div *ngIf="!state.active_competition_id || (competitions$ | async)?.length === 0">
-            <app-competition-start (create)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
+        <div *ngIf="!state.active_competition_id">
+            <app-competition-start (create)=" modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
             </app-competition-start>
         </div>
     </ng-container>

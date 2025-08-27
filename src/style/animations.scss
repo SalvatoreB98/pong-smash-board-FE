@@ -1,0 +1,18 @@
+.my-modal {
+    opacity: 0;
+    animation: open 0.1s ease-out forwards;
+}
+
+@keyframes open {
+    from {
+        opacity: 0;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.75);
+        animation: 0.15s ease-in;
+        
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}

@@ -20,8 +20,6 @@ export class AuthGuard implements CanActivate {
     const session = await this.supabaseAuthService.getUserSession();
     if (!session?.data?.session) return this.router.parseUrl('/login');
 
-    // 2) Stato utente
-    this.loaderService.startLittleLoader(); // Mostra il loader
     const raw = await firstValueFrom(this.userService.getState());
     this.loaderService.stopLittleLoader(); 
     const s = (raw as Partial<IUserState>) ?? {};

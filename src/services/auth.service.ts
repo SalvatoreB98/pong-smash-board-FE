@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { inject, Injectable } from '@angular/core';
 import { SupabaseAuthService } from './supabase-auth.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { UserService } from './user.service';
+import { CompetitionService } from './competitions.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  
   public isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  userService = inject(UserService);
+
+  competitionService = inject(CompetitionService);
 
   constructor(private supabaseAuthService: SupabaseAuthService) {
     this.checkAuth();
@@ -20,6 +25,8 @@ export class AuthService {
 
   async logout() {
     await this.supabaseAuthService.signOut();
+    this.userService.clear()
+    this.competitionService = inject(CompetitionService);
     this.isLoggedIn$.next(false);
   }
 }
