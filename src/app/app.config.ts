@@ -1,9 +1,9 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, RouterModule } from '@angular/router';
 import { routes } from './app.routes';
 import { ModalService } from '../services/modal.service';
 import { CommonModule } from '@angular/common';
-import { provideAnimations } from '@angular/platform-browser/animations'; // ✅ Import animations
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { TranslationService } from '../services/translation.service';
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TranslatePipe } from './utils/translate.pipe';
@@ -13,11 +13,11 @@ import { apiPrefixInterceptor } from './interceptors/api-url.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes),                     
+    importProvidersFrom(RouterModule),             
     provideAnimations(),
     provideHttpClient(
       withInterceptors([authTokenInterceptor, apiPrefixInterceptor]),
-
     ),
     ModalService,
     CommonModule,

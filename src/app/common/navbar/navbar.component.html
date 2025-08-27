@@ -1,7 +1,7 @@
-<ng-container *ngIf="userState() as state">
+<ng-container *ngIf="userState$ | async as state">
     <nav>
         <div class="title">
-            <a [href]="state.state != PROGRESS_STATE.PROFILE_COMPLETED ? '#' : '/#home-page'">
+            <a [routerLink]="state.state != PROGRESS_STATE.PROFILE_COMPLETED ? '#' : '/#home-page'">
                 Pong Board
                 <span></span>
             </a>
@@ -20,12 +20,12 @@
                 </ul>
             </div>
 
-            <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" href="profile" class="button-navbar">
+            <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="profile" class="button-navbar">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 <span>{{"profile" | translate}}</span>
             </a>
 
-            <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" href="/competitions" class="button-navbar">
+            <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/competitions" class="button-navbar">
                 <span>{{"Competizioni" | translate}}</span>
             </a>
 
@@ -42,10 +42,10 @@
                     <div class="curtain">
                         <ul class="list-unstyled p-0 m-0">
                             <li class="clickable">
-                                <a href="/profile">{{"profile" | translate}}</a>
+                                <a routerLink="/profile">{{"profile" | translate}}</a>
                             </li>
                             <li class="clickable">
-                                <a href="/competitions"> {{"Competizioni" | translate}} </a>
+                                <a routerLink="/competitions"> {{"Competizioni" | translate}} </a>
                             </li>
                             <li class="clickable" style="color: #c76360;">
                                 <a (click)="logout()">Log Out</a>

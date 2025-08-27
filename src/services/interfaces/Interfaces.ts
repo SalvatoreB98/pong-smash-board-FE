@@ -1,3 +1,5 @@
+import { ICompetition } from "../../api/competition.api";
+
 // src/app/types/ranking.ts
 export interface IRankingItem {
   playerid: number;
@@ -36,4 +38,5 @@ export interface IUserState {
   email: string;
   name: string | null;
   lastname: string | null;
+  competitions?: ICompetition[];
 }

@@ -2,7 +2,7 @@
     <section>
         <h2 class="text-center" style="text-transform: capitalize;">{{'competitions' | translate}}</h2>
         <div class="container">
-            <ng-container *ngIf="userState() as state">
+            <ng-container *ngIf="userState$ | async as state">
                 <div *ngIf="state.active_competition_id || competitions.length > 0">
                     <div class="row">
                         <div class="button-container">
@@ -28,7 +28,7 @@
         </ul>
 
     </section>
-    <ng-container *ngIf="userState() as state">
+    <ng-container *ngIf="userState$ | async as state">
         <div *ngIf="!state.active_competition_id || competitions.length == 0">
             <app-competition-start (create)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
             </app-competition-start>

@@ -44,8 +44,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private currentImageUrl: string | null = null;
 
   // Stato utente (reactive signal)
-  public userState = toSignal<IUserState | null>(this.userService.userState$(), { initialValue: null });
-
+  userState = toSignal<IUserState | null>(this.userService.getState(), { initialValue: null });
+  userState$ = this.userService.getState();
   constructor() {
     // Precompila nickname e imageUrl quando lo stato cambia
     effect(() => {
@@ -61,12 +61,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.previewUrl = existingImg;
       }
     });
-    
   }
 
   async ngOnInit() {
     // Assicurati di avere lo stato aggiornato
-    await firstValueFrom(this.userService.getUserState());
+    await firstValueFrom(this.userService.getState());
     // Prova a recuperare l’ultimo avatar dal bucket dell’utente
     await this.loadLatestAvatarFromSupabase();
   }

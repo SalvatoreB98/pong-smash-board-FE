@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MSG_TYPE } from "../app/utils/enum";
 import mockData from '../app/utils/mock.json';
 import { environment } from '../environments/environment';
@@ -9,6 +9,7 @@ import { LoaderService } from './loader.service';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_PATHS } from '../api/api.config';
+import { UserService } from './user.service';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
@@ -64,6 +65,8 @@ export class DataService {
   private _lastLoadedAt = 0;               // timestamp dell’ultimo load
   private _loadingPromise?: Promise<IMatchResponse>; // dedup calls
   private _id = Math.random().toString(36).slice(2);
+
+  private userService = inject(UserService);
 
   constructor(private loaderService: LoaderService, private http: HttpClient) {
     console.log('[DataService] ctor', this._id);
@@ -213,37 +216,8 @@ export class DataService {
     localStorage.setItem('loggedInPlayer', JSON.stringify(player));
   }
 
-  
+
   getStats() {
 
-  }
-
-  async addCompetition(data: {
-    name: string;
-    type: string;          // "league" | "elimination" | ecc.
-    bestOf: number;        // mappa su setsType
-    pointsTo: number;      // mappa su pointsType
-    startDate?: string;    // "YYYY-MM-DD" opzionale
-    endDate?: string;      // "YYYY-MM-DD" opzionale
-    [key: string]: any;
-  }): Promise<void> {
-    this.loaderService.startLittleLoader();
-
-    if (!data?.name || !data?.type || data.bestOf == null || data.pointsTo == null) {
-      this.loaderService?.showToast(`Match data missing`, MSG_TYPE.ERROR);
-    }
-
-    const url = API_PATHS.addCompetition;
-    try {
-      // HttpClient serializza automaticamente in JSON
-      const responseData = await firstValueFrom(this.http.post<any>(url, data));
-      this.loaderService?.showToast('Salvato con successo!', MSG_TYPE.SUCCESS, 5000);
-      console.log('Success:', responseData);
-    } catch (error: any) {
-      this.loaderService?.showToast(`Match data not found ${error?.message ?? error}`, MSG_TYPE.ERROR);
-      throw error;
-    } finally {
-      this.loaderService.stopLittleLoader();
-    }
   }
 }

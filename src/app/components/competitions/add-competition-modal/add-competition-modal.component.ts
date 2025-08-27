@@ -8,19 +8,20 @@ import { TranslatePipe } from '../../../utils/translate.pipe';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { ModalService } from '../../../../services/modal.service';
 import { DataService } from '../../../../services/data.service';
+import { CompetitionService } from '../../../../services/competitions.service';
 
 type CompetitionType = 'elimination' | 'league' | 'group_knockout';
 @Component({
   selector: 'app-add-competition-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslatePipe], // 👈 QUI
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './add-competition-modal.component.html',
   styleUrl: './add-competition-modal.component.scss'
 })
 export class AddCompetitionModalComponent {
   competitionForm: FormGroup;
 
-  constructor(private fb: FormBuilder, public modalService: ModalService, private dataService: DataService) {
+  constructor(private fb: FormBuilder, public modalService: ModalService, private competitionService: CompetitionService) {
 
     this.competitionForm = this.fb.group(
       {
@@ -77,7 +78,7 @@ export class AddCompetitionModalComponent {
     };
 
     console.log('Saving competition...', payload);
-    this.dataService.addCompetition(payload).then(() => {
+    this.competitionService.addCompetition(payload).then(() => {
       this.closeModal();
     });
   }

@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <ng-container *ngIf="userState() as state">
+    <ng-container *ngIf="userState$ | async as state">
         <h2>
             {{"edit_profile" | translate}}
         </h2>

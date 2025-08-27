@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SupabaseAuthService } from '../../../services/supabase-auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../utils/translate.pipe';
 import { NavbarComponent } from '../../common/navbar/navbar.component';
@@ -12,7 +12,7 @@ import { MSG_TYPE } from '../../utils/enum';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslatePipe, NavbarComponent, RegistrationNavbarComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslatePipe, NavbarComponent, RegistrationNavbarComponent, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

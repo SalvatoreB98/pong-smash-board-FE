@@ -1,14 +1,14 @@
 <div class="wrapper">
-    <ng-container *ngIf="userState() as state">
-        <h2 *ngIf="state.state ===  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
+    <ng-container *ngIf="userState$ | async as state">
+        <h2 *ngIf="state?.state ===  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
             {{"complete_profile" | translate}}
         </h2>
-        <h2 *ngIf="state.state !==  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
+        <h2 *ngIf="state?.state !==  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
             {{"edit_profile" | translate}}
         </h2>
         <ng-template #noComp>Nessuna competizione attiva</ng-template>
         <section>
-            <p class="instructions" *ngIf="state.state ===  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
+            <p class="instructions" *ngIf="state?.state ===  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
                 {{ "paragraph_complete" | translate}}
             </p>
             <form [formGroup]="form" class="form-dark">

@@ -3,10 +3,11 @@ import { MSG_TYPE } from '../../enum';
 import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../../../services/loader.service';
 import { TranslatePipe } from '../../translate.pipe';
+import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 
 @Component({
   selector: 'app-loader',
-  imports: [CommonModule, TranslatePipe],
+  imports: [...SHARED_IMPORTS],
   templateUrl: './loader.component.html',
   styleUrl: './loader.component.scss'
 })

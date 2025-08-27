@@ -4,10 +4,11 @@ import { ModalService } from '../../../services/modal.service';
 import { MODALS } from '../../utils/enum';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { TranslatePipe } from '../../utils/translate.pipe';
+import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 
 @Component({
   selector: 'app-show-match-modal',
-  imports: [CommonModule, TranslatePipe],
+  imports: [...SHARED_IMPORTS],
   templateUrl: './show-match-modal.component.html',
   styleUrl: './show-match-modal.component.scss'
 })

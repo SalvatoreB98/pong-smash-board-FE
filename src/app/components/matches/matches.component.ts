@@ -8,10 +8,11 @@ import { ModalService } from '../../../services/modal.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
 import { environment } from '../../../environments/environment';
 import { TranslatePipe } from '../../utils/translate.pipe';
+import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 
 @Component({
   selector: 'app-matches',
-  imports: [CommonModule, TranslatePipe],
+  imports: [...SHARED_IMPORTS],
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.scss'
 })

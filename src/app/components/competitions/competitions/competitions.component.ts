@@ -7,43 +7,47 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { AddCompetitionModalComponent } from '../add-competition-modal/add-competition-modal.component';
 import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
-import { CompetitionsService, ICompetition } from '../../../../services/competitions.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { IUserState } from '../../../../services/interfaces/Interfaces';
-import { UserService } from '../../../../services/user.service';
 import { UserProgressStateEnum } from '../../../utils/enum';
 import { CompetitionStartComponent } from '../../profile/complete-profile/competition-start/competition-start.component';
+import { CompetitionService } from '../../../../services/competitions.service';
+import { ICompetition } from '../../../../api/competition.api';
+import { UserService } from '../../../../services/user.service';
+import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 
 @Component({
   selector: 'app-competitions',
   imports: [
+    ...SHARED_IMPORTS,
     NavbarComponent,
     TranslatePipe,
     ModalComponent,
     CommonModule,
     FormsModule,
-    AddCompetitionModalComponent,
     BottomNavbarComponent,
-    CompetitionStartComponent
+    CompetitionStartComponent,
+    AddCompetitionModalComponent
   ],
   templateUrl: './competitions.component.html',
   styleUrl: './competitions.component.scss'
 })
 export class CompetitionsComponent {
 
-  private userService = inject(UserService);
-  public userState = toSignal<IUserState | null>(this.userService.userState$(), { initialValue: null });
   PROGRESS_STATE = UserProgressStateEnum;
   
   loading = true;
   error: string | null = null;
   competitions: ICompetition[] = [];
   form = new FormGroup({ name: new FormControl('') });
-  constructor(public modalService: ModalService, private fb: FormBuilder, private competitionsService: CompetitionsService) {
+  
+  userService = inject(UserService);
+  userState$ = this.userService.getState();
+
+  constructor(public modalService: ModalService, private fb: FormBuilder, private competitionsService: CompetitionService) {
     this.createForm();
     this.competitionsService.getCompetitions().then((res) => {
       console.log('Competitions fetched:', res);
-      this.competitions = res.competitions;
+      this.competitions = res;
       this.loading = false;
     });
 

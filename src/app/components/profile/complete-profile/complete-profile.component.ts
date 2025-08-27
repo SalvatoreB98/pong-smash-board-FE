@@ -9,7 +9,6 @@ import { firstValueFrom } from 'rxjs';
 import { API_PATHS } from '../../../../api/api.config';
 import { UpdateProfileResponse } from '../../../../api/apiResponses';
 import { environment } from '../../../../environments/environment';
-import { IUserState } from '../../../../services/interfaces/Interfaces';
 import { LoaderService } from '../../../../services/loader.service';
 import { SupabaseAuthService } from '../../../../services/supabase-auth.service';
 import { UserService } from '../../../../services/user.service';
@@ -29,19 +28,19 @@ import { TranslatePipe } from '../../../utils/translate.pipe';
 })
 
 export class CompleteProfileComponent implements OnInit {
-
+  
   previewUrl: string | null = null;
   private userService = inject(UserService);
-  public userState = toSignal<IUserState | null>(this.userService.userState$(), { initialValue: null });
   PROGRESS_STATE = UserProgressStateEnum;
   form: FormGroup;
-
-
+  userState$ = this.userService.getState();
+  
+  
   private sb: SupabaseClient = createClient(
     environment.supabase.url,
     environment.supabase.ANON,
   );
-
+  
   constructor(private fb: FormBuilder,
     private http: HttpClient,
     private loaderService: LoaderService,
@@ -53,21 +52,26 @@ export class CompleteProfileComponent implements OnInit {
       avatar: this.fb.control<File | null>(null),
     });
     
-    effect(() => {
-      console.log('User state signal:', this.userState());
-    });
-    // Reindirizza se il profilo è già completo
-    if (this.userState()?.state === UserProgressStateEnum.PROFILE_COMPLETED) {
-      this.router.navigate(['/competition']);
-    }
+    
   }
-
+  
+  async ngOnInit() {
+    // Garantisce il primo fetch se non già in cache (idempotente)
+    await firstValueFrom(this.userService.getState());
+    console.log('User state fetched:', this.userService.getState());
+    this.userState$.subscribe(s => {
+      if (s.state === UserProgressStateEnum.PROFILE_COMPLETED) {
+        this.router.navigate(['/competition']);
+      }
+    });
+  }
+  
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files && input.files[0] ? input.files[0] : null;
-
+    
     if (!file) return;
-
+    
     // opzionale: validazioni base
     const isImage = file.type.startsWith('image/');
     const maxSizeMB = 4;
@@ -94,11 +98,6 @@ export class CompleteProfileComponent implements OnInit {
     if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
   }
 
-  async ngOnInit() {
-    // Garantisce il primo fetch se non già in cache (idempotente)
-    await firstValueFrom(this.userService.getUserState());
-    console.log('User state fetched:', this.userState());
-  }
 
   async saveProfile() {
     const nickname = (this.form.value.nickname || '').trim();

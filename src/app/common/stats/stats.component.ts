@@ -6,13 +6,14 @@ import { inject } from '@angular/core';
 import { map } from 'rxjs';
 import { Match, PlayerStanding, HeadToHeadRow } from '../../interfaces/statsInterfaces';
 import { TranslatePipe } from '../../utils/translate.pipe';
+import { SHARED_IMPORTS } from '../imports/shared.imports';
 
 type StandingsType = 'WINRATE' | 'WINS';
 
 
 @Component({
   selector: 'app-stats',
-  imports: [CommonModule, TranslatePipe],
+  imports: [...SHARED_IMPORTS],
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })
