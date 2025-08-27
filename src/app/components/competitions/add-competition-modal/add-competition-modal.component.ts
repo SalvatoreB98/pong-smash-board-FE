@@ -78,7 +78,13 @@ export class AddCompetitionModalComponent {
     };
 
     console.log('Saving competition...', payload);
-    this.competitionService.addCompetition(payload).then(() => {
+    this.competitionService.addCompetition(payload).then((res) => {
+      console.log('Competition added:', res);
+      this.competitionService.add({
+        ...res,
+        bestOf: res['sets_type'],
+        pointsTo: res['points_type']
+      });
       this.closeModal();
     });
   }

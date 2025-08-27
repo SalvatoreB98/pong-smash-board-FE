@@ -1,22 +1,20 @@
 import { Component, inject } from '@angular/core';
-import { NavbarComponent } from '../../../common/navbar/navbar.component';
-import { TranslatePipe } from '../../../utils/translate.pipe';
-import { ModalService } from '../../../../services/modal.service';
-import { ModalComponent } from '../../../common/modal/modal.component';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
-import { AddCompetitionModalComponent } from '../add-competition-modal/add-competition-modal.component';
+import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
+import { NavbarComponent } from '../../../common/navbar/navbar.component';
+import { ModalComponent } from '../../../common/modal/modal.component';
 import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { UserProgressStateEnum } from '../../../utils/enum';
+import { AddCompetitionModalComponent } from '../add-competition-modal/add-competition-modal.component';
 import { CompetitionStartComponent } from '../../profile/complete-profile/competition-start/competition-start.component';
+import { UserProgressStateEnum } from '../../../utils/enum';
 import { CompetitionService } from '../../../../services/competitions.service';
 import { ICompetition } from '../../../../api/competition.api';
 import { UserService } from '../../../../services/user.service';
-import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-competitions',
+  standalone: true,
   imports: [
     ...SHARED_IMPORTS,
     NavbarComponent,
@@ -27,31 +25,30 @@ import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
     AddCompetitionModalComponent
   ],
   templateUrl: './competitions.component.html',
-  styleUrl: './competitions.component.scss'
+  styleUrls: ['./competitions.component.scss']
 })
 export class CompetitionsComponent {
-
   PROGRESS_STATE = UserProgressStateEnum;
-  
-  loading = true;
-  error: string | null = null;
-  competitions: ICompetition[] = [];
-  form = new FormGroup({ name: new FormControl('') });
-  
+
+  // streams
   userService = inject(UserService);
-  userState$ = this.userService.getState();
+  userState$ = this.userService.getState();           // observable dallo user
+  competitions$ = inject(CompetitionService).list$;   // observable delle competizioni
 
-  constructor(public modalService: ModalService, private fb: FormBuilder, private competitionsService: CompetitionService) {
+  // form
+  form = new FormGroup({ name: new FormControl('') });
+
+  constructor(
+    public modalService: ModalService,
+    private fb: FormBuilder,
+    private competitionService: CompetitionService
+  ) {
     this.createForm();
-    this.competitionsService.getCompetitions().then((res) => {
-      console.log('Competitions fetched:', res);
-      this.competitions = res;
-      this.loading = false;
-    });
-
   }
 
   ngOnInit() {
+    // triggera il fetch delle competizioni → aggiorna lo store → la UI reagisce
+    this.competitionService.load().subscribe();
   }
 
   createForm() {
@@ -61,5 +58,4 @@ export class CompetitionsComponent {
   }
 
   trackById = (_: number, c: ICompetition) => c.id;
-
 }

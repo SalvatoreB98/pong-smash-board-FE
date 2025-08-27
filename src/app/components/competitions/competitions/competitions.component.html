@@ -1,35 +1,39 @@
 <div class="wrapper">
     <section>
-        <h2 class="text-center" style="text-transform: capitalize;">{{'competitions' | translate}}</h2>
+        <h2 class="text-center" style="text-transform: capitalize;">{{ 'competitions' | translate }}</h2>
         <div class="container">
             <ng-container *ngIf="userState$ | async as state">
-                <div *ngIf="state.active_competition_id || competitions.length > 0">
+                <div *ngIf="state.active_competition_id || ((competitions$ | async)?.length ?? 0) > 0">
                     <div class="row">
                         <div class="button-container">
                             <button (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])"
                                 class="add-match">
-                                {{"add_competition"| translate}}
+                                {{ "add_competition"| translate }}
                                 <span class="m-1"></span>
-                                <i class="fa-solid fa-plus"></i></button>
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </ng-container>
         </div>
     </section>
+
     <section>
         <ul>
-            <li *ngFor="let c of competitions; trackBy: trackById">
+            <li *ngFor="let c of competitions$ | async; trackBy: trackById">
                 <strong>{{ c.name }}</strong>
                 <span>— {{ c.type }}</span>
-                <small *ngIf="c.start_date"> (dal {{ c.start_date }}<span *ngIf="c.end_date"> al {{ c.end_date
-                        }}</span>)</small>
+                <small *ngIf="c.start_date">
+                    (dal {{ c.start_date }}
+                    <span *ngIf="c.end_date"> al {{ c.end_date }}</span>)
+                </small>
             </li>
         </ul>
-
     </section>
+
     <ng-container *ngIf="userState$ | async as state">
-        <div *ngIf="!state.active_competition_id || competitions.length == 0">
+        <div *ngIf="!state.active_competition_id || (competitions$ | async)?.length === 0">
             <app-competition-start (create)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
             </app-competition-start>
         </div>
