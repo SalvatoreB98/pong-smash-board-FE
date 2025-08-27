@@ -1,23 +1,23 @@
-import { Component, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { firstValueFrom } from 'rxjs';
-
-import { NavbarComponent } from '../../common/navbar/navbar.component';
-import { TranslatePipe } from '../../utils/translate.pipe';
-import { UserService } from '../../../services/user.service';
-import { IUserState } from '../../../services/interfaces/Interfaces';
-import { UserProgressStateEnum } from '../../../services/interfaces/Interfaces'; // Ensure UserProgressState is an enum or object
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { LoaderService } from '../../../services/loader.service';
-import { MSG_TYPE } from '../../utils/enum';
-import { API_PATHS } from '../../../api/api.config';
-import { UpdateProfileResponse } from '../../../api/apiResponses';
+import { Component, ChangeDetectionStrategy, inject, OnInit, effect } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SupabaseAuthService } from '../../../services/supabase-auth.service';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { environment } from '../../../environments/environment';
+import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { firstValueFrom } from 'rxjs';
+import { API_PATHS } from '../../../../api/api.config';
+import { UpdateProfileResponse } from '../../../../api/apiResponses';
+import { environment } from '../../../../environments/environment';
+import { IUserState } from '../../../../services/interfaces/Interfaces';
+import { LoaderService } from '../../../../services/loader.service';
+import { SupabaseAuthService } from '../../../../services/supabase-auth.service';
+import { UserService } from '../../../../services/user.service';
+import { NavbarComponent } from '../../../common/navbar/navbar.component';
+import { UserProgressStateEnum, MSG_TYPE } from '../../../utils/enum';
+import { TranslatePipe } from '../../../utils/translate.pipe';
+
+
 
 @Component({
   selector: 'complete-profile',
@@ -32,10 +32,10 @@ export class CompleteProfileComponent implements OnInit {
 
   previewUrl: string | null = null;
   private userService = inject(UserService);
+  public userState = toSignal<IUserState | null>(this.userService.userState$(), { initialValue: null });
   PROGRESS_STATE = UserProgressStateEnum;
   form: FormGroup;
 
-  public userState = toSignal<IUserState | null>(this.userService.userState$(), { initialValue: null });
 
   private sb: SupabaseClient = createClient(
     environment.supabase.url,
@@ -52,6 +52,14 @@ export class CompleteProfileComponent implements OnInit {
       nickname: new FormControl<string | null>(''),
       avatar: this.fb.control<File | null>(null),
     });
+    
+    effect(() => {
+      console.log('User state signal:', this.userState());
+    });
+    // Reindirizza se il profilo è già completo
+    if (this.userState()?.state === UserProgressStateEnum.PROFILE_COMPLETED) {
+      this.router.navigate(['/competition']);
+    }
   }
 
   onFileSelected(event: Event) {
@@ -103,26 +111,35 @@ export class CompleteProfileComponent implements OnInit {
 
     this.loaderService.startLittleLoader();
     try {
-      // 1) (facoltativo) upload avatar su Supabase Storage
       let imageUrl: string | null = null;
+
       if (file) {
-        const session = await this.supabaseAuthService.getUserSession();
-        const userId = session?.data.session?.user?.id;
+        // 1) utente autenticato
+        const { data: sess } = await this.supabaseAuthService.getUserSession();
+        const userId = sess?.session?.user?.id;
         if (!userId) throw new Error('Not authenticated');
 
-        const ext = file.type.split('/')[1]?.replace('jpeg', 'jpg') || 'jpg';
-        const path = `avatars/${userId}.${ext}`;
+        // 2) path coerente con RLS: "<uid>/avatar.<ext>"
+        const ext = (file.type.split('/')[1] || 'jpg').replace('jpeg', 'jpg');
+        const filename = `avatar-${Date.now()}.${ext}`;
+        const objectPath = `${userId}/${filename}`; // <-- niente "players-images/" qui
 
+        // 3) upload
         const { error: upErr } = await this.sb
-          .storage.from('avatars')
-          .upload(path, file, { upsert: true, contentType: file.type });
+          .storage.from('players-images')
+          .upload(objectPath, file, {
+            upsert: true,
+            contentType: file.type || 'image/jpeg',
+            cacheControl: '3600',
+          });
         if (upErr) throw upErr;
 
-        const { data: pub } = this.sb.storage.from('avatars').getPublicUrl(path);
-        imageUrl = pub?.publicUrl || null; // se il bucket non è pubblico, usa URL firmati
+        const { data: pub } = this.sb.storage.from('players-images').getPublicUrl(objectPath);
+        imageUrl = pub?.publicUrl ?? null;
       }
 
-      const res = await firstValueFrom(
+      // 5) salva profilo
+      await firstValueFrom(
         this.http.post<UpdateProfileResponse>(API_PATHS.updateProfile, { nickname, imageUrl })
       );
 

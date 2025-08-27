@@ -239,6 +239,10 @@
         "it": "Inserisci il tuo nickname",
         "en": "Enter your nickname"
     },
+    "nickname_label_edit": {
+        "it": "Modifica il tuo nickname",
+        "en": "Edit your nickname"
+    },
     "nickname": {
         "it": "Nickname",
         "en": "Nickname"
@@ -266,5 +270,21 @@
     "join_competition_info": {
         "it": "Unisciti a una competizione esistente per iniziare a registrare partite, classifiche e statistiche.",
         "en": "Join an existing competition to start tracking matches, standings and stats."
+    },
+    "email_not_confirmed": {
+        "it": "Il tuo indirizzo email non è stato confermato. Controlla la tua casella di posta per il link di conferma.",
+        "en": "Your email address has not been confirmed. Check your inbox for the confirmation link."
+    },
+    "continue": {
+        "it": "Continua",
+        "en": "Continue"
+    },
+    "nickname_error": {
+        "it": "Il nickname deve contenere tra i 3 e i 20 caratteri.",
+        "en": "The nickname must be between 3 and 20 characters."
+    },
+    "invalid_credentials": {
+        "it": "Credenziali non valide. Riprova o registrati.",
+        "en": "Invalid credentials. Please try again."
     }
 }

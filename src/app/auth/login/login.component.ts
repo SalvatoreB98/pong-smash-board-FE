@@ -39,8 +39,8 @@ export class LoginComponent {
     const { data, error } = await this.supabaseAuthService.signIn(email, password);
 
     if (error) {
-      console.error('Login failed:', error.message);
-      this.loaderService.showToast(error.message || 'Login failed. Please try again.', MSG_TYPE.ERROR, 5000);
+      console.error('Login failed:', error.code);
+      this.loaderService.showToast(error.code || 'Login failed. Please try again.', MSG_TYPE.ERROR, 5000);
     } else {
       console.log('User logged in:', data);
       this.loaderService.showToast('Login successful!', MSG_TYPE.SUCCESS, 3000);

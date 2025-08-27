@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { TranslatePipe } from '../../../utils/translate.pipe';
+import { EventEmitter, Output } from '@angular/core';
+import { TranslatePipe } from '../../../../utils/translate.pipe';
 
 @Component({
   selector: 'app-competition-start',
@@ -8,5 +9,9 @@ import { TranslatePipe } from '../../../utils/translate.pipe';
   styleUrl: './competition-start.component.scss'
 })
 export class CompetitionStartComponent {
+  @Output() create = new EventEmitter<any>();
 
+  createNewCompetition() {
+    this.create.emit();
+  }
 }

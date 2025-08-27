@@ -10,8 +10,11 @@ import { API_PATHS } from '../api/api.config';
 export class UserService {
   private readonly state$ = new BehaviorSubject<IUserState | null>(null);
   private loading$?: Observable<IUserState>; // evita richieste parallele
+  private instanceId = Math.random().toString(36).substring(2, 8);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    console.log(`[UserService] instance created -> ${this.instanceId}`);
+  }
 
   /** Stream reattivo (emette solo valori non-null). */
   userState$(): Observable<IUserState> {

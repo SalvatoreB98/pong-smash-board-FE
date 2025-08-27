@@ -22,16 +22,18 @@ export type UserProgressState =
   | 'profile_completed'
   | 'without_competition';
 
-export enum UserProgressStateEnum {
-  PROFILE_NOT_COMPLETED = 'profile_not_completed',
-  PROFILE_COMPLETED = 'profile_completed',
-  WITHOUT_COMPETITION = 'without_competition',
-}
+
 export interface IUserState {
-  id: number;
-  user_id: string; // UUID
-  state: UserProgressState;
+  user_state_id: number;
+  user_id: string; // UUID dell'auth user
+  state: string;   // es. "profile_completed"
   active_competition_id: number | null;
-  created_at: string; // ISO
-  updated_at: string; // ISO
+  created_at: string; // ISO 8601
+  updated_at: string; // ISO 8601
+  nickname: string;
+  player_id: number;
+  image_url: string;
+  email: string;
+  name: string | null;
+  lastname: string | null;
 }

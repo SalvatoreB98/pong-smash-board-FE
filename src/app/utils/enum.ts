@@ -55,3 +55,9 @@ export const MODALS: { [key: string]: string } = {
   SHOW_MATCH: 'showMatchModal',
   ADD_COMPETITION: 'addCompetitionModal',
 };
+
+export enum UserProgressStateEnum {
+  PROFILE_NOT_COMPLETED = 'profile_not_completed',
+  PROFILE_COMPLETED = 'profile_completed',
+  WITHOUT_COMPETITION = 'without_competition',
+}

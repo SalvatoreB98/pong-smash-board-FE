@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavbarComponent } from '../../../common/navbar/navbar.component';
 import { TranslatePipe } from '../../../utils/translate.pipe';
 import { ModalService } from '../../../../services/modal.service';
@@ -8,6 +8,11 @@ import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms
 import { AddCompetitionModalComponent } from '../add-competition-modal/add-competition-modal.component';
 import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
 import { CompetitionsService, ICompetition } from '../../../../services/competitions.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { IUserState } from '../../../../services/interfaces/Interfaces';
+import { UserService } from '../../../../services/user.service';
+import { UserProgressStateEnum } from '../../../utils/enum';
+import { CompetitionStartComponent } from '../../profile/complete-profile/competition-start/competition-start.component';
 
 @Component({
   selector: 'app-competitions',
@@ -18,13 +23,18 @@ import { CompetitionsService, ICompetition } from '../../../../services/competit
     CommonModule,
     FormsModule,
     AddCompetitionModalComponent,
-    BottomNavbarComponent
+    BottomNavbarComponent,
+    CompetitionStartComponent
   ],
   templateUrl: './competitions.component.html',
   styleUrl: './competitions.component.scss'
 })
 export class CompetitionsComponent {
 
+  private userService = inject(UserService);
+  public userState = toSignal<IUserState | null>(this.userService.userState$(), { initialValue: null });
+  PROGRESS_STATE = UserProgressStateEnum;
+  
   loading = true;
   error: string | null = null;
   competitions: ICompetition[] = [];

@@ -1,19 +1,11 @@
 <div class="wrapper">
     <ng-container *ngIf="userState() as state">
-        <h2 *ngIf="state.state ===  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
-            {{"complete_profile" | translate}}
-        </h2>
-
-        <h2 *ngIf="state.state !==  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
+        <h2>
             {{"edit_profile" | translate}}
         </h2>
         <ng-template #noComp>Nessuna competizione attiva</ng-template>
         <section>
-            <p class="instructions" *ngIf="state.state ===  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
-                {{ "paragraph_complete" | translate}}
-            </p>
             <form [formGroup]="form" class="form-dark">
-
                 <div class="d-flex justify-content-center align-items-center mt-5" style="gap: 1em;">
                     <div class="upload-container">
                         <label for="file-upload" class="custom-file-upload">
@@ -25,10 +17,10 @@
 
                     <div class="text-center mt-3">
                         <label class="field">
-                            <span class="label">{{ 'nickname_label' | translate }}</span>
+                            <span class="label">{{ 'nickname_label_edit' | translate }}</span>
                             <input class="input" type="text" [placeholder]="'nickname' | translate"
                                 formControlName="nickname" autocomplete="off" />
-                            <small class="error" *ngIf="form?.get('nickname')?.invalid || form?.get('nickname')?.touched">
+                            <small class="error" *ngIf="form?.get('nickname')?.invalid">
                                 {{ 'nickname_error' | translate }}
                             </small>
                         </label>
