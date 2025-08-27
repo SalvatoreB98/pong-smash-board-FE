@@ -20,9 +20,7 @@ import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
   imports: [
     ...SHARED_IMPORTS,
     NavbarComponent,
-    TranslatePipe,
     ModalComponent,
-    CommonModule,
     FormsModule,
     BottomNavbarComponent,
     CompetitionStartComponent,
