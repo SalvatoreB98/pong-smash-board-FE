@@ -286,5 +286,9 @@
     "invalid_credentials": {
         "it": "Credenziali non valide. Riprova o registrati.",
         "en": "Invalid credentials. Please try again."
+    },
+    "edit": {
+        "it": "Modifica",
+        "en": "Edit"
     }
 }
