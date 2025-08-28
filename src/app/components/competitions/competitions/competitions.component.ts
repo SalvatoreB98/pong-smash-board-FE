@@ -11,6 +11,7 @@ import { CompetitionService } from '../../../../services/competitions.service';
 import { ICompetition } from '../../../../api/competition.api';
 import { UserService } from '../../../../services/user.service';
 import { ModalService } from '../../../../services/modal.service';
+import { CompetitionDetailComponent } from '../competition-detail/competition-detail.component';
 
 @Component({
   selector: 'app-competitions',
@@ -22,7 +23,8 @@ import { ModalService } from '../../../../services/modal.service';
     FormsModule,
     BottomNavbarComponent,
     CompetitionStartComponent,
-    AddCompetitionModalComponent
+    AddCompetitionModalComponent,
+    CompetitionDetailComponent 
   ],
   templateUrl: './competitions.component.html',
   styleUrls: ['./competitions.component.scss']
@@ -48,7 +50,9 @@ export class CompetitionsComponent {
 
   ngOnInit() {
     // triggera il fetch delle competizioni → aggiorna lo store → la UI reagisce
-    this.competitionService.load().subscribe();
+    this.competitionService.load().subscribe((data)=>{
+      console.log(data)
+    });
   }
 
   createForm() {

@@ -18,14 +18,16 @@ export class TranslationService {
   };
 
   /** Lingua corrente con un `BehaviorSubject` per aggiornamenti reattivi */
-  private currentLang = new BehaviorSubject<string>('en'); // Default: Inglese
+  public currentLang = new BehaviorSubject<string>('en'); // Default: Inglese
 
   constructor(private http: HttpClient) {
     const userLanguage = navigator.language || navigator.languages[0] || 'en';
     if (!localStorage.getItem("selectedLanguage") && userLanguage.startsWith('it')) {
       this.currentLang.next('it');
+      this.setLanguage('it', true);
     } else {
       this.currentLang.next(localStorage.getItem("selectedLanguage") || 'en');
+      this.setLanguage('en', true);
     }
     this.loadTranslations();
   }

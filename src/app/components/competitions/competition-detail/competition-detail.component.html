@@ -1,0 +1,60 @@
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<div class="max-w-5xl mx-auto px-4 py-8 text-white">
+
+    <!-- Titolo -->
+    <h1 class="text-3xl font-bold text-center mb-8">Competitions</h1>
+
+    <!-- Competizione attiva -->
+    <div class="bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 border border-indigo-500">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-semibold">🏆 {{ "activeCompetition.name "}}</h2>
+            <span class="px-3 py-1 text-sm rounded-full bg-green-600">Active</span>
+        </div>
+
+        <!-- Info generali -->
+        <p class="text-gray-300 mb-2">Modalità: <strong>{{ "activeCompetition.type" }}</strong></p>
+        <p class="text-gray-300 mb-4">Creato da: <strong>{{ "activeCompetition.createdBy "}}</strong></p>
+
+        <!-- Giocatori -->
+        <div>
+            <h3 class="text-lg font-semibold mb-2">Players</h3>
+            <ul class="grid grid-cols-2 gap-2">
+                <li *ngFor="let i of [1,2,3]"
+                    class="bg-gray-700 rounded-lg px-3 py-2 flex items-center gap-2">
+                    <img [src]="'a'" alt="avatar" class="w-8 h-8 rounded-full object-cover" />
+                    <span>{{ "i" }}</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Azioni -->
+        <div class="mt-6 flex gap-4">
+            <div class="button-container">
+                <button class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+                    Gestisci
+                </button>
+
+            </div>
+            <div class="button-container">
+                <button class="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition">
+                    Termina
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Altre competizioni -->
+    <h2 class="text-xl font-semibold mb-4">Other competitions</h2>
+    <div class="grid gap-3">
+        <div *ngFor="let c of competitions" class="bg-gray-800 rounded-xl p-4 flex justify-between items-center">
+            <div>
+                <h3 class="font-bold">{{ "c.name" }}</h3>
+                <p class="text-sm text-gray-400">{{ "c.type "}}</p>
+            </div>
+            <button class="px-3 py-1 text-sm bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">
+                Cambia competizione
+            </button>
+        </div>
+    </div>
+</div>
