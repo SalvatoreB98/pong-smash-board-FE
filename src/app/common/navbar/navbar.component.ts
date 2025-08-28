@@ -47,5 +47,7 @@ export class NavbarComponent {
   }
   
   trackByLang = (_: number, l: { code: string }) => l.code;
-
+  logga() {
+    console.log(this.auth.isLoggedIn$.value);
+  }
 }

@@ -26,7 +26,6 @@ export class AuthService {
   async logout() {
     await this.supabaseAuthService.signOut();
     this.userService.clear()
-    this.competitionService = inject(CompetitionService);
     this.isLoggedIn$.next(false);
   }
 }

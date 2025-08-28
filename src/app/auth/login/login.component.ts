@@ -33,6 +33,7 @@ export class LoginComponent {
   }
 
   async onLogin() {
+    this.loaderService.startLittleLoader();
     if (this.loginForm.invalid) return;
 
     const { email, password } = this.loginForm.value;
