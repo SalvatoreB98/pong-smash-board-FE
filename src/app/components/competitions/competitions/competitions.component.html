@@ -13,20 +13,8 @@
         </section>
 
         <section class="others">
+            <h3>{{ "other_competitions" | translate }}</h3>
             <div class="other-competitions-container">
-                <ng-container *ngFor="let c of competitions$ | async; trackBy: trackById">
-                    <ng-container *ngIf="state.active_competition_id != c.id">
-                        <div class="comp">
-                            <strong>{{ c.name }}</strong>
-                            <span>— {{ c.type }}</span>
-                            <span *ngIf="state.active_competition_id == c.id"> ATTIVA</span>
-                            <small *ngIf="c.start_date">
-                                (dal {{ c.start_date }}
-                                <span *ngIf="c.end_date"> al {{ c.end_date }}</span>)
-                            </small>
-                        </div>
-                    </ng-container>
-                </ng-container>
                 <div class="comp add" *ngIf="state.active_competition_id || ((competitions$ | async)?.length ?? 0) > 0"
                     (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
                     <div class="row">
@@ -38,6 +26,40 @@
                         </div>
                     </div>
                 </div>
+                <ng-container *ngFor="let c of competitions$ | async; trackBy: trackById">
+                    <ng-container *ngIf="state.active_competition_id != c.id">
+                        <div class="comp">
+                            <strong>{{ c.name }}</strong>
+                            <span>— {{ c.type }}</span>
+                            <div class="date">
+                                {{ normalizeDate(c.created_at) }}
+                            </div>
+
+                            <span *ngIf="state.active_competition_id == c.id"> ATTIVA</span>
+                            <small *ngIf="c.start_date">
+                                (dal {{ c.start_date }}
+                                <span *ngIf="c.end_date"> al {{ c.end_date }}</span>)
+                            </small>
+                            <div>
+                                <div *ngIf="c?.['players']?.length">
+                                    <div>
+                                        {{ c?.['players'].length }} {{ c?.['players'].length == 1 ? ('player' |
+                                        translate) : ('players' | translate) }}
+                                    </div>
+                                    <div>
+                                        <img *ngFor="let player of c?.['players']" src="player.img_url" alt="">
+                                    </div>
+                                </div>
+                                <p *ngIf="c?.['players']?.length < 1">
+                                    {{ "no_players_small" | translate }}
+                                </p>
+                            </div>
+                            <div class="button-container">
+                                <button> {{ "edit" | translate }}</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
             </div>
         </section>
 
@@ -58,6 +80,6 @@
         <app-add-players-modal></app-add-players-modal>
     </app-modal>
 
-    
+
 </ng-container>
 <app-bottom-navbar></app-bottom-navbar>

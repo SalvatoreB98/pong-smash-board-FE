@@ -334,5 +334,94 @@
     "home": {
         "it": "Home",
         "en": "Home"
+    },
+    "no_players_small": {
+        "it": "Ancora nessun giocatore",
+        "en": "No players yet"
+    },
+    "insert_players_init": {
+        "it": "Scegli se aggiungere i giocatori manualmente,invitarli tramite email o fornire loro un codice di invito.",
+        "en": "Choose whether to add players manually, invite them via email, or provide them with an invite code."
+    },
+    "invitation_code": {
+        "it": "Codice di invito",
+        "en": "Invitation code"
+    },
+    "invitation_code_info": {
+        "it": "Condividi questo codice con i tuoi amici per permettere loro di unirsi alla competizione.",
+        "en": "Share this code with your friends to allow them to join the competition."
+    },
+    "invite": {
+        "it": "Invita giocatori (email)",
+        "en": "Invite players"
+    },
+    "invite_info": {
+        "it": "Invita i tuoi amici a unirsi alla competizione tramite email.",
+        "en": "Invite your friends to join the competition via email."
+    },
+    "add_manually": {
+        "it": "Aggiungi giocatori manualmente",
+        "en": "Add players manually"
+    },
+    "add_manually_info": {
+        "it": "Aggiungi i giocatori uno ad uno. (Irreversibile).",
+        "en": "Add players one by one by entering their nickname. (Irreversible)."
+    },
+    "competition_management": {
+        "it": "Gestione delle partite",
+        "en": "Match management"
+    },
+    "management_admin": {
+        "it": "Gestita dall'organizzatore",
+        "en": "Organizer controlled"
+    },
+    "management_admin_desc": {
+        "it": "Solo l'organizzatore può inserire partite e risultati.",
+        "en": "Only the organizer can add matches and results."
+    },
+    "management_self": {
+        "it": "Gestione libera",
+        "en": "Self managed"
+    },
+    "management_self_desc": {
+        "it": "Tutti i partecipanti possono inserire partite liberamente.",
+        "en": "All participants can add matches freely."
+    },
+    "steps": {
+        "it": "Step",
+        "en": "Steps"
+    },
+    "step": {
+        "it": "Step",
+        "en": "Step"
+    },
+    "select_management": {
+        "it": "Seleziona la modalità di gestione delle partite",
+        "en": "Select match management mode"
+    },
+    "next_step": {
+        "it": "Prossimo step",
+        "en": "Next step"
+    },
+    "management_type": {
+        "it": "Scegli il tipo di gestione",
+        "en": "Choose management type"
+    },
+    "management_type_admin": {
+        "it": "Gestita dall'organizzatore, solo l'admin inserisce partite e risultati.  ",
+        "en": "Organizer controlled, only the admin adds matches and results.  "
+    },
+    "management_type_self": {
+        "it": "Gestione libera, tutti i partecipanti possono inserire partite liberamente.",
+        "en": "Self managed, all participants can add matches freely."
+    },
+    "admin_only": {
+        "it": "Solo admin",
+        "en": "Admin only"
+    },
+    "free_management": {
+        "it": "Gestione libera",
+        "en": "Free management"
     }
+
 }

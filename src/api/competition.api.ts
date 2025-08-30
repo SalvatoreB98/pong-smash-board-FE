@@ -8,13 +8,14 @@ import { IUserState } from '../services/interfaces/Interfaces'; // adatta il pat
 export interface ICompetition {
   id: number | string;
   name: string;
-  type: string;            // 'league' | 'elimination' | ...
-  setsType: number;        // bestOf
-  pointsType: number;      // pointsTo
+  type: string;
+  setsType: number;
+  pointsType: number;
   start_date?: string | null;
   end_date?: string | null;
   created_at?: string;
   [k: string]: any;
+  management: 'admin' | 'self';
 }
 
 export interface ICompetitionsResponse {
@@ -43,7 +44,7 @@ export interface AddCompetitionResponse {
 
 @Injectable({ providedIn: 'root' })
 export class CompetitionApi {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /** Lista competizioni dell'utente */
   getList(): Observable<ICompetitionsResponse> {

@@ -11,6 +11,7 @@
 }
 
 .buttons-container {
+    margin-right: 2em;
     height: 100%;
 
     &>* {
@@ -41,6 +42,10 @@
 }
 
 .dropdown-lang {
+    position: absolute;
+    right:  0;
+    padding: 0!important;
+    transform: scale(0.75);
     select {
         position: absolute;
     }

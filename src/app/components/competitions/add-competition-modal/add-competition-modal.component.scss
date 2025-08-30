@@ -2,7 +2,6 @@
 
 :host {
     display: block;
-    padding: 16px;
 }
 
 .form-card {
@@ -15,15 +14,17 @@
     gap: 18px;
 }
 
+.steps-wrapper {
+    padding: 24px;
+    min-height: 50vh;
+}
+
 h2 {
     margin: 0 0 6px;
     font-size: 1.25rem;
 }
 
-.field {
-    display: grid;
-    gap: 8px;
-}
+
 
 .label {
     font-size: .9rem;
@@ -94,7 +95,6 @@ h2 {
     text-align: center;
     height: 44px;
     border: none;
-    padding: 0 16px;
     font-weight: 700;
     background: $primary-light;
     color: #fff;
@@ -124,7 +124,6 @@ h2 {
 }
 
 .large-img-select {
-    height: 100px;
     object-fit: cover;
     font-size: 0.75em;
     position: relative;
@@ -185,6 +184,18 @@ h2 {
 
     i {
         margin: 5px;
+    }
+}
+
+.container-choose {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+
+    .large-img-select {
+        padding: 1em;
+        width: 100%;
+        white-space: wrap;
     }
 }
 

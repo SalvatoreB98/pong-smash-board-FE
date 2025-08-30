@@ -6,19 +6,21 @@
                 <span></span>
             </a>
         </div>
+        
+        <div class="dropdown-lang">
+            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fa fa-language"></i> {{ translateService.getLanguage() }}
+            </button>
+            <ul class="dropdown-menu">
+                <li *ngFor="let language of translateService.languages">
+                    <a class="dropdown-item" (click)="translateService.setLanguage(language.code, true)">
+                        {{ language.label | translate }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
         <div class="buttons-container d-flex justify-content-between align-items-center">
-            <div class="dropdown-lang position-relative">
-                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="fa fa-language"></i> {{ translateService.getLanguage() }}
-                </button>
-                <ul class="dropdown-menu">
-                    <li *ngFor="let language of translateService.languages">
-                        <a class="dropdown-item" (click)="translateService.setLanguage(language.code, true)">
-                            {{ language.label | translate }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
 
             <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/home" class="button-navbar">
                 <i class="fa fa-user" aria-hidden="true"></i>
@@ -26,7 +28,7 @@
             </a>
 
             <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/competitions" class="button-navbar">
-                <span>{{"Competizioni" | translate}}</span>
+                <span>{{"competitions" | translate}}</span>
             </a>
 
             <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="profile" class="button-navbar">

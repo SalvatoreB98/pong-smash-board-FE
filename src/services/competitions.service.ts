@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { catchError, finalize, map, tap } from 'rxjs/operators';
-import { EMPTY, firstValueFrom, Observable, of, throwError } from 'rxjs';
+import { catchError, finalize, map, shareReplay, tap } from 'rxjs/operators';
+import { combineLatest, EMPTY, firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { CompetitionStore } from '../stores/competition.store'; // adatta il path
 import { LoaderService } from '../services/loader.service';     // opzionale
 import { MSG_TYPE } from '../app/utils/enum';                   // opzionale
@@ -35,6 +35,19 @@ export class CompetitionService {
       finalize(() => this.loader?.stopLittleLoader())  // <-- SEMPRE chiamato
     );
   }
+
+  userState$ = this.user?.getState().pipe(shareReplay(1));
+
+  activeCompetition$ = combineLatest({
+    state: this.userState$ ?? of(null),
+    competitions: this.list$
+  }).pipe(
+    map(({ state, competitions }) =>
+      competitions.find(c => c.id === state?.active_competition_id) ?? null
+    ),
+    tap(c => console.log('[CompetitionService] activeCompetition:', c)),
+    shareReplay(1)
+  );
 
   /** Carica una singola competizione (e aggiorna/upserta nello store) */
   loadOne(id: number | string): Observable<ICompetition | undefined> {
@@ -71,7 +84,7 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore creazione competizione', MSG_TYPE.ERROR);
         return throwError(() => err); // <-- errore propagato
       }),
-      finalize(() => this.loader?.stopLittleLoader()) 
+      finalize(() => this.loader?.stopLittleLoader())
     );
   }
 
@@ -86,7 +99,7 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore aggiornamento competizione', MSG_TYPE.ERROR);
         return EMPTY;
       }),
-      finalize(() => this.loader?.stopLittleLoader())  
+      finalize(() => this.loader?.stopLittleLoader())
     );
   }
 
@@ -104,7 +117,7 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore eliminazione competizione', MSG_TYPE.ERROR);
         return EMPTY;
       }),
-      finalize(() => this.loader?.stopLittleLoader()) 
+      finalize(() => this.loader?.stopLittleLoader())
     );
   }
 
@@ -120,4 +133,5 @@ export class CompetitionService {
   addCompetition(dto: AddCompetitionDto): Promise<ICompetition> {
     return firstValueFrom(this.add(dto));
   }
+  
 }

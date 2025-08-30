@@ -21,17 +21,21 @@
             place-items: center;
                 text-align: center;
             i {
-                font-size: 5em;
+                font-size: 2em;
             }
         }
     }
 }
 .other-competitions-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2em;
     max-width: 600px;
     margin: auto;
+}
+.date {
+    font-size: 0.75em;
+    color: $primary;
 }
 @media screen and (max-width: 600px) {
     .other-competitions-container {

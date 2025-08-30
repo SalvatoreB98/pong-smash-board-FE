@@ -1,0 +1,5 @@
+.init-button {
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(3, auto);
+}

@@ -14,7 +14,7 @@ import { UserService } from '../../../../services/user.service';
 import { ModalService } from '../../../../services/modal.service';
 import { CompetitionDetailComponent } from '../competition-detail/competition-detail.component';
 import { AddPlayersModalComponent } from '../../add-players-modal/add-players-modal.component';
-
+import { Utils } from '../../../utils/Utils';
 @Component({
   selector: 'app-competitions',
   standalone: true,
@@ -27,14 +27,13 @@ import { AddPlayersModalComponent } from '../../add-players-modal/add-players-mo
     CompetitionStartComponent,
     AddCompetitionModalComponent,
     CompetitionDetailComponent,
-    AddPlayersModalComponent
+    AddPlayersModalComponent,
   ],
   templateUrl: './competitions.component.html',
   styleUrls: ['./competitions.component.scss']
 })
 export class CompetitionsComponent {
   PROGRESS_STATE = UserProgressStateEnum;
-
   // services
   userService = inject(UserService);
   private competitionService = inject(CompetitionService);
@@ -42,21 +41,14 @@ export class CompetitionsComponent {
   // streams
   userState$ = this.userService.getState();           // observable dallo user
   competitions$ = this.competitionService.list$;      // observable delle competizioni
-
-  /** Stream con la competizione attiva (oppure null) */
-  activeCompetition$ = combineLatest([this.userState$, this.competitions$]).pipe(
-    map(([state, competitions]) => {
-      return competitions.find(c => c.id === state.active_competition_id) ?? null;
-    }),
-    tap(c => console.log('Active competition:', c))
-  );
+  activeCompetition$ = this.competitionService.activeCompetition$;
   competitionDetail: ICompetition = {
     id: 0, name: '', description: '', start_date: '', end_date: '',
     type: '',
     setsType: 0,
-    pointsType: 0
+    pointsType: 0,
+    management: 'self'
   };
-  // form
   form = new FormGroup({ name: new FormControl('') });
 
   constructor(
@@ -81,4 +73,9 @@ export class CompetitionsComponent {
   }
 
   trackById = (_: number, c: ICompetition) => c.id;
+
+  normalizeDate(date: string = ''): string {
+    return Utils.normalizeDate(date) || '';
+  }
+  
 }

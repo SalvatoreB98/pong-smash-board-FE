@@ -1,0 +1,16 @@
+<div class="step-indicator d-flex justify-content-center align-items-center">
+    <ng-container *ngFor="let _ of [].constructor(totalSteps); let idx = index">
+
+        <!-- stepIndex parte da 1 -->
+        <ng-container *ngIf="true">
+            <div class="step">
+                <div class="circle" [class.active]="activeStep === idx + 1" [class.completed]="activeStep > idx + 1">
+                    <span *ngIf="activeStep <= idx + 1"></span>
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Linea -->
+        <div *ngIf="idx < totalSteps - 1" class="line" [class.completed]="activeStep > idx + 1"></div>
+    </ng-container>
+</div>

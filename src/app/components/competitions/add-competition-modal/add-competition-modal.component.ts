@@ -10,17 +10,20 @@ import { ModalService } from '../../../../services/modal.service';
 import { DataService } from '../../../../services/data.service';
 import { CompetitionService } from '../../../../services/competitions.service';
 import { LoaderService } from '../../../../services/loader.service';
+import { StepIndicatorComponent } from '../../../common/step-indicator/step-indicator.component';
 
 type CompetitionType = 'elimination' | 'league' | 'group_knockout';
 @Component({
   selector: 'app-add-competition-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe, StepIndicatorComponent],
   templateUrl: './add-competition-modal.component.html',
   styleUrl: './add-competition-modal.component.scss'
 })
 export class AddCompetitionModalComponent {
   competitionForm: FormGroup;
+  step = 1;
+  managementForm: FormGroup;
 
   constructor(private fb: FormBuilder, public modalService: ModalService, private competitionService: CompetitionService, private loaderService: LoaderService) {
 
@@ -30,6 +33,11 @@ export class AddCompetitionModalComponent {
         typeCtrl: [null, Validators.required],
         setsCtrl: [null, Validators.required],
         pointsCtrl: [null, Validators.required],
+      },
+    );
+    this.managementForm = this.fb.group(
+      {
+        managementCtrl: [null, Validators.required],
       },
     );
   }
@@ -77,12 +85,13 @@ export class AddCompetitionModalComponent {
         bestOf: formValue.setsCtrl,        // es. 3/5/7
         pointsTo: formValue.pointsCtrl,    // es. 11/21
         startDate: toYmd(formValue.startDate) ?? undefined,
-        endDate: toYmd(formValue.endDate) ?? undefined
+        endDate: toYmd(formValue.endDate) ?? undefined,
+        management: this.managementForm.value.managementCtrl,
       };
 
       console.log('Saving competition...', payload);
       console.log('Saving competition...', payload);
-      
+
       this.competitionService.addCompetition(payload).then((res) => {
         console.log('Competition added:', res);
         this.closeModal();
@@ -93,6 +102,17 @@ export class AddCompetitionModalComponent {
       this.loaderService.stopLittleLoader()
     } finally {
       this.loaderService.stopLittleLoader()
+    }
+  }
+
+  nextStep() {
+    if (this.step < 2) {
+      this.step++;
+    }
+  }
+  back() {
+    if (this.step > 1) {
+      this.step--;
     }
   }
 

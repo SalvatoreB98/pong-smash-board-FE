@@ -77,13 +77,23 @@ nav {
 
 h2 {
     color: white;
-    font-family: 'Poppins', sans-serif;
+    font-family: LarkenRegular;
     font-weight: 300;
     letter-spacing: -0.5px;
     font-family: LarkenRegular, sans-serif;
     font-weight: 100;
     text-align: center;
     font-size: 2em;
+}
+
+h3 {
+    color: white;
+    font-family: LarkenRegular;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    font-family: LarkenRegular, sans-serif;
+    font-weight: 100;
+    text-align: center;
 }
 
 // Buttons
@@ -145,12 +155,15 @@ h2 {
     position: relative;
     overflow: hidden;
     background-color: #0b1e2a;
+
     &:hover {
         transform: scale(0.97);
+
         p {
             display: grid;
         }
     }
+
     p {
         padding: 1em;
         place-items: center;
@@ -165,14 +178,17 @@ h2 {
         display: none;
         background-color: #0b1e2a;
     }
+
     div {
         font-weight: 900;
         margin: 1em;
     }
+
     i {
         font-size: 2em;
     }
 }
+
 // Sections
 section {
     margin-bottom: 2em;
@@ -293,11 +309,12 @@ section {
         &[type="submit"] {
             background-color: var(--primary);
             color: white;
+
             &:disabled {
                 opacity: 0.5;
             }
         }
-        
+
     }
 
     &::-webkit-scrollbar-thumb {
@@ -308,7 +325,21 @@ section {
         background: var(--dark);
     }
 }
+
 button.no-style {
     all: unset;
     cursor: pointer;
+}
+
+.step-indicator {
+    color: gray;
+}
+
+.field {
+    display: grid;
+    gap: 8px;
+}
+
+.bg-contrast {
+    background-color: $contrast !important;
 }

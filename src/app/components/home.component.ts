@@ -14,6 +14,8 @@ import { TranslatePipe } from '../utils/translate.pipe';
 import { BottomNavbarComponent } from '../common/bottom-navbar/bottom-navbar.component';
 import { StatsComponent } from '../common/stats/stats.component';
 import { inject } from '@angular/core';
+import { UserService } from '../../services/user.service';
+import { CompetitionService } from '../../services/competitions.service';
 
 @Component({
   selector: 'app-home',
@@ -22,19 +24,23 @@ import { inject } from '@angular/core';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  private dataService = inject(DataService);
+  dataService = inject(DataService);
+  userService = inject(UserService);
   matches$ = this.dataService.matchesObs;
-
+  competitionService = inject(CompetitionService);
   matches: any;
   isAddMatchModalOpen: boolean = false;
   isShowMatchModalOpen: boolean = false;
   clickedMatch: IMatch | undefined;
 
-  constructor(public modalService: ModalService) {}
+  userState$ = this.userService.getState();
+  
+  constructor(public modalService: ModalService) { }
 
   ngOnInit() {
     this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 }) // cache 5 minuti
-    .then(res => this.matches = res.matches);
+      .then(res => this.matches = res.matches);
+    console.log(this.competitionService.activeCompetition$.subscribe(comp => {console.log(comp)}));
   }
 
   setClickedMatch(match: IMatch) {
