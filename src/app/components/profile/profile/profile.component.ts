@@ -18,11 +18,13 @@ import { NavbarComponent } from '../../../common/navbar/navbar.component';
 import { MSG_TYPE } from '../../../utils/enum';
 import { TranslatePipe } from '../../../utils/translate.pipe';
 import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
+import { PlayerDetailComponent } from './player-detail/player-detail.component';
+import { BadgeComponent } from '../../../common/badge/badge.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NavbarComponent, TranslatePipe, BottomNavbarComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NavbarComponent, TranslatePipe, BottomNavbarComponent, PlayerDetailComponent, BadgeComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

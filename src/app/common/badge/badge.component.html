@@ -1,0 +1,4 @@
+<div class="badge" [title]="label || type">
+    <img [src]="iconPath" [alt]="type + ' badge'" />
+    <span *ngIf="label" class="label">{{ label }}</span>
+</div>

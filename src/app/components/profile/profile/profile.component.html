@@ -1,8 +1,13 @@
 <div class="wrapper">
     <ng-container *ngIf="userState$ | async as state">
         <h2>
-            {{"edit_profile" | translate}}
+            {{"profile" | translate}}
         </h2>
+        <section>
+            <app-player-detail [player]="'Mario'" [totalPlayed]="20" [wins]="12" [winRate]="60"
+                [monthlyWinRates]="{ '01': 50, '02': 70, '03': 30 }" [badges]="['gold', 'silver']">
+            </app-player-detail>
+        </section>
         <ng-template #noComp>Nessuna competizione attiva</ng-template>
         <section>
             <form [formGroup]="form" class="form-dark">
@@ -27,8 +32,8 @@
                     </div>
                 </div>
 
-                <div class="button-container" style="max-width: 200px;">
-                    <button class="primary mt-3" (click)="saveProfile()" [disabled]="form?.invalid">
+                <div class="button-container">
+                    <button class="primary mt-3 w-100" (click)="saveProfile()" [disabled]="form?.invalid">
                         {{ 'edit' | translate }}
                     </button>
                 </div>

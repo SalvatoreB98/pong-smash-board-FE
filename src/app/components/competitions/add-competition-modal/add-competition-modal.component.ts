@@ -11,6 +11,7 @@ import { DataService } from '../../../../services/data.service';
 import { CompetitionService } from '../../../../services/competitions.service';
 import { LoaderService } from '../../../../services/loader.service';
 import { StepIndicatorComponent } from '../../../common/step-indicator/step-indicator.component';
+import { UserService } from '../../../../services/user.service';
 
 type CompetitionType = 'elimination' | 'league' | 'group_knockout';
 @Component({
@@ -25,7 +26,7 @@ export class AddCompetitionModalComponent {
   step = 1;
   managementForm: FormGroup;
 
-  constructor(private fb: FormBuilder, public modalService: ModalService, private competitionService: CompetitionService, private loaderService: LoaderService) {
+  constructor(private fb: FormBuilder, public modalService: ModalService, private competitionService: CompetitionService, private loaderService: LoaderService, private userService: UserService) {
 
     this.competitionForm = this.fb.group(
       {
@@ -91,10 +92,11 @@ export class AddCompetitionModalComponent {
 
       console.log('Saving competition...', payload);
       console.log('Saving competition...', payload);
-
+      this.loaderService.startLittleLoader()
       this.competitionService.addCompetition(payload).then((res) => {
         console.log('Competition added:', res);
         this.closeModal();
+        this.loaderService.stopLittleLoader()
       });
 
     } catch (error) {

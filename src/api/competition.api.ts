@@ -22,6 +22,7 @@ export interface ICompetitionsResponse {
   competitions: ICompetition[];
   player?: { playerId: number | null; playerRow?: any } | null;
   meta?: any;
+  userState?: IUserState;
 }
 
 // payload per la creazione
