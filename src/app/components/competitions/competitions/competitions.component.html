@@ -1,14 +1,37 @@
 <ng-container *ngIf="userState$ | async as state">
-<div class="wrapper">
-    <section>
-        <h2 class="text-center" style="text-transform: capitalize;">{{ 'competitions' | translate }}</h2>
-        <div class="container">
-                <div *ngIf="state.active_competition_id || ((competitions$ | async)?.length ?? 0) > 0">
+
+    <div class="wrapper">
+
+        <section>
+            <h2 class="text-center" style="text-transform: capitalize;">{{ 'competitions' | translate }}</h2>
+        </section>
+
+        <section>
+            <app-competition-detail *ngIf="activeCompetition$ | async as activeCompetition"
+                [competition]="activeCompetition$ | async">
+            </app-competition-detail>
+        </section>
+
+        <section class="others">
+            <div class="other-competitions-container">
+                <ng-container *ngFor="let c of competitions$ | async; trackBy: trackById">
+                    <ng-container *ngIf="state.active_competition_id != c.id">
+                        <div class="comp">
+                            <strong>{{ c.name }}</strong>
+                            <span>— {{ c.type }}</span>
+                            <span *ngIf="state.active_competition_id == c.id"> ATTIVA</span>
+                            <small *ngIf="c.start_date">
+                                (dal {{ c.start_date }}
+                                <span *ngIf="c.end_date"> al {{ c.end_date }}</span>)
+                            </small>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <div class="comp add" *ngIf="state.active_competition_id || ((competitions$ | async)?.length ?? 0) > 0"
+                    (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
                     <div class="row">
                         <div class="button-container">
-                            <button (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])"
-                                class="add-match">
-                                {{ "add_competition"| translate }}
+                            <button class="no-style">
                                 <span class="m-1"></span>
                                 <i class="fa-solid fa-plus"></i>
                             </button>
@@ -17,32 +40,24 @@
                 </div>
             </div>
         </section>
-        
-        <section>
-            <app-competition-detail></app-competition-detail>
-            <ul>
-                <li *ngFor="let c of competitions$ | async; trackBy: trackById">
-                    <strong>{{ c.name }}</strong>
-                    <span>— {{ c.type }}</span>
-                    <span *ngIf="state.active_competition_id == c.id"> ATTIVA</span>
-                    <small *ngIf="c.start_date">
-                        (dal {{ c.start_date }}
-                        <span *ngIf="c.end_date"> al {{ c.end_date }}</span>)
-                    </small>
-                </li>
-            </ul>
-        </section>
-        
-            <div *ngIf="!state.active_competition_id">
-                <app-competition-start (create)=" modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
-                </app-competition-start>
-            </div>
 
+        <div *ngIf="!state.active_competition_id">
+            <app-competition-start (create)=" modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
+            </app-competition-start>
         </div>
-    
-    <app-modal [label]="'Competitions'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])">
+
+    </div>
+
+    <app-modal [label]="'Competitions'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])"
+        [modalName]="modalService.MODALS['ADD_COMPETITION']">
         <app-add-competition-modal></app-add-competition-modal>
     </app-modal>
+
+    <app-modal [label]="'add_players'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_PLAYERS'])"
+        [modalName]="modalService.MODALS['ADD_PLAYERS']">
+        <app-add-players-modal></app-add-players-modal>
+    </app-modal>
+
     
 </ng-container>
 <app-bottom-navbar></app-bottom-navbar>

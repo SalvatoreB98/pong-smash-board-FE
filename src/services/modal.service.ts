@@ -5,7 +5,7 @@ import { ModalComponent } from '../app/common/modal/modal.component';
 
 @Injectable({ providedIn: 'root' })
 export class ModalService {
-  
+
   private activeModalSubject = new BehaviorSubject<string | null>(null);
   activeModal$ = this.activeModalSubject.asObservable();
   public MODALS = MODALS;
@@ -13,8 +13,12 @@ export class ModalService {
 
 
   openModal(modalName: string): void {
-    this.activeModalSubject.next(modalName);
-    this.setEffects();
+    if (modalName) {
+      this.activeModalSubject.next(modalName);
+      this.setEffects();
+    } else {
+      console.error(`Modal name is required to open a modal. Control if the modal name exists in the MODALS enum and if component of the modal is present in the component and that there is the correct name on the click button es. (click)="modalService.openModal(modalService.MODALS['MODAL NAME'])"`);
+    }
   }
 
   closeModal(): void {
@@ -22,12 +26,8 @@ export class ModalService {
     this.removeEffects();
   }
 
-  isActiveModal(modalName: string) {
-    let isActive = false;
-    this.activeModal$.subscribe(activeModal => {
-      isActive = activeModal === modalName;
-    });
-    return isActive;
+  isActiveModal(modalName: string): boolean {
+    return this.activeModalSubject.value === modalName;
   }
 
   setEffects() {

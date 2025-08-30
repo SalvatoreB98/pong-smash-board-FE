@@ -1,0 +1,47 @@
+@use '../../../../style/variables.scss' as *;
+
+.others {
+    .comp {
+        background: #122036;
+        height: 200px;
+        border-radius: $border-radius;
+        filter: drop-shadow(0px 0px 10px black);
+        padding: 1em;
+        &.add {
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: transform 0.2s ease-in-out;
+            &:hover {
+                transform: scale(0.97);
+            }
+        }
+        .button-container {
+            display: grid;
+            place-items: center;
+                text-align: center;
+            i {
+                font-size: 5em;
+            }
+        }
+    }
+}
+.other-competitions-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2em;
+    max-width: 600px;
+    margin: auto;
+}
+@media screen and (max-width: 600px) {
+    .other-competitions-container {
+        grid-template-columns: 1fr;
+        margin: auto;
+        place-items: center;
+    }
+    .others {
+        .comp {
+            width: 100%;
+        }
+    }
+}

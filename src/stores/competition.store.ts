@@ -1,8 +1,9 @@
 // competition.store.ts
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ICompetition } from '../api/competition.api';
+import { UserService } from '../services/user.service';
 
 type Id = number | string;
 type State = {
@@ -24,8 +25,9 @@ function sortIds(a: ICompetition, b: ICompetition): number {
 
 @Injectable({ providedIn: 'root' })
 export class CompetitionStore {
-  private readonly _state$ = new BehaviorSubject<State>({ entities: {}, ids: [] });
 
+  private readonly _state$ = new BehaviorSubject<State>({ entities: {}, ids: [] });
+  private userService = inject(UserService);
   // SELECTORS
   list$ = this._state$.pipe(
     map(s => s.ids.map(id => s.entities[String(id)]))
@@ -37,6 +39,7 @@ export class CompetitionStore {
     const s = this._state$.getValue();
     return s.ids.map(id => s.entities[String(id)]);
   }
+  
   snapshotById(id: Id): ICompetition | undefined {
     return this._state$.getValue().entities[String(id)];
   }
@@ -99,4 +102,5 @@ export class CompetitionStore {
     this._state$.next({ entities: {}, ids: [] });
     console.log('[CompetitionStore] 🚪 clear');
   }
+
 }

@@ -8,6 +8,9 @@ import { UserStore } from '../stores/user.store';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+  getLocal() {
+    throw new Error('Method not implemented.');
+  }
   constructor(private api: UserApi, private store: UserStore) {}
 
   /** stream reattivo */

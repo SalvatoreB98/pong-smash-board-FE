@@ -14,6 +14,5 @@ export class BottomNavbarComponent {
 
   addMatchModal() {
     this.modalService.openModal(this.modalService.MODALS['ADD_MATCH'])
-  
   }
 }

@@ -11,6 +11,8 @@ $green: #568566;
 $orange: #ffa10b;
 $gradient: linear-gradient(180deg, #000000 10%, #05131c 90%);
 $gradient-reverse: linear-gradient(180deg, $dark 10%, black 90%);
+$gradient2: linear-gradient(90deg, #192745c8 0%, #122137 50%, $dark 100%);
+
 $border-radius : 12px;
 $navbar-height: 75px;
 
@@ -27,7 +29,7 @@ $navbar-height: 75px;
   --orange: #ffa10b;
   --gradient: linear-gradient(180deg, black 10%, #05131c 90%);
   --gradient-reverse: linear-gradient(180deg, #05131c 10%, black 90%);
-  --border-radius : 30px;
+  --border-radius: 30px;
 }
 
 @keyframes bounce {

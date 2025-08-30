@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { TranslationService } from '../../../services/translation.service';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../utils/translate.pipe';
@@ -19,17 +19,28 @@ export class NavbarComponent {
 
   userService = inject(UserService);
   userState$ = this.userService.getState();
-  
+
   isDropdownOpen: boolean = false;
   isMenuOpen: boolean = false;
   isMobile: boolean = window.innerWidth <= 768;
   PROGRESS_STATE = UserProgressStateEnum;
-    
+
   constructor(public translateService: TranslationService, public auth: AuthService, public router: Router) {
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth <= 768;
     });
   }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    const target = event.target as HTMLElement;
+    if (target.closest('#menu-button') || target.classList.contains('fa-bars')) {
+      return;
+    }
+
+    this.isMenuOpen = false;
+  }
+
   ngOnChanges() {
     this.auth.checkAuth()
   }
@@ -45,7 +56,7 @@ export class NavbarComponent {
     this.router.navigate(['/login']);
     this.auth.logout();
   }
-  
+
   trackByLang = (_: number, l: { code: string }) => l.code;
   logga() {
     console.log(this.auth.isLoggedIn$.value);

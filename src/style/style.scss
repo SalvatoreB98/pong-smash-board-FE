@@ -111,6 +111,25 @@ h2 {
     }
 
 }
+
+.button-primary-ping {
+    all: unset;
+    cursor: pointer;
+    border-radius: $border-radius;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $primary;
+    color: $primary-ultra-light;
+    width: 100%;
+    min-height: 50px;
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+        transform: scale(0.97);
+    }
+}
+
 .large-button {
     all: unset;
     cursor: pointer;
@@ -288,4 +307,8 @@ section {
     &::-webkit-scrollbar-track {
         background: var(--dark);
     }
+}
+button.no-style {
+    all: unset;
+    cursor: pointer;
 }

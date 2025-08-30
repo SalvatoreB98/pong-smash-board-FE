@@ -54,6 +54,7 @@ export const MODALS: { [key: string]: string } = {
   ADD_MATCH: 'addMatchModal',
   SHOW_MATCH: 'showMatchModal',
   ADD_COMPETITION: 'addCompetitionModal',
+  ADD_PLAYERS: 'addPlayersModal',
 };
 
 export enum UserProgressStateEnum {

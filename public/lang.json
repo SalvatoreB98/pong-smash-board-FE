@@ -290,5 +290,49 @@
     "edit": {
         "it": "Modifica",
         "en": "Edit"
+    },
+    "active_competition": {
+        "it": "Competizione attiva",
+        "en": "Active competition"
+    },
+    "activeCompetition_createdBy": {
+        "it": "Creata da",
+        "en": "Created by"
+    },
+    "best_of": {
+        "it": "Al meglio di",
+        "en": "Best of"
+    },
+    "points_number": {
+        "it": "Punti a",
+        "en": "Points to"
+    },
+    "name": {
+        "it": "Nome",
+        "en": "Name"
+    },
+    "add_players": {
+        "it": "Aggiungi giocatori",
+        "en": "Add players"
+    },
+    "partecipants": {
+        "it": "Partecipanti",
+        "en": "Participants"
+    },
+    "no_players": {
+        "it": "Nessun giocatore ancora. Aggiungi i primi giocatori per iniziare a registrare partite, classifiche e statistiche.",
+        "en": "No players yet. Add the first players to start tracking matches, standings and stats."
+    },
+    "other_competitions": {
+        "it": "Altre competizioni",
+        "en": "Other competitions"
+    },
+    "type": {
+        "it": "Tipologia",
+        "en": "Type"
+    },
+    "home": {
+        "it": "Home",
+        "en": "Home"
     }
 }
