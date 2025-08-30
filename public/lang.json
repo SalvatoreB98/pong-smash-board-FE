@@ -422,6 +422,9 @@
     "free_management": {
         "it": "Gestione libera",
         "en": "Free management"
+    },
+    "back": {
+        "it": "Indietro",
+        "en": "Back"
     }
-
 }

@@ -40,7 +40,7 @@
             </div>
         </form>
         <div style="position: absolute; bottom: 0; right: 0; margin: 2em;">
-            <button class="primary mt-3" (click)="nextStep()">
+            <button class="primary mt-3" (click)="nextStep()" [disabled]="managementForm.invalid">
                 {{ 'next_step' | translate }}
             </button>
         </div>
@@ -149,8 +149,8 @@
                 </label>
             </div>
         </div>
-
-        <div class="d-flex justify-content-between">
+        <div class="field flex-grow-1"></div>
+        <div class="d-flex justify-content-between" style="justify-items: end;">
             <button class="primary bg-contrast mt-3" (click)="back()">
                 {{ 'back' | translate }}
             </button>

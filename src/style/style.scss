@@ -331,15 +331,18 @@ button.no-style {
     cursor: pointer;
 }
 
-.step-indicator {
-    color: gray;
-}
-
-.field {
-    display: grid;
-    gap: 8px;
-}
-
 .bg-contrast {
     background-color: $contrast !important;
+}
+
+app-add-competition-modal {
+    height: 100%;
+}
+
+@media screen and (max-width: 600px) {
+    .my-modal {
+        width: 95vw;
+        height: 85dvh;
+    }
+
 }
