@@ -1,25 +1,12 @@
-<ng-container *ngIf="userState$ | async as state">
-    <nav>
+<nav>
+    <ng-container *ngIf="userState$ | async as state">
         <div class="title">
             <a [routerLink]="state.state != PROGRESS_STATE.PROFILE_COMPLETED ? '#' : '/#home-page'">
                 Pong Board
                 <span></span>
             </a>
         </div>
-        
-        <div class="dropdown-lang">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                <i class="fa fa-language"></i> {{ translateService.getLanguage() }}
-            </button>
-            <ul class="dropdown-menu">
-                <li *ngFor="let language of translateService.languages">
-                    <a class="dropdown-item" (click)="translateService.setLanguage(language.code, true)">
-                        {{ language.label | translate }}
-                    </a>
-                </li>
-            </ul>
-        </div>
-        
+
         <div class="buttons-container d-flex justify-content-between align-items-center">
 
             <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/home" class="button-navbar">
@@ -62,6 +49,5 @@
                 </div>
             </div>
         </div>
-    </nav>
-    <button (click)="logga()" style="position: absolute; bottom:0;">LOGGA</button>
-</ng-container>
+    </ng-container>
+</nav>
