@@ -36,10 +36,10 @@ export class CompetitionService {
     );
   }
 
-  userState$ = this.user?.getState().pipe(shareReplay(1));
+  userState$ = this.user?.userState$() ?? of(null);
 
   activeCompetition$ = combineLatest({
-    state: this.userState$ ?? of(null),
+    state: this.userState$,
     competitions: this.list$
   }).pipe(
     map(({ state, competitions }) =>
