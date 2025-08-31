@@ -1,7 +1,7 @@
 @use "variables" as *;
 
 // ---- Palette dark (puoi spostarla nel tuo file variables)
-$bg: #0b1220;
+$bg: #000000;
 $surface: #0f172a;
 $field: #111827;
 $text: #e5e7eb;
@@ -15,7 +15,7 @@ $border: #1f2937;
 
 @media (prefers-color-scheme: dark) {
   body {
-    background: $dark;
+    background: $bg;
     color: $text;
   }
 }

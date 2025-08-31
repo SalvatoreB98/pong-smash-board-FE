@@ -10,13 +10,13 @@
 
 html {
     overflow-x: hidden;
-    background-color: $dark;
+    background-color: $bg;
     height: 100vh;
 }
 
 body {
     font-family: 'Parkinsans', 'Arial', sans-serif;
-    background-color: $dark;
+    background-color: $bg;
     color: $primary-ultra-light;
 }
 
@@ -32,7 +32,7 @@ main {
 // Navigation
 nav {
     height: 75px;
-    background-color: black;
+    background-color: $dark;
     color: white;
     font-size: 1em;
     font-weight: 500;
@@ -245,7 +245,7 @@ section {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 102;
-    background: $gradient;
+    background: $gradient-reverse;
     color: white; // Ensure text is visible on black background
     border-radius: $border-radius;
     box-shadow: 0 0 25px black;
@@ -341,6 +341,9 @@ app-add-competition-modal {
     height: 100%;
 }
 
+button.secondary-color-button {
+    background-color: $secondary;
+}
 @media screen and (max-width: 600px) {
     .my-modal {
         top: 0;

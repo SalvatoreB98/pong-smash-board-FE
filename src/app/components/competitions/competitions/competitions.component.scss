@@ -1,14 +1,25 @@
 @use '../../../../style/variables.scss' as *;
 
 .buttons-add {
-    button {
-        margin-bottom: 1em;
+    display: flex;
+    justify-content: center;
+    .button-container {
+        margin: 0;
+        button {
+            width: 275px;
+            margin: none;
+            margin-bottom: 1em;
+            padding: 5px;
+        }
     }
+
+    max-width: 600px;
+    margin: auto;
 }
 
 .others {
     .comp {
-        background: #122036;
+        background: $dark;
         border-radius: $border-radius;
         filter: drop-shadow(0px 0px 10px black);
         padding: 1em;
@@ -59,6 +70,23 @@
     .others {
         .comp {
             width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .buttons-add {
+        display: block;
+        .button-container {
+            margin-bottom: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            padding: 0 1em;
+            button {
+                width: 100%;
+            }
         }
     }
 }

@@ -33,31 +33,31 @@
 
                 <!-- Colonna sinistra: form -->
                 <div class="col-md-6">
-                      <h5 class="mb-3">{{ 'add_user' | translate }}</h5>
-                    <form>
+                    <form class="mt-4">
                         <!-- Nome -->
                         <div class="mb-3">
-                              <label for="nome" class="form-label">{{ 'first_name' | translate }}</label>
-                              <input type="text" id="nome" class="form-control input-field" [placeholder]="'insert_name' | translate">
+                            <label for="nome" class="form-label">{{ 'first_name' | translate }}</label>
+                            <input type="text" id="nome" class="form-control input-field"
+                                [placeholder]="'insert_name' | translate">
                         </div>
 
                         <!-- Cognome -->
                         <div class="mb-3">
-                              <label for="cognome" class="form-label">{{ 'last_name' | translate }}</label>
-                              <input type="text" id="cognome" class="form-control input-field"
-                                  [placeholder]="'insert_last_name' | translate">
+                            <label for="cognome" class="form-label">{{ 'last_name' | translate }}</label>
+                            <input type="text" id="cognome" class="form-control input-field"
+                                [placeholder]="'insert_last_name' | translate">
                         </div>
 
                         <!-- Nickname -->
                         <div class="mb-3">
-                              <label for="nickname" class="form-label">{{ 'nickname' | translate }}</label>
-                              <input type="text" id="nickname" class="form-control input-field"
-                                  [placeholder]="'insert_nickname' | translate">
+                            <label for="nickname" class="form-label">{{ 'nickname' | translate }}</label>
+                            <input type="text" id="nickname" class="form-control input-field"
+                                [placeholder]="'insert_nickname' | translate">
                         </div>
 
                         <!-- Upload immagine -->
                         <div class="mb-3">
-                              <label for="immagine" class="form-label">{{ 'image' | translate }}</label>
+                            <label for="immagine" class="form-label">{{ 'image' | translate }}</label>
                             <input type="file" id="immagine" class="form-control input-field">
                         </div>
 
@@ -69,9 +69,19 @@
 
                 <!-- Colonna destra: utenti aggiunti -->
                 <div class="col-md-6">
-                      <h5 class="mb-3">{{ 'added_users' | translate }}</h5>
-                      <ul class="list-group">
-                      </ul>
+                    <h5 class="mb-3">Utenti aggiunti</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <span><img src="https://via.placeholder.com/32" class="rounded-circle me-2"> Mario
+                                Rossi</span>
+                            <small>nickname123</small>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <span><img src="https://via.placeholder.com/32" class="rounded-circle me-2"> Luca
+                                Bianchi</span>
+                            <small>luca_b</small>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

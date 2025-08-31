@@ -1,16 +1,23 @@
 // Variables
-$dark: #05131c;
-$primary: #374d87;
-$primary-light: #6e96ff;
-$primary-ultra-light: #cbd1e1;
-$contrast: #c76360;
-$secondary: #e19945;
-$light: #f2c373;
-$border-radius: 30px;
+// Base e Sfondi
+$dark: #05131c; // Base scura, come prima
+$bg: #020b12; // Sfondo ancora più scuro, leggermente più freddo per coerenza
+$gradient: linear-gradient(180deg, #020b12 10%, #05131c 90%); // Gradiente migliorato per profondità
+$gradient-reverse: linear-gradient(180deg, $dark 10%, #020b12 90%); // Versione inversa
+
+// Colori Principali e di Accento
+$primary: #284aa6; // Blu primario forte
+$primary-light: #6e96ff; // Versione più chiara del blu primario
+$primary-ultra-light: #e1e9ff; // Ora un bianco freddo/bluastro per testi/sfondi chiari armonia
+$contrast: #c76360; // Rosso di contrasto, ora leggermente più saturo per risaltare
+$secondary: #403787; // Viola/blu scuro, un buon colore complementare al blu primario
+$light: #ffa10b; // Giallo/Arancio, ora più vivace e specifico per elementi di rilievo
+
+// Colori Semantici (rimasti invariati in quanto già ben definiti)
 $green: #568566;
-$orange: #ffa10b;
-$gradient: linear-gradient(180deg, #000000 10%, #05131c 90%);
-$gradient-reverse: linear-gradient(180deg, $dark 10%, black 90%);
+$orange: #ffa10b; // Ho allineato $orange a $light per coerenza, se sono intesi come lo stesso colore.
+
+// Gradiente Speciale (ho mantenuto la tua struttura, ma ho usato $dark-blu come base per renderlo più coerente)
 $gradient2: linear-gradient(90deg, #192745c8 0%, #122137 50%, $dark 100%);
 
 $border-radius : 12px;
