@@ -19,7 +19,6 @@ export class CompetitionDetailComponent {
   }
 
   isEmpty(array: any): boolean {
-    console.log('Checking if array is empty:', array);
     return !array || (Array.isArray(array) && array.length === 0);
   }
 }

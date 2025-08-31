@@ -14,7 +14,7 @@ export interface ICompetition {
   start_date?: string | null;
   end_date?: string | null;
   created_at?: string;
-  players?: { id: number; name: string; img_url: string }[];
+  players?: { id: number; name: string; image_url: string }[];
   [k: string]: any;
   management: 'admin' | 'self';
 }

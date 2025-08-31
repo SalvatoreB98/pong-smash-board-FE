@@ -578,5 +578,9 @@
     "where": {
         "it": "Dove trovare il codice competizione?",
         "en": "Where to find the competition code?"
+    },
+    "create_first_competition": {
+        "it": "Crea la tua prima competizione",
+        "en": "Create your first competition"
     }
 }
