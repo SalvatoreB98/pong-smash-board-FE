@@ -33,10 +33,10 @@
 
     <div class="players-container mt-5 d-flex justify-content-between align-items-center">
       <div class="competition-players-container">
-        <div class="players" *ngFor="let i of competition?.['players']">
+        <div class="players" *ngFor="let c of competition?.['players']">
           <img [src]="'a'" alt="avatar" />
         </div>
-        <div class="p-2" *ngIf="competition?.['players']?.length < 1">
+        <div class="p-2" *ngIf="isEmpty(competition?.['players'])">
           {{ "no_players" | translate }}
         </div>
       </div>

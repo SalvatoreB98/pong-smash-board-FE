@@ -11,10 +11,14 @@ import { ModalService } from '../../../../services/modal.service';
 })
 export class CompetitionDetailComponent {
   @Input() competition: ICompetition | null = null;
-  
-  constructor(public modalService: ModalService) {}
-  
+
+  constructor(public modalService: ModalService) { }
+
   ngOnInit() {
     console.log('CompetitionDetailComponent initialized with competition:', this.competition?.id);
+  }
+
+  isEmpty(array: any[] | undefined): boolean {
+    return !array || array.length === 0;
   }
 }
