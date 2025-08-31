@@ -6,17 +6,17 @@
     <form class="form-dark" [formGroup]="registerForm" (ngSubmit)="onRegister()">
         <div class="input-container">
             <i class="fa fa-envelope-o" aria-hidden="true"></i>
-            <input id="email" type="email" formControlName="email" placeholder="Enter your email" required>
+              <input id="email" type="email" formControlName="email" [placeholder]="'enter_email' | translate" required>
         </div>
 
         <div class="input-container">
             <i class="fa fa-key" aria-hidden="true"></i>
-            <input id="password" type="password" formControlName="password" placeholder="Enter your password" required>
+              <input id="password" type="password" formControlName="password" [placeholder]="'enter_password' | translate" required>
         </div>
         <div class="input-container">
             <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-            <input id="passwordConfirm" type="password" formControlName="confirmPassword"
-                placeholder="Confirm your password" required>
+              <input id="passwordConfirm" type="password" formControlName="confirmPassword"
+                  [placeholder]="'confirm_password' | translate" required>
         </div>
 
 

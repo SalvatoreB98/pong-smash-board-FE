@@ -27,7 +27,7 @@
 
             <a (click)="logout()" *ngIf="!isMobile && (auth.isLoggedIn$ | async)" class="button-navbar">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
-                <span> Log Out</span>
+                  <span>{{ 'logout' | translate }}</span>
             </a>
 
             <ng-container *ngIf="auth.isLoggedIn$ | async">
@@ -44,7 +44,7 @@
                                 <a routerLink="/competitions"> {{"Competizioni" | translate}} </a>
                             </li>
                             <li class="clickable" style="color: #c76360;">
-                                <a (click)="logout()">Log Out</a>
+                                  <a (click)="logout()">{{ 'logout' | translate }}</a>
                             </li>
                         </ul>
                     </div>

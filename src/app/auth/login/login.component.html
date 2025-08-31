@@ -1,23 +1,22 @@
 <app-registration-navbar [isLogin]="true"></app-registration-navbar>
 <div class="login-wrapper">
     <div class="login-container">
-        <h2>Login</h2>
+        <h2>{{ 'login' | translate }}</h2>
         <form class="form-dark" [formGroup]="loginForm" (ngSubmit)="onLogin()">
             <div class="input-container">
                 <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                <input id="email" type="email" formControlName="email" placeholder="Enter your email" required>
+                  <input id="email" type="email" formControlName="email" [placeholder]="'enter_email' | translate" required>
             </div>
 
             <div class="input-container">
                 <i class="fa fa-key" aria-hidden="true"></i>
-                <input id="password" type="password" formControlName="password" placeholder="Enter your password"
-                    required>
+                  <input id="password" type="password" formControlName="password" [placeholder]="'enter_password' | translate"
+                      required>
             </div>
 
             <div class="mt-4 text-center">
-                <button (click)="onLogin()" type="button" [disabled]="loginForm.invalid">Login</button>
-                <button id="googleBtn" type="button" (click)="googleSignIn($event)" class="mt-4"><img src="/google.png">Entra con
-                    Google</button>
+                  <button (click)="onLogin()" type="button" [disabled]="loginForm.invalid">{{ 'login' | translate }}</button>
+                  <button id="googleBtn" type="button" (click)="googleSignIn($event)" class="mt-4"><img src="/google.png">{{ 'login_google' | translate }}</button>
             </div>
             <p class="mt-3 text-center">
                 <a routerLink="/register" class="register text-decoration-underline" routerLink="/register">{{'register'

@@ -10,7 +10,7 @@
             <div class="score">{{ match?.player1_score }}</div>
         </div>
         <div class="vs">
-            <img src="/vs.svg" alt="VS">
+            <img src="/vs.svg" alt="{{ 'vs' | translate }}">
         </div>
         <div class="player player-2">
             <div class="p-3">
@@ -21,12 +21,12 @@
         </div>
     </div>
     <div class="other" *ngIf="match?.match_sets?.length > 1">
-        <h5 class="text-center">SETS</h5>
+        <h5 class="text-center">{{ 'sets' | translate }}</h5>
         <div class="sets-points">
             <div class="set" *ngFor="let set of match.match_sets; let i = index">
-                <div class="n-set">{{ i + 1 }}º set</div>
+                <div class="n-set">{{ i + 1 }}º {{ 'set' | translate }}</div>
                 <div><span [ngClass]="{ 'won': set.player1_score > set.player2_score }">{{ set.player1_score }}</span></div>
-                <div class="separator">{{ set.player1_score == 20 || set.player2_score == 20 ? ('Ai vantaggi' | translate) : '-' }}</div>
+                <div class="separator">{{ set.player1_score == 20 || set.player2_score == 20 ? ('advantage' | translate) : '-' }}</div>
                 <div><span [ngClass]="{ 'won': set.player2_score > set.player1_score }">{{ set.player2_score }}</span></div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <div class="modal-content">
     <form class="form-dark" [formGroup]="matchForm" (ngSubmit)="addMatch()">
         <div>
-            <label for="date" class="my-placeholder">Data</label>
+            <label for="date" class="my-placeholder">{{ 'date' | translate }}</label>
             <input class="my-placeholder" class="my-placeholder" id="date" type="date" formControlName="date" required>
         </div>
 

@@ -21,11 +21,11 @@
   <div class="vittorie" title="{{ 'vittorieTitle' | translate }}">{{ player.wins }}</div>
   <div class="sconfitte" title="{{ 'sconfitteTitle' | translate }}">{{ player.lost }}</div>
   <div class="partite-rating" title="{{ 'ratingEloTitle' | translate }}">
-    <span class="mini-info">PT</span>
+    <span class="mini-info">{{ 'pt' | translate }}</span>
     {{ (player.rating)?.toFixed(1) }}
   </div>
   <div class="win-rate" title="{{ 'winRateTitle' | translate }}">
-    <span class="mini-info">WR%</span>
+    <span class="mini-info">{{ 'wr_percent' | translate }}</span>
     <div class="rate-label">{{ winRateLabel(player.winRate) }}</div>
     <div class="win-rate-bar"
       [style.width.%]="barWidthPct(player.winRate)"
