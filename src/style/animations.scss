@@ -18,19 +18,24 @@
     }
 }
 
+@keyframes openMobile {
+    from {
+        opacity: 0;
+        opacity: 0;
+        transform: scale(0.75);
+        animation: 0.15s ease-in;
+
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 @media screen and (max-width: 600px) {
-    @keyframes open {
-        from {
-            opacity: 0;
-            opacity: 0;
-            transform: scale(0.75);
-            animation: 0.15s ease-in;
-
-        }
-
-        to {
-            transform: scale(1);
-            opacity: 1;
-        }
+    .my-modal:not(.small) {
+        opacity: 0;
+        animation: openMobile 0.1s ease-out forwards;
     }
 }

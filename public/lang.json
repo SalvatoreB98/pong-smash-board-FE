@@ -212,8 +212,8 @@
         "en": "Competitions"
     },
     "not_available": {
-        "it": "Work in progress",
-        "en": "work in progress"
+        "it": "In arrivo presto 🚀",
+        "en": "Coming soon 🚀"
     },
     "no_competitions": {
         "it": "Nessuna competizione ancora. Crea la tua prima competizione per iniziare a registrare partite, classifiche e statistiche.",
@@ -257,6 +257,10 @@
     },
     "create_competition": {
         "it": "Crea",
+        "en": "Create a competition"
+    },
+    "create_competition_cta": {
+        "it": "Crea una competizione",
         "en": "Create a competition"
     },
     "join_competition": {
@@ -558,5 +562,21 @@
     "avatar_alt": {
         "it": "avatar",
         "en": "avatar"
+    },
+    "join_competition_description": {
+        "it": "Unisciti a una competizione esistente <br> con il <strong>codice</strong> fornito dal tuo organizzatore <br> o membro della competizione",
+        "en": "Join an existing competition <br> with the <strong>code</strong> provided by your organizer <br> or competition member"
+    },
+    "join_cta2": {
+        "it": "Unisciti",
+        "en": "Join"
+    },
+    "competition_code": {
+        "it": "Codice competizione",
+        "en": "Competition code"
+    },
+    "where": {
+        "it": "Dove trovare il codice competizione?",
+        "en": "Where to find the competition code?"
     }
 }

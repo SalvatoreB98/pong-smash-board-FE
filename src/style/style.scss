@@ -318,7 +318,10 @@ section {
         }
 
     }
-
+    &.small{
+        width: auto;
+        height: auto;
+    }
     &::-webkit-scrollbar-thumb {
         background: var(--primary-ultra-light);
     }
@@ -344,16 +347,17 @@ app-add-competition-modal {
 button.secondary-color-button {
     background-color: $secondary;
 }
+
 @media screen and (max-width: 600px) {
-    .my-modal {
+    .my-modal:not(.small) {
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
         max-width: 99vw;
         margin: auto;
-        height: 100dvh;
-        max-height: 100dvh;
+        height: 75dvh;
+        max-height: 75dvh;
     }
 
 }

@@ -1,3 +1,5 @@
+import { JoinCompetitionModalComponent } from "../components/join-competition-modal/join-competition-modal.component";
+
 export enum DATA {
   WINS = 'WINS',
   WINRATE = 'WINRATE',
@@ -55,6 +57,8 @@ export const MODALS: { [key: string]: string } = {
   SHOW_MATCH: 'showMatchModal',
   ADD_COMPETITION: 'addCompetitionModal',
   ADD_PLAYERS: 'addPlayersModal',
+  JOIN_COMPETITION: 'joinCompetitionModal',
+
 };
 
 export enum UserProgressStateEnum {

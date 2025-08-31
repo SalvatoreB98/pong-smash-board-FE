@@ -14,7 +14,8 @@ export class ModalComponent {
   @Input() modalName!: string;
   @ViewChild('modalRef') modalRef!: ElementRef;
   @Input() label: string = '';
-
+  @Input() isSmall: boolean = false;
+  
   constructor(public modalService: ModalService) { }
 
   onImageError(event: Event) {

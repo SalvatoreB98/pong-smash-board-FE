@@ -1,5 +1,5 @@
 <div class="modal-overlay">
-    <div #modalRef class="my-modal">
+    <div #modalRef class="my-modal"  [class.small]="isSmall">
         <button class="close" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
         <h2>{{label | translate}}</h2>
         <ng-content></ng-content>

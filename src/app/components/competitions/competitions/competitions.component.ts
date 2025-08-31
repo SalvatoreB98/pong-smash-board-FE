@@ -15,6 +15,7 @@ import { ModalService } from '../../../../services/modal.service';
 import { CompetitionDetailComponent } from '../competition-detail/competition-detail.component';
 import { AddPlayersModalComponent } from '../../add-players-modal/add-players-modal.component';
 import { Utils } from '../../../utils/Utils';
+import { JoinCompetitionModalComponent } from '../../join-competition-modal/join-competition-modal.component';
 @Component({
   selector: 'app-competitions',
   standalone: true,
@@ -28,6 +29,7 @@ import { Utils } from '../../../utils/Utils';
     AddCompetitionModalComponent,
     CompetitionDetailComponent,
     AddPlayersModalComponent,
+    JoinCompetitionModalComponent
   ],
   templateUrl: './competitions.component.html',
   styleUrls: ['./competitions.component.scss']

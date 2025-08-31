@@ -1,5 +1,9 @@
 @use "../style/variables.scss" as *;
 
+a {
+    cursor: pointer;
+}
+
 .title {
     font-family: 'LarkenBlack', sans-serif;
 
@@ -62,20 +66,24 @@
         text-transform: capitalize;
     }
 }
+
 p.instructions {
     text-align: center;
     max-width: 500px;
     margin: auto;
 }
+
 small.error {
     display: block;
     text-align: left;
     width: 200px;
     font-size: 0.75em;
 }
+
 .error {
     color: $contrast;
 }
+
 @keyframes scrollText {
     0% {
         transform: translateX(0);

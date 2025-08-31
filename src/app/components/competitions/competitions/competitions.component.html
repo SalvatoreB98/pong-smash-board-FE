@@ -60,17 +60,16 @@
             </section>
         </ng-container>
 
-        <div *ngIf="state.active_competition_id || ((competitions$ | async)?.length ?? 0) > 0"
-            (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
+        <div *ngIf="state.active_competition_id || ((competitions$ | async)?.length ?? 0) > 0">
             <div class="buttons-add">
                 <div class="button-container" style="max-width: 600px;">
-                    <button class="button-primary-ping secondary-color-button">
+                    <button class="button-primary-ping secondary-color-button"  (click)="modalService.openModal(modalService.MODALS['JOIN_COMPETITION'])">
                         <div class="m-1"> {{"join_cta" | translate}} </div>
                         <i class="fa-solid fa-share"></i>
                     </button>
                 </div>
                 <div class="button-container">
-                    <button class="button-primary-ping">
+                    <button class="button-primary-ping"  (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
                         <div class="m-1"> {{"create_cta" | translate}} </div>
                         <i class="fa-solid fa-plus"></i>
                     </button>
@@ -86,7 +85,7 @@
         </ng-container>
     </div>
 
-    <app-modal [label]="'Competitions'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])"
+    <app-modal [label]="'create_competition_cta'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])"
         [modalName]="modalService.MODALS['ADD_COMPETITION']">
         <app-add-competition-modal></app-add-competition-modal>
     </app-modal>
@@ -94,6 +93,11 @@
     <app-modal [label]="'add_players'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_PLAYERS'])"
         [modalName]="modalService.MODALS['ADD_PLAYERS']">
         <app-add-players-modal></app-add-players-modal>
+    </app-modal>
+
+    <app-modal [isSmall]="true" [label]="'join_competition'" *ngIf="modalService.isActiveModal(modalService.MODALS['JOIN_COMPETITION'])"
+        [modalName]="modalService.MODALS['JOIN_COMPETITION']">
+        <app-join-competition-modal></app-join-competition-modal>
     </app-modal>
 
 
