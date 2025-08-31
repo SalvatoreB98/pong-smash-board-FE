@@ -39,10 +39,10 @@
 
                             <!-- Players -->
                             <div>
-                                <div *ngIf="c?.['players']?.length; else noPlayers">
+                                <div *ngIf="hasPlayers(c?.['players']); else noPlayers">
                                     <div>
-                                        {{ c?.['players'].length }}
-                                        {{ c?.['players'].length == 1 ? ('player' | translate) : ('players' |
+                                        {{ c?.['players']?.length }}
+                                        {{ c?.['players']?.length == 1 ? ('player' | translate) : ('players' |
                                         translate) }}
                                     </div>
                                     <div class="players-list">

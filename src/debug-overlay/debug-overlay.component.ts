@@ -22,6 +22,7 @@ export class DebugOverlayComponent {
   active$ = this.comp.activeCompetition$;
   userState$ = this.user.userState$();         // suppongo ritorni observable
   isLoggedIn$ = this.auth?.isLoggedIn$ ?? null;
+  activeCompetition$ = this.comp.activeCompetition$;
 
   isVisible = true;
 

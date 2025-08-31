@@ -1,23 +1,90 @@
-<p class="mt-5">
-    {{ "insert_players_init" | translate }}
-</p>
-<section class="init-button">
-    <button class="large-button text-center">
-        <i class="fa fa-share" aria-hidden="true"></i>
-        <div>
-            {{ "invitation_code" | translate }}
-        </div>
-        <p>
-            {{ "invitation_code_info" | translate }}
+<ng-container *ngIf="activeCompetition$ | async as activeCompetition">
+    <ng-container *ngIf="activeCompetition.management == 'self'">
+        <p class="mt-5">
+            {{ "insert_players_init" | translate }}
         </p>
-    </button>
-    <button class="large-button text-center">
-        <i class="fa fa-envelope" aria-hidden="true"></i>
-        <div>
-            {{ "send_invitation_by_email" | translate }}
+        <section class="init-button">
+            <button class="large-button text-center">
+                <i class="fa fa-share" aria-hidden="true"></i>
+                <div>
+                    {{ "invitation_code" | translate }}
+                </div>
+                <p>
+                    {{ "invitation_code_info" | translate }}
+                </p>
+            </button>
+            <button class="large-button text-center">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <div>
+                    {{ "send_invitation_by_email" | translate }}
+                </div>
+                <p>
+                    {{ "send_invitation_by_email_info" | translate }}
+                </p>
+            </button>
+        </section>
+    </ng-container>
+    <ng-container *ngIf="activeCompetition.management == 'admin'">
+        <div *ngIf="activeCompetition?.players?.length === 0" class="mt-3 p-1 text-center" role="alert">
+            {{ "add_players_to_competition" | translate }}
         </div>
-        <p>
-            {{ "send_invitation_by_email_info" | translate }}
-        </p>
-    </button>
-</section>
+        <div class="container my-4 form-dark">
+            <div class="row">
+
+                <!-- Colonna sinistra: form -->
+                <div class="col-md-6">
+                    <h5 class="mb-3">Aggiungi utente</h5>
+                    <form>
+                        <!-- Nome -->
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input type="text" id="nome" class="form-control input-field" placeholder="Inserisci nome">
+                        </div>
+
+                        <!-- Cognome -->
+                        <div class="mb-3">
+                            <label for="cognome" class="form-label">Cognome</label>
+                            <input type="text" id="cognome" class="form-control input-field"
+                                placeholder="Inserisci cognome">
+                        </div>
+
+                        <!-- Nickname -->
+                        <div class="mb-3">
+                            <label for="nickname" class="form-label">Nickname</label>
+                            <input type="text" id="nickname" class="form-control input-field"
+                                placeholder="Inserisci nickname">
+                        </div>
+
+                        <!-- Upload immagine -->
+                        <div class="mb-3">
+                            <label for="immagine" class="form-label">Immagine</label>
+                            <input type="file" id="immagine" class="form-control input-field">
+                        </div>
+
+                        <div class="button-container d-flex justify-content-center">
+                            <button type="button" (click)="addPlayer()">{{ "add_player" | translate }}</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Colonna destra: utenti aggiunti -->
+                <div class="col-md-6">
+                    <h5 class="mb-3">Utenti aggiunti</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <span><img src="https://via.placeholder.com/32" class="rounded-circle me-2"> Mario
+                                Rossi</span>
+                            <small>nickname123</small>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <span><img src="https://via.placeholder.com/32" class="rounded-circle me-2"> Luca
+                                Bianchi</span>
+                            <small>luca_b</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+</ng-container>

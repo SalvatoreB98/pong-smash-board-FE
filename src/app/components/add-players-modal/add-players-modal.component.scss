@@ -1,3 +1,4 @@
+@use '../../../style/variables' as *;
 .init-button {
     display: grid;
     place-items: center;
@@ -7,4 +8,20 @@ p {
     padding: 1em;
     place-items: center;
     text-align: center;
+}
+.list-group-item {
+    background-color: black;
+    color: white;
+}
+.text-muted {
+    color: $primary;
+}
+#immagine:hover {
+    background: $dark;
+    color: black;
+}
+
+#immagine:hover::-webkit-file-upload-button {
+  background: $primary;
+  transform: scale(1.05);
 }

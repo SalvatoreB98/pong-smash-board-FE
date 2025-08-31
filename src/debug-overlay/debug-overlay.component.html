@@ -18,7 +18,11 @@
         </div>
 
         <div>
-            <strong>Active:</strong> {{ (active$ | async)?.id }}
+            <strong>Active id:</strong> {{ (active$ | async)?.id }}
+        </div>
+        <div>
+            <strong>Active competition:</strong>
+            {{ activeCompetition$ | async | json }}
         </div>
         <button class="close" (click)="close()" style="position: absolute; top: 5px; right: 5px;">
             <i class="fa-solid fa-xmark"></i>

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
+import { UserService } from '../../../services/user.service';
+import { CompetitionService } from '../../../services/competitions.service';
 
 @Component({
   selector: 'app-add-players-modal',
@@ -9,4 +11,10 @@ import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 })
 export class AddPlayersModalComponent {
 
+  competitionService = inject(CompetitionService);
+  activeCompetition$ = this.competitionService.activeCompetition$;
+  constructor() { }
+  addPlayer() {
+    // Logica per aggiungere un giocatore
+  }
 }

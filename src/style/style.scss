@@ -308,7 +308,7 @@ section {
             color: var(--dark);
         }
 
-        &[type="submit"] {
+        &[type="submit"], &[type="button"] {
             background-color: var(--primary);
             color: white;
 
@@ -343,8 +343,14 @@ app-add-competition-modal {
 
 @media screen and (max-width: 600px) {
     .my-modal {
-        width: 95vw;
-        height: 85dvh;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-width: 99vw;
+        margin: auto;
+        height: 100dvh;
+        max-height: 100dvh;
     }
 
 }

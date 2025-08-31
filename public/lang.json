@@ -438,5 +438,13 @@
     "join_or_create": {
         "it": "Unisciti o crea altra competizione",
         "en": "Join or create another competition"
+    },
+    "add_players_to_competition": {
+        "it": "Aggiungi almeno 2 giocatori alla competizione",
+        "en": "Add at least 2 players to competition"
+    },
+    "add_player": {
+        "it": "Aggiungi giocatore",
+        "en": "Add player"
     }
 }

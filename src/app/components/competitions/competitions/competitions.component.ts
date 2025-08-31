@@ -77,5 +77,10 @@ export class CompetitionsComponent {
   normalizeDate(date: string = ''): string {
     return Utils.normalizeDate(date) || '';
   }
-  
+  hasCompetitions(competitions: ICompetition[] = []): boolean {
+    return competitions.length > 0;
+  }
+  hasPlayers(players: any[] = []): boolean {
+    return players.length > 0;
+  }
 }
