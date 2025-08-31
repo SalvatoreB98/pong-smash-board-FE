@@ -18,7 +18,7 @@ export class CompetitionDetailComponent {
     console.log('CompetitionDetailComponent initialized with competition:', this.competition?.id);
   }
 
-  isEmpty(array: any[] | undefined): boolean {
-    return !array || array.length === 0;
+  isEmpty(array: any): boolean {
+    return !array || (Array.isArray(array) && array.length === 0);
   }
 }
