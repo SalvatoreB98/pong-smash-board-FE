@@ -1,7 +1,8 @@
 // Variables
 // Base e Sfondi
 $dark: #05131c; // Base scura, come prima
-$bg: #020b12; // Sfondo ancora più scuro, leggermente più freddo per coerenza
+$dark2: #020b12;
+$bg: black; // Sfondo ancora più scuro, leggermente più freddo per coerenza
 $gradient: linear-gradient(180deg, #020b12 10%, #05131c 90%); // Gradiente migliorato per profondità
 $gradient-reverse: linear-gradient(180deg, $dark 10%, #020b12 90%); // Versione inversa
 
