@@ -446,5 +446,21 @@
     "add_player": {
         "it": "Aggiungi giocatore",
         "en": "Add player"
+    },
+    "join": {
+        "it": "Unisciti a una competizione esistente per iniziare a registrare partite, classifiche e statistiche.",
+        "en": "Join an existing competition to start recording matches, rankings, and statistics."
+    },
+    "create": {
+        "it": "Crea una nuova competizione per iniziare a registrare partite, classifiche e statistiche.",
+        "en": "Create a new competition to start recording matches, rankings, and statistics."
+    },
+    "join_cta": {
+        "it": "Unisciti a una competizione esistente",
+        "en": "Join an existing competition"
+    },
+    "create_cta": {
+        "it": "Crea una nuova competizione",
+        "en": "Create a new competition"
     }
 }

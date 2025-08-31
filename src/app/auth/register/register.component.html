@@ -21,7 +21,7 @@
 
 
         <div class="mt-4 text-center">
-            <button type="submit" [disabled]="registerForm.invalid">Register</button>
+            <button type="submit" [disabled]="registerForm.invalid">{{"register_title" | translate}}</button>
             <button id="googleBtn" (click)="googleSignIn()" class="mt-4"><img src="/google.png">
                 {{"register_google" | translate}}
             </button>
