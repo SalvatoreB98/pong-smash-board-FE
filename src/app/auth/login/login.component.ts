@@ -42,6 +42,7 @@ export class LoginComponent {
     if (error) {
       console.error('Login failed:', error.code);
       this.loaderService.showToast(error.code || 'Login failed. Please try again.', MSG_TYPE.ERROR, 5000);
+      this.loaderService.stopLittleLoader();
     } else {
       console.log('User logged in:', data);
       this.loaderService.showToast('Login successful!', MSG_TYPE.SUCCESS, 3000);
@@ -49,7 +50,10 @@ export class LoginComponent {
       this.auth.checkAuth()
     }
   }
-  async googleSignIn() {
+
+  async googleSignIn(event: Event) {
+    event.preventDefault();
+    this.loaderService.startLittleLoader();
     await this.supabaseAuthService.signInWithGoogle();
   }
 

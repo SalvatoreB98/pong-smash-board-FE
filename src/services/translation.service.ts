@@ -22,13 +22,16 @@ export class TranslationService {
 
   constructor(private http: HttpClient) {
     const userLanguage = navigator.language || navigator.languages[0] || 'en';
-    if (!localStorage.getItem("selectedLanguage") && userLanguage.startsWith('it')) {
-      this.currentLang.next('it');
-      this.setLanguage('it', true);
+    const savedLanguage = sessionStorage.getItem("selectedLanguage");
+
+    if (savedLanguage) {
+      this.setLanguage(savedLanguage, false); // usa quello salvato
+    } else if (userLanguage.startsWith('it')) {
+      this.setLanguage('it', true); // setta italiano se il browser è in IT
     } else {
-      this.currentLang.next(localStorage.getItem("selectedLanguage") || 'en');
-      this.setLanguage('en', true);
+      this.setLanguage('en', true); // fallback
     }
+
     this.loadTranslations();
   }
 
@@ -36,7 +39,7 @@ export class TranslationService {
   setLanguage(lang: string, isManuallySet = false) {
     this.currentLang.next(lang);
     if (isManuallySet) {
-      localStorage.setItem("selectedLanguage", lang);
+      sessionStorage.setItem("selectedLanguage", lang);
     }
   }
 

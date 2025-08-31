@@ -340,8 +340,8 @@
         "en": "No players yet"
     },
     "insert_players_init": {
-        "it": "Scegli se aggiungere i giocatori manualmente,invitarli tramite email o fornire loro un codice di invito.",
-        "en": "Choose whether to add players manually, invite them via email, or provide them with an invite code."
+        "it": "Scegli se, invitarli tramite email o fornire loro un codice di invito.",
+        "en": "Choose whether to invite players via email or provide them with an invite code."
     },
     "invitation_code": {
         "it": "Codice di invito",
@@ -350,6 +350,14 @@
     "invitation_code_info": {
         "it": "Condividi questo codice con i tuoi amici per permettere loro di unirsi alla competizione.",
         "en": "Share this code with your friends to allow them to join the competition."
+    },
+    "send_invitation_by_email": {
+        "it": "Invia inviti via email",
+        "en": "Send invitations by email"
+    },
+    "send_invitation_by_email_info": {
+        "it": "Invia inviti ai tuoi amici tramite email per permettere loro di unirsi alla competizione.",
+        "en": "Send invitations to your friends via email to allow them to join the competition."
     },
     "invite": {
         "it": "Invita giocatori (email)",
@@ -426,5 +434,9 @@
     "back": {
         "it": "Indietro",
         "en": "Back"
+    },
+    "join_or_create": {
+        "it": "Unisciti o crea",
+        "en": "Join or create"
     }
 }

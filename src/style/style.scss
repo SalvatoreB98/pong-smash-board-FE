@@ -155,6 +155,7 @@ h3 {
     position: relative;
     overflow: hidden;
     background-color: #0b1e2a;
+    text-align: center;
 
     &:hover {
         transform: scale(0.97);
@@ -278,6 +279,7 @@ section {
         padding: 0.5em 1em;
         border-radius: $border-radius;
         cursor: pointer;
+        overflow: hidden;
 
         &.close {
             width: 25px;
@@ -337,6 +339,12 @@ button.no-style {
 
 app-add-competition-modal {
     height: 100%;
+}
+
+.buttons-add {
+    position: absolute;
+    top: $navbar-height;
+    right: 0;
 }
 
 @media screen and (max-width: 600px) {
