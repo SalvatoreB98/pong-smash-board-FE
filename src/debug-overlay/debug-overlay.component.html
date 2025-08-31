@@ -1,0 +1,27 @@
+<div class="debug-overlay">
+    <ng-container *ngIf="!isVisible">
+        <button (click)="open()">Open debugger</button>
+    </ng-container>
+    <ng-container *ngIf="isVisible">
+        <div *ngIf="isLoggedIn$">
+            <strong>isLoggedIn:</strong> {{ (isLoggedIn$ | async) ? '✅' : '❌' }}
+        </div>
+
+        <div>
+            <strong>UserState:</strong>
+            <pre>{{ userState$ | async | json }}</pre>
+        </div>
+
+        <div>
+            <strong>Competitions:</strong>
+            [<span *ngFor="let c of (list$ | async)">{{c.id}}, </span>]
+        </div>
+
+        <div>
+            <strong>Active:</strong> {{ (active$ | async)?.id }}
+        </div>
+        <button class="close" (click)="close()" style="position: absolute; top: 5px; right: 5px;">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </ng-container>
+</div>

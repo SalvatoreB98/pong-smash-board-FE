@@ -341,12 +341,6 @@ app-add-competition-modal {
     height: 100%;
 }
 
-.buttons-add {
-    position: absolute;
-    top: $navbar-height;
-    right: 0;
-}
-
 @media screen and (max-width: 600px) {
     .my-modal {
         width: 95vw;

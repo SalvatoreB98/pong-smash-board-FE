@@ -1,10 +1,69 @@
 <ng-container *ngIf="userState$ | async as state">
-
     <div class="wrapper">
 
         <section>
             <h2 class="text-center" style="text-transform: capitalize;">{{ 'competitions' | translate }}</h2>
         </section>
+        <section>
+            <ng-container *ngIf="!state.active_competition_id">
+                <div class="button-container">
+                    <button class="button-primary-ping"
+                        (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
+                        {{ 'create_first_competition' | translate }}
+                    </button>
+                </div>
+            </ng-container>
+        </section>
+
+        <section>
+            <app-competition-detail *ngIf="activeCompetition$ | async as activeCompetition"
+                [competition]="activeCompetition$ | async">
+            </app-competition-detail>
+        </section>
+        <ng-container *ngIf="competitions$ | async as competitions">
+            <section class="others" *ngIf="competitions.length > 1">
+                <h3>{{ "other_competitions" | translate }}</h3>
+                <div class="other-competitions-container">
+                    <ng-container *ngFor="let c of competitions$ | async; trackBy: trackById">
+                        <div class="comp" *ngIf="state.active_competition_id != c.id">
+                            <strong>{{ c.name }}</strong>
+                            <span>— {{ c.type }}</span>
+                            <div class="date">
+                                {{ normalizeDate(c.created_at) }}
+                            </div>
+
+                            <small *ngIf="c.start_date">
+                                ({{ "from" | translate }} {{ c.start_date }}
+                                <span *ngIf="c.end_date"> {{ "to" | translate }} {{ c.end_date }}</span>)
+                            </small>
+
+                            <!-- Players -->
+                            <div>
+                                <div *ngIf="c?.['players']?.length; else noPlayers">
+                                    <div>
+                                        {{ c?.['players'].length }}
+                                        {{ c?.['players'].length == 1 ? ('player' | translate) : ('players' |
+                                        translate) }}
+                                    </div>
+                                    <div class="players-list">
+                                        <img *ngFor="let player of c?.['players']" [src]="player.img_url"
+                                            [alt]="player.name || 'player'">
+                                    </div>
+                                </div>
+                                <ng-template #noPlayers>
+                                    <p>{{ "no_players_small" | translate }}</p>
+                                </ng-template>
+                            </div>
+
+                            <div class="button-container">
+                                <button>{{ "edit" | translate }}</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </section>
+        </ng-container>
+
         <div *ngIf="state.active_competition_id || ((competitions$ | async)?.length ?? 0) > 0"
             (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
             <div class="buttons-add">
@@ -16,55 +75,10 @@
                 </div>
             </div>
         </div>
-        <section>
-            <app-competition-detail *ngIf="activeCompetition$ | async as activeCompetition"
-                [competition]="activeCompetition$ | async">
-            </app-competition-detail>
-        </section>
-
-        <section class="others" *ngIf="state.active_competition_id">
-            <h3>{{ "other_competitions" | translate }}</h3>
-            <div class="other-competitions-container">
-                <ng-container *ngFor="let c of competitions$ | async; trackBy: trackById">
-                    <ng-container *ngIf="state.active_competition_id != c.id">
-                        <div class="comp">
-                            <strong>{{ c.name }}</strong>
-                            <span>— {{ c.type }}</span>
-                            <div class="date">
-                                {{ normalizeDate(c.created_at) }}
-                            </div>
-
-                            <span *ngIf="state.active_competition_id == c.id"> ATTIVA</span>
-                            <small *ngIf="c.start_date">
-                                (dal {{ c.start_date }}
-                                <span *ngIf="c.end_date"> al {{ c.end_date }}</span>)
-                            </small>
-                            <div>
-                                <div *ngIf="c?.['players']?.length">
-                                    <div>
-                                        {{ c?.['players'].length }} {{ c?.['players'].length == 1 ? ('player' |
-                                        translate) : ('players' | translate) }}
-                                    </div>
-                                    <div>
-                                        <img *ngFor="let player of c?.['players']" src="player.img_url" alt="">
-                                    </div>
-                                </div>
-                                <p *ngIf="c?.['players']?.length < 1">
-                                    {{ "no_players_small" | translate }}
-                                </p>
-                            </div>
-                            <div class="button-container">
-                                <button> {{ "edit" | translate }}</button>
-                            </div>
-                        </div>
-                    </ng-container>
-                </ng-container>
-            </div>
-        </section>
 
         <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
             <div *ngIf="!activeCompetition.id">
-                <app-competition-start (create)=" modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
+                <app-competition-start (create)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
                 </app-competition-start>
             </div>
         </ng-container>
