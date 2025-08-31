@@ -1,7 +1,7 @@
-<div *ngIf="isLoading" class="loader">
-  <div class="loading-text">{{"loading" | translate}}.</div>
-  <img src="/ping-pong.gif" alt="Loader">
-</div>
+  <div *ngIf="isLoading" class="loader">
+    <div class="loading-text">{{"loading" | translate}}.</div>
+    <img src="/ping-pong.gif" alt="{{ 'loader_alt' | translate }}">
+  </div>
 
 <div *ngIf="toastMessage" class="ping-toast" [ngClass]="toastClass">
   <div><i class="fa-solid" [ngClass]="toastIcon"></i></div>
@@ -9,6 +9,6 @@
   <button class="close-toast" (click)="closeToast()"><i class="fa-solid fa-close"></i></button>
 </div>
 
-<div *ngIf="isSmallLoading" class="loader-small">
-  <img src="./loading_small.gif" alt="Small Loader">
-</div>
+  <div *ngIf="isSmallLoading" class="loader-small">
+    <img src="./loading_small.gif" alt="{{ 'small_loader_alt' | translate }}">
+  </div>

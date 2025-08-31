@@ -462,5 +462,101 @@
     "create_cta": {
         "it": "Crea una nuova competizione",
         "en": "Create a new competition"
+    },
+    "pt": {
+        "it": "PT",
+        "en": "PT"
+    },
+    "wr_percent": {
+        "it": "WR%",
+        "en": "WR%"
+    },
+    "login": {
+        "it": "Login",
+        "en": "Login"
+    },
+    "enter_email": {
+        "it": "Inserisci la tua email",
+        "en": "Enter your email"
+    },
+    "enter_password": {
+        "it": "Inserisci la tua password",
+        "en": "Enter your password"
+    },
+    "confirm_password": {
+        "it": "Conferma la tua password",
+        "en": "Confirm your password"
+    },
+    "login_google": {
+        "it": "Entra con Google",
+        "en": "Log in with Google"
+    },
+    "logout": {
+        "it": "Esci",
+        "en": "Log Out"
+    },
+    "menu_works": {
+        "it": "menu funziona!",
+        "en": "menu works!"
+    },
+    "add_user": {
+        "it": "Aggiungi utente",
+        "en": "Add user"
+    },
+    "first_name": {
+        "it": "Nome",
+        "en": "First name"
+    },
+    "insert_name": {
+        "it": "Inserisci nome",
+        "en": "Enter name"
+    },
+    "last_name": {
+        "it": "Cognome",
+        "en": "Last name"
+    },
+    "insert_last_name": {
+        "it": "Inserisci cognome",
+        "en": "Enter last name"
+    },
+    "insert_nickname": {
+        "it": "Inserisci nickname",
+        "en": "Enter nickname"
+    },
+    "image": {
+        "it": "Immagine",
+        "en": "Image"
+    },
+    "added_users": {
+        "it": "Utenti aggiunti",
+        "en": "Added users"
+    },
+    "sets": {
+        "it": "SET",
+        "en": "SETS"
+    },
+    "set": {
+        "it": "set",
+        "en": "set"
+    },
+    "advantage": {
+        "it": "Ai vantaggi",
+        "en": "Advantage"
+    },
+    "no_competition": {
+        "it": "Nessuna competizione attiva",
+        "en": "No active competition"
+    },
+    "loader_alt": {
+        "it": "Caricamento",
+        "en": "Loading"
+    },
+    "small_loader_alt": {
+        "it": "Caricamento",
+        "en": "Loading"
+    },
+    "avatar_alt": {
+        "it": "avatar",
+        "en": "avatar"
     }
 }
