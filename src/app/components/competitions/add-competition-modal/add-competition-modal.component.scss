@@ -206,9 +206,18 @@ h2 {
         white-space: wrap;
     }
 }
+.field {
+    width: 100%;
+    input {
+        width: 100%;
+    }
+}
 
 @media screen and (max-width: 600px) {
     .not-available {
         flex-direction: column;
+    }
+    .container-choose {
+        grid-template-columns: 1fr;
     }
 }

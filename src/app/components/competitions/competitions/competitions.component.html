@@ -4,26 +4,6 @@
         <section>
             <h2 class="text-center" style="text-transform: capitalize;">{{ 'competitions' | translate }}</h2>
         </section>
-        <section>
-            <ng-container *ngIf="!state.active_competition_id">
-                <div class="buttons-add">
-                    <div class="button-container" style="max-width: 600px;">
-                        <button class="button-primary-ping secondary-color-button"
-                            (click)="modalService.openModal(modalService.MODALS['JOIN_COMPETITION'])">
-                            <div class="m-1"> {{"join_cta" | translate}} </div>
-                            <i class="fa-solid fa-share"></i>
-                        </button>
-                    </div>
-                    <div class="button-container">
-                        <button class="button-primary-ping"
-                            (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
-                            <div class="m-1"> {{"create_cta" | translate}} </div>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </ng-container>
-        </section>
 
         <section>
             <app-competition-detail *ngIf="activeCompetition$ | async as activeCompetition"
@@ -38,9 +18,6 @@
                         <div class="comp" *ngIf="state.active_competition_id != c.id">
                             <strong>{{ c.name }}</strong>
                             <span>— {{ c.type }}</span>
-                            <div class="date">
-                                {{ normalizeDate(c.created_at) }}
-                            </div>
 
                             <small *ngIf="c.start_date">
                                 ({{ "from" | translate }} {{ c.start_date }}
@@ -48,7 +25,7 @@
                             </small>
 
                             <!-- Players -->
-                            <div>
+                            <div class="players-section">
                                 <div *ngIf="hasPlayers(c?.['players']); else noPlayers">
                                     <div>
                                         {{ c?.['players']?.length }}
@@ -60,17 +37,18 @@
                                             [src]="player.image_url" [alt]="player.name || 'player'">
                                     </div>
                                 </div>
-                                <ng-template #noPlayers>
-                                    <p>{{ "no_players_small" | translate }}</p>
-                                </ng-template>
                             </div>
+                            <ng-template #noPlayers>
+                                <p class="no-players">{{ "no_players_small" | translate }}</p>
+                            </ng-template>
+                            <div class="dots">...</div>
                         </div>
                     </ng-container>
                 </div>
             </section>
         </ng-container>
 
-        <div *ngIf="state.active_competition_id || ((competitions$ | async)?.length ?? 0) > 0">
+        <section>
             <div class="buttons-add">
                 <div class="button-container" style="max-width: 600px;">
                     <button class="button-primary-ping secondary-color-button"
@@ -87,7 +65,8 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </section>
+
 
         <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
             <div *ngIf="!activeCompetition.id">

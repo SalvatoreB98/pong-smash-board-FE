@@ -460,7 +460,7 @@
         "en": "Create a new competition to start recording matches, rankings, and statistics."
     },
     "join_cta": {
-        "it": "Unisciti a una competizione esistente",
+        "it": "Unisciti a una esistente",
         "en": "Join an existing competition"
     },
     "create_cta": {
@@ -582,5 +582,13 @@
     "create_first_competition": {
         "it": "Crea la tua prima competizione",
         "en": "Create your first competition"
+    },
+    "competition_error": {
+        "it": "Errore durante l'unione alla competizione. Controlla il codice e riprova.",
+        "en": "Error joining the competition."
+    },
+    "manage_competition": {
+        "it": "Gestisci competizione",
+        "en": "Manage competition"
     }
 }

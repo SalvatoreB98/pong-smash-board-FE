@@ -5,49 +5,78 @@
   border-radius: $border-radius;
   filter: drop-shadow(10px 10px solid black);
   position: relative;
-  font-size: 0.75em;
   max-width: 600px;
   margin: auto;
   background: $dark;
   filter: drop-shadow(0px 0px 10px black);
 }
+
 .top {
   h2 {
     text-align: left;
   }
 }
+
 .info {
-  font-weight: 100;
-  padding: 1em;
   position: absolute;
   top: 0;
-  right: 0;
-  color: rgba(212, 243, 255, 0.966);
-  display: block;
-  grid-template-rows: auto auto;
-  border-radius: $border-radius;
-  margin: 1em;
-  gap: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
   place-items: center;
-  background: black;
+  width: 100%;
+  font-weight: 100;
+  opacity: 0.9;
+  color: rgba(236, 236, 236, 0.806);
+  margin-top: .5em;
+
   .value {
-    background-color: $primary;
-    border-radius: $border-radius;
-    font-weight: bold;
-    padding: 0.5em;
-    width: 90%;
-    text-align: center;
-    margin: auto;
+    margin-left: 0.25em;
+    margin-right: 1em;
+    color: $contrast;
   }
-  transform: scale(0.75);
 }
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 2em;
+  align-items: center;
+  margin-bottom: 1em;
+
+  h1 {
+    font-size: 2em;
+    margin: 0;
+  }
+}
+
 .competition-players-container {
   display: flex;
-  .players {
 
-  }
+  .players {}
 }
-.players-container{
+
+.players-container {
   padding: 1em 0;
   border-radius: $border-radius;
+}
+
+.code {
+  color: $secondary;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.invitation-code-container {
+  background-color: black;
+  filter: drop-shadow(0px 0px 5px $secondary);
+  border-radius: $border-radius;
+  text-align: center;
+  padding: 1em;
+  width: 150px;
+
+  .value {
+    letter-spacing: 2px;
+  }
 }

@@ -75,4 +75,8 @@ export class CompetitionApi {
   remove(id: number | string): Observable<{ success: boolean } | void> {
     return this.http.delete<{ success: boolean } | void>(`${API_PATHS.getCompetitions}/${id}`);
   }
+
+  join(code: string, userId: number | string): Observable<ICompetition> {
+    return this.http.post<ICompetition>(API_PATHS.joinCompetition, { code, userId });
+  }
 }

@@ -1,3 +1,4 @@
+import { join } from "path";
 import { environment } from "../environments/environment";
 
 export const API_PATHS = {
@@ -7,7 +8,8 @@ export const API_PATHS = {
   getMatches: '/api/get-matches',
   addMatch: '/api/add-match',
   updateProfile: '/api/update-profile',
-  addCompetition: '/api/add-competition', 
+  addCompetition: '/api/add-competition',
+  joinCompetition: '/api/join-competition',
 }
 
 export const API_AUTH_CONFIG: Record<string, { needsAuth: boolean; methods?: string[] }> = {

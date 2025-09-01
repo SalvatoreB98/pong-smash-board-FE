@@ -133,5 +133,11 @@ export class CompetitionService {
   addCompetition(dto: AddCompetitionDto): Promise<ICompetition> {
     return firstValueFrom(this.add(dto));
   }
-  
+  joinCompetition(code: string): Promise<ICompetition> {
+    const userId = this.user?.snapshot()?.user_id;
+    if (userId === undefined) {
+      return Promise.reject(new Error('User ID is undefined'));
+    }
+    return firstValueFrom(this.api.join(code, userId));
+  }
 }

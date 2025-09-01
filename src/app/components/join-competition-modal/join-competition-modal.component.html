@@ -4,14 +4,19 @@
         <p [innerHTML]=" 'join_competition_description' | translate "></p>
         <section>
             <div class="d-flex flex-column align-items-center">
-                <input id="competitionId" placeholder="xxxxxx" type="text" [(ngModel)]="competitionCode" name="competitionCode" required>
+                <input id="competitionId" [placeholder]="'ex. ABC123' | translate" type="text"
+                    [(ngModel)]="competitionCode" name="competitionCode" required>
                 <div class="">
-                    <button type="submit" style="height: 40px;">{{ 'join_cta2' | translate }}</button>
+                    <button type="button" (click)="onSubmit()" style="height: 40px;">
+                        {{ 'join_cta2' | translate }}
+                    </button>
                 </div>
             </div>
         </section>
     </form>
-    <small class="info d-block m-auto "> <div class="where" (click)="onWhereClick()">{{ 'where' | translate}}</div></small>
+    <small class="info d-block m-auto ">
+        <div class="where" (click)="onWhereClick()">{{ 'where' | translate}}</div>
+    </small>
     <div class="instructions" *ngIf="showInstructions">
         <img src="assets/images/where-to-find.png" alt=""> <!-- Replace with actual image path -->
     </div>

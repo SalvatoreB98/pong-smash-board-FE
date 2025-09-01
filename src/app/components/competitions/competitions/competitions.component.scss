@@ -3,8 +3,10 @@
 .buttons-add {
     display: flex;
     justify-content: center;
+
     .button-container {
         margin: 0;
+
         button {
             width: 275px;
             margin: none;
@@ -23,7 +25,7 @@
         border-radius: $border-radius;
         filter: drop-shadow(0px 0px 10px black);
         padding: 1em;
-
+        padding-bottom: 2em;
         &.add {
             cursor: pointer;
             display: grid;
@@ -44,13 +46,16 @@
                 font-size: 2em;
             }
         }
+
+        button {
+            font-size: 0.7em;
+        }
     }
 }
 
 .other-competitions-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2em;
     max-width: 600px;
     margin: auto;
 }
@@ -58,6 +63,29 @@
 .date {
     font-size: 0.75em;
     color: $primary;
+}
+
+.players-section {
+    background-color: black;
+    border-radius: $border-radius;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    place-items: center;
+    padding: 0.5em;
+    margin-top: 1em;
+    white-space: nowrap;
+    height: 50px;
+
+    p {
+        font-size: 0.7em;
+        margin-bottom: 0;
+    }
+
+}
+
+.no-players {
+    font-size: 0.7em;
 }
 
 @media screen and (max-width: 600px) {
@@ -77,6 +105,7 @@
 @media screen and (max-width: 600px) {
     .buttons-add {
         display: block;
+
         .button-container {
             margin-bottom: 0;
             padding: 0;
@@ -84,6 +113,7 @@
             display: flex;
             justify-content: center;
             padding: 0 1em;
+
             button {
                 width: 100%;
             }

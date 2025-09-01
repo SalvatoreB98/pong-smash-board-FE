@@ -5,6 +5,8 @@ import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { SHARED_IMPORTS } from '../app/common/imports/shared.imports';
 import { CommonModule } from '@angular/common';
+import { env } from 'process';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-debug-overlay',
@@ -23,7 +25,7 @@ export class DebugOverlayComponent {
   userState$ = this.user.userState$();         // suppongo ritorni observable
   isLoggedIn$ = this.auth?.isLoggedIn$ ?? null;
   activeCompetition$ = this.comp.activeCompetition$;
-
+  isProd = environment.production;
   isVisible = true;
 
   close() {

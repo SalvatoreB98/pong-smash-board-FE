@@ -1,6 +1,6 @@
 export const environment = {
   mock: false,
-  production: false,
+  production: true,
   apiUrl: 'https://pong-smash-board-be.vercel.app',
   supabase: {
     url: "https://fhkmvhtwavswlhnroans.supabase.co",
