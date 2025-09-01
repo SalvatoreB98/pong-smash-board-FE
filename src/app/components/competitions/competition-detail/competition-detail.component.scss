@@ -34,7 +34,8 @@
   .value {
     margin-left: 0.25em;
     margin-right: 1em;
-    color: $contrast;
+    color: $primary;
+    font-weight: bold;
   }
 }
 
@@ -69,6 +70,7 @@
 }
 
 .invitation-code-container {
+  font-size: 0.7em;
   background-color: black;
   filter: drop-shadow(0px 0px 5px $secondary);
   border-radius: $border-radius;
@@ -77,6 +79,8 @@
   width: 150px;
 
   .value {
+    font-size: 1em;
+    text-transform: uppercase;
     letter-spacing: 2px;
   }
 }

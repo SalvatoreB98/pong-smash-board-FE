@@ -328,8 +328,8 @@
         "en": "No players yet. Add the first players to start tracking matches, standings and stats."
     },
     "other_competitions": {
-        "it": "Altre competizioni",
-        "en": "Other competitions"
+        "it": "Le tue competizioni",
+        "en": "Your competitions"
     },
     "type": {
         "it": "Tipologia",
@@ -590,5 +590,13 @@
     "manage_competition": {
         "it": "Gestisci competizione",
         "en": "Manage competition"
+    },
+    "admin_managed_error": {
+        "it": "Questa competizione è gestita dall'organizzatore. Non puoi unirti autonomamente.",
+        "en": "This competition is managed by the organizer. You cannot join it on your own."
+    },
+    "join_competition_instructions": {
+        "it": "Trova il codice invito  come questo: (si trova nel tab 'Competizioni dell'organizzatore')",
+        "en": "Find the invitation code like this: (located in the 'Competitions of the Organizer or member' tab)"
     }
 }

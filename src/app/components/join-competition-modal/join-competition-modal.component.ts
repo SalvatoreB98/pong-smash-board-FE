@@ -20,7 +20,7 @@ export class JoinCompetitionModalComponent {
   constructor(private competitionService: CompetitionService, private loaderService: LoaderService, private translation: TranslatePipe) { }
 
   onWhereClick() {
-    this.showInstructions = true;
+    this.showInstructions = !this.showInstructions;
   }
 
   async onSubmit() {
@@ -28,9 +28,13 @@ export class JoinCompetitionModalComponent {
     try {
       const res = await this.competitionService.joinCompetition(this.competitionCode);
       this.loaderService.showToast('Successfully joined competition ' + res, MSG_TYPE.SUCCESS);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      this.loaderService.showToast(this.translation.transform('competition_error'), MSG_TYPE.ERROR);
+      if(error.error.code.contains('admin-managed')){
+        this.loaderService.showToast(this.translation.transform('admin_managed_error'), MSG_TYPE.ERROR);
+      } else {
+        this.loaderService.showToast(this.translation.transform('competition_error'), MSG_TYPE.ERROR);
+      }
     } finally {
       this.loaderService.stopLittleLoader();
     }

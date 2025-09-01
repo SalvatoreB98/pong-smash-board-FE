@@ -36,7 +36,8 @@
     <div class="players-container d-flex justify-content-between align-items-center">
       <div class="competition-players-container">
         <div class="players" *ngFor="let p of competition?.['players']">
-          <img class="avatar" [src]="p.image_url" />
+          <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
+          <img *ngIf="!p.image_url" class="avatar" [src]="'/assets/default-avatar.png'" />
         </div>
         <div *ngIf="isEmpty(competition?.['players'])">
           {{ "no_players" | translate }}

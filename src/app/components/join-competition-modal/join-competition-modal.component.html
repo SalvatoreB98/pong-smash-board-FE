@@ -15,9 +15,15 @@
         </section>
     </form>
     <small class="info d-block m-auto ">
-        <div class="where" (click)="onWhereClick()">{{ 'where' | translate}}</div>
+        <div class="where" (click)="onWhereClick()">
+            {{ 'where' | translate}}
+            <i class="fa" [class]="showInstructions? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i>
+        </div>
     </small>
     <div class="instructions" *ngIf="showInstructions">
-        <img src="assets/images/where-to-find.png" alt=""> <!-- Replace with actual image path -->
+        <p class="mt-3">
+            {{ 'join_competition_instructions' | translate }}
+            <img src="/code.png" alt="" style="opacity: 0.75;">
+        </p>
     </div>
 </div>
