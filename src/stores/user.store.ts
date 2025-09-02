@@ -18,7 +18,7 @@ export class UserStore {
   /** set completo */
   set(state: IUserState | null) {
     console.log('[UserStore] 📥 set:', state);
-    this._state$.next(state);
+    this._state$.next(state ? { ...state } : null);
   }
 
   /** patch parziale */

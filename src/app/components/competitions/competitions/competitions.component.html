@@ -1,46 +1,55 @@
 <ng-container *ngIf="userState$ | async as state">
     <div class="wrapper">
 
+        <!-- Titolo -->
         <section>
-            <h2 class="text-center" style="text-transform: capitalize;">{{ 'competitions' | translate }}</h2>
+            <h2 class="text-center" style="text-transform: capitalize;">
+                {{ 'competitions' | translate }}
+            </h2>
         </section>
 
-        <section>
-            <app-competition-detail *ngIf="activeCompetition$ | async as activeCompetition"
-                [competition]="activeCompetition$ | async">
-            </app-competition-detail>
-        </section>
+        <!-- Dettaglio competizione attiva -->
+        <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
+            <section *ngIf="activeCompetition">
+                <app-competition-detail [competition]="activeCompetition"></app-competition-detail>
+            </section>
+        </ng-container>
+
+        <!-- Altre competizioni -->
         <ng-container *ngIf="competitions$ | async as competitions">
             <section class="others" *ngIf="competitions.length > 1">
                 <h3>{{ "other_competitions" | translate }}</h3>
                 <div class="other-competitions-container">
-                    <ng-container *ngFor="let c of competitions$ | async; trackBy: trackById">
+                    <ng-container *ngFor="let c of competitions; trackBy: trackById">
                         <div class="comp" *ngIf="state.active_competition_id != c.id">
                             <strong>{{ c.name }}</strong>
                             <span>— {{ c.type }}</span>
 
                             <small *ngIf="c.start_date">
                                 ({{ "from" | translate }} {{ c.start_date }}
-                                <span *ngIf="c.end_date"> {{ "to" | translate }} {{ c.end_date }}</span>)
+                                <span *ngIf="c.end_date">
+                                    {{ "to" | translate }} {{ c.end_date }}
+                                </span>)
                             </small>
 
                             <!-- Players -->
                             <div class="players-section">
-                                <div *ngIf="hasPlayers(c?.['players']); else noPlayers">
+                                <div *ngIf="hasPlayers(c?.players); else noPlayers">
                                     <div>
-                                        {{ c?.['players']?.length }}
-                                        {{ c?.['players']?.length == 1 ? ('player' | translate) : ('players' |
-                                        translate) }}
+                                        {{ c?.players?.length }}
+                                        {{ c?.players?.length == 1 ? ('player' | translate) : ('players' | translate) }}
                                     </div>
                                     <div class="players-list">
-                                        <img class="avatar" *ngFor="let player of c?.['players']"
-                                            [src]="player.image_url" [alt]="player.name || 'player'">
+                                        <img class="avatar" *ngFor="let player of c?.players" [src]="player.image_url"
+                                            [alt]="player.name || 'player'">
                                     </div>
                                 </div>
                             </div>
+
                             <ng-template #noPlayers>
                                 <p class="no-players">{{ "no_players_small" | translate }}</p>
                             </ng-template>
+
                             <div class="dots">...</div>
                         </div>
                     </ng-container>
@@ -48,34 +57,36 @@
             </section>
         </ng-container>
 
+        <!-- Bottoni -->
         <section>
             <div class="buttons-add">
                 <div class="button-container" style="max-width: 600px;">
                     <button class="button-primary-ping secondary-color-button"
                         (click)="modalService.openModal(modalService.MODALS['JOIN_COMPETITION'])">
-                        <div class="m-1"> {{"join_cta" | translate}} </div>
+                        <div class="m-1">{{ "join_cta" | translate }}</div>
                         <i class="fa-solid fa-share"></i>
                     </button>
                 </div>
                 <div class="button-container">
                     <button class="button-primary-ping"
                         (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
-                        <div class="m-1"> {{"create_cta" | translate}} </div>
+                        <div class="m-1">{{ "create_cta" | translate }}</div>
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
             </div>
         </section>
 
-
+        <!-- Start competition se non ce n’è una attiva -->
         <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
-            <div *ngIf="!activeCompetition.id">
+            <div *ngIf="!activeCompetition?.id">
                 <app-competition-start (create)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
                 </app-competition-start>
             </div>
         </ng-container>
     </div>
 
+    <!-- Modali -->
     <app-modal [label]="'create_competition_cta'"
         *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])"
         [modalName]="modalService.MODALS['ADD_COMPETITION']">
@@ -92,7 +103,6 @@
         [modalName]="modalService.MODALS['JOIN_COMPETITION']">
         <app-join-competition-modal></app-join-competition-modal>
     </app-modal>
-
-
 </ng-container>
+
 <app-bottom-navbar></app-bottom-navbar>

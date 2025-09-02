@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_PATHS } from '../api/api.config';
-import { IUserState } from '../services/interfaces/Interfaces'; // adatta il path
+import { IJoinCompetitionResponse, IUserState } from '../services/interfaces/Interfaces'; // adatta il path
 
 // --- Modelli ---
 export interface ICompetition {
@@ -76,7 +76,7 @@ export class CompetitionApi {
     return this.http.delete<{ success: boolean } | void>(`${API_PATHS.getCompetitions}/${id}`);
   }
 
-  join(code: string, userId: number | string): Observable<ICompetition> {
-    return this.http.post<ICompetition>(API_PATHS.joinCompetition, { code, userId });
+  join(code: string, userId: number | string): Observable<IJoinCompetitionResponse> {
+    return this.http.post<IJoinCompetitionResponse>(API_PATHS.joinCompetition, { code, userId });
   }
 }

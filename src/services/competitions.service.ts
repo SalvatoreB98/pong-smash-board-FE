@@ -45,8 +45,7 @@ export class CompetitionService {
     map(({ state, competitions }) =>
       competitions.find(c => c.id === state?.active_competition_id) ?? null
     ),
-    tap(c => console.log('[CompetitionService] activeCompetition:', c)),
-    shareReplay(1)
+    tap(c => console.log('[CompetitionService] activeCompetition:', c))
   );
 
   /** Carica una singola competizione (e aggiorna/upserta nello store) */
@@ -121,6 +120,10 @@ export class CompetitionService {
     );
   }
 
+  setLocal(comp: ICompetition) {
+    this.store.upsertOne(comp, { prepend: true });
+  }
+
   /** Pulizia totale store (es. logout) */
   clear(): void {
     this.store.clear();
@@ -133,11 +136,34 @@ export class CompetitionService {
   addCompetition(dto: AddCompetitionDto): Promise<ICompetition> {
     return firstValueFrom(this.add(dto));
   }
+  
   joinCompetition(code: string): Promise<ICompetition> {
     const userId = this.user?.snapshot()?.user_id;
     if (userId === undefined) {
       return Promise.reject(new Error('User ID is undefined'));
     }
-    return firstValueFrom(this.api.join(code, userId));
+    return firstValueFrom(
+      this.api.join(code, userId).pipe(
+        tap(res => {
+          // aggiorna lo store competizioni
+          if (res.competition) {
+            this.setLocal(res.competition);
+          }
+          // aggiorna lo userState
+          if (res.user_state && this.user) {
+            this.user.setLocal(res.user_state);
+          }
+          this.loader?.showToast?.('Unito alla competizione!', MSG_TYPE.SUCCESS, 3000);
+        }),
+        map(res => res.competition),
+        catchError(err => {
+          console.error('[CompetitionService] joinCompetition error:', err);
+          this.loader?.showToast?.('Errore join competizione', MSG_TYPE.ERROR);
+          return throwError(() => err);
+        }),
+        finalize(() => this.loader?.stopLittleLoader())
+      )
+    );
   }
+
 }

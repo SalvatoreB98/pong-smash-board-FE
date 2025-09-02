@@ -40,3 +40,13 @@ export interface IUserState {
   lastname: string | null;
   competitions?: ICompetition[];
 }
+export interface IJoinCompetitionResponse {
+  message: string;
+  competition: ICompetition;
+  user_state: IUserState | null;
+  relation: {
+    id: number;
+    player_id: number;
+    competition_id: number;
+  };
+}

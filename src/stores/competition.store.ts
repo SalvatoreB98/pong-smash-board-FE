@@ -12,7 +12,7 @@ type State = {
 };
 
 function toId(c: ICompetition): string {
-  return String(c.id);
+  return String(c?.id) || '';
 }
 
 function sortIds(a: ICompetition, b: ICompetition): number {
