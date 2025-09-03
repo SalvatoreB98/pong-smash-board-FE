@@ -1,97 +1,81 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  ElementRef,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Utils } from '../../Utils';
 import { TranslatePipe } from '../../translate.pipe';
 
 @Component({
   selector: 'app-select-player',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './select-player.component.html',
-  styleUrl: './select-player.component.scss'
+  styleUrls: ['./select-player.component.scss'],
 })
-export class SelectPlayerComponent {
-  @Input() players: any[] = [];
+export class SelectPlayerComponent implements OnInit, OnChanges {
+  @Input() players: { id?: number; nickname: string }[] = [];
   @Input() playerNumber: string = '';
-  @ViewChild('searchInput') searchInput!: ElementRef; // ✅ Reference to input field
 
-  constructor(private eRef: ElementRef) { }
+  @Output() playerSelected = new EventEmitter<any>();
 
-  @Output() playerSelected = new EventEmitter<any>(); // Emit player selection
+  @ViewChild('searchInput') searchInput!: ElementRef;
 
   searchCtrl = new FormControl('');
   filteredPlayers: any[] = [];
-  showDropdown = false; // Controls dropdown visibility
-  selectedPlayer: any = null; // Store selected player
+  showDropdown = false;
+  selectedPlayer: any = null;
 
   ngOnInit() {
-    this.filteredPlayers = this.players;
-    this.searchCtrl.valueChanges.subscribe(value => {
-      console.log(value)
-      return this.filterPlayers(value);
+    this.filteredPlayers = [...this.players];
+
+    this.searchCtrl.valueChanges.subscribe((value) => {
+      this.filterPlayers(value);
     });
-    let width = document.querySelector('.input-field')?.clientWidth;
-    if (!Utils.isMobile()) {
-      document.querySelectorAll('.dropdown')?.forEach((dropdown) => {
-        dropdown.setAttribute('style', `width: ${width}px`);
-      })
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['players'] && this.players) {
+      this.filteredPlayers = [...this.players];
     }
-    window.addEventListener('resize', () => {
-      let width = document.querySelector('.input-field')?.clientWidth;
-      document.querySelectorAll('.dropdown')?.forEach((dropdown) => {
-        dropdown.setAttribute('style', `width: ${width}px`);
-      })
-    });
   }
 
-  ngOnDestroy() {
-  }
-
-  toggleDropdown(event?: Event) {
+  toggleDropdown(event: Event) {
+    event.stopPropagation(); // non propagare al document
     this.searchCtrl.setValue('');
     this.showDropdown = !this.showDropdown;
 
     if (this.showDropdown) {
-      // Add event listener for clicks outside
-      setTimeout(() => {
-        window.addEventListener('click', this.handleOutsideClick);
-      });
-    } else {
-      // Remove event listener when dropdown is closed
-      window.removeEventListener('click', this.handleOutsideClick);
-    }
-    if (this.showDropdown) {
-      setTimeout(() => {
-        this.searchInput.nativeElement.focus(); // ✅ Auto-focus input
-      }, 50);
+      setTimeout(() => this.searchInput?.nativeElement?.focus(), 50);
     }
   }
 
-  handleOutsideClick = (event: Event) => {
-    if (!this.eRef.nativeElement.contains(event.target as Node)) {
-      this.showDropdown = false;
-      window.removeEventListener('click', this.handleOutsideClick);
-    }
-  };
+  closeDropdown() {
+    this.showDropdown = false;
+  }
 
   filterPlayers(value: string | null) {
-    const searchValue = (value ?? '').toLowerCase().trim(); // Normalize input
+    const searchValue = (value ?? '').toLowerCase().trim();
 
-    // If search is empty, return all players
     this.filteredPlayers = searchValue
-      ? this.players.filter(player =>
-        player.name?.toLowerCase().includes(searchValue)
-      )
-      : [...this.players]; // Return full list without modifying original array
+      ? this.players.filter((player) =>
+          (player.nickname || '').toLowerCase().includes(searchValue)
+        )
+      : [...this.players];
   }
 
-
-
-  selectPlayer(player: any) {
+  selectPlayer(player: any, event: Event) {
+    event.stopPropagation();
     this.selectedPlayer = player;
-    player.playerNumber = this.playerNumber; // Add player number to selected player
-    this.playerSelected.emit(player); // Emit selected player
-    this.showDropdown = false; // Close dropdown
+    player.playerNumber = this.playerNumber;
+    this.playerSelected.emit(player);
+    this.closeDropdown();
   }
 }
-

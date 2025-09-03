@@ -20,7 +20,7 @@
         </section>
     </div>
     <app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])" [modalName]="modalService.MODALS['ADD_MATCH']">
-        <app-add-match-modal></app-add-match-modal>
+        <app-add-match-modal [players]="players"></app-add-match-modal>
     </app-modal>
     <app-modal [label]="'match_details'" *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])" [modalName]="modalService.MODALS['SHOW_MATCH']">
         <app-show-match-modal [match]="clickedMatch"></app-show-match-modal>

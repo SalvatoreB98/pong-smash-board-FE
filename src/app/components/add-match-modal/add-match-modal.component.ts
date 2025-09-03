@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Output, OnInit, ViewChild, Input } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { DataService } from '../../../services/data.service';
@@ -16,37 +16,42 @@ import { TranslatePipe } from '../../utils/translate.pipe';
 export class AddMatchModalComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
 
+  @Input() players: any[] = [];
+
   matchForm!: FormGroup;
-  players: any[] = [];
   isShowSetsPointsTrue = false;
 
-  /** Filtered players list */
-
-  /** Subject to manage unsubscriptions */
-  constructor(private fb: FormBuilder, private modalService: ModalService, private dataService: DataService) { }
+  constructor(
+    private fb: FormBuilder,
+    private modalService: ModalService,
+    private dataService: DataService
+  ) { }
 
   ngOnInit() {
     this.initializeForm();
-    this.players = this.dataService.players || [];
   }
 
-  ngOnDestroy() {
-  }
-  
   getPlayers(player?: number): any[] {
     if (!this.players || this.players.length === 0) return [];
 
     const loggedInPlayerId = this.dataService.getLoggedInPlayerId();
 
-    let filteredPlayers = this.players.filter(p => p.playerid !== loggedInPlayerId);
+    let filteredPlayers = this.players.filter(p => p.id !== loggedInPlayerId);
 
-    if (player === 2) {
-      const selectedPlayer1 = this.matchForm.get('player1')?.value;
-      filteredPlayers = filteredPlayers.filter(p => p.playerid !== selectedPlayer1);
+    const selectedPlayer1 = this.matchForm.get('player1')?.value;
+    const selectedPlayer2 = this.matchForm.get('player2')?.value;
+
+    if (player === 1 && selectedPlayer2) {
+      filteredPlayers = filteredPlayers.filter(p => p.id !== selectedPlayer2);
+    }
+
+    if (player === 2 && selectedPlayer1) {
+      filteredPlayers = filteredPlayers.filter(p => p.id !== selectedPlayer1);
     }
 
     return filteredPlayers;
   }
+
 
   initializeForm() {
     this.matchForm = this.fb.group({
@@ -55,17 +60,17 @@ export class AddMatchModalComponent implements OnInit {
       player2: ['', Validators.required],
       p1Score: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
       p2Score: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
-      isShowSetsPointsTrue: [],
+      isShowSetsPointsTrue: [false],
       setsPoints: this.fb.array([]),
     });
   }
 
-  /** Gets setsPoints as a FormArray */
   get setsPoints(): FormArray {
     return this.matchForm.get('setsPoints') as FormArray;
   }
+
   setPlayer(player: any) {
-    this.matchForm.get(`player${player.playerNumber}`)?.setValue(player.playerid); // Set value in formControl
+    this.matchForm.get(`player${player.playerNumber}`)?.setValue(player.id);
   }
 
   updateContainers() {
@@ -83,6 +88,7 @@ export class AddMatchModalComponent implements OnInit {
       );
     }
   }
+
   getSetFormGroup(index: number): FormGroup {
     return this.setsPoints.at(index) as FormGroup;
   }
@@ -96,24 +102,20 @@ export class AddMatchModalComponent implements OnInit {
     }
 
     this.sendData();
-    this.closeModal();
   }
 
   private sendData() {
     if (this.matchForm.invalid) return;
 
     const dateInput = new Date(this.matchForm.value.date);
-    let currentHour = '';
-    let currentMinutes = '';
-
     const today = new Date();
-    currentHour = String(today?.getHours()).padStart(2, '0');
-    currentMinutes = String(today?.getMinutes()).padStart(2, '0');
 
-    const formattedDate = dateInput.toLocaleDateString("en-GB");
+    const formattedDate =
+      dateInput.toLocaleDateString("en-GB") +
+      ` - ${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
 
     const formData = {
-      date: formattedDate + (currentHour ? ` - ${currentHour}:${currentMinutes}` : ''),
+      date: formattedDate,
       player1: this.matchForm.value.player1,
       player2: this.matchForm.value.player2,
       p1Score: this.matchForm.value.p1Score,

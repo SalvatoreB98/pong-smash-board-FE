@@ -16,6 +16,7 @@ import { StatsComponent } from '../common/stats/stats.component';
 import { inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { CompetitionService } from '../../services/competitions.service';
+import { IPlayer, PlayersService } from '../../services/players.service';
 
 @Component({
   selector: 'app-home',
@@ -26,6 +27,7 @@ import { CompetitionService } from '../../services/competitions.service';
 export class HomeComponent {
   dataService = inject(DataService);
   userService = inject(UserService);
+  playersService = inject(PlayersService);
   matches$ = this.dataService.matchesObs;
   competitionService = inject(CompetitionService);
   matches: any;
@@ -34,13 +36,18 @@ export class HomeComponent {
   clickedMatch: IMatch | undefined;
 
   userState$ = this.userService.getState();
-  
+  players: IPlayer[] = [];
+
   constructor(public modalService: ModalService) { }
 
   ngOnInit() {
+    this.playersService.getPlayers().subscribe(players => {
+      this.players = players;
+      console.log(this.players);
+    });
     this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 }) // cache 5 minuti
       .then(res => this.matches = res.matches);
-    console.log(this.competitionService.activeCompetition$.subscribe(comp => {console.log(comp)}));
+    console.log(this.competitionService.activeCompetition$.subscribe(comp => { console.log(comp) }));
   }
 
   setClickedMatch(match: IMatch) {

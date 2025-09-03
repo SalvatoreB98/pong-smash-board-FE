@@ -1,30 +1,30 @@
 <div class="modal-content">
     <form class="form-dark" [formGroup]="matchForm" (ngSubmit)="addMatch()">
+
         <div>
             <label for="date" class="my-placeholder">{{ 'date' | translate }}</label>
-            <input class="my-placeholder" class="my-placeholder" id="date" type="date" formControlName="date" required>
+            <input id="date" type="date" class="my-placeholder" formControlName="date" required>
         </div>
 
         <div class="row mt-3">
             <div class="col-md-6">
-                <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'"
-                    (playerSelected)="setPlayer($event)"></app-select-player>
+                <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'" (playerSelected)="setPlayer($event)">
+                </app-select-player>
             </div>
 
             <div class="col-md-6">
-                <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'"
-                    (playerSelected)="setPlayer($event)"></app-select-player>
+                <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'" (playerSelected)="setPlayer($event)">
+                </app-select-player>
             </div>
-
         </div>
 
         <div class="row mt-3">
             <div class="col-6">
-                <input type="number" formControlName="p1Score" min="1" max="99" [placeholder]="('score1' | translate)"
+                <input type="number" formControlName="p1Score" min="1" max="99" [placeholder]="'score1' | translate"
                     (input)="updateContainers()">
             </div>
             <div class="col-6">
-                <input type="number" formControlName="p2Score" min="1" max="99" [placeholder]="('score2' | translate)"
+                <input type="number" formControlName="p2Score" min="1" max="99" [placeholder]="'score2' | translate"
                     (input)="updateContainers()">
             </div>
         </div>
@@ -46,10 +46,14 @@
             </div>
         </div>
 
+        <div class="modal-buttons d-flex justify-content-between mt-3">
+            <button type="button" class="button-close" (click)="closeModal()">
+                {{"cancel" | translate}}
+            </button>
+            <button type="submit" [disabled]="!matchForm.valid">
+                {{"add_match" | translate}}
+            </button>
+        </div>
 
     </form>
-</div>
-<div class="modal-buttons d-flex justify-content-between mt-3">
-    <button type="button" class="button-close" (click)="closeModal()">{{"cancel" | translate}}</button>
-    <button type="submit" (click)="addMatch()" [disabled]="!matchForm.valid">{{"add_match" | translate}}</button>
 </div>
