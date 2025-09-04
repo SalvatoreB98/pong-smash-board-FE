@@ -61,8 +61,7 @@ export class CompetitionsComponent {
   }
 
   ngOnInit() {
-    // triggera il fetch delle competizioni → aggiorna lo store → la UI reagisce
-    this.competitionService.load().subscribe((data) => {
+    this.competitionService.getCompetitions().then((data) => {
       this.competitionDetail = data[0];
       console.log('[Competitions] competitions loaded', data);
     });

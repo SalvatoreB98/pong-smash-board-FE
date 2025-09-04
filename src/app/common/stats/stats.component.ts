@@ -48,7 +48,7 @@ export class StatsComponent implements OnInit {
 
   async ngOnInit() {
     // prendo i dati dal tuo service (la tua API Promise resta com’è)
-    const res = await this.rankingService.fetchRanking();
+    const res = await this.rankingService.getRanking();
     this.standings = res.ranking.map(item => ({
       id: item.id, // ensure id is present
       image_url: item.image_url || '/default-player.jpg', // placeholder se non c'è

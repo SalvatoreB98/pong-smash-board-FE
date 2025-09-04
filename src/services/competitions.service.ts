@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { catchError, finalize, map, shareReplay, tap } from 'rxjs/operators';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { combineLatest, EMPTY, firstValueFrom, Observable, of, throwError } from 'rxjs';
-import { CompetitionStore } from '../stores/competition.store'; // adatta il path
-import { LoaderService } from '../services/loader.service';     // opzionale
-import { MSG_TYPE } from '../app/utils/enum';                   // opzionale
-import { UserService } from '../services/user.service';         // per setLocal(userState) se torna dal BE
+import { CompetitionStore } from '../stores/competition.store';
+import { LoaderService } from '../services/loader.service';
+import { MSG_TYPE } from '../app/utils/enum';
+import { UserService } from '../services/user.service';
 import { AddCompetitionDto, CompetitionApi, ICompetition, ICompetitionsResponse } from '../api/competition.api';
+import { CachedFetcher } from '../app/utils/helpers/cache.helpers';
 
 @Injectable({ providedIn: 'root' })
 export class CompetitionService {
@@ -16,26 +17,39 @@ export class CompetitionService {
 
   // ------- SELECTORS -------
   list$ = this.store.list$;
-  snapshotList(): ICompetition[] { return this.store.snapshotList(); }
-
-  // ------- QUERIES -------
-  /** Carica la lista dal BE e aggiorna lo store */
-  load(): Observable<ICompetition[]> {
-    this.loader?.startLittleLoader();
-    return this.api.getList().pipe(
-      tap((res: ICompetitionsResponse) => {
-        this.store.setList(res?.competitions ?? []);
-      }),
-      map(() => this.store.snapshotList()),
-      catchError(err => {
-        console.error('[CompetitionService] load error:', err);
-        this.loader?.showToast?.('Errore nel caricamento competizioni', MSG_TYPE.ERROR);
-        return of(this.store.snapshotList()); // restituisco ciò che ho
-      }),
-      finalize(() => this.loader?.stopLittleLoader())  // <-- SEMPRE chiamato
-    );
+  snapshotList(): ICompetition[] {
+    return this.store.snapshotList();
   }
 
+  // ------- CACHE WRAPPER -------
+  private competitionsFetcher = new CachedFetcher<ICompetition[]>(
+    async () => {
+      const res = await firstValueFrom(this.api.getList());
+      this.store.setList(res?.competitions ?? []);
+      return this.store.snapshotList();
+    },
+    60 * 1000 // TTL 1 min, cambialo se serve
+  );
+
+  /** Ottiene le competizioni con cache */
+  async getCompetitions(force = false): Promise<ICompetition[]> {
+    this.loader?.startLittleLoader();
+    try {
+      return await this.competitionsFetcher.get(force);
+    } catch (err) {
+      console.error('[CompetitionService] getCompetitions error:', err);
+      this.loader?.showToast?.('Errore nel caricamento competizioni', MSG_TYPE.ERROR);
+      return this.store.snapshotList();
+    } finally {
+      this.loader?.stopLittleLoader();
+    }
+  }
+
+  clearCompetitionsCache() {
+    this.competitionsFetcher.clear();
+  }
+
+  // ------- DERIVED SELECTORS -------
   userState$ = this.user?.userState$() ?? of(null);
 
   activeCompetition$ = combineLatest({
@@ -48,7 +62,7 @@ export class CompetitionService {
     tap(c => console.log('[CompetitionService] activeCompetition:', c))
   );
 
-  /** Carica una singola competizione (e aggiorna/upserta nello store) */
+  // ------- COMMANDS -------
   loadOne(id: number | string): Observable<ICompetition | undefined> {
     this.loader?.startLittleLoader();
     return this.api.getOne(id).pipe(
@@ -58,40 +72,38 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore nel caricamento competizione', MSG_TYPE.ERROR);
         return EMPTY;
       }),
-      finalize(() => this.loader?.stopLittleLoader())  // <-- SEMPRE chiamato
-
+      finalize(() => this.loader?.stopLittleLoader())
     );
   }
 
-  // ------- COMMANDS -------
-  /** Crea competizione: aggiorna store e (se presente) lo stato utente */
   add(dto: AddCompetitionDto): Observable<ICompetition> {
     this.loader?.startLittleLoader();
     return this.api.add(dto).pipe(
       tap(res => {
-        // Aggiorno store con la competizione canonicamente ritornata dal BE
         this.store.addOne(res.competition);
-        // Se il BE rimanda userState aggiornato (active_competition_id, ecc.)
         if (res.userState && this.user) {
           this.user.setLocal(res.userState);
         }
         this.loader?.showToast?.('Competizione creata!', MSG_TYPE.SUCCESS, 4000);
+        this.clearCompetitionsCache(); // invalidiamo cache
       }),
       map(res => res.competition),
       catchError(err => {
         console.error('[CompetitionService] add error:', err);
         this.loader?.showToast?.('Errore creazione competizione', MSG_TYPE.ERROR);
-        return throwError(() => err); // <-- errore propagato
+        return throwError(() => err);
       }),
       finalize(() => this.loader?.stopLittleLoader())
     );
   }
 
-  /** Aggiorna parzialmente una competizione e sincronizza lo store */
   update(id: number | string, patch: Partial<ICompetition>): Observable<ICompetition> {
     this.loader?.startLittleLoader();
     return this.api.update(id, patch).pipe(
-      tap(updated => this.store.upsertOne(updated)),
+      tap(updated => {
+        this.store.upsertOne(updated);
+        this.clearCompetitionsCache();
+      }),
       map(updated => updated),
       catchError(err => {
         console.error('[CompetitionService] update error:', err);
@@ -102,13 +114,13 @@ export class CompetitionService {
     );
   }
 
-  /** Elimina competizione e aggiorna store */
   remove(id: number | string): Observable<void> {
     this.loader?.startLittleLoader();
     return this.api.remove(id).pipe(
       tap(() => {
         this.store.removeOne(id);
         this.loader?.showToast?.('Competizione eliminata', MSG_TYPE.SUCCESS, 3000);
+        this.clearCompetitionsCache();
       }),
       map(() => void 0),
       catchError(err => {
@@ -120,40 +132,23 @@ export class CompetitionService {
     );
   }
 
-  setLocal(comp: ICompetition) {
-    this.store.upsertOne(comp, { prepend: true });
-  }
-
-  /** Pulizia totale store (es. logout) */
-  clear(): void {
-    this.store.clear();
-  }
-  // ------- wrapper -------
-  getCompetitions(): Promise<ICompetition[]> {
-    return firstValueFrom(this.load());
-  }
-
-  addCompetition(dto: AddCompetitionDto): Promise<ICompetition> {
-    return firstValueFrom(this.add(dto));
-  }
-  
   joinCompetition(code: string): Promise<ICompetition> {
     const userId = this.user?.snapshot()?.user_id;
     if (userId === undefined) {
       return Promise.reject(new Error('User ID is undefined'));
     }
+    this.loader?.startLittleLoader();
     return firstValueFrom(
       this.api.join(code, userId).pipe(
         tap(res => {
-          // aggiorna lo store competizioni
           if (res.competition) {
             this.setLocal(res.competition);
           }
-          // aggiorna lo userState
           if (res.user_state && this.user) {
             this.user.setLocal(res.user_state);
           }
           this.loader?.showToast?.('Unito alla competizione!', MSG_TYPE.SUCCESS, 3000);
+          this.clearCompetitionsCache();
         }),
         map(res => res.competition),
         catchError(err => {
@@ -165,5 +160,17 @@ export class CompetitionService {
       )
     );
   }
+  
+  addCompetition(dto: AddCompetitionDto): Promise<ICompetition> {
+    return firstValueFrom(this.add(dto));
+  }
+  // ------- LOCAL STORE OPS -------
+  setLocal(comp: ICompetition) {
+    this.store.upsertOne(comp, { prepend: true });
+  }
 
+  clear(): void {
+    this.store.clear();
+    this.clearCompetitionsCache();
+  }
 }

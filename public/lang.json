@@ -598,5 +598,9 @@
     "join_competition_instructions": {
         "it": "Chiedi di darti il codice, si trova nel tab 'Competizioni dell'organizzatore'",
         "en": "Ask for the code, it's located in the 'Organizer's competitions' tab"
+    },
+    "error_725B9C": {
+        "it": "Giocatore già esistente nella competizione.",
+        "en": "Player already exists in the competition."
     }
 }
