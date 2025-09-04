@@ -50,8 +50,9 @@ export class StatsComponent implements OnInit {
     // prendo i dati dal tuo service (la tua API Promise resta com’è)
     const res = await this.rankingService.fetchRanking();
     this.standings = res.ranking.map(item => ({
+      id: item.id, // ensure id is present
       image_url: item.image_url || '/default-player.jpg', // placeholder se non c'è
-      playerName: item.name,
+      playerName: item.nickname,
       wins: item.wins,
       lost: item.played - item.wins || 0,
       totalPlayed: item.played,
@@ -119,7 +120,7 @@ export class StatsComponent implements OnInit {
 
 
   // helpers per il template
-  trackByPlayer(_i: number, p: PlayerStanding) { return p.playerName; }
+  trackByPlayer(_i: number, p: PlayerStanding) { return p.nickname; }
   winRateLabel(v: number) { return Math.max(0, Math.min(100, v)).toFixed(1) + '%'; }
   barWidthPct(v: number) { return Math.max(0, Math.min(100, v)); } // numero per [style.width.%]
   barColor(v: number) {

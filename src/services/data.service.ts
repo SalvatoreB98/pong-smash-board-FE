@@ -23,6 +23,8 @@ interface MatchData extends IMatchResponse {
   giocatore2Score: number;
 }
 export interface IRankingItem {
+  nickname: any;
+  id: any;
   rating: number;
   playerid: number;
   name: string;
@@ -123,7 +125,9 @@ export class DataService {
       } else {
         try {
           const data = await firstValueFrom(
-            this.http.get<IMatchResponse>(API_PATHS.getMatches)
+            this.http.get<IMatchResponse>(API_PATHS.getMatches, {
+              params: { competitionId: String(this.userService.snapshot()?.active_competition_id ?? '') }
+            })
           );
           this.assignData(data);
         } catch (err: any) {
@@ -195,12 +199,22 @@ export class DataService {
     const url = API_PATHS.addMatch;
 
     try {
-      // HttpClient serializza automaticamente in JSON
-      const responseData = await firstValueFrom(this.http.post<any>(url, data));
+      const userState = await firstValueFrom(this.userService.getState());
+      if (!userState?.active_competition_id) {
+        throw new Error('Nessuna competizione attiva');
+      }
+
+      const responseData = await firstValueFrom(
+        this.http.post<any>(url, { ...data, competitionId: userState.active_competition_id })
+      );
+
       this.loaderService?.showToast('Salvato con successo!', MSG_TYPE.SUCCESS, 5000);
       console.log('Success:', responseData);
     } catch (error: any) {
-      this.loaderService?.showToast(`Match data not found ${error?.message ?? error}`, MSG_TYPE.ERROR);
+      this.loaderService?.showToast(
+        `Match data not found ${error?.message ?? error}`,
+        MSG_TYPE.ERROR
+      );
       throw error;
     } finally {
       this.loaderService.stopLittleLoader();

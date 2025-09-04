@@ -10,12 +10,12 @@
   <div class="win-rate" title="{{ 'ratingTitle' | translate }}">{{ "rating" | translate }}</div>
   <div class="win-rate" title="{{ 'winRateTitle' | translate }}">{{ "winRate" | translate }}</div>
 </div>
-
 <div *ngFor="let player of standings; let i = index; trackBy: trackByPlayer" class="stats-container mt-2 my-container">
   <div class="position">
     <i *ngIf="i < 3" class="fa-solid fa-medal position-{{ i + 1 }}"></i> {{i+1}}
   </div>
-  <img [src]="player.image_url" [alt]="player.playerName" />
+
+  <img [src]="player.image_url"/>
   <div class="name">{{ player.playerName }}</div>
   <div class="partite-tot" title="{{ 'partiteTotTitle' | translate }}">{{ player.totalPlayed }}</div>
   <div class="vittorie" title="{{ 'vittorieTitle' | translate }}">{{ player.wins }}</div>
@@ -27,8 +27,7 @@
   <div class="win-rate" title="{{ 'winRateTitle' | translate }}">
     <span class="mini-info">{{ 'wr_percent' | translate }}</span>
     <div class="rate-label">{{ winRateLabel(player.winRate) }}</div>
-    <div class="win-rate-bar"
-      [style.width.%]="barWidthPct(player.winRate)"
+    <div class="win-rate-bar" [style.width.%]="barWidthPct(player.winRate)"
       [style.background-color]="barColor(player.winRate)">
     </div>
   </div>

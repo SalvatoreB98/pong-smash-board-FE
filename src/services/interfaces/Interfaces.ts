@@ -9,6 +9,7 @@ export interface IRankingItem {
   wins: number;
   winrate: number;
   rating: number; // percentuale (es. 62.5)
+  nickname: string;
 }
 export interface IRankingResponse {
   ranking: IRankingItem[];

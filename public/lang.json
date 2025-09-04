@@ -596,7 +596,7 @@
         "en": "This competition is managed by the organizer. You cannot join it on your own."
     },
     "join_competition_instructions": {
-        "it": "Trova il codice invito  come questo: (si trova nel tab 'Competizioni dell'organizzatore')",
-        "en": "Find the invitation code like this: (located in the 'Competitions of the Organizer or member' tab)"
+        "it": "Chiedi di darti il codice, si trova nel tab 'Competizioni dell'organizzatore'",
+        "en": "Ask for the code, it's located in the 'Organizer's competitions' tab"
     }
 }

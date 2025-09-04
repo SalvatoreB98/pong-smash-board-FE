@@ -39,6 +39,7 @@ export class MatchesComponent {
 
   }
   ngOnInit() {
+    console.log("DEBYG", this.matches);
     if (this.matchesSlider)
       this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
   }

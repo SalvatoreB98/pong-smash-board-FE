@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { IRankingItem, IRankingResponse } from './data.service';
-import { RankingData } from './interfaces/Interfaces';
+// Remove import of RankingData and use IRankingResponse instead
 import { API_PATHS } from '../api/api.config';
 
 
@@ -97,11 +97,10 @@ export class RankingService {
     this.generatedAtSubject.next(this.generatedAt);
   }
 
-  private generateReturnObject(): RankingData {
+  private generateReturnObject(): IRankingResponse {
     return {
       ranking: this.ranking,
       generatedAt: this.generatedAt,
     };
-
   }
 }

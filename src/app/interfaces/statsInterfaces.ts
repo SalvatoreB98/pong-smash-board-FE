@@ -10,13 +10,17 @@ export interface Match {
 }
 
 export interface PlayerStanding {
-  image_url?: string; 
-  playerName: string;
+  id: number;
+  image_url?: string;
+  playerName: string | null;
   wins: number;
   lost: number;
   totalPlayed: number;
   winRate: number; // 0..100
-  rating?: number; 
+  rating?: number;
+  badges?: string[];
+  nickname?: string;
+  name?: string;
 }
 
 export interface HeadToHeadRow {
