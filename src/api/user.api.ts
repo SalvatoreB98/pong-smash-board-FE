@@ -17,4 +17,9 @@ export class UserApi {
     // Usa PATCH/POST/PUT a seconda del BE
     return this.http.post<IUserState>(API_PATHS.userState, patch);
   }
+  addPlayers(formData: FormData, active_competition_id: string): Observable<any> {
+    return this.http.post<any>(API_PATHS.addPlayers, formData, {
+      params: { active_competition_id }
+    });
+  }
 }

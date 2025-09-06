@@ -610,5 +610,9 @@
     "player": {
         "it": "giocatore",
         "en": "player"
+    },
+    "compile_fields": {
+        "it": "Compila tutti i campi obbligatori",
+        "en": "Fill in all required fields"
     }
 }
