@@ -28,6 +28,7 @@ export class LoaderService {
 
   stopLittleLoader() {
     this.isSmallLoadingSubject.next(false);
+    console.log('[LoaderService] stopLittleLoader');
   }
 
   showToast(message: string, type: MSG_TYPE, duration: number = 5000) {

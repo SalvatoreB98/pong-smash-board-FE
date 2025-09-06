@@ -33,7 +33,6 @@ export class CompetitionService {
 
   /** Ottiene le competizioni con cache */
   async getCompetitions(force = false): Promise<ICompetition[]> {
-    this.loader?.startLittleLoader();
     try {
       return await this.competitionsFetcher.get(force);
     } catch (err) {
@@ -64,7 +63,6 @@ export class CompetitionService {
 
   // ------- COMMANDS -------
   loadOne(id: number | string): Observable<ICompetition | undefined> {
-    this.loader?.startLittleLoader();
     return this.api.getOne(id).pipe(
       tap(comp => this.store.upsertOne(comp)),
       catchError(err => {
@@ -72,12 +70,10 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore nel caricamento competizione', MSG_TYPE.ERROR);
         return EMPTY;
       }),
-      finalize(() => this.loader?.stopLittleLoader())
     );
   }
 
   add(dto: AddCompetitionDto): Observable<ICompetition> {
-    this.loader?.startLittleLoader();
     return this.api.add(dto).pipe(
       tap(res => {
         this.store.addOne(res.competition);
@@ -93,12 +89,10 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore creazione competizione', MSG_TYPE.ERROR);
         return throwError(() => err);
       }),
-      finalize(() => this.loader?.stopLittleLoader())
     );
   }
 
   update(id: number | string, patch: Partial<ICompetition>): Observable<ICompetition> {
-    this.loader?.startLittleLoader();
     return this.api.update(id, patch).pipe(
       tap(updated => {
         this.store.upsertOne(updated);
@@ -110,12 +104,10 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore aggiornamento competizione', MSG_TYPE.ERROR);
         return EMPTY;
       }),
-      finalize(() => this.loader?.stopLittleLoader())
     );
   }
 
   remove(id: number | string): Observable<void> {
-    this.loader?.startLittleLoader();
     return this.api.remove(id).pipe(
       tap(() => {
         this.store.removeOne(id);
@@ -128,7 +120,6 @@ export class CompetitionService {
         this.loader?.showToast?.('Errore eliminazione competizione', MSG_TYPE.ERROR);
         return EMPTY;
       }),
-      finalize(() => this.loader?.stopLittleLoader())
     );
   }
 
@@ -160,7 +151,7 @@ export class CompetitionService {
       )
     );
   }
-  
+
   addCompetition(dto: AddCompetitionDto): Promise<ICompetition> {
     return firstValueFrom(this.add(dto));
   }

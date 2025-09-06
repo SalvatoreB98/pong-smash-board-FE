@@ -28,13 +28,18 @@ export class LoaderComponent {
       if (toast) {
         this.toastMessage = toast.message;
         this.toastClass = toast.type.toLowerCase();
-        this.toastIcon = toast.type === MSG_TYPE.SUCCESS ? 'fa-circle-check' : 'fa-circle-xmark';
-
+        if (toast.type === MSG_TYPE.SUCCESS) {
+          this.toastIcon = 'fa-circle-check';
+        } else if (toast.type === MSG_TYPE.WARNING) {
+          this.toastIcon = 'fa-exclamation-triangle';
+        } else {
+          this.toastIcon = 'fa-circle-xmark';
+        }
         setTimeout(() => this.closeToast(), 5000);
       }
     });
   }
-  
+
   startLoader() {
     this.isLoading = true;
   }

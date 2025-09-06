@@ -5,7 +5,7 @@
 
 <div *ngIf="toastMessage" class="ping-toast" [ngClass]="toastClass">
   <div><i class="fa-solid" [ngClass]="toastIcon"></i></div>
-  <div>{{ toastMessage | translate }}</div>
+  <div [innerHTML]="toastMessage | translate"></div>
   <button class="close-toast" (click)="closeToast()"><i class="fa-solid fa-close"></i></button>
 </div>
 

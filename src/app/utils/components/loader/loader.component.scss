@@ -53,7 +53,10 @@
   &.success {
     background-color: $green;
   }
-
+  &.warning {
+    background-color: $yellow;
+    color: black;
+  }
   >div {
     padding: 0.5em;
   }

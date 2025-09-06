@@ -5,6 +5,9 @@ import { ModalService } from '../../../services/modal.service';
 import { DataService } from '../../../services/data.service';
 import { SelectPlayerComponent } from '../../utils/components/select-player/select-player.component';
 import { TranslatePipe } from '../../utils/translate.pipe';
+import { MSG_TYPE } from '../../utils/enum';
+import { LoaderService } from '../../../services/loader.service';
+import { TranslationService } from '../../../services/translation.service';
 
 @Component({
   selector: 'app-add-match-modal',
@@ -24,11 +27,16 @@ export class AddMatchModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private modalService: ModalService,
-    private dataService: DataService
+    private dataService: DataService,
+    private loaderService: LoaderService,
+    private translateService: TranslationService
   ) { }
 
   ngOnInit() {
     this.initializeForm();
+    if(this.players.length < 2) {
+      this.loaderService.showToast(this.translateService.translate('not_enough_players'), MSG_TYPE.WARNING);
+    }
   }
 
   getPlayers(player?: number): any[] {

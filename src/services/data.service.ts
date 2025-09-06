@@ -118,7 +118,6 @@ export class DataService {
   }
 
   private async _fetchAndAssignInternal(): Promise<IMatchResponse> {
-    this.loaderService.startLittleLoader();
     try {
       if (environment.mock) {
         this.assignData(mockData);
@@ -143,8 +142,6 @@ export class DataService {
       // fallback mock
       this.assignData(mockData);
       return this.generateReturnObject();
-    } finally {
-      this.loaderService.stopLittleLoader();
     }
   }
 
@@ -190,7 +187,6 @@ export class DataService {
   async addMatch(data: { p1Score: number; p2Score: number;[key: string]: any }): Promise<void> {
     console.log(data);
 
-    this.loaderService.startLittleLoader();
     if (data?.p1Score == null || data?.p2Score == null) {
       this.loaderService.stopLittleLoader();
       return Promise.reject('Invalid data');
@@ -216,8 +212,6 @@ export class DataService {
         MSG_TYPE.ERROR
       );
       throw error;
-    } finally {
-      this.loaderService.stopLittleLoader();
     }
   }
 

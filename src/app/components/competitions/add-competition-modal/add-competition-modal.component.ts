@@ -73,7 +73,6 @@ export class AddCompetitionModalComponent {
   private sendCompetition() {
     if (this.competitionForm.invalid) return;
 
-    this.loaderService.startLittleLoader();
     try {
       const toYmd = (d: string | Date | null) =>
         d ? new Date(d).toLocaleDateString("en-CA") : undefined; // → YYYY-MM-DD
@@ -92,18 +91,14 @@ export class AddCompetitionModalComponent {
 
       console.log('Saving competition...', payload);
       console.log('Saving competition...', payload);
-      this.loaderService.startLittleLoader()
       this.competitionService.addCompetition(payload).then((res) => {
         console.log('Competition added:', res);
         this.closeModal();
-        this.loaderService.stopLittleLoader()
       });
 
     } catch (error) {
       console.log(error)
-      this.loaderService.stopLittleLoader()
     } finally {
-      this.loaderService.stopLittleLoader()
     }
   }
 
