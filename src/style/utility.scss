@@ -11,7 +11,9 @@ a {
         cursor: pointer;
     }
 }
-
+.field {
+    background-color: $field;
+}
 .dots {
     font-size: 1.2em;
     cursor: pointer;

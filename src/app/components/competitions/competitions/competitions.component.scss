@@ -65,7 +65,15 @@
     font-size: 0.75em;
     color: $primary;
 }
-
+.players-count{ 
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    font-size: 0.7em;
+    margin-right: 0.5em;
+    display: inline-block;
+    opacity: 0.6;
+}
 .players-section {
     background-color: black;
     border-radius: $border-radius;

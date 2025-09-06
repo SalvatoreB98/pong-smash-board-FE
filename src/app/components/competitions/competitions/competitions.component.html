@@ -35,7 +35,7 @@
                             <!-- Players -->
                             <div class="players-section">
                                 <div *ngIf="hasPlayers(c?.players); else noPlayers">
-                                    <div>
+                                    <div class="players-count">
                                         {{ c?.players?.length }}
                                         {{ c?.players?.length == 1 ? ('player' | translate) : ('players' | translate) }}
                                     </div>
@@ -67,7 +67,7 @@
                         <i class="fa-solid fa-share"></i>
                     </button>
                 </div>
-                <div class="button-container">
+                <div class="button-container" style="max-width: 600px;">
                     <button class="button-primary-ping"
                         (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
                         <div class="m-1">{{ "create_cta" | translate }}</div>

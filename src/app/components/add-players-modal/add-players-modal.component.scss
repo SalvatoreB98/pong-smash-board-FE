@@ -10,8 +10,9 @@ p {
     text-align: center;
 }
 .list-group-item {
-    background-color: black;
     color: white;
+    border: 1px solid $dark;
+    padding-right: 0;
 }
 .text-muted {
     color: $primary;

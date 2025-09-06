@@ -606,5 +606,9 @@
     "not_enough_players": {
         "it": "Non ci sono abbastanza giocatori per aggiungere una partita. Vai nel tab <b> <i class='fa fa-group'></i> Competizioni </b> per aggiungerli",
         "en": "There are not enough players to add a match. Go to the <b> <i class='fa fa-group'></i> Competitions </b> tab to add them"
+    },
+    "player": {
+        "it": "giocatore",
+        "en": "player"
     }
 }

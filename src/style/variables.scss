@@ -5,6 +5,7 @@ $dark2: #020b12;
 $bg: black; // Sfondo ancora più scuro, leggermente più freddo per coerenza
 $gradient: linear-gradient(180deg, #020b12 10%, #05131c 90%); // Gradiente migliorato per profondità
 $gradient-reverse: linear-gradient(180deg, $dark 10%, #020b12 90%); // Versione inversa
+$field: #111827;
 
 // Colori Principali e di Accento
 $primary: #284aa6; // Blu primario forte
@@ -26,7 +27,7 @@ $navbar-height: 75px;
 
 :root {
   --dark: #05131c;
-  --primary: #374d87;
+  --primary: #284aa6;
   --primary-light: #6e96ff;
   --primary-ultra-light: #cbd1e1;
   --contrast: #c76360;

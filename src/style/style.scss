@@ -211,11 +211,12 @@ section {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: black;
+    background: #ffffff31;
     border-radius: 5px;
 
     &:hover {
         background: $primary;
+        cursor: s-resize;
     }
 }
 
@@ -237,12 +238,14 @@ section {
         padding-top: 100px;
     }
 }
+
 .avatar {
     width: 75px;
     height: 75px;
     border-radius: 50%;
     object-fit: cover;
 }
+
 .my-modal {
     display: block;
     position: fixed;
@@ -309,11 +312,12 @@ section {
         }
 
         &.button-close {
-            background-color: $contrast!important;
+            background-color: $contrast !important;
             color: var(--dark);
         }
 
-        &[type="submit"], &[type="button"] {
+        &[type="submit"],
+        &[type="button"] {
             background-color: var(--primary);
             color: white;
 
@@ -323,10 +327,12 @@ section {
         }
 
     }
-    &.small{
+
+    &.small {
         width: auto;
         height: auto;
     }
+
     &::-webkit-scrollbar-thumb {
         background: var(--primary-ultra-light);
     }
@@ -351,6 +357,16 @@ app-add-competition-modal {
 
 button.secondary-color-button {
     background-color: $secondary;
+}
+
+.icon {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+}
+
+.secondary {
+    background-color: $secondary!important;
 }
 
 @media screen and (max-width: 600px) {

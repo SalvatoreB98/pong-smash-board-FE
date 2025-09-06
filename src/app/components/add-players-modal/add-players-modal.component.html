@@ -33,11 +33,12 @@
 
                 <!-- Colonna sinistra: form -->
                 <div class="col-md-6">
-                    <form class="mt-4">
+                    <form class="mt-4" [formGroup]="addPlayerForm">
                         <!-- Nome -->
                         <div class="mb-3">
                             <label for="nome" class="form-label">{{ 'first_name' | translate }}</label>
                             <input type="text" id="nome" class="form-control input-field"
+                                formControlName="name"
                                 [placeholder]="'insert_name' | translate">
                         </div>
 
@@ -45,6 +46,7 @@
                         <div class="mb-3">
                             <label for="cognome" class="form-label">{{ 'last_name' | translate }}</label>
                             <input type="text" id="cognome" class="form-control input-field"
+                                formControlName="surname"
                                 [placeholder]="'insert_last_name' | translate">
                         </div>
 
@@ -52,17 +54,20 @@
                         <div class="mb-3">
                             <label for="nickname" class="form-label">{{ 'nickname' | translate }}</label>
                             <input type="text" id="nickname" class="form-control input-field"
+                                formControlName="nickname"
                                 [placeholder]="'insert_nickname' | translate">
                         </div>
 
                         <!-- Upload immagine -->
                         <div class="mb-3">
                             <label for="immagine" class="form-label">{{ 'image' | translate }}</label>
-                            <input type="file" id="immagine" class="form-control input-field">
+                            <input type="file" id="immagine" class="form-control input-field"
+                                formControlName="imgUrl">
                         </div>
 
                         <div class="button-container d-flex justify-content-center">
-                            <button type="button" (click)="addPlayer()">{{ "add_player" | translate }}</button>
+                            <button type="button" (click)="addPlayer()" style="width: 100%; text-align: center;">{{
+                                "add_player" | translate }}</button>
                         </div>
                     </form>
                 </div>
@@ -70,18 +75,21 @@
                 <!-- Colonna destra: utenti aggiunti -->
                 <div class="col-md-6">
                     <h5 class="mb-3">Utenti aggiunti</h5>
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <span><img src="https://via.placeholder.com/32" class="rounded-circle me-2"> Mario
-                                Rossi</span>
-                            <small>nickname123</small>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <span><img src="https://via.placeholder.com/32" class="rounded-circle me-2"> Luca
-                                Bianchi</span>
-                            <small>luca_b</small>
+                    <ul class="list-group" style="max-height: 375px; overflow-y: auto;">
+                        <li *ngFor="let item of playersToAdd; let i = index" class="field list-group-item d-flex align-items-center justify-content-between">
+                            <span><img src="/default-player.jpg" class="icon rounded-circle me-2"> {{ item.name }} {{ item.surname }}</span>
+                            <small>{{ item.nickname }}</small>
+                            <button class="btn btn-sm btn-danger" (click)="removePlayer(i)">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
                         </li>
                     </ul>
+                    <div class="button-container">
+                        <button type="button" class="secondary w-100 text-center" (click)="addPlayers()">
+                            {{ 'add_players' | translate }}
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
