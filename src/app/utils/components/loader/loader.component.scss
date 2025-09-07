@@ -45,6 +45,7 @@
   justify-content: center;
   align-items: center;
   border-radius: $border-radius;
+
   &.error {
     background-color: rgba(136, 43, 43, 0.799);
     color: white;
@@ -53,10 +54,12 @@
   &.success {
     background-color: $green;
   }
+
   &.warning {
     background-color: $yellow;
     color: black;
   }
+
   >div {
     padding: 0.5em;
   }
@@ -71,14 +74,64 @@
 
 .loader-small {
   position: fixed;
-  top: 50%;
-  right: 50%;
-  transform: translate(50%, -50%);
-  margin: 1em;
   z-index: 1000;
-  >img {
-    filter: drop-shadow(0px 0px 10px black);
-    max-width: 100px;
-    max-height: $navbar-height;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1em 2em;
+  bottom: 0;
+  right: 0;
+  filter: drop-shadow(0px 0px 5px black);
+}
+
+.ping-ball {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  animation: ping-bounce 1s infinite linear;
+  filter: drop-shadow(0px 0px 5px black);
+  transform: scale(0.5);
+  &.a {
+    animation-delay: 0s;
+  }
+
+  &.b {
+    animation-delay: 0.1s;
+  }
+
+  &.c {
+    animation-delay: 0.2s;
+  }
+}
+
+@keyframes ping-bounce {
+  0% {
+    transform: translate(0%, 50%) scale(0.5);
+  }
+
+  10% {
+    transform: translate(0%, -150%) scale(0.5);
+  }
+
+  60% {
+    transform: translate(0%, -175%) scale(0.5);
+  }
+
+  90% {
+    transform: translate(0%, -125%) scale(0.5);
+  }
+
+  0% {
+    transform: translate(0%, 50%) scale(0.5);
+  }
+}
+@media screen and (max-width: 768px) {
+  .loader-small {
+    padding: 0.5em 1em;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
