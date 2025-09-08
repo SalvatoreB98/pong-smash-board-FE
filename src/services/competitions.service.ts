@@ -7,6 +7,7 @@ import { MSG_TYPE } from '../app/utils/enum';
 import { UserService } from '../services/user.service';
 import { AddCompetitionDto, CompetitionApi, ICompetition, ICompetitionsResponse } from '../api/competition.api';
 import { CachedFetcher } from '../app/utils/helpers/cache.helpers';
+import { IPlayer } from './players.service';
 
 @Injectable({ providedIn: 'root' })
 export class CompetitionService {
@@ -159,7 +160,29 @@ export class CompetitionService {
   setLocal(comp: ICompetition) {
     this.store.upsertOne(comp, { prepend: true });
   }
+  addPlayerToLocal(competitionId: number | string, player: IPlayer) {
+    const competitions = this.store.snapshotList();
+    const index = competitions.findIndex(c => c.id === competitionId);
+    if (index === -1) return;
 
+    const updatedCompetition = {
+      ...competitions[index],
+      players: [
+        ...(competitions[index].players ?? []).map(p => ({
+          id: p.id,
+          name: p.name,
+          image_url: p.image_url ?? ''
+        })),
+        {
+          id: player.id,
+          name: player.name,
+          image_url: player.image_url ?? ''
+        }
+      ]
+    };
+
+    this.store.upsertOne(updatedCompetition);
+  }
   clear(): void {
     this.store.clear();
     this.clearCompetitionsCache();

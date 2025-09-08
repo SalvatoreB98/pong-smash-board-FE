@@ -121,6 +121,15 @@ export class AddPlayersModalComponent extends ModalComponent {
       );
       // refresh dati locali (players, matches, ecc.)
       await this.dataService.refresh();
+      for (const player of playersWithUrls) {
+        
+        this.competitionService.addPlayerToLocal(competitionId, {
+          id: 0,
+          name: player.name,
+          nickname: player.nickname,
+          image_url: player.imageUrl ?? ''
+        });
+      }
       this.modalService.closeModal();
       this.loader.showToast('Players added successfully!', MSG_TYPE.SUCCESS);
       this.playersToAdd = [];
