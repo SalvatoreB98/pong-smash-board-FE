@@ -7,7 +7,7 @@ import { ModalComponent } from '../../../common/modal/modal.component';
 import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
 import { AddCompetitionModalComponent } from '../add-competition-modal/add-competition-modal.component';
 import { CompetitionStartComponent } from '../../profile/complete-profile/competition-start/competition-start.component';
-import { UserProgressStateEnum } from '../../../utils/enum';
+import { MSG_TYPE, UserProgressStateEnum } from '../../../utils/enum';
 import { CompetitionService } from '../../../../services/competitions.service';
 import { ICompetition } from '../../../../api/competition.api';
 import { UserService } from '../../../../services/user.service';
@@ -16,6 +16,9 @@ import { CompetitionDetailComponent } from '../competition-detail/competition-de
 import { AddPlayersModalComponent } from '../../add-players-modal/add-players-modal.component';
 import { Utils } from '../../../utils/Utils';
 import { JoinCompetitionModalComponent } from '../../join-competition-modal/join-competition-modal.component';
+import { HttpClient } from '@angular/common/http';
+import { API_PATHS } from '../../../../api/api.config';
+import { LoaderService } from '../../../../services/loader.service';
 @Component({
   selector: 'app-competitions',
   standalone: true,
@@ -55,7 +58,9 @@ export class CompetitionsComponent {
 
   constructor(
     public modalService: ModalService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private loaderService: LoaderService
   ) {
     this.createForm();
   }
@@ -83,5 +88,33 @@ export class CompetitionsComponent {
   }
   hasPlayers(players: any[] = []): boolean {
     return players.length > 0;
+  }
+  onDropdownAction(action: string, competition: any) {
+    switch (action) {
+      case 'edit':
+        // logica edit
+        break;
+      case 'delete':
+        this.http.delete('/api/delete-competition', {
+          body: { competitionId: competition.id }
+        }).subscribe({
+          next: (res) => {
+            console.log('Competition deleted', res);
+            this.competitions$ = this.competitions$.pipe(
+              map(competitions => competitions.filter((c: ICompetition) => c.id !== competition.id))
+            );
+            this.competitionService.getCompetitions();
+            this.loaderService.showToast('delete_success', MSG_TYPE.SUCCESS);
+          },
+          error: (err) => {
+            console.error('Error deleting competition', err);
+            this.loaderService.showToast('delete_error', MSG_TYPE.ERROR);
+          }
+        });
+        break;
+      case 'details':
+        // logica details
+        break;
+    }
   }
 }

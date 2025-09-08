@@ -50,7 +50,12 @@
                                 <p class="no-players">{{ "no_players_small" | translate }}</p>
                             </ng-template>
 
-                            <div class="dots">...</div>
+                          
+                            <app-dropdown [actions]="[
+                                { label: 'Edit', value: 'edit', icon: '<i class=\'fa-solid fa-pen\'></i>' },
+                                { label: 'Details', value: 'details', icon: '<i class=\'fa-solid fa-circle-info\'></i>' },
+                                { label: 'Delete', value: 'delete', icon: '<i class=\'fa-solid fa-trash\'></i>' }
+                            ]" (actionSelected)="onDropdownAction($event, c)"></app-dropdown>
                         </div>
                     </ng-container>
                 </div>

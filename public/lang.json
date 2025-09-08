@@ -614,5 +614,13 @@
     "compile_fields": {
         "it": "Compila tutti i campi obbligatori",
         "en": "Fill in all required fields"
+    },
+    "delete_error": {
+        "it": "Errore durante l'eliminazione della competizione. Riprova più tardi.",
+        "en": "Error deleting competition. Please try again later."
+    },
+    "delete_success": {
+        "it": "Competizione eliminata con successo.",
+        "en": "Competition deleted successfully."
     }
 }

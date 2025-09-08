@@ -12,6 +12,7 @@ export const API_PATHS = {
   joinCompetition: '/api/join-competition',
   getPlayers: '/api/get-players',
   addPlayers: '/api/add-players',
+  deleteCompetition: '/api/delete-competition',
 }
 
 export const API_AUTH_CONFIG: Record<string, { needsAuth: boolean; methods?: string[] }> = {
@@ -22,8 +23,9 @@ export const API_AUTH_CONFIG: Record<string, { needsAuth: boolean; methods?: str
   [API_PATHS.addMatch]: { needsAuth: true, methods: ['POST'] },
   [API_PATHS.updateProfile]: { needsAuth: true, methods: ['POST'] },
   [API_PATHS.addCompetition]: { needsAuth: true, methods: ['POST'] },
-  [API_PATHS.getPlayers]: { needsAuth: true},
+  [API_PATHS.getPlayers]: { needsAuth: true },
   [API_PATHS.addPlayers]: { needsAuth: true, methods: ['POST'] },
+  [API_PATHS.deleteCompetition]: { needsAuth: true, methods: ['DELETE'] },
 };
 
 export function findApiConfig(url: string, method: string) {

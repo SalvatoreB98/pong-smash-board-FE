@@ -26,6 +26,7 @@
         filter: drop-shadow(0px 0px 10px black);
         padding: 1em;
         padding-bottom: 2em;
+
         &.add {
             cursor: pointer;
             display: grid;
@@ -65,7 +66,8 @@
     font-size: 0.75em;
     color: $primary;
 }
-.players-count{ 
+
+.players-count {
     position: absolute;
     bottom: 5px;
     left: 5px;
@@ -74,6 +76,7 @@
     display: inline-block;
     opacity: 0.6;
 }
+
 .players-section {
     background-color: black;
     border-radius: $border-radius;
@@ -90,6 +93,7 @@
         font-size: 0.7em;
         margin-bottom: 0;
     }
+
     img {
         max-width: 30px;
         max-height: 30px;
@@ -99,6 +103,12 @@
 
 .no-players {
     font-size: 0.7em;
+}
+
+app-dropdown {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 @media screen and (max-width: 600px) {
