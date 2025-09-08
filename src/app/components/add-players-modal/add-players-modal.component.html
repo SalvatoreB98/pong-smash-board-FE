@@ -50,6 +50,24 @@
                                 [placeholder]="'insert_nickname' | translate" />
                         </div>
 
+                        <div class="mb-3 position-relative">
+                            <label for="email" class="form-label">{{ 'email' | translate }}
+                                <div class="info-input" title="{{ 'email_info' | translate }}">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                </div>
+                            </label>
+                            <input type="text" id="email" class="form-control input-field" formControlName="email"
+                                style="padding-left: 1rem;" [placeholder]="'insert_email' | translate" />
+
+                            <div>
+                                <small *ngIf="addPlayerForm.invalid" class="text-danger">
+                                    <div *ngIf="addPlayerForm.get('email')?.errors?.['email']">
+                                        {{ 'email_invalid' | translate }}
+                                    </div>
+                                </small>
+                            </div>
+                        </div>
+
                         <!-- Upload immagine -->
                         <div class="mb-3">
                             <label for="immagine" class="form-label">{{ 'image' | translate }}</label>
@@ -58,7 +76,8 @@
                         </div>
 
                         <div class="button-container d-flex justify-content-center">
-                            <button type="button" (click)="addPlayer()" style="width: 100%; text-align: center;">
+                            <button type="button" (click)="addPlayer()" style="width: 100%; text-align: center;"
+                                [disabled]="addPlayerForm.invalid">
                                 {{ "add_player" | translate }}
                             </button>
                         </div>

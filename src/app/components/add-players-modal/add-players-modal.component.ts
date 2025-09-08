@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { CompetitionService } from '../../../services/competitions.service';
 import { UserService } from '../../../services/user.service';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
@@ -10,6 +10,7 @@ import { API_PATHS } from '../../../api/api.config';
 import { LoaderService } from '../../../services/loader.service';
 import { MSG_TYPE } from '../../utils/enum';
 import { firstValueFrom } from 'rxjs';
+import { ModalComponent } from '../../common/modal/modal.component';
 
 export interface IPlayerToAdd {
   name: string;
@@ -25,7 +26,7 @@ export interface IPlayerToAdd {
   templateUrl: './add-players-modal.component.html',
   styleUrls: ['./add-players-modal.component.scss']
 })
-export class AddPlayersModalComponent {
+export class AddPlayersModalComponent extends ModalComponent {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private loader = inject(LoaderService);
@@ -37,6 +38,7 @@ export class AddPlayersModalComponent {
     surname: [''],
     nickname: [''],
     file: [null],
+    email: ['', { validators: [Validators.email], updateOn: 'blur' }],
   });
 
   playersToAdd: IPlayerToAdd[] = [];
@@ -115,7 +117,7 @@ export class AddPlayersModalComponent {
       await firstValueFrom(
         this.http.post(API_PATHS.addPlayers, { players: playersWithUrls, competitionId })
       );
-
+      this.modalService.closeModal();
       this.loader.showToast('Players added successfully!', MSG_TYPE.SUCCESS);
       this.playersToAdd = [];
     } catch (err) {

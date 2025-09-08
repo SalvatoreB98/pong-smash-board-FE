@@ -24,7 +24,7 @@ img {
   background: $dark;
   background: $gradient;
   transform: skew(-20deg);
-
+  padding: 0.5em 1em;
   &>img,
   div {
     transform: skew(20deg);

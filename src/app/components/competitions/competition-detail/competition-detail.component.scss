@@ -53,9 +53,10 @@
 }
 
 .competition-players-container {
-  display: flex;
-
-  .players {}
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 10px;
 }
 
 .players-container {

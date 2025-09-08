@@ -622,5 +622,22 @@
     "delete_success": {
         "it": "Competizione eliminata con successo.",
         "en": "Competition deleted successfully."
-    }
+    },
+    "insert_email": {
+        "it": "Inserisci email",
+        "en": "Enter email"
+    },
+    "email": {
+        "it": "E-mail",
+        "en": "E-mail"
+    },
+    "email_info": {
+        "it": "L'email è utile per inviare notifiche sulle partite direttamente al giocatore. Inseriscila per far ricevere aggiornamenti sul torneo. Puoi anche lasciarla vuota.",
+        "en": "Email is used to send match notifications directly to the player. Enter it to send tournament updates. You can also leave it blank."
+    },
+    "email_invalid": {
+        "it": "Inserisci un'email valida.",
+        "en": "Enter a valid email."
+    },
+    "":""
 }
