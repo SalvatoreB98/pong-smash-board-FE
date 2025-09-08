@@ -11,6 +11,7 @@ import { LoaderService } from '../../../services/loader.service';
 import { MSG_TYPE } from '../../utils/enum';
 import { firstValueFrom } from 'rxjs';
 import { ModalComponent } from '../../common/modal/modal.component';
+import { DataService } from '../../../services/data.service';
 
 export interface IPlayerToAdd {
   name: string;
@@ -32,6 +33,7 @@ export class AddPlayersModalComponent extends ModalComponent {
   private loader = inject(LoaderService);
   private userService = inject(UserService);
   private competitionService = inject(CompetitionService);
+  private dataService = inject(DataService);
 
   addPlayerForm: FormGroup = this.fb.group({
     name: [''],
@@ -117,6 +119,8 @@ export class AddPlayersModalComponent extends ModalComponent {
       await firstValueFrom(
         this.http.post(API_PATHS.addPlayers, { players: playersWithUrls, competitionId })
       );
+      // refresh dati locali (players, matches, ecc.)
+      await this.dataService.refresh();
       this.modalService.closeModal();
       this.loader.showToast('Players added successfully!', MSG_TYPE.SUCCESS);
       this.playersToAdd = [];
