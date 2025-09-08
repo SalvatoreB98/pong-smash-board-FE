@@ -57,11 +57,13 @@ export class DataService {
   private totPlayedSubject = new BehaviorSubject<Record<string, number>>({});
   private pointsSubject = new BehaviorSubject<Record<string, number>>({});
   private matchesSubject = new BehaviorSubject<IMatch[]>([]);
+  private playersSubject = new BehaviorSubject<string[]>([]);
 
   public winsObs = this.winsSubject.asObservable();
   public totPlayedObs = this.totPlayedSubject.asObservable();
   public pointsObs = this.pointsSubject.asObservable();
   public matchesObs = this.matchesSubject.asObservable();
+  public playersObs = this.playersSubject.asObservable();
 
   private _loaded = false;                 // abbiamo già i dati?
   private _lastLoadedAt = 0;               // timestamp dell’ultimo load
@@ -161,6 +163,7 @@ export class DataService {
     this.winsSubject.next(this.wins);
     this.totPlayedSubject.next(this.totPlayed);
     this.pointsSubject.next(this.points);
+    this.playersSubject.next(this.players);
   }
 
   private generateReturnObject(): MatchData {
@@ -201,9 +204,11 @@ export class DataService {
       }
 
       const responseData = await firstValueFrom(
-        this.http.post<any>(url, { ...data, competitionId: userState.active_competition_id })
+        this.http.post<IMatchResponse>(url, { ...data, competitionId: userState.active_competition_id })
       );
 
+      // aggiorna lo store locale con i dati restituiti
+      this.assignData(responseData);
       this.loaderService?.showToast('Salvato con successo!', MSG_TYPE.SUCCESS, 5000);
       console.log('Success:', responseData);
     } catch (error: any) {
