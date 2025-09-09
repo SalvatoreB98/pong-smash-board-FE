@@ -356,12 +356,12 @@
         "en": "Share this code with your friends to allow them to join the competition."
     },
     "send_invitation_by_email": {
-        "it": "Invia inviti via email",
-        "en": "Send invitations by email"
+        "it": "Invia link per accedere via email",
+        "en": "Send access link by email"
     },
     "send_invitation_by_email_info": {
-        "it": "Invia inviti ai tuoi amici tramite email per permettere loro di unirsi alla competizione.",
-        "en": "Send invitations to your friends via email to allow them to join the competition."
+        "it": "Invia link per accedere ai tuoi amici tramite email per permettere loro di unirsi alla competizione.",
+        "en": "Send access link to your friends via email to allow them to join the competition."
     },
     "invite": {
         "it": "Invita giocatori (email)",
