@@ -44,15 +44,22 @@
                                             [alt]="player.name || 'player'">
                                     </div>
                                 </div>
+
                             </div>
 
                             <ng-template #noPlayers>
                                 <p class="no-players">{{ "no_players_small" | translate }}</p>
                             </ng-template>
 
-                          
+                            <div class="button-container">
+                                <button type="button" class="button-primary-ping">
+                                    {{ "visualize" | translate }} <i class="fa-solid fa-eye ms-2"></i>
+                                </button>
+                            </div>
+                            
                             <app-dropdown [actions]="[
                                 { label: 'Edit', value: 'edit', icon: '<i class=\'fa-solid fa-pen\'></i>' },
+                                { label: 'Set as favorite', value: 'favorite', icon: '<i class=\'fa-solid fa-star\'></i>' },
                                 { label: 'Details', value: 'details', icon: '<i class=\'fa-solid fa-circle-info\'></i>' },
                                 { label: 'Delete', value: 'delete', icon: '<i class=\'fa-solid fa-trash\'></i>' }
                             ]" (actionSelected)="onDropdownAction($event, c)"></app-dropdown>

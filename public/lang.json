@@ -639,5 +639,9 @@
         "it": "Inserisci un'email valida.",
         "en": "Enter a valid email."
     },
+    "visualize": {
+        "it": "Visualizza",
+        "en": "Visualize"
+    },
     "":""
 }
