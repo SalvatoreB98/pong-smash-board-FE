@@ -103,14 +103,19 @@ export class AddCompetitionModalComponent {
   }
 
   nextStep() {
-    if (this.step < 2) {
+    if (this.step < 6) {
       this.step++;
     }
   }
+
   back() {
     if (this.step > 1) {
       this.step--;
     }
+  }
+
+  goToStep(step: number) {
+    this.step = step;
   }
 
   closeModal() {

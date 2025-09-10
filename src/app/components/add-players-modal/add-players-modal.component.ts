@@ -12,6 +12,7 @@ import { MSG_TYPE } from '../../utils/enum';
 import { firstValueFrom } from 'rxjs';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { DataService } from '../../../services/data.service';
+import { TranslationService } from '../../../services/translation.service';
 
 export interface IPlayerToAdd {
   name: string;
@@ -34,6 +35,8 @@ export class AddPlayersModalComponent extends ModalComponent {
   private userService = inject(UserService);
   private competitionService = inject(CompetitionService);
   private dataService = inject(DataService);
+  private translateService = inject(TranslationService);
+  copied = false;
 
   addPlayerForm: FormGroup = this.fb.group({
     name: [''],
@@ -122,7 +125,7 @@ export class AddPlayersModalComponent extends ModalComponent {
       // refresh dati locali (players, matches, ecc.)
       await this.dataService.refresh();
       for (const player of playersWithUrls) {
-        
+
         this.competitionService.addPlayerToLocal(competitionId, {
           id: 0,
           name: player.name,
@@ -139,5 +142,23 @@ export class AddPlayersModalComponent extends ModalComponent {
     } finally {
       this.loader.stopLittleLoader();
     }
+  }
+
+  copyCode() {
+    this.activeCompetition$.subscribe(comp => {
+      console.log(comp);
+      if (comp?.['code']) {
+        navigator.clipboard.writeText(comp['code'])
+          .then(() => {
+            this.loader.showToast(this.translateService.translate('code_copied'), MSG_TYPE.SUCCESS);
+            setTimeout(() => this.copied = false, 2000); // reset messaggio dopo 2s
+          })
+          .catch(() => {
+            this.loader.showToast(this.translateService.translate('code_copy_failed'), MSG_TYPE.ERROR);
+          });
+      } else {
+        this.loader.showToast(this.translateService.translate('code_not_available'), MSG_TYPE.ERROR);
+      }
+    });
   }
 }

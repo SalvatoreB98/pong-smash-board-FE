@@ -2,14 +2,11 @@
     <ng-container *ngFor="let _ of [].constructor(totalSteps); let idx = index">
 
         <!-- stepIndex parte da 1 -->
-        <ng-container *ngIf="true">
-            <div class="step">
-                <div class="circle" [class.active]="activeStep === idx + 1" [class.completed]="activeStep > idx + 1">
-                    <span *ngIf="activeStep <= idx + 1"></span>
-                </div>
+        <div class="step">
+            <div class="circle" [class.active]="activeStep === idx + 1" [class.completed]="activeStep > idx + 1">
+                <span *ngIf="activeStep <= idx + 1"></span>
             </div>
-        </ng-container>
-
+        </div>
         <!-- Linea -->
         <div *ngIf="idx < totalSteps - 1" class="line" [class.completed]="activeStep > idx + 1"></div>
     </ng-container>

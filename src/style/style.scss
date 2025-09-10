@@ -369,6 +369,10 @@ button.secondary-color-button {
     background-color: $secondary!important;
 }
 
+.bg-secondary {
+    background-color: $secondary!important;
+}
+
 @media screen and (max-width: 600px) {
     .my-modal:not(.small) {
         top: 0;

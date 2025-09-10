@@ -344,8 +344,8 @@
         "en": "No players yet"
     },
     "insert_players_init": {
-        "it": "Scegli se, invitarli tramite email o fornire loro un codice di invito.",
-        "en": "Choose whether to invite players via email or provide them with an invite code."
+        "it": "Condividi il codice di invito ai tuoi amici per permettere loro di unirsi alla competizione e iniziare a registrare partite, <br> clicka qui per copiarlo negli appunti.",
+        "en": "Share the invitation code with your friends to allow them to join the competition and start recording matches, <br> click here to copy it to the clipboard."
     },
     "invitation_code": {
         "it": "Codice di invito",
@@ -643,5 +643,17 @@
         "it": "Visualizza",
         "en": "Visualize"
     },
-    "":""
+    "code_copied": {
+        "it": "Codice copiato negli appunti!",
+        "en": "Code copied to clipboard!"
+    },
+    "code_copy_error": {
+        "it": "Errore durante la copia del codice.",
+        "en": "Failed to copy code."
+    },
+    "code_not_available": {
+        "it": "Codice non disponibile.",
+        "en": "Code not available."
+    },
+    "": ""
 }
