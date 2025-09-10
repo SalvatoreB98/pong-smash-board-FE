@@ -7,26 +7,34 @@ import { environment } from '../environments/environment';
 import { CachedFetcher } from '../app/utils/helpers/cache.helpers'
 @Injectable({ providedIn: 'root' })
 export class RankingService {
-  private fetcher: CachedFetcher<IRankingResponse>;
+  private fetcherMap: Map<string, CachedFetcher<IRankingResponse>> = new Map();
 
-  constructor(private http: HttpClient) {
-    this.fetcher = new CachedFetcher<IRankingResponse>(
-      async () => {
-        const competition_id = '143'; // Replace with actual value or pass as parameter
-        const url = `${environment.apiUrl}${API_PATHS.getRanking}?competition_id=${competition_id}`;
-        return firstValueFrom(
-          this.http.get<IRankingResponse>(url)
-        );
-      },
-      60 * 1000 // TTL 1 minuto
-    );
+  constructor(private http: HttpClient) {}
+
+  private getFetcher(competition_id: string): CachedFetcher<IRankingResponse> {
+    if (!this.fetcherMap.has(competition_id)) {
+      const fetcher = new CachedFetcher<IRankingResponse>(
+        async () => {
+          const url = `${environment.apiUrl}${API_PATHS.getRanking}?competition_id=${competition_id}`;
+          return firstValueFrom(
+            this.http.get<IRankingResponse>(url)
+          );
+        },
+        60 * 1000 // TTL 1 minuto
+      );
+      this.fetcherMap.set(competition_id, fetcher);
+    }
+    return this.fetcherMap.get(competition_id)!;
   }
 
-  getRanking(force = false): Promise<IRankingResponse> {
-    return this.fetcher.get(force);
+  getRanking(competition_id: string, force = false): Promise<IRankingResponse> {
+    return this.getFetcher(competition_id).get(force);
   }
 
-  clearRankingCache() {
-    this.fetcher.clear();
+  clearRankingCache(competition_id: string) {
+    const fetcher = this.fetcherMap.get(competition_id);
+    if (fetcher) {
+      fetcher.clear();
+    }
   }
 }

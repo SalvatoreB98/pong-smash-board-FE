@@ -3,10 +3,11 @@ import { DataService } from '../../../services/data.service';
 import { CommonModule } from '@angular/common';
 import { RankingService } from '../../../services/ranking.service';
 import { inject } from '@angular/core';
-import { map } from 'rxjs';
+import { map, firstValueFrom } from 'rxjs';
 import { Match, PlayerStanding, HeadToHeadRow } from '../../interfaces/statsInterfaces';
 import { TranslatePipe } from '../../utils/translate.pipe';
 import { SHARED_IMPORTS } from '../imports/shared.imports';
+import { UserService } from '../../../services/user.service';
 
 type StandingsType = 'WINRATE' | 'WINS';
 
@@ -42,16 +43,20 @@ export class StatsComponent implements OnInit {
   headToHeadData: HeadToHeadRow[] = [];
   players: string[] | undefined;
 
-  constructor() {
+  constructor(private userService: UserService) {
 
   }
 
   async ngOnInit() {
-    // prendo i dati dal tuo service (la tua API Promise resta com’è)
-    const res = await this.rankingService.getRanking();
+    let activeCompetitionId = '';
+    const userState = await firstValueFrom(this.userService.getState());
+    if (userState && userState.active_competition_id) {
+      activeCompetitionId = String(userState.active_competition_id);
+    }
+    const res = await this.rankingService.getRanking(activeCompetitionId, false);
     this.standings = res.ranking.map(item => ({
       id: item.id, // ensure id is present
-      image_url: item.image_url || '/default-player.jpg', // placeholder se non c'è
+      image_url: item.image_url || '/default-player.jpg', 
       playerName: item.nickname,
       wins: item.wins,
       lost: item.played - item.wins || 0,
