@@ -7,7 +7,7 @@
                 <img [src]="match.player1_img" (error)="onImageError($event)">
             </div>
             <div class="text-center">{{ match?.player1_name }}</div>
-            <div class="score">{{ match?.player1_score }}</div>
+            <div class="score" [ngClass]="{'won': match?.player1_score > match?.player2_score}">{{ match?.player1_score }}</div>
         </div>
         <div class="vs">
             <img src="/vs.svg" alt="{{ 'vs' | translate }}">

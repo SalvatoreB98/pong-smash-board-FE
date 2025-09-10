@@ -9,7 +9,7 @@
     gap: 1rem; // Adjust the gap between columns as needed
     padding: 1rem;
     border-radius: var(--border-radius);
-    color: var(--primary-ultra-light);
+    color: white;
     margin-bottom: 1em;
 
     .player {
@@ -70,7 +70,7 @@
     }
 
     .n-set {
-      color: var(--primary);
+      color: white;
       transform: scale(0.8) translateX(5px);
       font-weight: 100;
       font-style: italic;
@@ -83,10 +83,12 @@
     text-align: center;
 
     .won {
-      color: $primary;
+      color: $primary-light;
       font-weight: bold;
     }
   }
+
+
 
   .data {
     font-size: 0.75em;
@@ -98,7 +100,13 @@
     bottom: 10px;
   }
 
+  .score.won {
+    color: $primary-light!important;
+    font-weight: bold;
+  }
 }
+
+
 
 @media screen and (max-width:500px) {
   .dettagli-partita {

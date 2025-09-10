@@ -210,6 +210,8 @@ export class DataService {
       // aggiorna lo store locale con i dati restituiti
       this.assignData(responseData);
       this.loaderService?.showToast('Salvato con successo!', MSG_TYPE.SUCCESS, 5000);
+      this.matches = responseData.matches || [];
+      this.matchesSubject.next(this.matches);
       console.log('Success:', responseData);
     } catch (error: any) {
       this.loaderService?.showToast(

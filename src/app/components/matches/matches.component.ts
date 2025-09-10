@@ -81,8 +81,12 @@ export class MatchesComponent {
   trackByIndex(index: number, item: any) {
     return index;
   }
-  getMatchesToRender() {
+  getMatchesToRender(reverse: boolean = false): any[] {
     if (!this.matches) return [];
-    return this.matches.slice().reverse().slice(0, this.maxMatchesToShow);
+    const matches = this.matches.slice();
+    if (reverse) {
+      matches.reverse();
+    }
+    return matches.slice(0, this.maxMatchesToShow);
   }
 }

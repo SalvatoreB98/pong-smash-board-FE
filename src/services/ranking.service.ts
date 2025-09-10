@@ -12,8 +12,10 @@ export class RankingService {
   constructor(private http: HttpClient) {
     this.fetcher = new CachedFetcher<IRankingResponse>(
       async () => {
+        const competition_id = '143'; // Replace with actual value or pass as parameter
+        const url = `${environment.apiUrl}${API_PATHS.getRanking}?competition_id=${competition_id}`;
         return firstValueFrom(
-          this.http.get<IRankingResponse>(environment.apiUrl + API_PATHS.getRanking)
+          this.http.get<IRankingResponse>(url)
         );
       },
       60 * 1000 // TTL 1 minuto
