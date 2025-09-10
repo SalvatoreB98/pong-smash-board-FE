@@ -155,11 +155,10 @@
 
 <!-- STEP 6 – RIEPILOGO -->
 <div class="steps-wrapper" *ngIf="step == 6">
-    <div class="form-card mt-3">
-        <h3>{{ 'summary' | translate }}</h3>
+    <div class="summary form-card mt-3">
         <ul>
-            <li>{{ 'management_type' | translate }}: {{ managementForm.value.managementCtrl }}</li>
-            <li>{{ 'competition_name_label' | translate }}: {{ competitionForm.value.nameCtrl }}</li>
+            <li>{{ 'management' | translate }}: {{ managementForm.value.managementCtrl }}</li>
+            <li>{{ 'name' | translate }}: {{ competitionForm.value.nameCtrl }}</li>
             <li>{{ 'competition_type_label' | translate }}: {{ competitionForm.value.typeCtrl }}</li>
             <li>{{ 'competition_sets_label' | translate }}: {{ competitionForm.value.setsCtrl }}</li>
             <li>{{ 'competition_points_label' | translate }}: {{ competitionForm.value.pointsCtrl }}</li>

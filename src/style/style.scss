@@ -352,7 +352,7 @@ button.no-style {
 }
 
 app-add-competition-modal {
-    height: 100%;
+    height: 88%;
 }
 
 button.secondary-color-button {
@@ -379,10 +379,8 @@ button.secondary-color-button {
         left: 0;
         right: 0;
         bottom: 0;
-        max-width: 99vw;
+        overflow: hidden;
         margin: auto;
-        height: 75dvh;
-        max-height: 75dvh;
     }
 
 }

@@ -4,11 +4,18 @@
 @use "style/slider.scss";
 @use "style/utility.scss";
 @use "style/forms.scss";
- 
+
 * {
     box-sizing: border-box;
 }
+
 [href] {
     all: unset;
     color: white;
+}
+
+@media (max-width: 600px) {
+    body {
+        font-size: 15px;
+    }
 }

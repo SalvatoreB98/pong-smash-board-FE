@@ -655,5 +655,9 @@
         "it": "Codice non disponibile.",
         "en": "Code not available."
     },
+    "summary": {
+        "it": "Riepilogo",
+        "en": "Summary"
+    },
     "": ""
 }

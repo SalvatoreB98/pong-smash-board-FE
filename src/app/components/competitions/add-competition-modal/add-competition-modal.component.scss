@@ -16,12 +16,14 @@
 }
 
 .actions {
-    margin-top: 3em;
+    bottom: 1em;
+    right: 1em;
+    left: 1em;
 }
 
 .steps-wrapper {
     padding: 24px;
-    height: 80%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -247,6 +249,56 @@ h2 {
 
     input {
         width: 100%;
+    }
+}
+
+.summary {
+    background: $gradient2;
+    border-radius: $border-radius;
+    padding: 1em 1em;
+    color: $primary-ultra-light;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .4);
+    border: 1px solid rgba($primary-light, 0.2);
+
+    h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: $primary-light;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            background: rgba($dark2, 0.8);
+            border: 1px solid rgba($primary-light, 0.15);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: $primary-ultra-light;
+            transition: background 0.2s ease, transform 0.1s ease;
+            text-align: right;
+
+            &:hover {
+                background: rgba($primary, 0.2);
+                transform: translateY(-2px);
+            }
+
+            &::before {
+                content: "✔";
+                color: $primary-light;
+                margin-right: 0.5rem;
+            }
+        }
     }
 }
 
