@@ -3,12 +3,12 @@
 .competition-detail {
   padding: 3em;
   border-radius: $border-radius;
-  filter: drop-shadow(10px 10px solid black);
+  filter: drop-shadow(0.625em 0.625em solid black);
   position: relative;
-  max-width: 600px;
+  max-width: 37.5em;
   margin: auto;
   background: $dark;
-  filter: drop-shadow(0px 0px 10px black);
+  filter: drop-shadow(0em 0em 0.625em black);
 }
 
 .top {
@@ -56,7 +56,7 @@
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  gap: 10px;
+  gap: 0.625em;
 }
 
 .players-container {
@@ -77,15 +77,15 @@
 .invitation-code-container {
   font-size: 0.7em;
   background-color: black;
-  filter: drop-shadow(0px 0px 5px $secondary);
+  filter: drop-shadow(0em 0em 0.3125em $secondary);
   border-radius: $border-radius;
   text-align: center;
   padding: 1em;
-  width: 150px;
+  width: 9.375em;
 
   .value {
     font-size: 1em;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 0.125em;
   }
 }

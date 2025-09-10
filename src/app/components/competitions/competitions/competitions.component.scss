@@ -8,14 +8,14 @@
         margin: 0;
 
         button {
-            width: 275px;
+            width: 17.1875em;
             margin: none;
             margin-bottom: 1em;
-            padding: 5px;
+            padding: 0.3125em;
         }
     }
 
-    max-width: 600px;
+    max-width: 37.5em;
     margin: auto;
 }
 
@@ -23,7 +23,7 @@
     .comp {
         background: $dark;
         border-radius: $border-radius;
-        filter: drop-shadow(0px 0px 10px black);
+        filter: drop-shadow(0em 0em 0.625em black);
         padding: 1em;
         padding-bottom: 2em;
 
@@ -58,7 +58,7 @@
     display: grid;
     gap: 1em;
     grid-template-columns: repeat(3, 1fr);
-    max-width: 600px;
+    max-width: 37.5em;
     margin: auto;
 }
 
@@ -69,8 +69,8 @@
 
 .players-count {
     position: absolute;
-    bottom: 5px;
-    left: 5px;
+    bottom: 0.3125em;
+    left: 0.3125em;
     font-size: 0.7em;
     margin-right: 0.5em;
     display: inline-block;
@@ -87,7 +87,7 @@
     padding: 0.5em;
     margin-top: 1em;
     white-space: nowrap;
-    height: 50px;
+    height: 3.125em;
 
     p {
         font-size: 0.7em;
@@ -95,8 +95,8 @@
     }
 
     img {
-        max-width: 30px;
-        max-height: 30px;
+        max-width: 1.875em;
+        max-height: 1.875em;
     }
 
 }
@@ -111,7 +111,7 @@ app-dropdown {
     right: 0;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 37.5em) {
     .other-competitions-container {
         grid-template-columns: 1fr;
         margin: auto;
@@ -125,7 +125,7 @@ app-dropdown {
     }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 40.625em) {
     .buttons-add {
         display: block;
 

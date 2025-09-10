@@ -22,8 +22,8 @@ $orange: #ffa10b; // Ho allineato $orange a $light per coerenza, se sono intesi 
 // Gradiente Speciale (ho mantenuto la tua struttura, ma ho usato $dark-blu come base per renderlo più coerente)
 $gradient2: linear-gradient(90deg, #192745c8 0%, #122137 50%, $dark 100%);
 
-$border-radius : 12px;
-$navbar-height: 75px;
+$border-radius : 0.75em;
+$navbar-height: 4.6875em;
 
 :root {
   --dark: #05131c;
@@ -33,12 +33,12 @@ $navbar-height: 75px;
   --contrast: #c76360;
   --secondary: #e19945;
   --light: #f2c373;
-  --border-radius: 30px;
+  --border-radius: 1.875em;
   --green: #4e9f6b;
   --orange: #ffa10b;
   --gradient: linear-gradient(180deg, black 10%, #05131c 90%);
   --gradient-reverse: linear-gradient(180deg, #05131c 10%, black 90%);
-  --border-radius: 30px;
+  --border-radius: 1.875em;
 }
 
 @keyframes bounce {
@@ -49,6 +49,6 @@ $navbar-height: 75px;
   }
 
   50% {
-    transform: translateX(-50%) translateY(-50px);
+    transform: translateX(-50%) translateY(-3.125em);
   }
 }

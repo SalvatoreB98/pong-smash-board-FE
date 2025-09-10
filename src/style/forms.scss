@@ -50,7 +50,7 @@ $border: #1f2937;
   box-sizing: border-box;
 
   background: $field;
-  border: 1px solid $border;
+  border: 0.0625em solid $border;
   border-radius: $border-radius;
 
   color: $text;
@@ -131,7 +131,7 @@ $border: #1f2937;
 
   background: $field;
   color: $text;
-  border: 1px solid $border;
+  border: 0.0625em solid $border;
   border-radius: $border-radius;
   text-align: center;
   overflow: hidden;
@@ -139,8 +139,8 @@ $border: #1f2937;
 
   .search-icon {
     position: absolute;
-    right: 10px;
-    top: 7px;
+    right: 0.625em;
+    top: 0.4375em;
   }
 
   .player-item {
@@ -159,7 +159,7 @@ $border: #1f2937;
 .dropdown.visible {
   visibility: visible;
   opacity: 1;
-  transform: translateY(-12px);
+  transform: translateY(-0.75em);
   width: 45%;
 }
 
@@ -174,20 +174,20 @@ $border: #1f2937;
   }
 
   .input-container {
-    min-width: 70px;
-    max-width: 80px;
+    min-width: 4.375em;
+    max-width: 5em;
     margin: .1rem .5rem .1rem .1rem;
   }
 }
 
 /* Bordo arrotondato top/bottom in stack */
 form .input-top {
-  border-radius: 20px 20px 0 0;
+  border-radius: 1.25em 1.25em 0 0;
   margin-bottom: 0;
 }
 
 form .input-bottom {
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 1.25em 1.25em;
   margin-bottom: 0;
 }
 
@@ -207,14 +207,14 @@ form .input-bottom {
     position: absolute;
     content: attr(title);
     background-color: black;
-    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 0 0.3125em rgba(0, 0, 0, 0.5));
     border-radius: $border-radius;
     z-index: 900;
   }
 }
 
 /* Mobile */
-@media (max-width: 768px) {
+@media (max-width: 48em) {
   .input-field {
     overflow: hidden;
     white-space: nowrap;
@@ -227,7 +227,7 @@ form .input-bottom {
 
 /* Wrapper punti */
 .wrapper-points .input-container {
-  padding: 3px;
+  padding: 0.1875em;
 }
 
 .form-control input-field {
@@ -243,8 +243,8 @@ input[type="file"]::file-selector-button {
   background: $primary;
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 0.375em 0.75em;
+  border-radius: 0.25em;
   cursor: pointer;
 
 }
@@ -258,8 +258,8 @@ input[type="file"]::-webkit-file-upload-button {
   background: $primary;
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 0.375em 0.75em;
+  border-radius: 0.25em;
   cursor: pointer;
   transition: all .2s ease;
 }

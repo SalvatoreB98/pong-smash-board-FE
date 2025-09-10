@@ -31,6 +31,10 @@ export class Slider {
     this.addEventListeners();
   }
 
+  private pxToEm(value: number): string {
+    return `${value / 16}em`;
+  }
+
   public updateUI(): void {
     this.updateSliderPosition();
     this.updateArrowState();
@@ -65,7 +69,7 @@ export class Slider {
       if (!moving) return;
       const currentX = e.touches[0].pageX;
       const translateX = this.newPosition + currentX - startX;
-      this.matchesSlider.style.transform = `translateX(${translateX}px)`;
+      this.matchesSlider.style.transform = `translateX(${this.pxToEm(translateX)})`;
     });
 
     this.matchesSlider.addEventListener("touchend", (e: TouchEvent) => {
@@ -89,9 +93,9 @@ export class Slider {
 
     this.matchesSlider.addEventListener("mousemove", (e: MouseEvent) => {
       if (!this.dragging) return;
-      const currentX = e.pageX;
-      const translateX = this.newPosition + currentX - this.startX;
-      this.matchesSlider.style.transform = `translateX(${translateX}px)`;
+        const currentX = e.pageX;
+        const translateX = this.newPosition + currentX - this.startX;
+        this.matchesSlider.style.transform = `translateX(${this.pxToEm(translateX)})`;
     });
 
     this.matchesSlider.addEventListener("mouseup", (e: MouseEvent) => {
@@ -139,7 +143,7 @@ export class Slider {
     const maxSlide = this.matchesSlider.scrollWidth - this.matchesSlider.offsetWidth;
     this.newPosition = Math.max(-(this.index * matchTotalWidth), -maxSlide);
     this.matchesSlider.style.transition = "transform 0.3s ease-out";
-    this.matchesSlider.style.transform = `translateX(${this.newPosition}px)`;
+    this.matchesSlider.style.transform = `translateX(${this.pxToEm(this.newPosition)})`;
   }
 
   private handleArrowClick(direction: "left" | "right"): void {

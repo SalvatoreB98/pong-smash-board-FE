@@ -32,9 +32,9 @@ export class ModalService {
 
   setEffects() {
     document?.querySelector('html')?.style.setProperty('overflow', 'hidden');
-    document?.querySelector('html')?.style.setProperty('margin-right', '7px');
+    document?.querySelector('html')?.style.setProperty('margin-right', '0.4375em');
     let wrapper = document.querySelector('.wrapper') as HTMLElement;
-    wrapper?.style.setProperty('filter', 'blur(10px)');
+    wrapper?.style.setProperty('filter', 'blur(0.625em)');
     wrapper?.style.setProperty('pointer-events', 'none');
     wrapper?.style.setProperty('user-select', 'none');
   }
