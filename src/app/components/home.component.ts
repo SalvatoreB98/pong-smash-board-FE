@@ -45,6 +45,9 @@ export class HomeComponent {
       this.players = players;
       console.log(this.players);
     });
+    this.matches$.subscribe(matches => {
+      this.matches = matches;
+    });
     this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 }) // cache 5 minuti
       .then(res => this.matches = res.matches);
     console.log(this.competitionService.activeCompetition$.subscribe(comp => { console.log(comp) }));
