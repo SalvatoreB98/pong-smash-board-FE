@@ -2,7 +2,7 @@
   display: block;
   position: absolute;
   content: attr(data-tooltip);
-  border: 1px solid black;
+  border: 0.0625em solid black;
   background: #eee;
   padding: .25em;
 }
@@ -14,8 +14,8 @@ input[type="file"] {
 .custom-file-upload {
   display: block;
   text-align: center;
-  width: 100px;
-  height: 100px;
+  width: 6.25em;
+  height: 6.25em;
   border-radius: 50%;
   display: inline-block;
   cursor: pointer;
@@ -47,7 +47,7 @@ input[type="file"] {
     font-size: 2em;
     opacity: 0.75;
     transition: all 0.2s ease-in-out;
-    filter: drop-shadow(0 0 2px white);
+    filter: drop-shadow(0 0 0.125em white);
   }
 
   color: black;

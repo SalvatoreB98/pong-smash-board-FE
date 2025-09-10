@@ -1,14 +1,14 @@
 @use '../../../style/variables.scss' as *;
 
 .step-indicator {
-    max-width: 100px;
+    max-width: 6.25em;
     margin: auto;
     margin-top: 1em;
     transition: all 0.5s ease-in-out;
     .circle {
         border-radius: 100%;
         background-color: transparent;
-        border: 2px solid white;
+        border: 0.125em solid white;
         width: 1em;
         height: 1em;
         transition: all 0.5s ease-in-out;
@@ -16,8 +16,8 @@
     }
 
     .line {
-        min-width: 50px;
-        border: 1px solid white;
+        min-width: 3.125em;
+        border: 0.0625em solid white;
         &.completed {
             border-color: $primary-light;
             transition: all 0.5s ease-in-out;

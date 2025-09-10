@@ -27,12 +27,12 @@ main {
 }
 
 #page-container {
-    padding-top: 75px;
+    padding-top: 4.6875em;
 }
 
 // Navigation
 nav {
-    height: 75px;
+    height: 4.6875em;
     background-color: $dark;
     color: white;
     font-size: 1em;
@@ -54,7 +54,7 @@ nav {
     }
 
     .logo {
-        max-width: 75px;
+        max-width: 4.6875em;
     }
 
     .title {
@@ -64,10 +64,10 @@ nav {
 
         span {
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 0.625em;
+            height: 0.625em;
             background-color: var(--orange);
-            border-radius: 10px;
+            border-radius: 0.625em;
         }
     }
 
@@ -80,7 +80,7 @@ h2 {
     color: white;
     font-family: LarkenRegular;
     font-weight: 300;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.0312em;
     font-family: LarkenRegular, sans-serif;
     font-weight: 100;
     text-align: center;
@@ -91,7 +91,7 @@ h3 {
     color: white;
     font-family: LarkenRegular;
     font-weight: 300;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.0312em;
     font-family: LarkenRegular, sans-serif;
     font-weight: 100;
     text-align: center;
@@ -99,7 +99,7 @@ h3 {
 
 // Buttons
 .button-container {
-    max-width: 500px;
+    max-width: 31.25em;
     margin: auto;
     padding: 1em;
 
@@ -113,7 +113,7 @@ h3 {
         background-color: $primary;
         color: $primary-ultra-light;
         width: 100%;
-        min-height: 50px;
+        min-height: 3.125em;
         transition: transform 0.1s ease-in-out;
 
         &:hover {
@@ -133,7 +133,7 @@ h3 {
     background-color: $primary;
     color: $primary-ultra-light;
     width: 100%;
-    min-height: 50px;
+    min-height: 3.125em;
     transition: transform 0.1s ease-in-out;
 
     &>div {
@@ -149,14 +149,14 @@ h3 {
     all: unset;
     cursor: pointer;
     border-radius: $border-radius;
-    width: 150px;
-    height: 150px;
+    width: 9.375em;
+    height: 9.375em;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     transition: transform 0.1s ease-in-out;
-    filter: drop-shadow(0px 0px 10px #00000075);
+    filter: drop-shadow(0em 0em 0.625em #00000075);
     position: relative;
     overflow: hidden;
     background-color: #0b1e2a;
@@ -207,8 +207,8 @@ section {
 
 // Scrollbar Styling
 ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
+    width: 0.4375em;
+    height: 0.4375em;
 }
 
 ::-webkit-scrollbar-track {
@@ -217,7 +217,7 @@ section {
 
 ::-webkit-scrollbar-thumb {
     background: #ffffff31;
-    border-radius: 5px;
+    border-radius: 0.3125em;
 
     &:hover {
         background: $primary;
@@ -227,26 +227,26 @@ section {
 
 
 .wrapper-points {
-    min-height: 102px;
+    min-height: 6.375em;
 }
 
 [data-toggle] {
     cursor: cell;
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 62.5em) {
     nav {
         height: $navbar-height;
     }
 
     #page-container {
-        padding-top: 100px;
+        padding-top: 6.25em;
     }
 }
 
 .avatar {
-    width: 75px;
-    height: 75px;
+    width: 4.6875em;
+    height: 4.6875em;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -254,17 +254,17 @@ section {
 .my-modal {
     display: block;
     position: fixed;
-    top: calc(50% + 35px);
+    top: calc(50% + 2.1875em);
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 102;
     background: $gradient-reverse;
     color: white; // Ensure text is visible on black background
     border-radius: $border-radius;
-    box-shadow: 0 0 25px black;
+    box-shadow: 0 0 1.5625em black;
     padding: 1em;
     width: 90vw;
-    max-width: 700px;
+    max-width: 43.75em;
     max-height: 85vh;
     overflow: auto;
 
@@ -295,8 +295,8 @@ section {
         overflow: hidden;
 
         &.close {
-            width: 25px;
-            height: 25px;
+            width: 1.5625em;
+            height: 1.5625em;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -306,7 +306,7 @@ section {
             top: 0;
             left: 100%;
             transition: all 0.1s ease-in-out;
-            filter: drop-shadow(0px 0px 10px #282828);
+            filter: drop-shadow(0em 0em 0.625em #282828);
             z-index: 10;
 
             &:hover {
@@ -365,8 +365,8 @@ button.secondary-color-button {
 }
 
 .icon {
-    width: 32px;
-    height: 32px;
+    width: 2em;
+    height: 2em;
     object-fit: cover;
 }
 
@@ -378,7 +378,7 @@ button.secondary-color-button {
     background-color: $secondary !important;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 37.5em) {
     .my-modal:not(.small) {
         top: 0;
         left: 0;

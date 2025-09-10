@@ -1,8 +1,8 @@
 @use '../../../style/variables.scss' as *;
 
 img {
-  width: 50px;
-  height: 50px;
+  width: 3.125em;
+  height: 3.125em;
   border-radius: 50%;
 }
 
@@ -36,7 +36,7 @@ img {
   }
 
   .win-rate-bar {
-    height: 5px;
+    height: 0.3125em;
     transform: skew(-20deg) !important;
     opacity: 0.75;
   }
@@ -79,8 +79,8 @@ img {
     }
 
     img {
-      width: 65px;
-      height: 65px;
+      width: 4.0625em;
+      height: 4.0625em;
       object-fit: cover;
       border-radius: 50%;
     }
@@ -105,8 +105,8 @@ img {
 }
 
 .players .player img {
-  width: 60px;
-  height: 60px;
+  width: 3.75em;
+  height: 3.75em;
   object-fit: cover;
   border-radius: 50%;
 }
@@ -123,20 +123,20 @@ img {
 }
 
 .vs img {
-  width: 40px;
-  height: 40px;
+  width: 2.5em;
+  height: 2.5em;
 }
 
 .win-bar {
   display: grid;
-  grid-template-columns: 50px 1fr 50px;
+  grid-template-columns: 3.125em 1fr 3.125em;
   align-items: center;
   gap: 0.5rem;
 }
 
 .bars {
   position: relative;
-  height: 12px;
+  height: 0.75em;
   display: flex;
   transform: skew(-30deg);
 }
@@ -165,12 +165,12 @@ img {
 .mini-info {
   display: none;
   position: absolute;
-  top: -18px;
-  left: 5px;
-  font-size: 10px;
+  top: -1.125em;
+  left: 0.3125em;
+  font-size: 0.625em;
   color: rgba(202, 202, 57, 0.905);
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 37.5em) {
   .partite-tot {
     display: none;
   }
@@ -185,7 +185,7 @@ img {
   .stats-container,
   .stats-header {
     grid-template-columns:  0.5fr 0.5fr repeat(3, 1fr);
-    gap: 20px;
+    gap: 1.25em;
   }
   .stats-header {
     display: none;

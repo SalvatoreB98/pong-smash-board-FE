@@ -5,7 +5,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 250px;
+    width: 15.625em;
 
     form {
         position: relative;
@@ -25,7 +25,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            left: 10px;
+            left: 0.625em;
         }
     }
 
@@ -37,7 +37,7 @@
         color: white;
         cursor: pointer;
         padding: 0.5em;
-        width: 250px;
+        width: 15.625em;
         display: block;
         box-sizing: border-box;
         transition: all 0.2s ease-in;
@@ -52,8 +52,8 @@
 
 button {
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
+    padding: 0.625em;
+    font-size: 1em;
     border: none;
     border-radius: $border-radius;
     cursor: pointer;
@@ -63,7 +63,7 @@ button {
 
 #googleBtn {
     background-color: white;
-    border: 2px solid black;
+    border: 0.125em solid black;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -72,6 +72,6 @@ button {
     img {
         width: auto;
         height: 1.5em;
-        margin-right: 8px;
+        margin-right: 0.5em;
     }
 }

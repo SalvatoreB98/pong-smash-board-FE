@@ -14,14 +14,14 @@
     color: white;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5em) {
     body {
-        font-size: 12px;
+        font-size: 0.75em;
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 75em) {
     body {
-        font-size: 17px;
+        font-size: 1.0625em;
     }
 }

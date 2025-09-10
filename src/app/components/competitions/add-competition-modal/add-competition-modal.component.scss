@@ -5,13 +5,13 @@
 }
 
 .form-card {
-    max-width: 720px;
-    border: 1px solid rgba(0, 0, 0, .06);
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
+    max-width: 45em;
+    border: 0.0625em solid rgba(0, 0, 0, .06);
+    border-radius: 1em;
+    box-shadow: 0 0.5em 1.875em rgba(0, 0, 0, .06);
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 1.125em;
     height: 100%;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .steps-wrapper {
-    padding: 24px;
+    padding: 1.5em;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -30,7 +30,7 @@
 }
 
 h2 {
-    margin: 0 0 6px;
+    margin: 0 0 0.375em;
     font-size: 1.25rem;
 }
 
@@ -40,18 +40,18 @@ h2 {
     font-size: .9rem;
     opacity: .85;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0.3125em;
 }
 
 .input {
-    padding: 12px 14px;
-    border-radius: 12px;
+    padding: 0.75em 0.875em;
+    border-radius: 0.75em;
     transition: border-color .15s, box-shadow .15s;
 }
 
 .input:focus {
     border-color: $primary-light;
-    box-shadow: 0 0 0 4px rgba(63, 81, 181, .12);
+    box-shadow: 0 0 0 0.25em rgba(63, 81, 181, .12);
 }
 
 .error {
@@ -62,17 +62,17 @@ h2 {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
-    gap: 10px;
+    gap: 0.625em;
 }
 
 .seg-item {
     position: relative;
     display: block;
-    border-radius: 12px;
+    border-radius: 0.75em;
     user-select: none;
 
     &>span:not(.large-img-select) {
-        min-height: 70px;
+        min-height: 4.375em;
     }
 }
 
@@ -89,8 +89,8 @@ h2 {
     display: grid;
     place-items: center;
     background-color: #111827;
-    border: 1px solid #ffffff2f;
-    border-radius: 12px;
+    border: 0.0625em solid #ffffff2f;
+    border-radius: 0.75em;
     font-weight: 600;
     transition: border-color .15s, box-shadow .15s, background .15s, transform .02s;
 }
@@ -100,31 +100,31 @@ h2 {
 }
 
 .seg-item>input:focus-visible+span {
-    outline: 2px solid $primary-light;
-    outline-offset: 2px;
+    outline: 0.125em solid $primary-light;
+    outline-offset: 0.125em;
 }
 
 .seg-item>input:checked+span {
     border-color: $primary-light;
-    box-shadow: 0 0 0 4px rgba(63, 81, 181, .12);
+    box-shadow: 0 0 0 0.25em rgba(63, 81, 181, .12);
     background-color: darken($primary, 25%);
 }
 
 .seg-item>input:checked+span::after {
     content: '✓';
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: 0.375em;
+    right: 0.375em;
     background: $primary;
     color: #fff;
-    width: 20px;
-    height: 20px;
+    width: 1.25em;
+    height: 1.25em;
     border-radius: 50%;
     display: grid;
     place-items: center;
     font-size: 1em;
     font-weight: 700;
-    box-shadow: 0 0 0 2px #111827;
+    box-shadow: 0 0 0 0.125em #111827;
     opacity: 0;
     transform: scale(0.5);
     animation: checkPop .25s forwards ease-out;
@@ -132,14 +132,14 @@ h2 {
 
 .primary {
     text-align: center;
-    height: 44px;
+    height: 2.75em;
     border: none;
     font-weight: 700;
     background: $primary;
     color: #fff;
     cursor: pointer;
     transition: transform .02s, filter .15s, box-shadow .15s;
-    box-shadow: 0 6px 18px rgba(63, 81, 181, .25);
+    box-shadow: 0 0.375em 1.125em rgba(63, 81, 181, .25);
 }
 
 .primary:disabled {
@@ -149,15 +149,15 @@ h2 {
 }
 
 .primary:active {
-    transform: translateY(1px);
+    transform: translateY(0.0625em);
 }
 
 .preview {
-    margin: 6px 0 0;
+    margin: 0.375em 0 0;
     background: #0f172a;
     color: #e5e7eb;
-    padding: 10px 12px;
-    border-radius: 10px;
+    padding: 0.625em 0.75em;
+    border-radius: 0.625em;
     font-size: .85rem;
     overflow: auto;
 }
@@ -170,10 +170,10 @@ h2 {
     display: flex;
     white-space: nowrap;
     height: 100%;
-    min-height: 100px;
+    min-height: 6.25em;
 
     span {
-        padding: 5px;
+        padding: 0.3125em;
         text-align: center;
         background: $dark;
         position: absolute;
@@ -185,21 +185,21 @@ h2 {
 
     img,
     svg {
-        transform: translate(0, 7px);
+        transform: translate(0, 0.4375em);
     }
 
     svg {
-        transform: translate(7px, 15px);
+        transform: translate(0.4375em, 0.9375em);
     }
 }
 
 [type=text] {
     all: unset;
-    border-radius: 10px;
-    padding: 5px;
-    border: 1px solid #ffffff62;
+    border-radius: 0.625em;
+    padding: 0.3125em;
+    border: 0.0625em solid #ffffff62;
     background-color: #111827;
-    min-height: 50px;
+    min-height: 3.125em;
 
 }
 
@@ -223,11 +223,11 @@ h2 {
     color: #ffffff;
     font-size: 0.75em;
     font-weight: 200;
-    filter: drop-shadow(0 0 10px #000000);
+    filter: drop-shadow(0 0 0.625em #000000);
     opacity: 1;
 
     i {
-        margin: 5px;
+        margin: 0.3125em;
     }
 }
 
@@ -257,8 +257,8 @@ h2 {
     border-radius: $border-radius;
     padding: 1em 1em;
     color: $primary-ultra-light;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, .4);
-    border: 1px solid rgba($primary-light, 0.2);
+    box-shadow: 0 0.5em 1.875em rgba(0, 0, 0, .4);
+    border: 0.0625em solid rgba($primary-light, 0.2);
 
     h3 {
         font-size: 1.4rem;
@@ -266,7 +266,7 @@ h2 {
         margin-bottom: 1rem;
         color: $primary-light;
         text-align: center;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.0312em;
     }
 
     ul {
@@ -276,8 +276,8 @@ h2 {
 
         li {
             background: rgba($dark2, 0.8);
-            border: 1px solid rgba($primary-light, 0.15);
-            border-radius: 10px;
+            border: 0.0625em solid rgba($primary-light, 0.15);
+            border-radius: 0.625em;
             padding: 0.8rem 1rem;
             margin-bottom: 0.8rem;
             font-size: 0.95rem;
@@ -290,7 +290,7 @@ h2 {
 
             &:hover {
                 background: rgba($primary, 0.2);
-                transform: translateY(-2px);
+                transform: translateY(-0.125em);
             }
 
             &::before {
@@ -302,7 +302,7 @@ h2 {
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 37.5em) {
     .not-available {
         flex-direction: column;
     }
