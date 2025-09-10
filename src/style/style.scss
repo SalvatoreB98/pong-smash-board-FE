@@ -27,12 +27,11 @@ main {
 }
 
 #page-container {
-    padding-top: 4.6875em;
+    padding-top: 4.6em;
 }
 
 // Navigation
 nav {
-    height: 4.6875em;
     background-color: $dark;
     color: white;
     font-size: 1em;
@@ -44,7 +43,7 @@ nav {
     position: fixed;
     top: 0;
     width: 100vw;
-    z-index: 102;
+    z-index: 11;
     padding-left: 1em;
 
     a {
@@ -54,7 +53,7 @@ nav {
     }
 
     .logo {
-        max-width: 4.6875em;
+        max-width: 4.6em;
     }
 
     .title {
@@ -234,9 +233,9 @@ section {
     cursor: cell;
 }
 
-@media screen and (min-width: 62.5em) {
+@media screen and (min-width: 1000px) {
     nav {
-        height: $navbar-height;
+        height: auto;
     }
 
     #page-container {
@@ -245,8 +244,8 @@ section {
 }
 
 .avatar {
-    width: 4.6875em;
-    height: 4.6875em;
+    width: 4.6em;
+    height: 4.6em;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -254,18 +253,17 @@ section {
 .my-modal {
     display: block;
     position: fixed;
-    top: calc(50% + 2.1875em);
+    top: 50%;
     left: 50%;
+    width: 90%;
+    max-width: 37.5em;
     transform: translate(-50%, -50%);
-    z-index: 102;
+    z-index: 11;
     background: $gradient-reverse;
     color: white; // Ensure text is visible on black background
     border-radius: $border-radius;
-    box-shadow: 0 0 1.5625em black;
+    box-shadow: 0 0 1.5em black;
     padding: 1em;
-    width: 90vw;
-    max-width: 43.75em;
-    max-height: 85vh;
     overflow: auto;
 
     .modal-content {
@@ -307,7 +305,7 @@ section {
             left: 100%;
             transition: all 0.1s ease-in-out;
             filter: drop-shadow(0em 0em 0.625em #282828);
-            z-index: 10;
+            z-index: 11;
 
             &:hover {
                 transform: scale(0.95);
@@ -376,16 +374,4 @@ button.secondary-color-button {
 
 .bg-secondary {
     background-color: $secondary !important;
-}
-
-@media screen and (max-width: 37.5em) {
-    .my-modal:not(.small) {
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        overflow: hidden;
-        margin: auto;
-    }
-
 }
