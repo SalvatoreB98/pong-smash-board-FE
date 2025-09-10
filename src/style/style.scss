@@ -2,6 +2,7 @@
 @use 'variables' as *;
 @use 'animations' as *;
 @use "sass:math";
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -134,6 +135,10 @@ h3 {
     width: 100%;
     min-height: 50px;
     transition: transform 0.1s ease-in-out;
+
+    &>div {
+        white-space: nowrap;
+    }
 
     &:hover {
         transform: scale(0.97);
@@ -366,11 +371,11 @@ button.secondary-color-button {
 }
 
 .secondary {
-    background-color: $secondary!important;
+    background-color: $secondary !important;
 }
 
 .bg-secondary {
-    background-color: $secondary!important;
+    background-color: $secondary !important;
 }
 
 @media screen and (max-width: 600px) {
