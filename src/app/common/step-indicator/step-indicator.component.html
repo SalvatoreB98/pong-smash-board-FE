@@ -1,3 +1,8 @@
+<div class="step-indicator-header text-center mb-3">
+    <span style="opacity: 0.3; font-size: 0.9rem; ">
+        {{ activeStep }} {{ 'step' | translate }} {{ 'of' | translate }} {{ totalSteps }}
+    </span>
+</div>
 <div class="step-indicator d-flex justify-content-center align-items-center">
     <ng-container *ngFor="let _ of [].constructor(totalSteps); let idx = index">
 

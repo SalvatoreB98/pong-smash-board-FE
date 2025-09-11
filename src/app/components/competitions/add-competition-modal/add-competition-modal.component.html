@@ -37,7 +37,7 @@
     </form>
     <div class="actions d-flex justify-content-end">
         <div>
-            
+
         </div>
         <button class="primary mt-3" (click)="nextStep()" [disabled]="managementForm.invalid">
             {{ 'next_step' | translate }}
@@ -75,26 +75,26 @@
                     <input type="radio" value="league" formControlName="typeCtrl" />
                     <span class="large-img-select">
                         <span>{{ 'competition_type_league' | translate }}</span>
-                        <img width="3.125em" height="3.125em" src="/numbered-list.png" alt="">
+                        <img src="/numbered-list.png" alt="">
                     </span>
                 </label>
 
                 <label class="seg-item disabled">
-                    <div class="not-available">
-                        {{ 'not_available' | translate }}
-                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    </div>
                     <span class="large-img-select">
+                        <div class="not-available">
+                            {{ 'not_available' | translate }}
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        </div>
                         <span class="marquee">{{ 'competition_type_elimination' | translate }}</span>
                     </span>
                 </label>
 
                 <label class="seg-item disabled">
-                    <div class="not-available">
-                        {{ 'not_available' | translate }}
-                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    </div>
                     <span class="large-img-select">
+                        <div class="not-available">
+                            {{ 'not_available' | translate }}
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        </div>
                         <span>{{ 'competition_type_group_knockout' | translate }}</span>
                     </span>
                 </label>

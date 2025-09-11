@@ -171,12 +171,14 @@ export class CompetitionService {
         ...(competitions[index].players ?? []).map(p => ({
           id: p.id,
           name: p.name,
-          image_url: p.image_url ?? ''
+          image_url: p.image_url ?? '',
+          nickname: p.nickname ?? ''
         })),
         {
           id: player.id,
           name: player.name,
-          image_url: player.image_url ?? ''
+          image_url: player.image_url ?? '',
+          nickname: player.nickname ?? ''
         }
       ]
     };

@@ -1,35 +1,40 @@
 @use '../../../style/variables.scss' as *;
 
 .step-indicator {
-    max-width: 6.25em;
-    margin: auto;
-    margin-top: 1em;
-    transition: all 0.5s ease-in-out;
+    max-width: 7em;
+    margin: 1em auto 0;
+    display: flex;
+    align-items: center;
+
     .circle {
-        border-radius: 100%;
-        background-color: transparent;
-        border: 0.125em solid white;
-        width: 1em;
-        height: 1em;
-        transition: all 0.5s ease-in-out;
-
-    }
-
-    .line {
-        min-width: 3.125em;
-        border: 0.0625em solid white;
-        &.completed {
-            border-color: $primary-light;
-            transition: all 0.5s ease-in-out;
-        }
+        border-radius: 50%;
+        width: 0.8em;
+        height: 0.8em;
+        background-color: #444; // step futuro
+        transition: background 0.3s ease;
     }
 
     .circle.active {
-        background-color: white;
+        background-color: #ffffffde;
     }
 
     .circle.completed {
-        background-color: $primary-light;
-        border-color: $primary-light;
+        background-color: #ffffffde;
     }
+
+    .line {
+        flex: 1;
+        height: 0.15em;
+        background: #333;
+        border-radius: 0.1em;
+        opacity: 0.5;
+        min-width: 1.5em;
+    }
+
+    .line.completed {
+        background: #ffffffde;
+        opacity: 0.9;
+    }
+    
 }
+

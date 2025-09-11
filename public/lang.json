@@ -659,5 +659,9 @@
         "it": "Riepilogo",
         "en": "Summary"
     },
+    "of": {
+        "it": "di",
+        "en": "of"
+    },
     "": ""
 }

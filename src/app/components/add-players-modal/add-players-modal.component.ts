@@ -42,7 +42,7 @@ export class AddPlayersModalComponent extends ModalComponent {
   addPlayerForm: FormGroup = this.fb.group({
     name: [''],
     surname: [''],
-    nickname: [''],
+    nickname: ['', { validators: [Validators.required], updateOn: 'blur' }],
     file: [null],
     email: ['', { validators: [Validators.email], updateOn: 'blur' }],
   });

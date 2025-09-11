@@ -36,6 +36,7 @@ export class AddMatchModalComponent implements OnInit {
     this.initializeForm();
     if(this.players.length < 2) {
       this.loaderService.showToast(this.translateService.translate('not_enough_players'), MSG_TYPE.WARNING);
+      this.closeModal();
     }
   }
 
