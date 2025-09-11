@@ -9,7 +9,7 @@ import { ModalComponent } from '../common/modal/modal.component';
 import { ShowMatchModalComponent } from './show-match-modal/show-match-modal.component';
 import { ModalService } from '../../services/modal.service';
 import { CommonModule } from '@angular/common';
-import { MODALS } from '../utils/enum';
+import { MODALS, MSG_TYPE } from '../utils/enum';
 import { TranslatePipe } from '../utils/translate.pipe';
 import { BottomNavbarComponent } from '../common/bottom-navbar/bottom-navbar.component';
 import { StatsComponent } from '../common/stats/stats.component';
@@ -17,6 +17,8 @@ import { inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { CompetitionService } from '../../services/competitions.service';
 import { IPlayer, PlayersService } from '../../services/players.service';
+import { LoaderService } from '../../services/loader.service';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-home',
@@ -38,12 +40,15 @@ export class HomeComponent {
   userState$ = this.userService.getState();
   players: IPlayer[] = [];
 
-  constructor(public modalService: ModalService) { }
+  constructor(public modalService: ModalService, private loaderService: LoaderService, private translateService: TranslationService) { }
 
   ngOnInit() {
     this.playersService.getPlayers().subscribe(players => {
       this.players = players;
       console.log(this.players);
+      if (players.length < 2) {
+        this.loaderService.showToast(this.translateService.translate('not_enough_players'), MSG_TYPE.WARNING);
+      }
     });
     this.matches$.subscribe(matches => {
       this.matches = matches;

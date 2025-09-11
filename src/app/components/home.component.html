@@ -1,5 +1,5 @@
 <ng-container *ngIf="userState$ | async as state">
-    <div class="wrapper">
+    <div class="wrapper" *ngIf="players.length >= 2">
         <p *ngIf="matches?.length === 0" class="mt-4 text-center">
             {{ "matches_not_found" | translate }}
         </p>
