@@ -36,6 +36,7 @@ export class AddPlayersModalComponent extends ModalComponent {
   private competitionService = inject(CompetitionService);
   private dataService = inject(DataService);
   private translateService = inject(TranslationService);
+  private isAdding = false;
   copied = false;
 
   addPlayerForm: FormGroup = this.fb.group({
@@ -75,8 +76,12 @@ export class AddPlayersModalComponent extends ModalComponent {
   }
 
   async addPlayers() {
+    if (this.isAdding) {
+      console.warn("⚠️ addPlayers già in corso, chiamata bloccata.");
+      return;
+    }
+    this.isAdding = true;
     this.loader.startLittleLoader();
-
     try {
       const userState = await firstValueFrom(this.userService.getState());
       const competitionId = userState?.active_competition_id;
@@ -137,9 +142,11 @@ export class AddPlayersModalComponent extends ModalComponent {
       this.loader.showToast('Players added successfully!', MSG_TYPE.SUCCESS);
       this.playersToAdd = [];
     } catch (err) {
+      this.isAdding = false;
       console.error(err);
       this.loader.showToast('Failed to add players.', MSG_TYPE.ERROR);
     } finally {
+      this.isAdding = false;
       this.loader.stopLittleLoader();
     }
   }
