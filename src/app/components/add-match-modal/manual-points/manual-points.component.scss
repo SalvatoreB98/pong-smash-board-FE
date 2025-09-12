@@ -36,6 +36,9 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr;
 
+        span {
+            transform: scale(2);
+        }
     }
 
     &.mobile {
@@ -43,10 +46,12 @@
             grid-template-columns: 1fr;
             grid-template-rows: 1fr 1fr;
         }
+
         .close {
             left: 0;
             right: unset;
         }
+
         span {
             display: inline-block;
             transform: rotate(-90deg) scale(2.5);
