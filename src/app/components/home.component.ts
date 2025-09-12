@@ -56,7 +56,6 @@ export class HomeComponent {
     });
     this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 }) // cache 5 minuti
       .then(res => this.matches = res.matches);
-    console.log(this.competitionService.activeCompetition$.subscribe(comp => { console.log(comp) }));
   }
 
   setClickedMatch(match: IMatch) {

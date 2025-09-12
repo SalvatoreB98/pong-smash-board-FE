@@ -27,6 +27,7 @@ export type UserProgressState =
 
 
 export interface IUserState {
+  active_competition: any;
   user_state_id: number;
   user_id: string; // UUID dell'auth user
   state: string;   // es. "profile_completed"

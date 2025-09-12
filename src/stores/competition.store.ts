@@ -1,14 +1,14 @@
 // competition.store.ts
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ICompetition } from '../api/competition.api';
-import { UserService } from '../services/user.service';
 
 type Id = number | string;
 type State = {
   entities: Record<string, ICompetition>;
   ids: Id[];
+  activeId: Id | null;
 };
 
 function toId(c: ICompetition): string {
@@ -25,26 +25,38 @@ function sortIds(a: ICompetition, b: ICompetition): number {
 
 @Injectable({ providedIn: 'root' })
 export class CompetitionStore {
+  private readonly _state$ = new BehaviorSubject<State>({
+    entities: {},
+    ids: [],
+    activeId: null,
+  });
 
-  private readonly _state$ = new BehaviorSubject<State>({ entities: {}, ids: [] });
-  private userService = inject(UserService);
-  // SELECTORS
+  // ---------- SELECTORS ----------
   list$ = this._state$.pipe(
     map(s => s.ids.map(id => s.entities[String(id)]))
   );
   size$ = this._state$.pipe(map(s => s.ids.length));
 
-  // SNAPSHOTS
+  activeCompetition$ = this._state$.pipe(
+    map(s => (s.activeId ? s.entities[String(s.activeId)] ?? null : null))
+  );
+
+  // ---------- SNAPSHOTS ----------
   snapshotList(): ICompetition[] {
     const s = this._state$.getValue();
     return s.ids.map(id => s.entities[String(id)]);
   }
-  
+
   snapshotById(id: Id): ICompetition | undefined {
     return this._state$.getValue().entities[String(id)];
   }
 
-  // COMMANDS
+  snapshotActive(): ICompetition | null {
+    const s = this._state$.getValue();
+    return s.activeId ? s.entities[String(s.activeId)] ?? null : null;
+  }
+
+  // ---------- COMMANDS ----------
   setList(list: ICompetition[]) {
     const clean = (list ?? []).filter(Boolean);
     // de-dup by id
@@ -53,12 +65,16 @@ export class CompetitionStore {
     const sorted = Object.values(uniqMap).sort(sortIds);
     const ids = sorted.map(c => toId(c));
 
-    this._state$.next({ entities: Object.fromEntries(sorted.map(c => [toId(c), c])), ids });
+    const prev = this._state$.getValue();
+    this._state$.next({
+      entities: Object.fromEntries(sorted.map(c => [toId(c), c])),
+      ids,
+      activeId: prev.activeId, // non resettare l'attivo
+    });
     console.log('[CompetitionStore] 📋 setList', { count: ids.length });
   }
 
   addOne(comp: ICompetition) {
-    // alias di upsert che mette in testa alla lista
     this.upsertOne(comp, { prepend: true });
   }
 
@@ -73,7 +89,8 @@ export class CompetitionStore {
     if (!exists) {
       ids = opts?.prepend ? [id, ...ids] : [...ids, id];
     }
-    this._state$.next({ entities, ids });
+
+    this._state$.next({ entities, ids, activeId: prev.activeId });
     console.log('[CompetitionStore] 🔄 upsertOne', { id, exists, total: ids.length });
   }
 
@@ -83,8 +100,14 @@ export class CompetitionStore {
     if (!prev.entities[sid]) return;
 
     const entities = { ...prev.entities, [sid]: { ...prev.entities[sid], ...patch } };
-    this._state$.next({ entities, ids: prev.ids });
+    this._state$.next({ entities, ids: prev.ids, activeId: prev.activeId });
     console.log('[CompetitionStore] ✏️ updateFields', { id: sid, patch });
+  }
+
+  setActive(id: Id | null) {
+    const prev = this._state$.getValue();
+    this._state$.next({ ...prev, activeId: id ? String(id) : null });
+    console.log('[CompetitionStore] ⭐ setActive', { id });
   }
 
   removeOne(id: Id) {
@@ -94,13 +117,14 @@ export class CompetitionStore {
 
     const { [sid]: _, ...rest } = prev.entities;
     const ids = prev.ids.filter(x => String(x) !== sid);
-    this._state$.next({ entities: rest, ids });
+    const activeId = prev.activeId === sid ? null : prev.activeId;
+
+    this._state$.next({ entities: rest, ids, activeId });
     console.log('[CompetitionStore] 🗑️ removeOne', { id: sid, total: ids.length });
   }
 
   clear() {
-    this._state$.next({ entities: {}, ids: [] });
+    this._state$.next({ entities: {}, ids: [], activeId: null });
     console.log('[CompetitionStore] 🚪 clear');
   }
-
 }

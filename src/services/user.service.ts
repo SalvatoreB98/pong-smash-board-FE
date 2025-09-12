@@ -1,17 +1,19 @@
 // user.service.ts
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IUserState } from './interfaces/Interfaces';
 import { UserApi } from '../api/user.api';
 import { UserStore } from '../stores/user.store';
+import { CompetitionStore } from '../stores/competition.store';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+  competitionStore = inject(CompetitionStore);
   getLocal() {
     throw new Error('Method not implemented.');
   }
-  constructor(private api: UserApi, private store: UserStore) {}
+  constructor(private api: UserApi, private store: UserStore) { }
 
   /** stream reattivo */
   userState$() {
@@ -32,7 +34,11 @@ export class UserService {
 
     console.log('[UserService] 🌐 from BE');
     return this.api.getUserState().pipe(
-      tap(s => this.store.set(s))
+      tap(s => {
+        this.store.set(s)
+        this.competitionStore.upsertOne(s.active_competition);
+        this.competitionStore.setActive(s.active_competition.id);
+      })
     );
   }
 

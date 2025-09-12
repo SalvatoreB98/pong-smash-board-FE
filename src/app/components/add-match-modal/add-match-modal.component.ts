@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, OnInit, ViewChild, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule, ValidatorFn, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { DataService } from '../../../services/data.service';
@@ -9,6 +9,8 @@ import { MSG_TYPE } from '../../utils/enum';
 import { LoaderService } from '../../../services/loader.service';
 import { TranslationService } from '../../../services/translation.service';
 import { ManualPointsComponent } from './manual-points/manual-points.component';
+import { CompetitionService } from '../../../services/competitions.service';
+import { ICompetition } from '../../../api/competition.api';
 
 @Component({
   selector: 'app-add-match-modal',
@@ -21,8 +23,10 @@ export class AddMatchModalComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
   @Output() openManualPointsEvent = new EventEmitter<void>();
   @Input() players: any[] = [];
+  competition: ICompetition | null = null;
   // manualSetPointsActive: boolean = false;
-
+  maxSets: number = 5;
+  maxPoints: number = 11;
   matchForm!: FormGroup;
   isShowSetsPointsTrue = false;
   constructor(
@@ -30,19 +34,26 @@ export class AddMatchModalComponent implements OnInit {
     private modalService: ModalService,
     private dataService: DataService,
     private loaderService: LoaderService,
-    private translateService: TranslationService
+    private translateService: TranslationService,
+    private competitionService: CompetitionService
   ) { }
 
   ngOnChanges() {
     console.log('Players input changed:', this.players);
   }
-  
+
   ngOnInit() {
-    this.initializeForm();
     if (this.players.length < 2) {
       this.loaderService.showToast(this.translateService.translate('not_enough_players'), MSG_TYPE.WARNING);
       this.closeModal();
     }
+    this.competitionService.activeCompetition$.subscribe(comp => {
+      this.competition = comp;
+      this.maxPoints = this.competition?.['points_type'] || 21;
+      this.maxSets = this.competition?.['sets_type'] || 10;
+      console.info("BTR", this.competition, this.maxPoints, this.maxSets);
+      this.initializeForm();
+    });
   }
 
   getPlayers(player?: number): any[] {
@@ -72,11 +83,12 @@ export class AddMatchModalComponent implements OnInit {
       date: [new Date().toISOString().split('T')[0], Validators.required],
       player1: ['', Validators.required],
       player2: ['', Validators.required],
-      p1Score: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
-      p2Score: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
+      p1Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets), this.validateSetsPoints(this.maxSets)]],
+      p2Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets), this.validateSetsPoints(this.maxSets)]],
       isShowSetsPointsTrue: [false],
       setsPoints: this.fb.array([]),
     });
+    this.matchForm.valueChanges.subscribe((e) => console.log('Form changes', e));
   }
 
   get setsPoints(): FormArray {
@@ -96,8 +108,8 @@ export class AddMatchModalComponent implements OnInit {
     for (let i = 0; i < totalSets; i++) {
       this.setsPoints.push(
         this.fb.group({
-          player1Points: [null, [Validators.min(0), Validators.max(21)]],
-          player2Points: [null, [Validators.min(0), Validators.max(21)]]
+          player1Points: [null, [Validators.min(0), Validators.max(this.maxPoints)]],
+          player2Points: [null, [Validators.min(0), Validators.max(this.maxPoints)]]
         })
       );
     }
@@ -146,6 +158,29 @@ export class AddMatchModalComponent implements OnInit {
 
   closeModal() {
     this.modalService.closeModal();
+  }
+
+  validateSetsPoints(max: number): ValidatorFn {
+    return (control: AbstractControl) => {
+      const value = Number(control.value);
+
+      if (isNaN(value)) {
+        control.setValue(null, { emitEvent: false });
+        return null;
+      }
+
+      if (value < 0) {
+        control.setValue(0, { emitEvent: false });
+        return { belowMin: true };
+      }
+
+      if (value > max) {
+        control.setValue(max, { emitEvent: false });
+        return { aboveMax: true };
+      }
+
+      return null;
+    };
   }
 
   // addManualSetPoint() {

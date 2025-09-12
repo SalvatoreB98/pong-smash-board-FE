@@ -1,11 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { catchError, finalize, map, tap } from 'rxjs/operators';
-import { combineLatest, EMPTY, firstValueFrom, Observable, of, throwError } from 'rxjs';
+import { EMPTY, firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { CompetitionStore } from '../stores/competition.store';
 import { LoaderService } from '../services/loader.service';
 import { MSG_TYPE } from '../app/utils/enum';
 import { UserService } from '../services/user.service';
-import { AddCompetitionDto, CompetitionApi, ICompetition, ICompetitionsResponse } from '../api/competition.api';
+import { AddCompetitionDto, CompetitionApi, ICompetition } from '../api/competition.api';
 import { CachedFetcher } from '../app/utils/helpers/cache.helpers';
 import { IPlayer } from './players.service';
 
@@ -18,8 +18,12 @@ export class CompetitionService {
 
   // ------- SELECTORS -------
   list$ = this.store.list$;
+  activeCompetition$ = this.store.activeCompetition$;   // <-- ora arriva dallo store
   snapshotList(): ICompetition[] {
     return this.store.snapshotList();
+  }
+  snapshotActive(): ICompetition | null {
+    return this.store.snapshotActive();
   }
 
   // ------- CACHE WRAPPER -------
@@ -29,7 +33,7 @@ export class CompetitionService {
       this.store.setList(res?.competitions ?? []);
       return this.store.snapshotList();
     },
-    60 * 1000 // TTL 1 min, cambialo se serve
+    60 * 1000 // TTL 1 min
   );
 
   /** Ottiene le competizioni con cache */
@@ -48,19 +52,6 @@ export class CompetitionService {
   clearCompetitionsCache() {
     this.competitionsFetcher.clear();
   }
-
-  // ------- DERIVED SELECTORS -------
-  userState$ = this.user?.userState$() ?? of(null);
-
-  activeCompetition$ = combineLatest({
-    state: this.userState$,
-    competitions: this.list$
-  }).pipe(
-    map(({ state, competitions }) =>
-      competitions.find(c => c.id === state?.active_competition_id) ?? null
-    ),
-    tap(c => console.log('[CompetitionService] activeCompetition:', c))
-  );
 
   // ------- COMMANDS -------
   loadOne(id: number | string): Observable<ICompetition | undefined> {
@@ -82,7 +73,7 @@ export class CompetitionService {
           this.user.setLocal(res.userState);
         }
         this.loader?.showToast?.('Competizione creata!', MSG_TYPE.SUCCESS, 4000);
-        this.clearCompetitionsCache(); // invalidiamo cache
+        this.clearCompetitionsCache();
       }),
       map(res => res.competition),
       catchError(err => {
@@ -156,10 +147,12 @@ export class CompetitionService {
   addCompetition(dto: AddCompetitionDto): Promise<ICompetition> {
     return firstValueFrom(this.add(dto));
   }
+
   // ------- LOCAL STORE OPS -------
   setLocal(comp: ICompetition) {
     this.store.upsertOne(comp, { prepend: true });
   }
+
   addPlayerToLocal(competitionId: number | string, player: IPlayer) {
     const competitions = this.store.snapshotList();
     const index = competitions.findIndex(c => c.id === competitionId);
@@ -185,6 +178,7 @@ export class CompetitionService {
 
     this.store.upsertOne(updatedCompetition);
   }
+
   clear(): void {
     this.store.clear();
     this.clearCompetitionsCache();

@@ -39,8 +39,8 @@
                 <div class="input-container-wrapper d-flex justify-content-center">
                     <div class="input-container" *ngFor="let set of setsPoints.controls; let i = index"
                         [formGroup]="getSetFormGroup(i)">
-                        <input class="input-top" type="number" formControlName="player1Points" min="0" max="21">
-                        <input class="input-bottom" type="number" formControlName="player2Points" min="0" max="21">
+                        <input class="top" formControlName="player1Points" [min]="0" [max]="competition?.pointsType || maxPoints"/>
+                        <input class="bottom" formControlName="player2Points" [min]="0" [max]="competition?.pointsType || maxPoints"/>
                     </div>
                 </div>
             </div>

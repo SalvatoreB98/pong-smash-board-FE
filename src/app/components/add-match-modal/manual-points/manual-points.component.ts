@@ -37,9 +37,9 @@ export class ManualPointsComponent {
     this.isMobile = window.innerWidth <= 768 || window.innerWidth < window.innerHeight; // breakpoint mobile
   }
   changePoint(player: number) {
-    if (player === 1) {
+    if (player === 1 && this.player1Points < this.maxPoints) {
       this.player1Points++;
-    } else {
+    } else if (player === 2 && this.player2Points < this.maxPoints) {
       this.player2Points++;
     }
   }
