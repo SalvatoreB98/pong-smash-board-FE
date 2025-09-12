@@ -1,0 +1,15 @@
+<div class="fullscreen" [ngClass]="{ mobile: isMobile, desktop: !isMobile }">
+    <ng-content>
+        <button class="close mt-5" (click)="close.emit()" style="position: absolute; top: 0.3125em; right: 0.3125em;">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="container-points">
+            <div class="box box1">
+                
+            </div>
+            <div class="box box2">
+                
+            </div>
+        </div>
+    </ng-content>
+</div>

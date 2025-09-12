@@ -21,9 +21,8 @@
                 <h3>{{ "other_competitions" | translate }}</h3>
                 <div class="other-competitions-container">
                     <ng-container *ngFor="let c of competitions; trackBy: trackById">
-                        <div class="comp" *ngIf="state.active_competition_id != c.id">
+                        <div class="comp text-center" *ngIf="state.active_competition_id != c.id">
                             <strong>{{ c.name }}</strong>
-                            <span>— {{ c.type }}</span>
 
                             <small *ngIf="c.start_date">
                                 ({{ "from" | translate }} {{ c.start_date }}

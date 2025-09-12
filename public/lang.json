@@ -663,5 +663,8 @@
         "it": "di",
         "en": "of"
     },
+    "add_manual_set_points": {
+        "it": "Aggiungi i punti in diretta",
+        "en": "Add live points"},
     "": ""
 }

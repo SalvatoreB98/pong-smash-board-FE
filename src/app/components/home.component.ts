@@ -19,10 +19,11 @@ import { CompetitionService } from '../../services/competitions.service';
 import { IPlayer, PlayersService } from '../../services/players.service';
 import { LoaderService } from '../../services/loader.service';
 import { TranslationService } from '../../services/translation.service';
+import { ManualPointsComponent } from './add-match-modal/manual-points/manual-points.component';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, NavbarComponent, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent],
+  imports: [CommonModule, NavbarComponent, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -36,6 +37,7 @@ export class HomeComponent {
   isAddMatchModalOpen: boolean = false;
   isShowMatchModalOpen: boolean = false;
   clickedMatch: IMatch | undefined;
+  manualSetPointsActive: boolean = false;
 
   userState$ = this.userService.getState();
   players: IPlayer[] = [];
@@ -62,4 +64,11 @@ export class HomeComponent {
     this.clickedMatch = match;
   }
 
+  addManualSetPoint() {
+    this.manualSetPointsActive = true;
+  }
+  
+  closeManualSetPoint() {
+    this.manualSetPointsActive = false;
+  }
 }

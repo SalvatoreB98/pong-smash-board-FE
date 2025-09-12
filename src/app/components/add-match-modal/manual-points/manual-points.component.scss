@@ -1,0 +1,64 @@
+@use '../../../../style/variables.scss' as *;
+
+.fullscreen {
+    width: 100vw;
+    height: 100svh;
+    display: flex;
+    position: fixed;
+    top: 0;
+
+    &.mobile {
+        flex-direction: row; // orizzontale su mobile
+    }
+
+    &.desktop {
+        flex-direction: column; // verticale su desktop
+    }
+
+    z-index: 1000; // sopra tutto
+    background: black;
+
+    .close {
+        all: unset;
+        width: 1.5625em;
+        height: 1.5625em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $contrast;
+        color: var(--dark);
+        transition: all 0.1s ease-in-out;
+        filter: drop-shadow(0em 0em 0.625em #282828);
+        z-index: 11;
+        cursor: pointer;
+        border-radius: 7px;
+        margin-right: 2em;
+        padding: 0.5em;
+
+        &:hover {
+            transform: scale(0.95);
+            opacity: 0.9;
+            /* Slight hover animation */
+        }
+    }
+
+    .container-points {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        width: 100vw;
+        height: 100vh;
+        place-items: center; 
+        gap: 1em;
+    }
+
+    .box {
+        background-color: $contrast;
+        border-radius: 1.25em;
+        width: 100%; // prende tutta la cella in larghezza
+        height: 100%; // prende tutta la cella in altezza
+    }
+    .box2 {
+        background-color: $primary;
+    }
+}

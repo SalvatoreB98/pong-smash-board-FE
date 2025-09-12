@@ -8,22 +8,22 @@ import { TranslatePipe } from '../../utils/translate.pipe';
 import { MSG_TYPE } from '../../utils/enum';
 import { LoaderService } from '../../../services/loader.service';
 import { TranslationService } from '../../../services/translation.service';
+import { ManualPointsComponent } from './manual-points/manual-points.component';
 
 @Component({
   selector: 'app-add-match-modal',
   standalone: true,
   templateUrl: './add-match-modal.component.html',
   styleUrls: ['./add-match-modal.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, SelectPlayerComponent, TranslatePipe]
+  imports: [CommonModule, ReactiveFormsModule, SelectPlayerComponent, TranslatePipe, ManualPointsComponent]
 })
 export class AddMatchModalComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
-
+  @Output() openManualPointsEvent = new EventEmitter<void>();
   @Input() players: any[] = [];
 
   matchForm!: FormGroup;
   isShowSetsPointsTrue = false;
-
   constructor(
     private fb: FormBuilder,
     private modalService: ModalService,
@@ -141,5 +141,9 @@ export class AddMatchModalComponent implements OnInit {
 
   closeModal() {
     this.modalService.closeModal();
+  }
+  
+  addManualSetPoint() {
+    this.openManualPointsEvent.emit();
   }
 }

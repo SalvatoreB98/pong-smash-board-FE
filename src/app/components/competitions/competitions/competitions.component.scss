@@ -69,12 +69,13 @@
 
 .players-count {
     position: absolute;
-    bottom: 0.3125em;
-    left: 0.3125em;
+    bottom: 1em;
+    left: 1em;
     font-size: 0.7em;
     margin-right: 0.5em;
     display: inline-block;
     opacity: 0.6;
+    font-style: italic;
 }
 
 .players-section {
