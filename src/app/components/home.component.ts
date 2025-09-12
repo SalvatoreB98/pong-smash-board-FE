@@ -38,7 +38,6 @@ export class HomeComponent {
   isShowMatchModalOpen: boolean = false;
   clickedMatch: IMatch | undefined;
   manualSetPointsActive: boolean = false;
-
   userState$ = this.userService.getState();
   players: IPlayer[] = [];
 
@@ -64,11 +63,10 @@ export class HomeComponent {
     this.clickedMatch = match;
   }
 
-  addManualSetPoint() {
-    this.manualSetPointsActive = true;
-  }
-  
   closeManualSetPoint() {
     this.manualSetPointsActive = false;
+  }
+  addManualSetPoint() {
+    this.manualSetPointsActive = true;
   }
 }

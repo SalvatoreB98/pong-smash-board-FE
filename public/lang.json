@@ -1,7 +1,7 @@
 {
     "add_match": {
-        "it": "Aggiungi partita",
-        "en": "Add a match"
+        "it": "Registra partita",
+        "en": "Add match"
     },
     "matches": {
         "it": "Ultime partite",
@@ -664,7 +664,19 @@
         "en": "of"
     },
     "add_manual_set_points": {
-        "it": "Aggiungi i punti in diretta",
-        "en": "Add live points"},
-    "": ""
+        "it": "Segna punti in diretta",
+        "en": "Add points live"
+    },
+    "otherwise": {
+        "it": "Oppure",
+        "en": "Or"
+    },
+    "add_manual_set_points_description": {
+        "it": "Tieni traccia dei punti durante la partita con un tap o con la voce",
+        "en": "Keep track of points during the match with a tap or with your voice"
+    },
+    "add_match_description": {
+        "it": "Aggiungi una partita manualmente inserendo i giocatori e il punteggio finale",
+        "en": "Add a match manually by entering the players and the final score"
+    }
 }

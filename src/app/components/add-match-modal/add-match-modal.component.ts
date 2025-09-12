@@ -21,6 +21,7 @@ export class AddMatchModalComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
   @Output() openManualPointsEvent = new EventEmitter<void>();
   @Input() players: any[] = [];
+  // manualSetPointsActive: boolean = false;
 
   matchForm!: FormGroup;
   isShowSetsPointsTrue = false;
@@ -32,9 +33,13 @@ export class AddMatchModalComponent implements OnInit {
     private translateService: TranslationService
   ) { }
 
+  ngOnChanges() {
+    console.log('Players input changed:', this.players);
+  }
+  
   ngOnInit() {
     this.initializeForm();
-    if(this.players.length < 2) {
+    if (this.players.length < 2) {
       this.loaderService.showToast(this.translateService.translate('not_enough_players'), MSG_TYPE.WARNING);
       this.closeModal();
     }
@@ -142,8 +147,21 @@ export class AddMatchModalComponent implements OnInit {
   closeModal() {
     this.modalService.closeModal();
   }
-  
-  addManualSetPoint() {
-    this.openManualPointsEvent.emit();
-  }
+
+  // addManualSetPoint() {
+  //   this.manualSetPointsActive = true;
+  //   let myModal = document.querySelector(".my-modal") as HTMLElement | null;
+  //   myModal?.style.setProperty("position", "relative");
+  //   myModal?.style.setProperty("transform", "none");
+  //   myModal?.style.setProperty("left", "0");
+  // }
+
+  // closeManualSetPoint() {
+  //   this.manualSetPointsActive = false;
+  //   let myModal = document.querySelector(".my-modal") as HTMLElement | null;
+  //   myModal?.style.setProperty("position", "fixed");
+  //   myModal?.style.removeProperty("transform");
+  //   myModal?.style.removeProperty("position");
+  //   myModal?.style.removeProperty("left");
+  // }
 }

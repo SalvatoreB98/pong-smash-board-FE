@@ -1,15 +1,10 @@
 <div class="fullscreen" [ngClass]="{ mobile: isMobile, desktop: !isMobile }">
-    <ng-content>
-        <button class="close mt-5" (click)="close.emit()" style="position: absolute; top: 0.3125em; right: 0.3125em;">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-        <div class="container-points">
-            <div class="box box1">
-                
-            </div>
-            <div class="box box2">
-                
-            </div>
-        </div>
-    </ng-content>
+    <button class="close" (click)="close.emit()">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="container-points">
+        <button class="box box1" (click)="changePoint(1)"> <span>{{player1Points}}</span> </button>
+        <button class="box box2" (click)="changePoint(2)"> <span>{{player2Points}}</span> </button>
+    </div>
 </div>
