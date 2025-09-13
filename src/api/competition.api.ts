@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { API_PATHS } from '../api/api.config';
 import { IJoinCompetitionResponse, IUserState } from '../services/interfaces/Interfaces'; // adatta il path
 
@@ -56,14 +56,27 @@ export class CompetitionApi {
 
   /** Dettaglio singola competizione */
   getOne(id: number | string): Observable<ICompetition> {
-    // adatta in base ai tuoi path (es. API_PATHS.competitions + `/${id}`)
-    return this.http.get<ICompetition>(`${API_PATHS.getCompetitions}/${id}`);
+    return this.http
+      .get<any>(`${API_PATHS.getCompetitions}/${id}`)
+      .pipe(
+        map(res => ({
+          ...res,
+          id: (res.id ?? res.competition_id) || res.competition['id'] 
+        }))
+      );
   }
 
   /** Crea competizione */
   add(dto: AddCompetitionDto): Observable<AddCompetitionResponse> {
-    // es.: /api/add-competition
-    return this.http.post<AddCompetitionResponse>(API_PATHS.addCompetition, dto);
+    return this.http.post<AddCompetitionResponse>(API_PATHS.addCompetition, dto).pipe(
+      map(res => ({
+        ...res,
+        competition: {
+          ...res.competition,
+          id: (res.competition.id ?? res.competition['competition_id']) || res.competition['id'] 
+        }
+      }))
+    );
   }
 
   /** Aggiorna parzialmente una competizione */
