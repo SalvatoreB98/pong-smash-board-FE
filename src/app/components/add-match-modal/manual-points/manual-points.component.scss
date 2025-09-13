@@ -64,7 +64,7 @@
         place-items: center;
 
         span {
-            font-size: 350px;
+            font-size: 25vw;
 
         }
     }
@@ -74,26 +74,13 @@
     }
 }
 
-@media screen and (max-width: 768px) {
-    .fullscreen {
-        .container-points {
-            padding: 1em;
-            gap: 1em;
-        }
 
-        .box {
-            span {
-                font-size: 150px;
-            }
-        }
-    }
-}
 
-@media screen and (max-width: 1000px) and (min-width: 769px) {
+@media screen and (orientation: portrait) {
     .fullscreen {
         .box {
             span {
-                font-size: 200px;
+                font-size: 15vw;
             }
         }
     }
