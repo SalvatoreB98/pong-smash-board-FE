@@ -35,9 +35,19 @@ export class UserService {
     console.log('[UserService] 🌐 from BE');
     return this.api.getUserState().pipe(
       tap(s => {
-        this.store.set(s)
-        this.competitionStore.upsertOne(s.active_competition);
-        this.competitionStore.setActive(s.active_competition.id);
+        this.store.set(s);
+
+        if (s.active_competition) {
+          const comp = {
+            id: s.active_competition.id ?? s.active_competition.competition_id,
+            ...s.active_competition
+          };
+          this.competitionStore.upsertOne(comp);
+          this.competitionStore.setActive(comp.id);
+        } else {
+          console.log('[UserService] Nessuna competizione attiva');
+          this.competitionStore.setActive(null);
+        }
       })
     );
   }

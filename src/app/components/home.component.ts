@@ -20,6 +20,7 @@ import { IPlayer, PlayersService } from '../../services/players.service';
 import { LoaderService } from '../../services/loader.service';
 import { TranslationService } from '../../services/translation.service';
 import { ManualPointsComponent } from './add-match-modal/manual-points/manual-points.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -41,9 +42,21 @@ export class HomeComponent {
   userState$ = this.userService.getState();
   players: IPlayer[] = [];
 
-  constructor(public modalService: ModalService, private loaderService: LoaderService, private translateService: TranslationService) { }
+  constructor(public modalService: ModalService, private loaderService: LoaderService, private translateService: TranslationService, private router: Router) { }
 
   ngOnInit() {
+    this.userState$.subscribe(state => {
+      if (!state) {
+        console.error('User state is null or undefined');
+        return;
+      } else {
+        console.log('User state:', state);
+        if (!state.active_competition) {
+          this.loaderService.showToast(this.translateService.translate('no_active_competition'), MSG_TYPE.WARNING);
+          this.router.navigate(['/competitions']);
+        }
+      }
+    });
     this.playersService.getPlayers().subscribe(players => {
       this.players = players;
       console.log(this.players);
