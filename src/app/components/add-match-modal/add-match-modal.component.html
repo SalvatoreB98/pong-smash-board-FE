@@ -20,11 +20,11 @@
 
         <div class="row mt-3">
             <div class="col-6">
-                <input type="number" formControlName="p1Score" min="1" max="99" [placeholder]="'score1' | translate"
+                <input type="number" formControlName="p1Score" min="0" max="99" [placeholder]="'score1' | translate"
                     (input)="updateContainers()">
             </div>
             <div class="col-6">
-                <input type="number" formControlName="p2Score" min="1" max="99" [placeholder]="'score2' | translate"
+                <input type="number" formControlName="p2Score" min="0" max="99" [placeholder]="'score2' | translate"
                     (input)="updateContainers()">
             </div>
         </div>
