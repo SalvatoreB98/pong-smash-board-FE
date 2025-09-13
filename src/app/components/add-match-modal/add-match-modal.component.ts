@@ -172,22 +172,7 @@ export class AddMatchModalComponent implements OnInit {
     this.modalService.closeModal();
   }
 
-  setMaxIfEmpty(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const max = this.competition?.pointsType || this.maxPoints;
 
-    // Se il campo è vuoto o zero → portalo al max
-    if (!input.value || Number(input.value) <= 0) {
-      input.value = String(max);
-      const controlName = input.getAttribute('formControlName');
-      if (controlName) {
-        const form = input.closest('[formGroupName]')
-          ? this.getSetFormGroup(+input.closest('[formGroupName]')!.getAttribute('formGroupName')!)
-          : this.matchForm;
-        form.get(controlName)?.setValue(max);
-      }
-    }
-  }
 
   sanitizeInput(controlName: string) {
     if (!controlName) return;
@@ -256,7 +241,7 @@ export class AddMatchModalComponent implements OnInit {
     if (p1 === p2 && p1 > 0) {
       this.errorsOfPoints.push(`set ${i + 1}`);
     }
-    
+
     setGroup.patchValue({ player1Points: p1, player2Points: p2 }, { emitEvent: false });
   });
 

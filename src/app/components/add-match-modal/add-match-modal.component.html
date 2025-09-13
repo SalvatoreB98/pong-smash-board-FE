@@ -33,7 +33,7 @@
                 <input type="number" formControlName="p2Score" min="0" max="99" [placeholder]="'score2' | translate"
                     (input)="updateContainers($event)" (change)="sanitizeInput('p2Score')">
             </div>
-            <div class="text-danger">
+            <div class="text-danger" style="min-height: 1.5em;">
                 <div *ngFor="let error of errorsOfSets">{{ error | translate }}</div>
             </div>
         </div>
@@ -52,18 +52,18 @@
                         [formGroup]="getSetFormGroup(i)">
 
                         <input class="top" type="number" formControlName="player1Points" [min]="0"
-                            [max]="competition?.pointsType || maxPoints" (focus)="setMaxIfEmpty($event)" />
+                            [max]="competition?.pointsType || maxPoints" />
 
                         <input class="bottom" type="number" formControlName="player2Points" [min]="0"
-                            [max]="competition?.pointsType || maxPoints" (focus)="setMaxIfEmpty($event)" />
+                            [max]="competition?.pointsType || maxPoints" />
                     </div>
                 </div>
             </div>
-            <div class="text-danger text-center mt-2">
+            <div class="text-danger text-center mt-2" style="min-height: 1.5em;">
                 <div *ngFor="let error of errorsOfPoints">{{ 'Problem' | translate }}: {{ error | translate }}</div>
             </div>
         </div>
-        
+
         <!-- AZIONI -->
         <div class="modal-buttons d-flex justify-content-between mt-3">
             <button type="button" class="button-close" (click)="closeModal()">

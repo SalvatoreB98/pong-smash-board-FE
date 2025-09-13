@@ -264,7 +264,8 @@ section {
     border-radius: $border-radius;
     box-shadow: 0 0 1.5em black;
     padding: 1em;
-    overflow: auto;
+    overflow-y: scroll;
+    max-height: 90svh;
     animation: 0.2s in ease-in-out;
     .modal-content {
         position: static;

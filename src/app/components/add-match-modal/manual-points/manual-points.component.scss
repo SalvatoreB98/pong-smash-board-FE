@@ -35,10 +35,6 @@
         // 👇 layout di default (desktop) = verticale
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr;
-
-        span {
-            transform: scale(2);
-        }
     }
 
     &.mobile {
@@ -61,15 +57,44 @@
     .box {
         all: unset;
         background-color: $secondary;
-        border-radius: 1.25em;
+        border-radius: $border-radius;
         width: 100%;
         height: 100%;
         display: grid;
         place-items: center;
-        font-size: 8em;
+
+        span {
+            font-size: 350px;
+
+        }
     }
 
     .box2 {
         background-color: $primary;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .fullscreen {
+        .container-points {
+            padding: 1em;
+            gap: 1em;
+        }
+
+        .box {
+            span {
+                font-size: 150px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px) and (min-width: 769px) {
+    .fullscreen {
+        .box {
+            span {
+                font-size: 200px;
+            }
+        }
     }
 }
