@@ -682,5 +682,5 @@
     "file_too_large": {
         "it": "Il file è troppo grande. La dimensione massima è 40MB.",
         "en": "The file is too large. The maximum size is 40MB."
-    },
+    }
 }
