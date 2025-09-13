@@ -678,5 +678,9 @@
     "add_match_description": {
         "it": "Aggiungi una partita manualmente inserendo i giocatori e il punteggio finale",
         "en": "Add a match manually by entering the players and the final score"
-    }
+    },
+    "file_too_large": {
+        "it": "Il file è troppo grande. La dimensione massima è 40MB.",
+        "en": "The file is too large. The maximum size is 40MB."
+    },
 }

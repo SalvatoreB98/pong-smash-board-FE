@@ -15,6 +15,7 @@ import { UserService } from '../../../../services/user.service';
 import { NavbarComponent } from '../../../common/navbar/navbar.component';
 import { UserProgressStateEnum, MSG_TYPE } from '../../../utils/enum';
 import { TranslatePipe } from '../../../utils/translate.pipe';
+import { TranslationService } from '../../../../services/translation.service';
 
 
 
@@ -45,7 +46,8 @@ export class CompleteProfileComponent implements OnInit {
     private http: HttpClient,
     private loaderService: LoaderService,
     private router: Router,
-    private supabaseAuthService: SupabaseAuthService
+    private supabaseAuthService: SupabaseAuthService,
+    private translateService: TranslationService,
   ) {
     this.form = this.fb.group({
       nickname: new FormControl<string | null>(''),
@@ -74,14 +76,14 @@ export class CompleteProfileComponent implements OnInit {
     
     // opzionale: validazioni base
     const isImage = file.type.startsWith('image/');
-    const maxSizeMB = 4;
+    const maxSizeMB = 40;
     if (!isImage) {
       alert('Seleziona un file immagine valido.');
       input.value = '';
       return;
     }
     if (file.size > maxSizeMB * 1024 * 1024) {
-      alert(`L'immagine supera ${maxSizeMB}MB.`);
+      alert(`${this.translateService.translate('file_too_large')} ${maxSizeMB}MB.`);
       input.value = '';
       return;
     }
