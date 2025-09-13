@@ -39,7 +39,7 @@
                                         {{ c?.players?.length == 1 ? ('player' | translate) : ('players' | translate) }}
                                     </div>
                                     <div class="players-list">
-                                        <img class="avatar" *ngFor="let player of c?.players" [src]="player.image_url"
+                                        <img class="avatar" *ngFor="let player of c?.players" [src]="player.image_url || '/default-player.jpg'"
                                             [alt]="player.name || 'player'">
                                     </div>
                                 </div>

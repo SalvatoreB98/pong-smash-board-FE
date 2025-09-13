@@ -1,0 +1,4 @@
+<div #wheel class="wheel" (scroll)="onScroll($event)">
+  <div *ngFor="let n of numbers" class="wheel-item">{{ n }}</div>
+</div>
+<div class="overlay"></div>

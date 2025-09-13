@@ -22,7 +22,7 @@
         <!-- RISULTATO MATCH -->
         <div class="row mt-3">
             <div class="info">
-                {{ "best_of" | translate }} 
+                {{ "best_of" | translate }}
                 <strong>{{ maxSets }}</strong>
             </div>
             <div class="col-6">
@@ -34,7 +34,7 @@
                     (input)="updateContainers($event)" (change)="sanitizeInput('p2Score')">
             </div>
             <div class="text-danger">
-                <div *ngFor="let error of errorsOfSets">{{ error }}</div>
+                <div *ngFor="let error of errorsOfSets">{{ error | translate }}</div>
             </div>
         </div>
 
@@ -59,17 +59,20 @@
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="text-danger text-center mt-2">
+                <div *ngFor="let error of errorsOfPoints">{{ 'Problem' | translate }}: {{ error | translate }}</div>
+            </div>
 
-        <!-- AZIONI -->
-        <div class="modal-buttons d-flex justify-content-between mt-3">
-            <button type="button" class="button-close" (click)="closeModal()">
-                {{"cancel" | translate}}
-            </button>
-            <button type="submit" [disabled]="!matchForm.valid || errorsOfSets.length > 0">
-                {{"add_match" | translate}}
-            </button>
+            <!-- AZIONI -->
+            <div class="modal-buttons d-flex justify-content-between mt-3">
+                <button type="button" class="button-close" (click)="closeModal()">
+                    {{"cancel" | translate}}
+                </button>
+                <button type="submit"
+                    [disabled]="!matchForm.valid || errorsOfSets.length > 0 || errorsOfPoints.length > 0">
+                    {{"add_match" | translate}}
+                </button>
+            </div>
         </div>
-
     </form>
 </div>

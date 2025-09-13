@@ -690,5 +690,13 @@
     "tipology": {
         "it": "Tipologia",
         "en": "Type"
+    },
+    "number_equal": {
+        "it": "La partita non può avere un numero di set pari",
+        "en": "The match cannot have an even number of sets"
+    },
+    "no_active_competition": {
+        "it": "Non ci sono competizioni attive. Crea o unisciti a una competizione per iniziare a registrare partite, classifiche e statistiche.",
+        "en": "There are no active competitions. Create or join a competition to start tracking matches, standings and stats."
     }
 }

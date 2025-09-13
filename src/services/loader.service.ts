@@ -47,9 +47,6 @@ export class LoaderService {
         if (button) {
           button.scrollIntoView({ behavior: 'smooth' });
           button.classList.add('highlight');
-          setTimeout(() => {
-            button.classList.remove('highlight');
-          }, 3000);
         }
       }
     }, 1000);

@@ -23,10 +23,13 @@ import { ICompetition } from '../../../api/competition.api';
   imports: [CommonModule, ReactiveFormsModule, SelectPlayerComponent, TranslatePipe, ManualPointsComponent]
 })
 export class AddMatchModalComponent implements OnInit {
+
   @Output() closeModalEvent = new EventEmitter<void>();
   @Output() openManualPointsEvent = new EventEmitter<void>();
   @Input() players: any[] = [];
+
   errorsOfSets: string[] = [];
+  errorsOfPoints: string[] = [];
 
   competition: ICompetition | null = null;
   maxSets: number = 5;
@@ -98,6 +101,7 @@ export class AddMatchModalComponent implements OnInit {
           }
         )
       );
+      this.getSetFormGroup(i).valueChanges.subscribe(() => this.checkPointsError());
     }
   }
 
@@ -218,5 +222,45 @@ export class AddMatchModalComponent implements OnInit {
     }
     console.log("errors:", this.errorsOfSets);
   }
+
+  checkPointsError() {
+  this.errorsOfPoints.length = 0;
+
+  const maxPoints = this.competition?.points_type ?? this.maxPoints;
+
+  this.setsPoints.controls.forEach((setGroup: AbstractControl, i: number) => {
+    let p1 = Number(setGroup.get('player1Points')?.value);
+    let p2 = Number(setGroup.get('player2Points')?.value);
+
+    // Player 1
+    if (isNaN(p1) || p1 < 0) {
+      this.errorsOfPoints.push(`set ${i + 1}: number_positive_p1`);
+      p1 = 0;
+    }
+    if (p1 > maxPoints) {
+      this.errorsOfPoints.push(`set ${i + 1}: number_maximum_p1 ${maxPoints}`);
+      p1 = maxPoints;
+    }
+
+    // Player 2
+    if (isNaN(p2) || p2 < 0) {
+      this.errorsOfPoints.push(`set ${i + 1}: number_positive_p2`);
+      p2 = 0;
+    }
+    if (p2 > maxPoints) {
+      this.errorsOfPoints.push(`set ${i + 1}: number_maximum_p2 ${maxPoints}`);
+      p2 = maxPoints;
+    }
+
+    // Equal check (escludi 0-0)
+    if (p1 === p2 && p1 > 0) {
+      this.errorsOfPoints.push(`set ${i + 1}`);
+    }
+    
+    setGroup.patchValue({ player1Points: p1, player2Points: p2 }, { emitEvent: false });
+  });
+
+  console.log("errors of points:", this.errorsOfPoints);
+}
 }
 
