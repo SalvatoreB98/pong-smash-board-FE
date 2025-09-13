@@ -93,6 +93,9 @@ export class AddCompetitionModalComponent {
       console.log('Saving competition...', payload);
       this.competitionService.addCompetition(payload).then((res) => {
         console.log('Competition added:', res);
+        // 🔥 Aggiorna subito gli store locali
+        this.competitionService.setLocal(res);        // aggiorna competitions store
+        this.userService.setActiveCompetition(res.id);   // aggiorna user state con la nuova active
         this.closeModal();
       });
 

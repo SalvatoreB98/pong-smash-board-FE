@@ -23,7 +23,17 @@ export class CompetitionService {
     return this.store.snapshotList();
   }
   snapshotActive(): ICompetition | null {
-    return this.store.snapshotActive();
+    // 1. Se lo store ha già un active
+    const storeActive = this.store.snapshotActive?.();
+    if (storeActive) return storeActive;
+
+    // 2. Altrimenti usa lo userState
+    const state = this.user?.snapshot();
+    if (state?.active_competition_id) {
+      return this.store.snapshotById(state.active_competition_id) ?? null;
+    }
+
+    return null;
   }
 
   // ------- CACHE WRAPPER -------

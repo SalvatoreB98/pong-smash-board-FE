@@ -117,4 +117,12 @@ export class CompetitionsComponent {
         break;
     }
   }
+  competitionsWithoutActive$ = combineLatest([
+    this.competitionService.list$,
+    this.competitionService.activeCompetition$
+  ]).pipe(
+    map(([competitions, active]) =>
+      competitions.filter(c => c.id !== active?.id)
+    )
+  );
 }

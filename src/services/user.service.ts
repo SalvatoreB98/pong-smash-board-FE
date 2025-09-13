@@ -68,6 +68,14 @@ export class UserService {
     this.store.patch(patch);
   }
 
+  setActiveCompetition(compId: number | string | null) {
+
+    this.patchLocal({ active_competition_id: compId !== null && compId !== undefined ? Number(compId) : null });
+
+    this.competitionStore.setActive(compId);
+  }
+
+
   /** clear */
   clear() {
     this.store.clear();

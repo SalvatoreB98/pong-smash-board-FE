@@ -20,8 +20,8 @@
             <section class="others" *ngIf="competitions.length > 1">
                 <h3>{{ "other_competitions" | translate }}</h3>
                 <div class="other-competitions-container">
-                    <ng-container *ngFor="let c of competitions; trackBy: trackById">
-                        <div class="comp text-center" *ngIf="state.active_competition_id != c.id">
+                    <ng-container *ngFor="let c of competitionsWithoutActive$ | async; trackBy: trackById">
+                        <div class="comp text-center">
                             <strong>{{ c.name }}</strong>
 
                             <small *ngIf="c.start_date">
@@ -55,7 +55,7 @@
                                     {{ "visualize" | translate }} <i class="fa-solid fa-eye ms-2"></i>
                                 </button>
                             </div>
-                            
+
                             <app-dropdown [actions]="[
                                 { label: 'Edit', value: 'edit', icon: '<i class=\'fa-solid fa-pen\'></i>' },
                                 { label: 'Set as favorite', value: 'favorite', icon: '<i class=\'fa-solid fa-star\'></i>' },
@@ -98,8 +98,7 @@
     </div>
 
     <!-- Modali -->
-    <app-modal [label]="' '"
-        *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])"
+    <app-modal [label]="' '" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])"
         [modalName]="modalService.MODALS['ADD_COMPETITION']">
         <app-add-competition-modal></app-add-competition-modal>
     </app-modal>
