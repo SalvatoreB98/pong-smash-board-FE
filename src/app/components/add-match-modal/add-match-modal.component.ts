@@ -108,8 +108,8 @@ export class AddMatchModalComponent implements OnInit {
     for (let i = 0; i < totalSets; i++) {
       this.setsPoints.push(
         this.fb.group({
-          player1Points: [null, [Validators.min(0), Validators.max(this.maxPoints)]],
-          player2Points: [null, [Validators.min(0), Validators.max(this.maxPoints)]]
+          player1Points: [null, [Validators.required, Validators.min(0), Validators.max(this.maxPoints)]],
+          player2Points: [null, [Validators.required, Validators.min(0), Validators.max(this.maxPoints)]]
         })
       );
     }
@@ -183,6 +183,18 @@ export class AddMatchModalComponent implements OnInit {
     };
   }
 
+  getEveryErrorFormFormGroup(): string {
+    let errors: string[] = [];
+    Object.keys(this.matchForm.controls).forEach(key => {
+      const controlErrors = this.matchForm.get(key)?.errors;
+      if (controlErrors) {
+        Object.keys(controlErrors).forEach(errorKey => {
+          errors.push(`Control: ${key}, Error: ${errorKey}`);
+        });
+      }
+    });
+    return errors.join(' | ');
+  }
   // addManualSetPoint() {
   //   this.manualSetPointsActive = true;
   //   let myModal = document.querySelector(".my-modal") as HTMLElement | null;

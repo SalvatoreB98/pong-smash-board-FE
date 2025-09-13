@@ -682,5 +682,9 @@
     "file_too_large": {
         "it": "Il file è troppo grande. La dimensione massima è 40MB.",
         "en": "The file is too large. The maximum size is 40MB."
+    },
+    "invalid_points": {
+        "it": "Attenzione: questo torneo prevede un massimo di 11 punti per set. Controlla meglio i punti inseriti.",
+        "en": "Warning: this tournament has a maximum of 11 points per set. Please check the points entered."
     }
 }

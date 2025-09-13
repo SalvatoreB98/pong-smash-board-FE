@@ -33,19 +33,27 @@
             <span style="margin-right: 1em">{{"Add set points" | translate}}</span>
             <input type="checkbox" formControlName="isShowSetsPointsTrue" (change)="updateContainers()">
         </label>
-
         <div class="row" *ngIf="isShowSetsPointsTrue">
             <div class="wrapper-points">
                 <div class="input-container-wrapper d-flex justify-content-center">
                     <div class="input-container" *ngFor="let set of setsPoints.controls; let i = index"
                         [formGroup]="getSetFormGroup(i)">
-                        <input class="top" formControlName="player1Points" [min]="0" [max]="competition?.pointsType || maxPoints"/>
-                        <input class="bottom" formControlName="player2Points" [min]="0" [max]="competition?.pointsType || maxPoints"/>
+                        <input class="top" formControlName="player1Points" [min]="0"
+                            [max]="competition?.pointsType || maxPoints" />
+                        <input class="bottom" formControlName="player2Points" [min]="0"
+                            [max]="competition?.pointsType || maxPoints" />
                     </div>
+                </div>
+                <div *ngIf="setsPoints.invalid && (setsPoints.touched || setsPoints.dirty)"
+                    class="text-center text-warning small mt-2">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ 'invalid_points' | translate }} {{this.maxPoints}} {{ "points" | translate }}
                 </div>
             </div>
         </div>
-
+        <div>
+            {{ getEveryErrorFormFormGroup() }}
+        </div>
         <div class="modal-buttons d-flex justify-content-between mt-3">
             <button type="button" class="button-close" (click)="closeModal()">
                 {{"cancel" | translate}}
