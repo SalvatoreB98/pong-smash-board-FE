@@ -37,7 +37,7 @@
       <div class="competition-players-container">
         <div class="players" *ngFor="let p of competition?.['players']">
           <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
-          <img *ngIf="!p.image_url" class="avatar" [src]="'/assets/default-avatar.png'" />
+          <img *ngIf="!p.image_url" class="avatar" [src]="'default-player.jpg'" />
           <span class="player-name">{{ p.nickname }}</span>
         </div>
         <div *ngIf="isEmpty(competition?.['players'])">

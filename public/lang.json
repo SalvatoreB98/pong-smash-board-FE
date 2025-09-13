@@ -686,5 +686,9 @@
     "invalid_points": {
         "it": "Attenzione: questo torneo prevede un massimo di 11 punti per set. Controlla meglio i punti inseriti.",
         "en": "Warning: this tournament has a maximum of 11 points per set. Please check the points entered."
+    },
+    "tipology": {
+        "it": "Tipologia",
+        "en": "Type"
     }
 }

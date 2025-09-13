@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Output, OnInit, ViewChild, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule, ValidatorFn, AbstractControl } from '@angular/forms';
+import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
+import {
+  FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule,
+  ValidatorFn, AbstractControl, ValidationErrors
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { DataService } from '../../../services/data.service';
@@ -23,12 +26,15 @@ export class AddMatchModalComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
   @Output() openManualPointsEvent = new EventEmitter<void>();
   @Input() players: any[] = [];
+  errorsOfSets: string[] = [];
+
   competition: ICompetition | null = null;
-  // manualSetPointsActive: boolean = false;
   maxSets: number = 5;
   maxPoints: number = 11;
+
   matchForm!: FormGroup;
   isShowSetsPointsTrue = false;
+
   constructor(
     private fb: FormBuilder,
     private modalService: ModalService,
@@ -38,29 +44,68 @@ export class AddMatchModalComponent implements OnInit {
     private competitionService: CompetitionService
   ) { }
 
-  ngOnChanges() {
-    console.log('Players input changed:', this.players);
-  }
-
   ngOnInit() {
+    this.initializeForm();
+
     if (this.players.length < 2) {
       this.loaderService.showToast(this.translateService.translate('not_enough_players'), MSG_TYPE.WARNING);
       this.closeModal();
     }
+
     this.competitionService.activeCompetition$.subscribe(comp => {
       this.competition = comp;
-      this.maxPoints = this.competition?.['points_type'] || 21;
-      this.maxSets = this.competition?.['sets_type'] || 10;
-      console.info("BTR", this.competition, this.maxPoints, this.maxSets);
-      this.initializeForm();
+      console.log('Active competition:', this.competition);
+      this.maxPoints = this.competition?.points_type || 11;
+      this.maxSets = this.competition?.sets_type || 5;
     });
   }
 
+  // ------- FORM -------
+  initializeForm() {
+    this.matchForm = this.fb.group({
+      date: [new Date().toISOString().split('T')[0], Validators.required],
+      player1: ['', Validators.required],
+      player2: ['', Validators.required],
+      p1Score: [null, [Validators.required, Validators.min(1), Validators.max(this.maxSets)]],
+      p2Score: [null, [Validators.required, Validators.min(1), Validators.max(this.maxSets)]],
+      isShowSetsPointsTrue: [false],
+      setsPoints: this.fb.array([]),
+    });
+    this.matchForm.get('p1Score')?.valueChanges.subscribe(() => this.sanitizeInput('p1Score'));
+    this.matchForm.get('p2Score')?.valueChanges.subscribe(() => this.sanitizeInput('p2Score'));
+  }
+
+  get setsPoints(): FormArray {
+    return this.matchForm.get('setsPoints') as FormArray;
+  }
+
+  getSetFormGroup(index: number): FormGroup {
+    return this.setsPoints.at(index) as FormGroup;
+  }
+
+  updateContainers(event: any) {
+    this.isShowSetsPointsTrue = this.matchForm.value.isShowSetsPointsTrue;
+    const totalPoints = (this.matchForm.value.p1Score || 0) + (this.matchForm.value.p2Score || 0);
+    const totalSets = this.isShowSetsPointsTrue ? Math.max(totalPoints, 1) : 0;
+
+    this.setsPoints.clear();
+    for (let i = 0; i < totalSets && i < 10; i++) {
+      this.setsPoints.push(
+        this.fb.group(
+          {
+            player1Points: [0],
+            player2Points: [0],
+          }
+        )
+      );
+    }
+  }
+
+  // ------- PLAYER UTILS -------
   getPlayers(player?: number): any[] {
     if (!this.players || this.players.length === 0) return [];
 
     const loggedInPlayerId = this.dataService.getLoggedInPlayerId();
-
     let filteredPlayers = this.players.filter(p => p.id !== loggedInPlayerId);
 
     const selectedPlayer1 = this.matchForm.get('player1')?.value;
@@ -77,48 +122,11 @@ export class AddMatchModalComponent implements OnInit {
     return filteredPlayers;
   }
 
-
-  initializeForm() {
-    this.matchForm = this.fb.group({
-      date: [new Date().toISOString().split('T')[0], Validators.required],
-      player1: ['', Validators.required],
-      player2: ['', Validators.required],
-      p1Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets), this.validateSetsPoints(this.maxSets)]],
-      p2Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets), this.validateSetsPoints(this.maxSets)]],
-      isShowSetsPointsTrue: [false],
-      setsPoints: this.fb.array([]),
-    });
-    this.matchForm.valueChanges.subscribe((e) => console.log('Form changes', e));
-  }
-
-  get setsPoints(): FormArray {
-    return this.matchForm.get('setsPoints') as FormArray;
-  }
-
   setPlayer(player: any) {
     this.matchForm.get(`player${player.playerNumber}`)?.setValue(player.id);
   }
 
-  updateContainers() {
-    this.isShowSetsPointsTrue = this.matchForm.value.isShowSetsPointsTrue;
-    const totalPoints = (this.matchForm.value.p1Score || 0) + (this.matchForm.value.p2Score || 0);
-    const totalSets = this.isShowSetsPointsTrue ? Math.max(totalPoints, 1) : 0;
-
-    this.setsPoints.clear();
-    for (let i = 0; i < totalSets; i++) {
-      this.setsPoints.push(
-        this.fb.group({
-          player1Points: [null, [Validators.required, Validators.min(0), Validators.max(this.maxPoints)]],
-          player2Points: [null, [Validators.required, Validators.min(0), Validators.max(this.maxPoints)]]
-        })
-      );
-    }
-  }
-
-  getSetFormGroup(index: number): FormGroup {
-    return this.setsPoints.at(index) as FormGroup;
-  }
-
+  // ------- MATCH -------
   addMatch() {
     if (this.matchForm.invalid) return;
 
@@ -160,55 +168,55 @@ export class AddMatchModalComponent implements OnInit {
     this.modalService.closeModal();
   }
 
-  validateSetsPoints(max: number): ValidatorFn {
-    return (control: AbstractControl) => {
-      const value = Number(control.value);
+  setMaxIfEmpty(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const max = this.competition?.pointsType || this.maxPoints;
 
-      if (isNaN(value)) {
-        control.setValue(null, { emitEvent: false });
-        return null;
+    // Se il campo è vuoto o zero → portalo al max
+    if (!input.value || Number(input.value) <= 0) {
+      input.value = String(max);
+      const controlName = input.getAttribute('formControlName');
+      if (controlName) {
+        const form = input.closest('[formGroupName]')
+          ? this.getSetFormGroup(+input.closest('[formGroupName]')!.getAttribute('formGroupName')!)
+          : this.matchForm;
+        form.get(controlName)?.setValue(max);
       }
-
-      if (value < 0) {
-        control.setValue(0, { emitEvent: false });
-        return { belowMin: true };
-      }
-
-      if (value > max) {
-        control.setValue(max, { emitEvent: false });
-        return { aboveMax: true };
-      }
-
-      return null;
-    };
+    }
   }
 
-  getEveryErrorFormFormGroup(): string {
-    let errors: string[] = [];
-    Object.keys(this.matchForm.controls).forEach(key => {
-      const controlErrors = this.matchForm.get(key)?.errors;
-      if (controlErrors) {
-        Object.keys(controlErrors).forEach(errorKey => {
-          errors.push(`Control: ${key}, Error: ${errorKey}`);
-        });
-      }
-    });
-    return errors.join(' | ');
-  }
-  // addManualSetPoint() {
-  //   this.manualSetPointsActive = true;
-  //   let myModal = document.querySelector(".my-modal") as HTMLElement | null;
-  //   myModal?.style.setProperty("position", "relative");
-  //   myModal?.style.setProperty("transform", "none");
-  //   myModal?.style.setProperty("left", "0");
-  // }
+  sanitizeInput(controlName: string) {
+    if (!controlName) return;
+    const control = this.matchForm.get(controlName);
+    const otherControlName = controlName === 'p1Score' ? 'p2Score' : 'p1Score';
+    const otherControl = this.matchForm.get(otherControlName);
+    if (!control) return;
+    const max = this.competition?.sets_type || this.maxSets;
+    let value = Number(control.value);
 
-  // closeManualSetPoint() {
-  //   this.manualSetPointsActive = false;
-  //   let myModal = document.querySelector(".my-modal") as HTMLElement | null;
-  //   myModal?.style.setProperty("position", "fixed");
-  //   myModal?.style.removeProperty("transform");
-  //   myModal?.style.removeProperty("position");
-  //   myModal?.style.removeProperty("left");
-  // }
+    this.errorsOfSets.length = 0; // Reset errors
+
+    // Se l'input è una stringa con più cifre, prendi solo l'ultima
+    if (!isNaN(value) && typeof control.value === 'string' && control.value.length > 1) {
+      value = Number(control.value.slice(-1));
+    }
+
+    if (isNaN(value) || value < 0) {
+      value = 0;
+      this.errorsOfSets.push('number_positive');
+    }
+    if (value > max) {
+      value = max;
+      this.errorsOfSets.push(`number_maximum ${max}`);
+    }
+    if (otherControl && value === Number(otherControl.value)) {
+      value = Math.max(1, Math.min(value, max - 1));
+      this.errorsOfSets.push('number_equal');
+    }
+    if (control.value !== value) {
+      control.setValue(value, { emitEvent: true });
+    }
+    console.log("errors:", this.errorsOfSets);
+  }
 }
+

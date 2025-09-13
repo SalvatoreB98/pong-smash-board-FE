@@ -10,7 +10,9 @@ export interface ICompetition {
   name: string;
   type: string;
   setsType: number;
+  sets_type?: number; // alias per setsType
   pointsType: number;
+  points_type?: number; // alias per pointsType
   start_date?: string | null;
   end_date?: string | null;
   created_at?: string;

@@ -14,9 +14,13 @@ export class RegistrationNavbarComponent {
 
   @Input() isLogin: boolean = false;
   languages: { code: string, label: string }[] = [];
+  showDropdown = false;
+
   constructor(public translateService: TranslationService) {
     this.languages = this.translateService.languages;
 
   }
-
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
 }

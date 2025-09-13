@@ -27,7 +27,6 @@ export class ModalComponent {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
-    console.log('Document clicked:', event);
     const target = event.target as HTMLElement;
 
     if (this.modalService.isActiveModal(this.modalName)) {

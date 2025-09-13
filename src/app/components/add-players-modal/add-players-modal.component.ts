@@ -10,6 +10,7 @@ import { API_PATHS } from '../../../api/api.config';
 import { LoaderService } from '../../../services/loader.service';
 import { MSG_TYPE } from '../../utils/enum';
 import { firstValueFrom } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { DataService } from '../../../services/data.service';
 import { TranslationService } from '../../../services/translation.service';
@@ -91,6 +92,7 @@ export class AddPlayersModalComponent extends ModalComponent {
       }
 
       const playersWithUrls = [];
+      const user_id = userState?.user_id;
       for (const p of this.playersToAdd) {
         let imageUrl: string | null = null;
 
@@ -123,9 +125,12 @@ export class AddPlayersModalComponent extends ModalComponent {
           imageUrl,
         });
       }
-
       await firstValueFrom(
-        this.http.post(API_PATHS.addPlayers, { players: playersWithUrls, competitionId })
+        this.http.post(API_PATHS.addPlayers, { players: playersWithUrls, competitionId, user_id }).pipe(
+          tap(() => {
+            this.userService.setActiveCompetitionId(competitionId);
+          })
+        )
       );
       // refresh dati locali (players, matches, ecc.)
       await this.dataService.refresh();

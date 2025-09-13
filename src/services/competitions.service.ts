@@ -197,4 +197,5 @@ export class CompetitionService {
     this.store.clear();
     this.clearCompetitionsCache();
   }
+
 }
