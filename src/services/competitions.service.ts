@@ -189,6 +189,10 @@ export class CompetitionService {
     this.store.upsertOne(updatedCompetition);
   }
 
+  removeLocal(id: number | string) {
+    this.store.removeOne(id);
+  }
+
   clear(): void {
     this.store.clear();
     this.clearCompetitionsCache();

@@ -61,7 +61,8 @@ export class HomeComponent {
       this.players = players;
       console.log(this.players);
       if (players.length < 2) {
-        this.loaderService.showToast(this.translateService.translate('not_enough_players'), MSG_TYPE.WARNING);
+        this.loaderService.showToast('not_enough_players', MSG_TYPE.WARNING);
+        this.router.navigate(['/competitions']);
       }
     });
     this.matches$.subscribe(matches => {

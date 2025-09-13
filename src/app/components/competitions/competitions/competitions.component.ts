@@ -101,7 +101,8 @@ export class CompetitionsComponent {
           next: (res) => {
             console.log('Competition deleted', res);
             this.competitions$ = this.competitions$.pipe(
-              map(competitions => competitions.filter((c: ICompetition) => c.id !== competition.id))
+              map(competitions => competitions.filter((c: ICompetition) => c.id !== competition.id)),
+              tap(() => this.competitionService.removeLocal(competition.id))
             );
             this.competitionService.getCompetitions();
             this.loaderService.showToast('delete_success', MSG_TYPE.SUCCESS);

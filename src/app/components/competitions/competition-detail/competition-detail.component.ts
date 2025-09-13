@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 import { ICompetition } from '../../../../api/competition.api';
 import { ModalService } from '../../../../services/modal.service';
@@ -11,7 +11,7 @@ import { ModalService } from '../../../../services/modal.service';
 })
 export class CompetitionDetailComponent {
   @Input() competition: ICompetition | null = null;
-
+  @Output() actionSelected = new EventEmitter<{ action: string, competition: ICompetition | null }>();
   constructor(public modalService: ModalService) { }
 
   ngOnInit() {
@@ -20,5 +20,8 @@ export class CompetitionDetailComponent {
 
   isEmpty(array: any): boolean {
     return !array || (Array.isArray(array) && array.length === 0);
+  }
+  onDropdownAction(action: string) {
+    this.actionSelected.emit({ action, competition: this.competition });
   }
 }
