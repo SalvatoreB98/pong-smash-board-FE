@@ -17,11 +17,11 @@
     </div>
 
     <!-- Dropdown -->
-    <div class="dropdown" [class.visible]="showDropdown" (click)="$event.stopPropagation()">
+    <div class="dropdown w-100" [class.visible]="showDropdown" (click)="$event.stopPropagation()">
         <!-- Search input -->
-        <div class="search-wrapper d-flex">
+        <div class="search-wrapper d-flex w-100">
             <input #searchInput type="text" [formControl]="searchCtrl" [placeholder]="'Search Player' | translate"
-                class="search-input" />
+                class="search-input w-100" />
             <span class="search-icon">🔍</span>
         </div>
 

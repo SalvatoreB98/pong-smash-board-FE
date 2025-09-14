@@ -3,18 +3,47 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 
-    <div class="container-points">
-        <div #effectLeft class="points box box1">
-            <button class="tap" (click)="changePoint(1)">
-                <span>{{player1Points}}</span>
-            </button>
-            <button class="minus" (click)="subtractPoint(1)"><i class="fa-solid fa-minus"></i></button>
+    <ng-container *ngIf="selectingPlayer">
+        <div class="container-points">
+            <div #effectLeft class="points box box1">
+                <button class="tap" (click)="changePoint(1)">
+                    <span>{{player1Points}}</span>
+                </button>
+                <button class="minus" (click)="subtractPoint(1)"><i class="fa-solid fa-minus"></i></button>
+            </div>
+            <div #effectRight class="points box box2">
+                <button class="tap" (click)="changePoint(2)">
+                    <span>{{player2Points}}</span>
+                </button>
+                <button class="minus" (click)="subtractPoint(2)"><i class="fa-solid fa-minus"></i></button>
+            </div>
         </div>
-        <div #effectRight class="points box box2">
-            <button class="tap" (click)="changePoint(2)">
-                <span>{{player2Points}}</span>
-            </button>
-            <button class="minus" (click)="subtractPoint(2)"><i class="fa-solid fa-minus"></i></button>
+        <div class="players-container">
+            <div class="player left">
+                <img src="./default-player.jpg" alt="">
+                <div>Ma Long</div>
+            </div>
+            <div>
+                vs
+            </div>
+            <div class="player right">
+                <img src="./default-player.jpg" alt="">
+                <div>Fan Zhendong</div>
+            </div>
+        </div>
+    </ng-container>
+    
+    <div class="players-container-form">
+        <div class="player left">
+            <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'" (playerSelected)="setPlayer($event)">
+            </app-select-player>
+        </div>
+        <div>
+            vs
+        </div>
+        <div class="player right">
+            <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'" (playerSelected)="setPlayer($event)">
+            </app-select-player>
         </div>
     </div>
 </div>

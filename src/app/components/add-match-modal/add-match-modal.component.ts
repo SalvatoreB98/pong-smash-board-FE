@@ -37,7 +37,7 @@ export class AddMatchModalComponent implements OnInit {
 
   matchForm!: FormGroup;
   isShowSetsPointsTrue = false;
-
+  
   constructor(
     private fb: FormBuilder,
     private modalService: ModalService,

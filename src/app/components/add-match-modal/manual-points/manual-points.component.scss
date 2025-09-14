@@ -19,9 +19,6 @@
     top: 0;
     z-index: 1000;
     background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     .container-points {
         padding: 5em;
@@ -91,10 +88,39 @@ button {
     border: none;
     background-color: unset;
 }
+ .players-container {
+    position: absolute;
+    bottom: 0;
+
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: flex-end;
+    padding: 0 2em;
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 0px 0px 5px black;
+
+    .player {
+        filter: drop-shadow(0px 0px 30px black);
+        &.left {
+            text-align: left;
+        }
+        &.right {
+            text-align: right;
+        }
+        img {
+            border-radius: 100%;
+            width: 175px;
+            height: 175px;
+        }
+    }
+}
 
 .minus {
     position: absolute;
-    bottom: 1em;
+    bottom: 15%;
     background-color: $contrast;
     border-radius: 50%;
     width: 2.5em;
@@ -102,6 +128,35 @@ button {
     display: grid;
     place-items: center;
     cursor: pointer;
+}
+.players-container-form {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: flex-end;
+    padding: 0 6em;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    text-shadow: 0px 0px 5px black;
+
+    .player {
+        filter: drop-shadow(0px 0px 30px black);
+        &.left {
+            text-align: left;
+        }
+        &.right {
+            text-align: right;
+        }
+        img {
+            border-radius: 100%;
+            width: 175px;
+            height: 175px;
+        }
+    }
 }
 
 @media screen and (orientation: portrait) {
