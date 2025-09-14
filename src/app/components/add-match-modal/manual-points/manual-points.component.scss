@@ -62,7 +62,7 @@
         place-items: center;
         cursor: pointer;
         position: relative;
-
+        overflow: hidden;
         span {
             font-size: 25vw;
         }
@@ -75,6 +75,10 @@
             display: block;
             height: 100%;
             width: 100%;
+            span {
+                position: relative;
+                z-index: 500;
+            }
         }
     }
 

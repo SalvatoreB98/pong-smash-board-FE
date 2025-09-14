@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 import { IPlayer } from '../../../../services/players.service';
 import { CompetitionService } from '../../../../services/competitions.service';
@@ -13,7 +13,8 @@ import { ICompetition } from '../../../../api/competition.api';
 export class ManualPointsComponent {
   @Output() close = new EventEmitter<any>();
   isMobile = false;
-  
+  @ViewChild('effectLeft') effectLeft!: ElementRef;
+  @ViewChild('effectRight') effectRight!: ElementRef;
   @Input() maxSets = 5;
   @Input() maxPoints = 21;
   @Input() player1: IPlayer | null = null;
@@ -50,12 +51,20 @@ export class ManualPointsComponent {
   changePoint(player: number) {
     if (player === 1 && this.player1Points < this.maxPoints) {
       this.player1Points++;
+      this.effectLeft.nativeElement.classList.add('highlight-once');
+      setTimeout(() => {
+        this.effectLeft.nativeElement.classList.remove('highlight-once');
+      }, 1000);
     } else if (player === 2 && this.player2Points < this.maxPoints) {
       this.player2Points++;
+      this.effectRight.nativeElement.classList.add('highlight-once');
+      setTimeout(() => {
+        this.effectRight.nativeElement.classList.remove('highlight-once');
+      }, 1000);
     }
     if (this.player1Points === this.maxPoints && this.player2Points === this.maxPoints) {
       this.maxPoints += 2;
-    } 
+    }
   }
 
   subtractPoint(player: number) {
