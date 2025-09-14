@@ -13,6 +13,7 @@ import { ICompetition } from '../../../../api/competition.api';
 export class ManualPointsComponent {
   @Output() close = new EventEmitter<any>();
   isMobile = false;
+  
   @Input() maxSets = 5;
   @Input() maxPoints = 21;
   @Input() player1: IPlayer | null = null;
@@ -45,11 +46,23 @@ export class ManualPointsComponent {
   private checkViewport() {
     this.isMobile = window.innerWidth <= 768 || window.innerWidth < window.innerHeight; // breakpoint mobile
   }
+
   changePoint(player: number) {
     if (player === 1 && this.player1Points < this.maxPoints) {
       this.player1Points++;
     } else if (player === 2 && this.player2Points < this.maxPoints) {
       this.player2Points++;
+    }
+    if (this.player1Points === this.maxPoints && this.player2Points === this.maxPoints) {
+      this.maxPoints += 2;
+    } 
+  }
+
+  subtractPoint(player: number) {
+    if (player === 1 && this.player1Points > 0) {
+      this.player1Points--;
+    } else if (player === 2 && this.player2Points > 0) {
+      this.player2Points--;
     }
   }
 }

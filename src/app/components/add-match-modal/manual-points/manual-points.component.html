@@ -4,7 +4,18 @@
     </button>
 
     <div class="container-points">
-        <button class="box box1" (click)="changePoint(1)"> <span>{{player1Points}}</span> </button>
-        <button class="box box2" (click)="changePoint(2)"> <span>{{player2Points}}</span> </button>
+        <div class="points box box1">
+            <button class="tap" (click)="changePoint(1)">
+                <span>{{player1Points}}</span>
+            </button>
+            <button class="minus" (click)="subtractPoint(1)"><i class="fa-solid fa-minus"></i></button>
+
+        </div>
+        <div class="points box box2">
+            <button class="tap" (click)="changePoint(2)">
+                <span>{{player2Points}}</span>
+            </button>
+            <button class="minus" (click)="subtractPoint(2)"><i class="fa-solid fa-minus"></i></button>
+        </div>
     </div>
 </div>

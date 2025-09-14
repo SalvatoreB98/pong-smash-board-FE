@@ -45,7 +45,6 @@ export class LoaderService {
       if (message.includes('not_enough_players')) {
         const button = document.getElementById('add-players-button');
         if (button) {
-          button.scrollIntoView({ behavior: 'smooth' });
           button.classList.add('highlight');
         }
       }
