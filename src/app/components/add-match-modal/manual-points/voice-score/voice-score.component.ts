@@ -24,7 +24,7 @@ export class VoiceScoreComponent {
 
     if (SpeechRecognition) {
       this.recognition = new SpeechRecognition();
-      this.recognition.lang = 'it-IT'; // ascolta in italiano
+      this.recognition.lang = 'it-IT';
       this.recognition.continuous = true;
       this.recognition.interimResults = false;
 
@@ -32,17 +32,15 @@ export class VoiceScoreComponent {
         const transcript = event.results[event.results.length - 1][0].transcript.trim();
         console.log('Heard:', transcript);
 
-        const numbers = transcript.match(/\d+/g); // prendi solo numeri
-        if (numbers && numbers.length > 0) {
-          this.applyNumbers(numbers.map((n: string) => parseInt(n, 10)));
-        }
+        const numbers = transcript.match(/\d+/g);
+        if (numbers) this.applyNumbers(numbers.map(n => parseInt(n, 10)));
       };
 
       this.recognition.onerror = (err: any) => {
         console.error('Recognition error:', err);
       };
     } else {
-      console.warn('SpeechRecognition non supportato in questo browser');
+      alert('Il tuo dispositivo non è compatibile con il riconoscimento vocale');
     }
   }
 
