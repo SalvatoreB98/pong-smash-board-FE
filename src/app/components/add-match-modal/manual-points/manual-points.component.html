@@ -9,7 +9,7 @@
                 <button class="tap" (click)="changePoint(1)">
                     <span>{{player1Points}}</span>
                     <div class="player-indicator left">
-                        <img src="./default-player.jpg" alt="">
+                        <img [src]="player1?.image_url || './default-player.jpg'" alt="">
                         <div> {{ player1?.nickname }}</div>
                     </div>
                 </button>
@@ -19,7 +19,7 @@
                 <button class="tap" (click)="changePoint(2)">
                     <span>{{player2Points}}</span>
                     <div class="player-indicator right">
-                        <img src="./default-player.jpg" alt="">
+                        <img [src]="player2?.image_url || './default-player.jpg'" alt="">
                         <div> {{ player2?.nickname }}</div>
                     </div>
                 </button>
