@@ -3,7 +3,9 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
     <ng-container *ngIf="!selectingPlayer">
-        <div class="sets-container">Wewe</div>
+        <div class="sets-container">
+            {{ "sets" | translate }}: {{player1SetsPoints}} - {{player2SetsPoints}}
+        </div>
         <div class="container-points">
             <div #effectLeft class="points box box1">
                 <button class="tap" (click)="changePoint(1)">
@@ -29,11 +31,11 @@
 
         <div class="actions">
             <button type="button" class="bg-primary" (click)="onSave()"
-                [disabled]="(player1Points === 0 && player2Points === 0) || !player1 || !player2">
+                [disabled]="isPointsError(player1Points, player2Points, maxPoints)">
                 {{'save' | translate}}
             </button>
-            <button type="button" (click)="onReset()">
-                {{'reset' | translate}}
+            <button type="button" class="reset" (click)="onReset()">
+                {{'reset_points' | translate}}
             </button>
         </div>
     </ng-container>

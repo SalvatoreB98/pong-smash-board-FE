@@ -4,7 +4,7 @@ import { IPlayer } from '../../../../services/players.service';
 import { CompetitionService } from '../../../../services/competitions.service';
 import { ICompetition } from '../../../../api/competition.api';
 import { DataService } from '../../../../services/data.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { SelectPlayerComponent } from '../../../utils/components/select-player/select-player.component';
 
 @Component({
@@ -20,6 +20,7 @@ export class ManualPointsComponent {
   @ViewChild('effectRight') effectRight!: ElementRef;
   @Input() maxSets = 5;
   @Input() maxPoints = 21;
+  initialMaxPoints = 21;
   @Input() player2: IPlayer | null = null;
   @Input() player1: IPlayer | null = null;
   @Input() players: any[] = [];
@@ -50,6 +51,7 @@ export class ManualPointsComponent {
     this.competitionService.activeCompetition$.subscribe(comp => {
       this.competition = comp;
       this.maxPoints = this.competition?.['points_type'] || 21;
+      this.initialMaxPoints = this.maxPoints;
       this.maxSets = this.competition?.['sets_type'] || 10;
     });
     this.playersForm = this.fb.group({
@@ -74,29 +76,60 @@ export class ManualPointsComponent {
 
   changePoint(player: number) {
     console.log('Change point for player', player, this.player1Points, this.player2Points, this.player1, this.player2);
-    if (player === 1 && this.player1Points < this.maxPoints) {
-      this.player1Points++;
-      this.effectLeft.nativeElement.classList.add('highlight-once');
-      setTimeout(() => {
-        this.effectLeft.nativeElement.classList.remove('highlight-once');
-      }, 1000);
-    } else if (player === 2 && this.player2Points < this.maxPoints) {
-      this.player2Points++;
-      this.effectRight.nativeElement.classList.add('highlight-once');
-      setTimeout(() => {
-        this.effectRight.nativeElement.classList.remove('highlight-once');
-      }, 1000);
-    }
-    if (this.player1Points === this.maxPoints && this.player2Points === this.maxPoints) {
-      this.maxPoints += 2;
+
+    // Allow increment if under maxPoints, or if both at least maxPoints and difference < 2 (advantage rule)
+    if (
+      (player === 1 &&
+        (this.player1Points < this.maxPoints ||
+          (this.player1Points >= this.maxPoints - 1 &&
+            this.player2Points >= this.maxPoints - 1 &&
+            Math.abs(this.player1Points - this.player2Points) < 2))) ||
+      (player === 2 &&
+        (this.player2Points < this.maxPoints ||
+          (this.player1Points >= this.maxPoints - 1 &&
+            this.player2Points >= this.maxPoints - 1 &&
+            Math.abs(this.player1Points - this.player2Points) < 2)))
+    ) {
+      if (player === 1) {
+        this.player1Points++;
+        this.effectLeft.nativeElement.classList.add('highlight-once');
+        setTimeout(() => {
+          this.effectLeft.nativeElement.classList.remove('highlight-once');
+        }, 1000);
+      } else if (player === 2) {
+        this.player2Points++;
+        this.effectRight.nativeElement.classList.add('highlight-once');
+        setTimeout(() => {
+          this.effectRight.nativeElement.classList.remove('highlight-once');
+        }, 1000);
+      }
+      // If both players reach maxPoints, increase maxPoints by 2 for advantage
+      if (this.player1Points >= this.maxPoints && this.player2Points >= this.maxPoints && Math.abs(this.player1Points - this.player2Points) < 2) {
+        this.maxPoints += 2;
+      }
     }
   }
 
   subtractPoint(player: number) {
     if (player === 1 && this.player1Points > 0) {
+      this.recalculateMaxPoints();
       this.player1Points--;
     } else if (player === 2 && this.player2Points > 0) {
       this.player2Points--;
+      this.recalculateMaxPoints();
+    }
+    console.log(this.maxPoints)
+  }
+
+  private recalculateMaxPoints() {
+    // Decrease maxPoints only if both players have at least initialMaxPoints - 1 and the difference is less than 2
+    if (
+      this.player1Points >= this.initialMaxPoints - 1 &&
+      this.player2Points >= this.initialMaxPoints - 1 &&
+      Math.abs(this.player1Points - this.player2Points) < 2 &&
+      this.maxPoints > this.initialMaxPoints
+    ) {
+      this.maxPoints -= 2;
     }
   }
 
@@ -133,11 +166,12 @@ export class ManualPointsComponent {
   }
 
   onSave() {
-    // Implement save functionality checking sets and points
-    if (this.player1SetsPoints > this.player2SetsPoints) {
+    if (this.player1Points > this.player2Points) {
       this.player1SetsPoints++;
-    } else if (this.player2SetsPoints > this.player1SetsPoints) {
+      this.onReset();
+    } else if (this.player2Points > this.player1Points) {
       this.player2SetsPoints++;
+      this.onReset();
     }
   }
 
@@ -154,5 +188,34 @@ export class ManualPointsComponent {
     setTimeout(() => {
       this.effectLeft.nativeElement.classList.remove('highlight-once');
     }, 1000);
+  }
+
+  // Restituisce true se la situazione dei punti NON è valida secondo le regole del vantaggio
+  isPointsError(p1: number, p2: number, maxPoints: number): boolean {
+    // Caso iniziale
+    if (p1 === 0 && p2 === 0) return true;
+
+    const diff = Math.abs(p1 - p2);
+    const max = Math.max(p1, p2);
+    const min = Math.min(p1, p2);
+    // Entrambi sotto al maxPoints → nessun vincitore
+    if (p1 < maxPoints && p2 < maxPoints) return true;
+
+    // Qualcuno ha raggiunto almeno maxPoints
+    if (max >= maxPoints) {
+      // Per essere valido: differenza >= 2 e l'altro almeno a maxPoints - 1
+      if (diff >= 2) {
+        console.log('isPointsError: diff < 2 or min < maxPoints - 1');
+        if (p1 >= this.initialMaxPoints - 1 && p2 > this.initialMaxPoints - 1 && diff > 2) {
+          return true; // punteggio non valido
+        }
+        return false; // punteggio valido
+
+      }
+      console.log('isPointsError: diff < 2 or min < maxPoints - 1');
+      return true; // ancora non valido
+    }
+    console.log('Unexpected case in isPointsError');
+    return true;
   }
 }

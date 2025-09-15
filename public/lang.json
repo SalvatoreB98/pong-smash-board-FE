@@ -706,5 +706,9 @@
     "manual_points": {
         "it": "Punti in diretta",
         "en": "Live points"
+    },
+    "reset_points": {
+        "it": "Reimposta punti",
+        "en": "Reset points"
     }
 }

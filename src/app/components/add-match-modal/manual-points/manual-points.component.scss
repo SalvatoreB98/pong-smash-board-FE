@@ -59,10 +59,9 @@
         place-items: center;
         cursor: pointer;
         position: relative;
-        overflow: hidden;
 
         span {
-            font-size: 25vw;
+            font-size: 25vh;
         }
 
         display: grid;
@@ -84,6 +83,10 @@
     .box2 {
         background-color: rgba($primary, 0.5);
     }
+    .sets-container {
+        font-size: 2em;
+        text-align: center;
+    }
 }
 
 button {
@@ -91,7 +94,9 @@ button {
     background-color: unset;
     position: relative;
 }
-
+.reset {
+    background-color: $dark;
+}
 .player-indicator {
     position: absolute;
     filter: drop-shadow(0px 0px 30px black);
@@ -102,13 +107,13 @@ button {
 
     &.left {
         text-align: left;
-        left: -2em;
+        left: 0;
     }
 
     &.right {
         text-align: right;
         flex-direction: row-reverse;
-        right: -2em;
+        right: 0;
     }
 
     img {
@@ -205,7 +210,7 @@ button:disabled {
     .fullscreen {
         .box {
             span {
-                font-size: 15vw;
+                font-size: 10vw;
             }
         }
     }
@@ -230,4 +235,10 @@ button:disabled {
     .players-container-form {
         padding: 1em 3em;
     }
+}
+@media screen and (min-width: 1024px) and (max-width: 1280px) {
+    .players-container-form {
+        padding: 1em 5em;
+    }
+    
 }
