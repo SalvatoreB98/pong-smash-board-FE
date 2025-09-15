@@ -88,7 +88,11 @@
         text-align: center;
     }
 }
-
+.microphone-container  {
+    position: relative;
+    top: 1em;
+    font-size: 2em;
+}
 button {
     border: none;
     background-color: unset;
@@ -227,7 +231,7 @@ button:disabled {
 
 @media screen and (max-width: 600px) {
     .players-container-form {
-        grid-template-columns: 1fr;
+        padding: 0;
     }
 }
 

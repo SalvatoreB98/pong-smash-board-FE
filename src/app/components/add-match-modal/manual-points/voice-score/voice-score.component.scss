@@ -1,0 +1,60 @@
+@use "../../../../../style/variables.scss" as *;
+
+.voice-score {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+
+    button {
+        all: unset;
+        cursor: pointer;
+        background-color: white;
+        color: rgb(121, 121, 121);
+        border-radius: 100%;
+        width: 2em;
+        height: 2em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        i {
+            font-size: 0.75em;
+        }
+        z-index: 10;
+    }
+
+    .started {
+        animation: pulse 2s ease-in-out infinite;
+        color: $contrast;
+    }
+
+    .info {
+        position: absolute;
+        left: 50%;
+        transform: translateX(calc(-50% + 2em));
+        width: 500px;
+        z-index: 9;
+    }
+
+    .info-input {
+        display: inline-block;
+        margin-left: 0.25em;
+        color: gray;
+        cursor: help;
+        font-size: 0.9em;
+
+        &:hover::after,
+        &:focus::after {
+            padding: 1em;
+            position: absolute;
+            content: attr(title);
+            background-color: black;
+            filter: drop-shadow(0 0 0.3125em rgba(0, 0, 0, 0.5));
+            border-radius: $border-radius;
+            z-index: 9;
+            font-size: 0.5em;
+        }
+    }
+}

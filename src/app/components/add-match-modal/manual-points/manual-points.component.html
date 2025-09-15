@@ -6,6 +6,9 @@
         <div class="sets-container">
             {{ "sets" | translate }}: {{player1SetsPoints}} - {{player2SetsPoints}}
         </div>
+        <div class="microphone-container text-center">
+            <app-voice-score (scoreChanged)="onScoreChanged($event)"></app-voice-score>
+        </div>
         <div class="container-points">
             <div #effectLeft class="points box box1">
                 <button class="tap" (click)="changePoint(1)">

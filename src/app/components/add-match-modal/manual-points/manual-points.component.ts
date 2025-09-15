@@ -6,10 +6,11 @@ import { ICompetition } from '../../../../api/competition.api';
 import { DataService } from '../../../../services/data.service';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { SelectPlayerComponent } from '../../../utils/components/select-player/select-player.component';
+import { VoiceScoreComponent } from './voice-score/voice-score.component';
 
 @Component({
   selector: 'app-manual-points',
-  imports: [SHARED_IMPORTS, SelectPlayerComponent],
+  imports: [SHARED_IMPORTS, SelectPlayerComponent, VoiceScoreComponent],
   templateUrl: './manual-points.component.html',
   styleUrl: './manual-points.component.scss'
 })
@@ -18,6 +19,12 @@ export class ManualPointsComponent {
   @Output() close = new EventEmitter<any>();
   @ViewChild('effectLeft') effectLeft!: ElementRef;
   @ViewChild('effectRight') effectRight!: ElementRef;
+
+  onScoreChanged(event: { p1: number; p2: number }) {
+    this.player1Points = event.p1;
+    this.player2Points = event.p2;
+  }
+  
   @Input() maxSets = 5;
   @Input() maxPoints = 21;
   initialMaxPoints = 21;

@@ -1,0 +1,15 @@
+<div class="voice-score">
+    <button (click)="toggleListening()" [class.started]="listening" title="{{ listening ? ('stop_listening' | translate) : ('start_listening' | translate) }}">
+        <ng-container *ngIf="listening; else startMic">
+            <i class="fa-solid fa-microphone"></i>
+        </ng-container>
+        <ng-template #startMic>
+            <i class="fa-solid fa-microphone-slash"></i>
+        </ng-template>
+    </button>
+    <div class="info" *ngIf="!listening">
+        <div class="info-input" title="{{ 'microphone_info' | translate }}">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
