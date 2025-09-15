@@ -3,7 +3,7 @@
     <label>{{ "Player" | translate }} {{ playerNumber }}</label>
 
     <!-- Fake input field -->
-    <div class="input-field position-relative" (click)="toggleDropdown($event)" [class.open]="showDropdown">
+    <div class="input-field position-relative" style="text-align: left;" (click)="toggleDropdown($event)" [class.open]="showDropdown">
         <span *ngIf="!selectedPlayer" class="my-placeholder">
             {{"Select a player" | translate}}...
         </span>
@@ -17,11 +17,11 @@
     </div>
 
     <!-- Dropdown -->
-    <div class="dropdown w-100" [class.visible]="showDropdown" (click)="$event.stopPropagation()">
+    <div class="dropdown" [class.visible]="showDropdown" (click)="$event.stopPropagation()">
         <!-- Search input -->
-        <div class="search-wrapper d-flex w-100">
+        <div class="search-wrapper d-flex">
             <input #searchInput type="text" [formControl]="searchCtrl" [placeholder]="'Search Player' | translate"
-                class="search-input w-100" />
+                class="search-input" />
             <span class="search-icon">🔍</span>
         </div>
 

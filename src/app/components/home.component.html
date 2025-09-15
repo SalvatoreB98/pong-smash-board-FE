@@ -46,4 +46,4 @@
     <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
 </ng-container>
 
-<app-manual-points *ngIf="manualSetPointsActive" (close)="closeManualSetPoint()"></app-manual-points>
+<app-manual-points *ngIf="manualSetPointsActive" (close)="closeManualSetPoint()" [players]="players"></app-manual-points>

@@ -2,48 +2,65 @@
     <button class="close" (click)="close.emit()">
         <i class="fa-solid fa-xmark"></i>
     </button>
-
-    <ng-container *ngIf="selectingPlayer">
+    <ng-container *ngIf="!selectingPlayer">
+        <div class="sets-container">Wewe</div>
         <div class="container-points">
             <div #effectLeft class="points box box1">
                 <button class="tap" (click)="changePoint(1)">
                     <span>{{player1Points}}</span>
+                    <div class="player-indicator left">
+                        <img src="./default-player.jpg" alt="">
+                        <div> {{ player1?.nickname }}</div>
+                    </div>
                 </button>
                 <button class="minus" (click)="subtractPoint(1)"><i class="fa-solid fa-minus"></i></button>
             </div>
             <div #effectRight class="points box box2">
                 <button class="tap" (click)="changePoint(2)">
                     <span>{{player2Points}}</span>
+                    <div class="player-indicator right">
+                        <img src="./default-player.jpg" alt="">
+                        <div> {{ player2?.nickname }}</div>
+                    </div>
                 </button>
                 <button class="minus" (click)="subtractPoint(2)"><i class="fa-solid fa-minus"></i></button>
             </div>
         </div>
-        <div class="players-container">
-            <div class="player left">
-                <img src="./default-player.jpg" alt="">
-                <div>Ma Long</div>
-            </div>
-            <div>
-                vs
-            </div>
-            <div class="player right">
-                <img src="./default-player.jpg" alt="">
-                <div>Fan Zhendong</div>
-            </div>
+
+        <div class="actions">
+            <button type="button" class="bg-primary" (click)="onSave()"
+                [disabled]="(player1Points === 0 && player2Points === 0) || !player1 || !player2">
+                {{'save' | translate}}
+            </button>
+            <button type="button" (click)="onReset()">
+                {{'reset' | translate}}
+            </button>
         </div>
     </ng-container>
-    
-    <div class="players-container-form">
-        <div class="player left">
-            <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'" (playerSelected)="setPlayer($event)">
-            </app-select-player>
-        </div>
-        <div>
-            vs
-        </div>
-        <div class="player right">
-            <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'" (playerSelected)="setPlayer($event)">
-            </app-select-player>
-        </div>
+
+    <div *ngIf="selectingPlayer" class="select-players-container">
+        <form action="" class="form-dark manual-points" [formGroup]="playersForm">
+            <h2>{{'manual_points' | translate}}</h2>
+            <p class="text-center">{{'manual_points_description' | translate}}</p>
+            <div class="players-container-form">
+                <div class="player left">
+                    <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'"
+                        (playerSelected)="setPlayer($event)">
+                    </app-select-player>
+                </div>
+                <div class="m-3 text-center">{{'vs' | translate}}</div>
+                <div class="player right">
+                    <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'"
+                        (playerSelected)="setPlayer($event)">
+                    </app-select-player>
+                </div>
+            </div>
+            <div class="button-container">
+                <button type="button" class="bg-primary position-relative ps-3 pe-3" (click)="onContinue()"
+                    [disabled]="playersForm.invalid">
+                    {{'continue' | translate}}
+                </button>
+            </div>
+        </form>
     </div>
 </div>

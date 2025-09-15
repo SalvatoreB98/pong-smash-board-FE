@@ -698,5 +698,13 @@
     "no_active_competition": {
         "it": "Non ci sono competizioni attive. Crea o unisciti a una competizione per iniziare a registrare partite, classifiche e statistiche.",
         "en": "There are no active competitions. Create or join a competition to start tracking matches, standings and stats."
+    },
+    "manual_points_description": {
+        "it": "Registra i punti in diretta durante la partita, inizia selezionando i giocatori.",
+        "en": "Record points live during the match, start by selecting players."
+    },
+    "manual_points": {
+        "it": "Punti in diretta",
+        "en": "Live points"
     }
 }

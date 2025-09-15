@@ -4,7 +4,7 @@ import { IPlayer } from '../../../../services/players.service';
 import { CompetitionService } from '../../../../services/competitions.service';
 import { ICompetition } from '../../../../api/competition.api';
 import { DataService } from '../../../../services/data.service';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectPlayerComponent } from '../../../utils/components/select-player/select-player.component';
 
 @Component({
@@ -20,25 +20,30 @@ export class ManualPointsComponent {
   @ViewChild('effectRight') effectRight!: ElementRef;
   @Input() maxSets = 5;
   @Input() maxPoints = 21;
+  @Input() player2: IPlayer | null = null;
   @Input() player1: IPlayer | null = null;
   @Input() players: any[] = [];
-  matchForm!: FormGroup;
+
+  playersForm!: FormGroup;
+
+  player1Points = 0;
+  player2Points = 0;
+
+  player1SetsPoints = 0;
+  player2SetsPoints = 0;
 
   competitionService = inject(CompetitionService);
   competition: ICompetition | null = null;
   isMobile = false;
-  selectingPlayer: boolean = false;
+  selectingPlayer: boolean = true;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private fb: FormBuilder) { }
 
   ngOnChanges() {
     console.info('player1 value:', this.player1);
     console.info('player2 value:', this.player2);
   }
 
-  @Input() player2: IPlayer | null = null;
-  player1Points = 0;
-  player2Points = 0;
 
   ngOnInit() {
     this.checkViewport();
@@ -46,6 +51,15 @@ export class ManualPointsComponent {
       this.competition = comp;
       this.maxPoints = this.competition?.['points_type'] || 21;
       this.maxSets = this.competition?.['sets_type'] || 10;
+    });
+    this.playersForm = this.fb.group({
+      player1: [null, Validators.required],
+      player2: [null, Validators.required]
+    });
+    this.playersForm.valueChanges.subscribe((val) => {
+      this.player1 = this.players.find(p => p.id === val.player1) || null;
+      this.player2 = this.players.find(p => p.id === val.player2) || null;
+      console.log(val, this.player1, this.player2);
     });
   }
 
@@ -59,6 +73,7 @@ export class ManualPointsComponent {
   }
 
   changePoint(player: number) {
+    console.log('Change point for player', player, this.player1Points, this.player2Points, this.player1, this.player2);
     if (player === 1 && this.player1Points < this.maxPoints) {
       this.player1Points++;
       this.effectLeft.nativeElement.classList.add('highlight-once');
@@ -91,8 +106,8 @@ export class ManualPointsComponent {
     const loggedInPlayerId = this.dataService.getLoggedInPlayerId();
     let filteredPlayers = this.players.filter(p => p.id !== loggedInPlayerId);
 
-    const selectedPlayer1 = this.matchForm.get('player1')?.value;
-    const selectedPlayer2 = this.matchForm.get('player2')?.value;
+    const selectedPlayer1 = this.playersForm.get('player1')?.value;
+    const selectedPlayer2 = this.playersForm.get('player2')?.value;
 
     if (player === 1 && selectedPlayer2) {
       filteredPlayers = filteredPlayers.filter(p => p.id !== selectedPlayer2);
@@ -106,6 +121,38 @@ export class ManualPointsComponent {
   }
 
   setPlayer(player: any) {
-    this.matchForm.get(`player${player.playerNumber}`)?.setValue(player.id);
+    this.playersForm.get(`player${player.playerNumber}`)?.setValue(player.id);
+  }
+
+  onContinue() {
+    if (this.playersForm.valid) {
+      this.player1 = this.players.find(p => p.id === this.playersForm.get('player1')?.value) || null;
+      this.player2 = this.players.find(p => p.id === this.playersForm.get('player2')?.value) || null;
+      this.selectingPlayer = false;
+    }
+  }
+
+  onSave() {
+    // Implement save functionality checking sets and points
+    if (this.player1SetsPoints > this.player2SetsPoints) {
+      this.player1SetsPoints++;
+    } else if (this.player2SetsPoints > this.player1SetsPoints) {
+      this.player2SetsPoints++;
+    }
+  }
+
+  onReset() {
+    this.player1Points = 0;
+    this.player2Points = 0;
+    this.player1SetsPoints = 0;
+    this.player2SetsPoints = 0;
+    this.effectRight.nativeElement.classList.add('highlight-once');
+    setTimeout(() => {
+      this.effectRight.nativeElement.classList.remove('highlight-once');
+    }, 1000);
+    this.effectLeft.nativeElement.classList.add('highlight-once');
+    setTimeout(() => {
+      this.effectLeft.nativeElement.classList.remove('highlight-once');
+    }, 1000);
   }
 }
