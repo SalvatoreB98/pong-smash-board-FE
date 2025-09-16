@@ -214,6 +214,7 @@ export class DataService {
       this.matchesSubject.next(this.matches);
       console.log('Success:', responseData);
     } catch (error: any) {
+      console.info('Error:', error);
       this.loaderService?.showToast(
         `Match data not found ${error?.message ?? error}`,
         MSG_TYPE.ERROR

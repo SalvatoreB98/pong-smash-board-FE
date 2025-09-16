@@ -7,6 +7,7 @@ import { DataService } from '../../../../services/data.service';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { SelectPlayerComponent } from '../../../utils/components/select-player/select-player.component';
 import { VoiceScoreComponent } from './voice-score/voice-score.component';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-manual-points',
@@ -19,11 +20,11 @@ export class ManualPointsComponent {
   @Output() close = new EventEmitter<any>();
   @ViewChild('effectLeft') effectLeft!: ElementRef;
   @ViewChild('effectRight') effectRight!: ElementRef;
-  
+
   onScoreChanged(event: { p1: number; p2: number }) {
     // Clamp points to maxPoints
-    event.p1 = Math.min(event.p1, this.maxPoints + 1 ); // +1 per permettere il vantaggio
-    event.p2 = Math.min(event.p2, this.maxPoints + 1 ); // +1 per permettere il vantaggio
+    event.p1 = Math.min(event.p1, this.maxPoints + 1); // +1 per permettere il vantaggio
+    event.p2 = Math.min(event.p2, this.maxPoints + 1); // +1 per permettere il vantaggio
     if (this.effectLeft && this.effectLeft.nativeElement) {
       if (this.player1Points != event.p1) {
         this.triggerHighlight(this.effectLeft);
@@ -56,7 +57,7 @@ export class ManualPointsComponent {
   isMobile = false;
   selectingPlayer: boolean = true;
 
-  constructor(private dataService: DataService, private fb: FormBuilder) { }
+  constructor(private dataService: DataService, private fb: FormBuilder, private modalService: ModalService) { }
 
   ngOnChanges() {
     console.info('player1 value:', this.player1);
@@ -252,5 +253,48 @@ export class ManualPointsComponent {
   }
   isCompleted(): boolean {
     return this.player1SetsPoints >= this.maxSets || this.player2SetsPoints >= this.maxSets;
+  }
+  saveMatch() {
+    // 1. Verifica che la partita sia completata
+    if (!this.isCompleted()) {
+      alert('La partita non è ancora conclusa!');
+      return;
+    }
+
+    // 2. Verifica che i giocatori siano selezionati
+    if (!this.player1 || !this.player2) {
+      alert('Seleziona entrambi i giocatori!');
+      return;
+    }
+
+    // 3. Prepara data e ora
+    const today = new Date();
+    const formattedDate =
+      today.toLocaleDateString('en-GB') +
+      ` - ${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
+
+    const setsData = this.sets.map((s, i) => ({
+      player1Points: s.player1 ?? s.player1 ?? 0,
+      player2Points: s.player2 ?? s.player2 ?? 0
+    }));
+
+    // 4. Prepara l’oggetto da salvare
+    const formData = {
+      date: formattedDate,
+      player1: this.player1.id,
+      player2: this.player2.id,
+      p1Score: this.player1SetsPoints,  // set vinti da player1
+      p2Score: this.player2SetsPoints,  // set vinti da player2
+      setsPoints: setsData              
+    };
+
+    console.log('Saving manual match...', formData);
+
+    // 5. Chiamata al service
+    this.dataService.addMatch(formData).then(() => {
+      this.modalService.closeModal();
+    }).catch(err => {
+      console.error('Errore durante il salvataggio match', err);
+    });
   }
 }

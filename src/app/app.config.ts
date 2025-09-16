@@ -9,6 +9,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptor
 import { TranslatePipe } from './utils/translate.pipe';
 import { authTokenInterceptor } from './interceptors/auth-token.interceptor';
 import { apiPrefixInterceptor } from './interceptors/api-url.interceptor';
+import { preventDuplicateInterceptor } from './interceptors/duplicate.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(RouterModule),             
     provideAnimations(),
     provideHttpClient(
-      withInterceptors([authTokenInterceptor, apiPrefixInterceptor]),
+      withInterceptors([authTokenInterceptor, apiPrefixInterceptor, preventDuplicateInterceptor]),
     ),
     ModalService,
     CommonModule,

@@ -716,8 +716,8 @@
         "en": "Click to enable the microphone and say the scores out loud (e.g., 'one to zero', 'two to one', 'four to four', 'eleven to seven')"
     },
     "save_points": {
-        "it": "Salva punti",
-        "en": "Save points"
+        "it": "Salva set",
+        "en": "Save set"
     },
     "completed_match_save": {
         "it": "Salva Partita",

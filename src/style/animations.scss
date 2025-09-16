@@ -138,7 +138,18 @@
         animation: active 0.3s ease-in-out;
     }
 }
+@keyframes in-slide {
+    from {
+        opacity: 0;
+        transform: translateX(50%);
+    }
 
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+}
 @keyframes active {
     0% {
         transform: scaleX(0);
