@@ -20,7 +20,7 @@
                 </div>
                 <div class="button-container">
                     <div>
-                        <button type="button" class="bg-secondary position-relative" (click)="addManualSetPoint()">
+                        <button type="button" class="bg-secondary position-relative" (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
                             {{ "add_manual_set_points" | translate }}
                             <div class="circle-live"></div>
                         </button>
@@ -46,4 +46,7 @@
     <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
 </ng-container>
 
-<app-manual-points *ngIf="manualSetPointsActive" (close)="closeManualSetPoint()" [players]="players"></app-manual-points>
+<app-modal [fullscreen]="true" [label]="'manual_points'" *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
+    [modalName]="modalService.MODALS['MANUAL_POINTS']">
+    <app-manual-points [players]="players"></app-manual-points>
+</app-modal>

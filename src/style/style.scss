@@ -405,3 +405,10 @@ button.secondary-color-button {
     animation: pulse 2s infinite;
     margin-left: 0.75em;
 }
+
+.fullscreen {
+    width: 90vw !important;
+    height: 85vh !important;
+    max-width: none !important;
+    max-height: none !important;
+}

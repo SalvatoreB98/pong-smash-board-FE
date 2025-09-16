@@ -1,7 +1,4 @@
-<div class="fullscreen" [ngClass]="{ mobile: isMobile, desktop: !isMobile }">
-    <button class="close" (click)="close.emit()">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
+<div class="manual-points" [ngClass]="{ mobile: isMobile, desktop: !isMobile }">
     <ng-container *ngIf="!selectingPlayer">
         <div class="sets-container">
             {{ "sets" | translate }}: {{player1SetsPoints}} - {{player2SetsPoints}}

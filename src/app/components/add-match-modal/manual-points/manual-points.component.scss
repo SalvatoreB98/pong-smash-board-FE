@@ -1,6 +1,6 @@
 @use '../../../../style/variables.scss' as *;
 
-.fullscreen {
+.manual-points {
     .close {
         cursor: pointer;
         background: black;
@@ -13,12 +13,11 @@
         margin: 1em;
     }
 
-    width: 100vw;
-    height: 100svh;
+    width: 98%;
+    height: 100%;
     position: fixed;
     top: 0;
     z-index: 1000;
-    background: black;
 
     .container-points {
         padding: 5em;
@@ -60,6 +59,7 @@
         cursor: pointer;
         position: relative;
         transition: 0.2s all ease-in-out;
+
         span {
             font-size: 25vh;
         }
@@ -68,11 +68,13 @@
         grid-template-columns: 1fr;
 
         button.tap {
+            overflow: visible;
             text-align: center;
             display: block;
             height: 100%;
             width: 100%;
             position: relative;
+
             span {
                 position: relative;
                 z-index: 500;
@@ -83,24 +85,29 @@
     .box2 {
         background-color: rgba($primary, 0.5);
     }
+
     .sets-container {
         font-size: 2em;
         text-align: center;
     }
 }
-.microphone-container  {
+
+.microphone-container {
     position: relative;
     top: 1em;
     font-size: 2em;
 }
+
 button {
     border: none;
     background-color: unset;
     position: relative;
 }
+
 .reset {
     background-color: $dark;
 }
+
 .player-indicator {
     position: absolute;
     filter: drop-shadow(0px 0px 30px black);
@@ -136,15 +143,16 @@ button {
 }
 
 .minus {
-    position: absolute;
-    bottom: 15%;
+    aspect-ratio: 1 / 1;
     background-color: #0000008f;
     border-radius: 50%;
-    width: 2.5em;
-    height: 2.5em;
+    width: 50px!important;
+    height: 50px!important;
     display: grid;
     place-items: center;
     cursor: pointer;
+    position: relative;
+    z-index: 100;
 }
 
 .form-dark.manual-points {
@@ -211,7 +219,7 @@ button:disabled {
 }
 
 @media screen and (orientation: portrait) {
-    .fullscreen {
+    .manual-points {
         .box {
             span {
                 font-size: 10vw;
@@ -240,9 +248,10 @@ button:disabled {
         padding: 1em 3em;
     }
 }
+
 @media screen and (min-width: 1024px) and (max-width: 1280px) {
     .players-container-form {
         padding: 1em 5em;
     }
-    
+
 }
