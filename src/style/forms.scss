@@ -159,11 +159,9 @@ $border: #1f2937;
 .dropdown.visible {
   visibility: visible;
   opacity: 1;
-  transform: translateY(-0.75em);
-  width: 45%;
 }
+
 .manual-points .dropdown.visible {
-  width: 100%;
   z-index: 100;
 }
 

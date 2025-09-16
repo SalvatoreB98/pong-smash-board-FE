@@ -40,28 +40,40 @@
         </div>
     </ng-container>
 
-    <div *ngIf="selectingPlayer" class="select-players-container">
-        <form action="" class="form-dark manual-points" [formGroup]="playersForm">
-            <p class="text-center">{{'manual_points_description' | translate}}</p>
-            <div class="players-container-form">
-                <div class="player left">
+    <div *ngIf="selectingPlayer" class="container my-4">
+        <form class="form-dark" [formGroup]="playersForm">
+            <p class="text-center mb-4">
+                {{ 'manual_points_description' | translate }}
+            </p>
+
+            <div class="row align-items-center justify-content-center">
+                <!-- Player 1 -->
+                <div class="col-12 col-md-5 mb-3 mb-md-0">
                     <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'"
                         (playerSelected)="setPlayer($event)">
                     </app-select-player>
                 </div>
-                <div class="m-3 text-center">{{'vs' | translate}}</div>
-                <div class="player right">
+
+                <!-- VS -->
+                <div class="col-12 col-md-2 text-center mb-3 mb-md-0 fw-bold">
+                    {{ 'vs' | translate }}
+                </div>
+
+                <!-- Player 2 -->
+                <div class="col-12 col-md-5">
                     <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'"
                         (playerSelected)="setPlayer($event)">
                     </app-select-player>
                 </div>
             </div>
-            <div class="button-container">
-                <button type="button" class="bg-primary position-relative ps-3 pe-3" (click)="onContinue()"
+
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-primary px-4 position-relative" (click)="onContinue()"
                     [disabled]="playersForm.invalid">
-                    {{'continue' | translate}}
+                    {{ 'continue' | translate }}
                 </button>
             </div>
         </form>
     </div>
+
 </div>

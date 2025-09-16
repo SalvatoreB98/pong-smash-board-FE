@@ -15,8 +15,8 @@ export class ModalComponent {
   @ViewChild('modalRef') modalRef!: ElementRef;
   @Input() label: string = '';
   @Input() isSmall: boolean = false;
-  @Input() fullscreen: boolean = false;
-
+  @Input() fullscreen: boolean = false; 
+  
   constructor(public modalService: ModalService) { }
 
   onImageError(event: Event) {
@@ -35,5 +35,8 @@ export class ModalComponent {
         this.closeModal();
       }
     }
+  }
+  toggleFullscreen(): void {
+    this.fullscreen = !this.fullscreen;
   }
 }

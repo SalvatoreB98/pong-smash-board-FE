@@ -1,24 +1,6 @@
 @use '../../../../style/variables.scss' as *;
 
 .manual-points {
-    .close {
-        cursor: pointer;
-        background: black;
-        position: absolute;
-        border-radius: 5px;
-        padding: 1em;
-        top: 1em;
-        right: 1em;
-        background-color: $contrast;
-        margin: 1em;
-    }
-
-    width: 98%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    z-index: 1000;
-
     .container-points {
         padding: 5em;
         display: grid;
