@@ -714,5 +714,9 @@
     "microphone_info": {
         "it": "Clicca per abilitare il microfono e pronuncia i punteggi ad alta voce (es. 'uno a zero', 'due a uno', 'quattro a quattro', 'undici a sette')",
         "en": "Click to enable the microphone and say the scores out loud (e.g., 'one to zero', 'two to one', 'four to four', 'eleven to seven')"
+    },
+    "save_points": {
+        "it": "Salva punti",
+        "en": "Save points"
     }
 }

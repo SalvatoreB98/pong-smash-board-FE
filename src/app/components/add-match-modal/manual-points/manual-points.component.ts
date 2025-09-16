@@ -24,7 +24,7 @@ export class ManualPointsComponent {
     this.player1Points = event.p1;
     this.player2Points = event.p2;
   }
-  
+
   @Input() maxSets = 5;
   @Input() maxPoints = 21;
   initialMaxPoints = 21;
@@ -99,16 +99,10 @@ export class ManualPointsComponent {
     ) {
       if (player === 1) {
         this.player1Points++;
-        this.effectLeft.nativeElement.classList.add('highlight-once');
-        setTimeout(() => {
-          this.effectLeft.nativeElement.classList.remove('highlight-once');
-        }, 1000);
+        this.triggerHighlight(this.effectLeft);
       } else if (player === 2) {
         this.player2Points++;
-        this.effectRight.nativeElement.classList.add('highlight-once');
-        setTimeout(() => {
-          this.effectRight.nativeElement.classList.remove('highlight-once');
-        }, 1000);
+        this.triggerHighlight(this.effectRight);
       }
       // If both players reach maxPoints, increase maxPoints by 2 for advantage
       if (this.player1Points >= this.maxPoints && this.player2Points >= this.maxPoints && Math.abs(this.player1Points - this.player2Points) < 2) {
@@ -187,14 +181,14 @@ export class ManualPointsComponent {
     this.player2Points = 0;
     this.player1SetsPoints = 0;
     this.player2SetsPoints = 0;
-    this.effectRight.nativeElement.classList.add('highlight-once');
-    setTimeout(() => {
-      this.effectRight.nativeElement.classList.remove('highlight-once');
-    }, 1000);
-    this.effectLeft.nativeElement.classList.add('highlight-once');
-    setTimeout(() => {
-      this.effectLeft.nativeElement.classList.remove('highlight-once');
-    }, 1000);
+    this.maxPoints = this.initialMaxPoints;
+    // Trigger the highlight animation on reset for both players
+    if (this.effectRight && this.effectRight.nativeElement) {
+      this.triggerHighlight(this.effectRight);
+    }
+    if (this.effectLeft && this.effectLeft.nativeElement) {
+      this.triggerHighlight(this.effectLeft);
+    }
   }
 
   // Restituisce true se la situazione dei punti NON è valida secondo le regole del vantaggio
@@ -224,5 +218,24 @@ export class ManualPointsComponent {
     }
     console.log('Unexpected case in isPointsError');
     return true;
+  }
+  // Trigger highlight animation without flashes
+  private triggerHighlight(el: ElementRef) {
+    if (!el || !el.nativeElement) return;
+
+    const element = el.nativeElement;
+
+    // reset animation
+    element.style.animation = 'none';
+    element.offsetHeight; // force reflow
+    element.style.animation = ''; // restore
+
+    // reapply the class (keeps CSS control)
+    element.classList.add('highlight-once');
+
+    // quando finisce l’animazione la rimuovo
+    element.addEventListener('animationend', () => {
+      element.classList.remove('highlight-once');
+    }, { once: true });
   }
 }

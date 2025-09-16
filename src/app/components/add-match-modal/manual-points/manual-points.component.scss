@@ -59,7 +59,7 @@
         place-items: center;
         cursor: pointer;
         position: relative;
-
+        transition: 0.2s all ease-in-out;
         span {
             font-size: 25vh;
         }
