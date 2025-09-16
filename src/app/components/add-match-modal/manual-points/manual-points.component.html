@@ -9,7 +9,7 @@
         <div class="container-points">
             <div #effectLeft class="points box box1">
                 <button class="tap" (click)="changePoint(1)">
-                    <span>{{player1Points}}</span>
+                    <span class="big-point">{{player1Points}}</span>
                     <div class="player-indicator left">
                         <img [src]="player1?.image_url || './default-player.jpg'" alt="">
                         <div> {{ player1?.nickname }}</div>
@@ -19,7 +19,7 @@
             </div>
             <div #effectRight class="points box box2">
                 <button class="tap" (click)="changePoint(2)">
-                    <span>{{player2Points}}</span>
+                    <span class="big-point">{{player2Points}}</span>
                     <div class="player-indicator right">
                         <img [src]="player2?.image_url || './default-player.jpg'" alt="">
                         <div> {{ player2?.nickname }}</div>

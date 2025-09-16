@@ -8,7 +8,6 @@
         height: 75%;
         place-items: center;
         gap: 2.5em;
-
         // 👇 layout di default (desktop) = verticale
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr;
@@ -23,6 +22,21 @@
         span {
             display: inline-block;
             font-size: 1em;
+        }
+
+        .box {
+            span {
+                display: inline-block;
+                margin-top: 1em;
+                font-size: 5em;
+            }
+        }
+
+        img {
+            border-radius: 100%;
+            width: 7.5em;
+            height: 7.5em;
+            object-fit: cover;
         }
     }
 
@@ -69,6 +83,7 @@
         max-width: 10em;
         margin: auto;
     }
+
 }
 
 .microphone-container {

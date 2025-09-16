@@ -7,6 +7,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    // border: 1px solid white;
 }
 
 html {
@@ -265,6 +266,7 @@ section {
     box-shadow: 0 0 1.5em black;
     padding: 1em;
     overflow-y: scroll;
+    overflow-x: hidden;
     max-height: 90svh;
     animation: 0.2s in ease-in-out;
     padding-bottom: 2em;
