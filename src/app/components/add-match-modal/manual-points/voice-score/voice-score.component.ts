@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, NgZone, Output } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../../common/imports/shared.imports';
+import { Utils } from '../../../../utils/Utils';
 
 @Component({
   selector: 'app-voice-score',
@@ -17,7 +18,7 @@ export class VoiceScoreComponent {
 
   @Output() scoreChanged = new EventEmitter<{ p1: number; p2: number }>();
 
-  constructor() {
+  constructor(private ngZone: NgZone) {
     const SpeechRecognition =
       (window as any).SpeechRecognition ||
       (window as any).webkitSpeechRecognition;
@@ -26,14 +27,21 @@ export class VoiceScoreComponent {
       this.recognition = new SpeechRecognition();
       this.recognition.lang = 'it-IT';
       this.recognition.continuous = true;
-      this.recognition.interimResults = false;
+      this.recognition.interimResults = true; // ✅ risultati subito
 
       this.recognition.onresult = (event: any) => {
         const transcript = event.results[event.results.length - 1][0].transcript.trim();
         console.log('Heard:', transcript);
 
-        const numbers = transcript.match(/\d+/g);
-        if (numbers) this.applyNumbers(numbers.map((n: string) => parseInt(n, 10)));
+        // trova numeri anche durante l'ascolto
+        const numbers = Utils.parseNumbers(transcript);
+
+        if (numbers && numbers.length > 0) {
+          // forza Angular a rientrare nel ciclo di rilevamento cambi
+          this.ngZone.run(() => {
+            this.applyNumbers(numbers);
+          });
+        }
       };
 
       this.recognition.onerror = (err: any) => {
@@ -57,16 +65,12 @@ export class VoiceScoreComponent {
   }
 
   private applyNumbers(nums: number[]) {
-    // semplice logica: se viene detto 2 numeri li mette come punteggio
-    if (nums.length === 2) {
+    if (nums.length >= 2) {
       this.player1Points = nums[0];
       this.player2Points = nums[1];
-      this.scoreChanged.emit({ p1: this.player1Points, p2: this.player2Points });
-    }
-    // se viene detto 1 numero solo → aggiorna player1
-    else if (nums.length === 1) {
-      this.player1Points = nums[0];
-      this.scoreChanged.emit({ p1: this.player1Points, p2: this.player2Points });
+      this.ngZone.run(() => {
+        this.scoreChanged.emit({ p1: this.player1Points, p2: this.player2Points });
+      });
     }
   }
 }

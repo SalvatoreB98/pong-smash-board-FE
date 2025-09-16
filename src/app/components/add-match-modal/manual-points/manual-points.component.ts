@@ -21,6 +21,17 @@ export class ManualPointsComponent {
   @ViewChild('effectRight') effectRight!: ElementRef;
 
   onScoreChanged(event: { p1: number; p2: number }) {
+    // Clamp points to maxPoints
+    event.p1 = Math.min(event.p1, this.maxPoints + 1 ); // +1 per permettere il vantaggio
+    event.p2 = Math.min(event.p2, this.maxPoints + 1 ); // +1 per permettere il vantaggio
+    if (this.effectLeft && this.effectLeft.nativeElement) {
+      if (this.player1Points != event.p1) {
+        this.triggerHighlight(this.effectLeft);
+      }
+      if (this.player2Points != event.p2) {
+        this.triggerHighlight(this.effectRight);
+      }
+    }
     this.player1Points = event.p1;
     this.player2Points = event.p2;
   }
