@@ -16,13 +16,13 @@
 
     &.mobile {
         .container-points {
-            grid-template-columns: 1fr;
-            grid-template-rows: 1fr 1fr;
+            padding: 2.5em 0;
+            font-size: 0.75em;
         }
+
         span {
             display: inline-block;
-            font-size: 10vw;
-
+            font-size: 1em;
         }
     }
 
@@ -108,8 +108,8 @@ button {
 
     img {
         border-radius: 100%;
-        width: 175px;
-        height: 175px;
+        width: 10em;
+        height: 10em;
         object-fit: cover;
     }
 }
@@ -167,8 +167,8 @@ button {
 
         img {
             border-radius: 100%;
-            width: 175px;
-            height: 175px;
+            width: 10em;
+            height: 10em;
             object-fit: cover;
         }
     }
