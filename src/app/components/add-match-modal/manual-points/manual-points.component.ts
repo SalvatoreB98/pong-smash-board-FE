@@ -179,8 +179,7 @@ export class ManualPointsComponent {
   onReset() {
     this.player1Points = 0;
     this.player2Points = 0;
-    this.player1SetsPoints = 0;
-    this.player2SetsPoints = 0;
+
     this.maxPoints = this.initialMaxPoints;
     // Trigger the highlight animation on reset for both players
     if (this.effectRight && this.effectRight.nativeElement) {
