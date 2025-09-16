@@ -1,7 +1,7 @@
 <div class="manual-points" [ngClass]="{ mobile: isMobile, desktop: !isMobile }">
-    <ng-container *ngIf="!selectingPlayer">
+    <ng-container *ngIf="!selectingPlayer && !isCompleted()">
         <div class="sets-container">
-            {{ "sets" | translate }}: {{player1SetsPoints}} - {{player2SetsPoints}}
+            {{player1SetsPoints}} - {{player2SetsPoints}}
         </div>
         <div class="microphone-container text-center">
             <app-voice-score (scoreChanged)="onScoreChanged($event)"></app-voice-score>
@@ -30,17 +30,18 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="bg-primary" (click)="onSave()"
+            <button type="button" *ngIf="!isCompleted()" class="bg-primary" (click)="onSave()"
                 [disabled]="isPointsError(player1Points, player2Points, maxPoints)">
                 {{'save_points' | translate}}
             </button>
+
             <button type="button" class="reset" (click)="onReset()">
                 {{'reset_points' | translate}}
             </button>
         </div>
     </ng-container>
 
-    <div *ngIf="selectingPlayer" class="container my-4">
+    <div *ngIf="selectingPlayer && !isCompleted()" class="container my-4">
         <form class="form-dark" [formGroup]="playersForm">
             <p class="text-center mb-4">
                 {{ 'manual_points_description' | translate }}
@@ -76,4 +77,28 @@
         </form>
     </div>
 
+    <div *ngIf="isCompleted()">
+        <div class="summary mt-5">
+            <h3>{{ 'match_summary' | translate }}</h3>
+            <ul>
+                <li>
+                    <span>Set 1</span>
+                    <span>{{ sets[0].player1 }} - {{ sets[0].player2 }}</span>
+                </li>
+                <li>
+                    <span>Set 2</span>
+                    <span>{{ sets[1].player1 }} - {{ sets[1].player2 }}</span>
+                </li>
+                <li class="total">
+                    <span>Total</span>
+                    <span>{{ player1SetsPoints }} - {{ player2SetsPoints }}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="actions mt-5">
+            <button type="button" class="secondary">
+                {{'completed_match_save' | translate}}
+            </button>
+        </div>
+    </div>
 </div>

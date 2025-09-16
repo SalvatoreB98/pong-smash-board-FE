@@ -19,7 +19,7 @@ export class ManualPointsComponent {
   @Output() close = new EventEmitter<any>();
   @ViewChild('effectLeft') effectLeft!: ElementRef;
   @ViewChild('effectRight') effectRight!: ElementRef;
-
+  
   onScoreChanged(event: { p1: number; p2: number }) {
     // Clamp points to maxPoints
     event.p1 = Math.min(event.p1, this.maxPoints + 1 ); // +1 per permettere il vantaggio
@@ -50,7 +50,7 @@ export class ManualPointsComponent {
 
   player1SetsPoints = 0;
   player2SetsPoints = 0;
-
+  sets: Array<{ player1: number; player2: number }> = [];
   competitionService = inject(CompetitionService);
   competition: ICompetition | null = null;
   isMobile = false;
@@ -180,9 +180,11 @@ export class ManualPointsComponent {
   onSave() {
     if (this.player1Points > this.player2Points) {
       this.player1SetsPoints++;
+      this.sets.push({ player1: this.player1Points, player2: this.player2Points });
       this.onReset();
     } else if (this.player2Points > this.player1Points) {
       this.player2SetsPoints++;
+      this.sets.push({ player1: this.player1Points, player2: this.player2Points });
       this.onReset();
     }
   }
@@ -247,5 +249,8 @@ export class ManualPointsComponent {
     element.addEventListener('animationend', () => {
       element.classList.remove('highlight-once');
     }, { once: true });
+  }
+  isCompleted(): boolean {
+    return this.player1SetsPoints >= this.maxSets || this.player2SetsPoints >= this.maxSets;
   }
 }

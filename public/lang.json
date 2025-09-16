@@ -718,5 +718,13 @@
     "save_points": {
         "it": "Salva punti",
         "en": "Save points"
+    },
+    "completed_match_save": {
+        "it": "Salva Partita",
+        "en": "Save Match"
+    },
+    "match_summary": {
+        "it": "Riepilogo partita",
+        "en": "Match summary"
     }
 }

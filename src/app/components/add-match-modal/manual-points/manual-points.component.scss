@@ -204,6 +204,26 @@ button:disabled {
     right: 2em;
 }
 
+.summary ul li {
+    border: none;
+    border-bottom: 1px solid rgba($primary-light, 0.2);
+    background: transparent;
+    padding: 0.8rem 1rem;
+    margin: 0;
+    font-size: 1rem;
+    color: $primary-ultra-light;
+
+    &::before {
+        content: none; // tolgo il ✔
+    }
+
+    &:last-child {
+        border-bottom: none;
+        font-weight: 700;
+        color: $primary-light;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .players-container-form {
         width: 100%;
