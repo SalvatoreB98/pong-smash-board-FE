@@ -102,3 +102,24 @@
         opacity: 1;
     }
 }
+
+@media (max-width: 48em) {
+  .highlight-once {
+    filter: drop-shadow(0px 0px 1px $primary-light);
+    animation: highlight-once-mobile 1s ease-in-out 1 forwards;
+  }
+
+  @keyframes highlight-once-mobile {
+    0% {
+      transform: scale(0.95);
+      filter: drop-shadow(0px 0px 1px $primary-light);
+    }
+    50% {
+      transform: scale(1.07);
+    }
+    100% {
+      transform: scale(1);
+      filter: drop-shadow(0px 0px 1000px $primary-light);
+    }
+  }
+}
