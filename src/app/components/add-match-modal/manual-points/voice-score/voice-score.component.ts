@@ -33,7 +33,7 @@ export class VoiceScoreComponent {
         console.log('Heard:', transcript);
 
         const numbers = transcript.match(/\d+/g);
-        if (numbers) this.applyNumbers(numbers.map(n => parseInt(n, 10)));
+        if (numbers) this.applyNumbers(numbers.map((n: string) => parseInt(n, 10)));
       };
 
       this.recognition.onerror = (err: any) => {
