@@ -27,4 +27,7 @@ export class BottomNavbarComponent {
   addMatchModal() {
     this.modalService.openModal(this.modalService.MODALS['ADD_MATCH'])
   }
+  isActive(route: string): boolean {
+    return window.location.href.includes(route);
+  }
 }

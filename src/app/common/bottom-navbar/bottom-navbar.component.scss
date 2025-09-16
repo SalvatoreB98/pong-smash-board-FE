@@ -26,6 +26,7 @@
     }
 
     a {
+        transition: all 0.2s linear;
         cursor: pointer;
         display: flex;
         flex-direction: column;
@@ -51,8 +52,29 @@
         }
     }
 }
+
+.active {
+    ::after {
+        content: '';
+        display: block;
+        width: 0.75em;
+        height: 0.1em;
+        background-color: $primary-ultra-light;
+        margin: 0.2em auto 0 auto;
+        border-radius: $border-radius;
+        animation: active 0.3s ease-in-out;
+    }
+}
 @media screen and (min-width: 48em) {
     .bottom-navbar {
         display: none;
+    }
+}
+@keyframes active {
+    0% {
+        transform: scaleX(0);
+    }
+    100% {
+        transform: scaleX(1);
     }
 }
