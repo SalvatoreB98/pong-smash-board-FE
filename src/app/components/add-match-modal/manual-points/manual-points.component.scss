@@ -45,7 +45,8 @@
 
         span {
             display: inline-block;
-            transform: rotate(-90deg) scale(2.5);
+            font-size: 10vw;
+
         }
     }
 
@@ -210,16 +211,6 @@ button:disabled {
     position: absolute;
     bottom: 2em;
     right: 2em;
-}
-
-@media screen and (orientation: portrait) {
-    .manual-points {
-        .box {
-            span {
-                font-size: 10vw;
-            }
-        }
-    }
 }
 
 @media screen and (max-width: 768px) {

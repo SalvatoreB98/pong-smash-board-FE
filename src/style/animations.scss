@@ -73,7 +73,7 @@
 
     100% {
         transform: scale(1);
-        filter: drop-shadow(0px 0px 1000px $primary-light); // coerente, no flash
+        filter: drop-shadow(0px 0px 1000px rgba($primary-light, 0));
     }
 }
 
