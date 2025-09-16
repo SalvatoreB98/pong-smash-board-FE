@@ -78,16 +78,12 @@
     </div>
 
     <div *ngIf="isCompleted()">
-        <div class="summary mt-5">
+        <div class="summary mt-5" *ngIf="sets.length > 0">
             <h3>{{ 'match_summary' | translate }}</h3>
             <ul>
-                <li>
-                    <span>Set 1</span>
-                    <span>{{ sets[0].player1 }} - {{ sets[0].player2 }}</span>
-                </li>
-                <li>
-                    <span>Set 2</span>
-                    <span>{{ sets[1].player1 }} - {{ sets[1].player2 }}</span>
+                <li *ngFor="let set of sets; let i = index">
+                    <span>Set {{ i + 1 }}</span>
+                    <span>{{ set.player1 }} - {{ set.player2 }}</span>
                 </li>
                 <li class="total">
                     <span>Total</span>
