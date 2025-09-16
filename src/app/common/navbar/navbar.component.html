@@ -10,15 +10,15 @@
         <div class="buttons-container d-flex">
 
             <ng-container *ngIf="state.state != PROGRESS_STATE.PROFILE_NOT_COMPLETED">
-                <a *ngIf=" !isMobile && (auth.isLoggedIn$ | async)" routerLink="/home" class="button-navbar">
+                <a *ngIf=" !isMobile && (auth.isLoggedIn$ | async)" routerLink="/home-page" class="button-navbar" routerLinkActive="active">
                     <span>{{"home" | translate}}</span>
                 </a>
 
-                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/competitions" class="button-navbar">
+                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/competitions" class="button-navbar" routerLinkActive="active">
                     <span>{{"competitions" | translate}}</span>
                 </a>
 
-                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="profile" class="button-navbar">
+                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/profile" class="button-navbar" routerLinkActive="active">
                     <span>{{"profile" | translate}}</span>
                 </a>
             </ng-container>
