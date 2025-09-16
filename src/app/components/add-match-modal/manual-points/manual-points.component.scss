@@ -37,12 +37,6 @@
             grid-template-columns: 1fr;
             grid-template-rows: 1fr 1fr;
         }
-
-        .close {
-            left: 0;
-            right: unset;
-        }
-
         span {
             display: inline-block;
             font-size: 10vw;
@@ -90,6 +84,8 @@
     .sets-container {
         font-size: 2em;
         text-align: center;
+        max-width: 10em;
+        margin: auto;
     }
 }
 
@@ -150,8 +146,6 @@ button {
 }
 
 .form-dark.manual-points {
-    width: 100%;
-    height: 100%;
     display: grid;
     place-items: center;
 }

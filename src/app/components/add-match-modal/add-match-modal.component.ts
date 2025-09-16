@@ -35,9 +35,10 @@ export class AddMatchModalComponent implements OnInit {
   maxSets: number = 5;
   maxPoints: number = 11;
 
+  isSending = false;
   matchForm!: FormGroup;
   isShowSetsPointsTrue = false;
-  
+
   constructor(
     private fb: FormBuilder,
     private modalService: ModalService,
@@ -133,7 +134,6 @@ export class AddMatchModalComponent implements OnInit {
   // ------- MATCH -------
   addMatch() {
     if (this.matchForm.invalid) return;
-
     if (this.matchForm.value.player1 === this.matchForm.value.player2) {
       alert('I Giocatori devono essere diversi!');
       return;
@@ -144,7 +144,7 @@ export class AddMatchModalComponent implements OnInit {
 
   private sendData() {
     if (this.matchForm.invalid) return;
-
+    this.isSending = true;
     const dateInput = new Date(this.matchForm.value.date);
     const today = new Date();
 
@@ -165,6 +165,7 @@ export class AddMatchModalComponent implements OnInit {
 
     this.dataService.addMatch(formData).then(() => {
       this.closeModal();
+      this.isSending = false;
     });
   }
 
@@ -209,43 +210,43 @@ export class AddMatchModalComponent implements OnInit {
   }
 
   checkPointsError() {
-  this.errorsOfPoints.length = 0;
+    this.errorsOfPoints.length = 0;
 
-  const maxPoints = this.competition?.points_type ?? this.maxPoints;
+    const maxPoints = this.competition?.points_type ?? this.maxPoints;
 
-  this.setsPoints.controls.forEach((setGroup: AbstractControl, i: number) => {
-    let p1 = Number(setGroup.get('player1Points')?.value);
-    let p2 = Number(setGroup.get('player2Points')?.value);
+    this.setsPoints.controls.forEach((setGroup: AbstractControl, i: number) => {
+      let p1 = Number(setGroup.get('player1Points')?.value);
+      let p2 = Number(setGroup.get('player2Points')?.value);
 
-    // Player 1
-    if (isNaN(p1) || p1 < 0) {
-      this.errorsOfPoints.push(`set ${i + 1}: number_positive_p1`);
-      p1 = 0;
-    }
-    if (p1 > maxPoints) {
-      this.errorsOfPoints.push(`set ${i + 1}: number_maximum_p1 ${maxPoints}`);
-      p1 = maxPoints;
-    }
+      // Player 1
+      if (isNaN(p1) || p1 < 0) {
+        this.errorsOfPoints.push(`set ${i + 1}: number_positive_p1`);
+        p1 = 0;
+      }
+      if (p1 > maxPoints) {
+        this.errorsOfPoints.push(`set ${i + 1}: number_maximum_p1 ${maxPoints}`);
+        p1 = maxPoints;
+      }
 
-    // Player 2
-    if (isNaN(p2) || p2 < 0) {
-      this.errorsOfPoints.push(`set ${i + 1}: number_positive_p2`);
-      p2 = 0;
-    }
-    if (p2 > maxPoints) {
-      this.errorsOfPoints.push(`set ${i + 1}: number_maximum_p2 ${maxPoints}`);
-      p2 = maxPoints;
-    }
+      // Player 2
+      if (isNaN(p2) || p2 < 0) {
+        this.errorsOfPoints.push(`set ${i + 1}: number_positive_p2`);
+        p2 = 0;
+      }
+      if (p2 > maxPoints) {
+        this.errorsOfPoints.push(`set ${i + 1}: number_maximum_p2 ${maxPoints}`);
+        p2 = maxPoints;
+      }
 
-    // Equal check (escludi 0-0)
-    if (p1 === p2 && p1 > 0) {
-      this.errorsOfPoints.push(`set ${i + 1}`);
-    }
+      // Equal check (escludi 0-0)
+      if (p1 === p2 && p1 > 0) {
+        this.errorsOfPoints.push(`set ${i + 1}`);
+      }
 
-    setGroup.patchValue({ player1Points: p1, player2Points: p2 }, { emitEvent: false });
-  });
+      setGroup.patchValue({ player1Points: p1, player2Points: p2 }, { emitEvent: false });
+    });
 
-  console.log("errors of points:", this.errorsOfPoints);
-}
+    console.log("errors of points:", this.errorsOfPoints);
+  }
 }
 
