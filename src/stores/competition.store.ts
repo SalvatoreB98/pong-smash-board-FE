@@ -38,7 +38,7 @@ export class CompetitionStore {
   size$ = this._state$.pipe(map(s => s.ids.length));
 
   activeCompetition$ = this._state$.pipe(
-    map(s => (s.activeId ? s.entities[String(s.activeId)] ?? null : null))
+    map(s => (s.activeId !== null ? s.entities[String(s.activeId)] ?? null : null))
   );
 
   // ---------- SNAPSHOTS ----------
@@ -53,7 +53,7 @@ export class CompetitionStore {
 
   snapshotActive(): ICompetition | null {
     const s = this._state$.getValue();
-    return s.activeId ? s.entities[String(s.activeId)] ?? null : null;
+    return s.activeId !== null ? s.entities[String(s.activeId)] ?? null : null;
   }
 
   // ---------- COMMANDS ----------
@@ -104,10 +104,11 @@ export class CompetitionStore {
     console.log('[CompetitionStore] ✏️ updateFields', { id: sid, patch });
   }
 
-  setActive(id: Id | null) {
+  setActive(id: Id | null | undefined) {
     const prev = this._state$.getValue();
-    this._state$.next({ ...prev, activeId: id ? String(id) : null });
-    console.log('[CompetitionStore] ⭐ setActive', { id });
+    const nextId = id !== null && id !== undefined ? String(id) : null;
+    this._state$.next({ ...prev, activeId: nextId });
+    console.log('[CompetitionStore] ⭐ setActive', { id: nextId });
   }
 
   removeOne(id: Id) {

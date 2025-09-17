@@ -29,7 +29,7 @@ export class CompetitionService {
 
     // 2. Altrimenti usa lo userState
     const state = this.user?.snapshot();
-    if (state?.active_competition_id) {
+    if (state?.active_competition_id !== null && state?.active_competition_id !== undefined) {
       return this.store.snapshotById(state.active_competition_id) ?? null;
     }
 
