@@ -35,7 +35,7 @@
 
 .ping-toast {
   position: fixed;
-  bottom: 0;
+  top: $navbar-height;
   right: 0;
   margin: 1em;
   background-color: $green;
