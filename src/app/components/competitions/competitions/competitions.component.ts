@@ -67,7 +67,6 @@ export class CompetitionsComponent {
 
   ngOnInit() {
     this.competitionService.getCompetitions().then((data) => {
-      this.competitionDetail = data[0];
       console.log('[Competitions] competitions loaded', data);
     });
   }
