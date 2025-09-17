@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SupabaseAuthService } from '../../../services/supabase-auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { TranslatePipe } from '../../utils/translate.pipe';
 import { NavbarComponent } from '../../common/navbar/navbar.component';
 import { RegistrationNavbarComponent } from './registration-navbar/registration-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { LoaderService } from '../../../services/loader.service';
 import { MSG_TYPE } from '../../utils/enum';
+import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslatePipe, NavbarComponent, RegistrationNavbarComponent, RouterModule],
+  imports: [CommonModule, ...SHARED_IMPORTS, FormsModule, ReactiveFormsModule, NavbarComponent, RegistrationNavbarComponent, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

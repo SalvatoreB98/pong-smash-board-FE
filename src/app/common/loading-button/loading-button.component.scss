@@ -1,0 +1,137 @@
+@use '../../../style/variables' as *;
+
+:host {
+  display: inline-block;
+  width: auto;
+
+  &.w-100,
+  &.full-width {
+    width: 100%;
+  }
+}
+
+.loading-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  width: 100%;
+  padding: 0.9em 1.5em;
+  border-radius: $border-radius;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0.5em 1.5em rgba(0, 0, 0, 0.25);
+  background: transparent;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-0.05em) scale(0.99);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:disabled,
+  &.is-loading {
+    cursor: not-allowed;
+    opacity: 0.7;
+    box-shadow: none;
+  }
+}
+
+.loading-button.variant-primary {
+  background: linear-gradient(135deg, $primary 0%, $secondary 100%);
+  color: $primary-ultra-light;
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 0.75em 1.75em rgba(40, 74, 166, 0.35);
+  }
+}
+
+.loading-button.variant-secondary {
+  background: rgba($light, 0.15);
+  color: $primary-ultra-light;
+  border: 0.0625em solid rgba($primary-ultra-light, 0.4);
+
+  &:hover:not(:disabled) {
+    background: rgba($light, 0.25);
+  }
+}
+
+.loading-button.variant-link {
+  background: transparent;
+  color: $primary-light;
+  box-shadow: none;
+  padding-inline: 0.5em;
+  text-transform: none;
+  letter-spacing: normal;
+
+  &:hover:not(:disabled) {
+    text-decoration: underline;
+    transform: none;
+  }
+}
+
+.button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: opacity 0.2s ease;
+
+  &.loading {
+    opacity: 0;
+  }
+
+  i {
+    font-size: 1.1em;
+  }
+}
+
+.button-spinner {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+}
+
+.loading-dot {
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: loading-bounce 0.9s infinite ease-in-out;
+
+  &.a {
+    animation-delay: 0s;
+  }
+
+  &.b {
+    animation-delay: 0.15s;
+  }
+
+  &.c {
+    animation-delay: 0.3s;
+  }
+}
+
+@keyframes loading-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+
+  40% {
+    transform: translateY(-0.35em);
+    opacity: 1;
+  }
+}

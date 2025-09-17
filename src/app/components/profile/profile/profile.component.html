@@ -33,9 +33,16 @@
                 </div>
 
                 <div class="button-container">
-                    <button class="primary mt-3 w-100" (click)="saveProfile()" [disabled]="form?.invalid">
+                    <app-loading-button
+                        class="mt-3 w-100"
+                        variant="primary"
+                        [disabled]="form?.invalid"
+                        [linkToHttp]="true"
+                        icon="fa fa-save"
+                        (click)="saveProfile()"
+                    >
                         {{ 'edit' | translate }}
-                    </button>
+                    </app-loading-button>
                 </div>
             </form>
         </section>

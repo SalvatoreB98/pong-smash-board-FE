@@ -15,7 +15,15 @@
             </div>
 
             <div class="mt-4 text-center">
-                  <button (click)="onLogin()" type="button" [disabled]="loginForm.invalid">{{ 'login' | translate }}</button>
+                  <app-loading-button
+                    class="mt-4 w-100"
+                    type="submit"
+                    variant="primary"
+                    [disabled]="loginForm.invalid"
+                    [linkToHttp]="true"
+                  >
+                    {{ 'login' | translate }}
+                  </app-loading-button>
                   <button id="googleBtn" type="button" (click)="googleSignIn($event)" class="mt-4"><img src="/google.png">{{ 'login_google' | translate }}</button>
             </div>
             <p class="mt-3 text-center">

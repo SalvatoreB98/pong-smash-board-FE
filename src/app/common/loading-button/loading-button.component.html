@@ -1,0 +1,20 @@
+<button
+  class="loading-button"
+  [ngClass]="['variant-' + variant, isLoading ? 'is-loading' : null]"
+  [attr.type]="type"
+  [disabled]="disabled || isLoading"
+  [attr.aria-busy]="isLoading"
+  [attr.aria-live]="isLoading ? 'polite' : null"
+>
+  <span class="button-spinner" *ngIf="isLoading" aria-hidden="true">
+    <span class="loading-dot a"></span>
+    <span class="loading-dot b"></span>
+    <span class="loading-dot c"></span>
+  </span>
+  <span class="button-content" [class.loading]="isLoading">
+    <ng-container *ngIf="icon && !isLoading">
+      <i [ngClass]="icon" aria-hidden="true"></i>
+    </ng-container>
+    <span class="label"><ng-content></ng-content></span>
+  </span>
+</button>
