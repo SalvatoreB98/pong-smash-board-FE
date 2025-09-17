@@ -79,9 +79,14 @@ export class CompetitionService {
     return this.api.add(dto).pipe(
       tap(res => {
         this.store.addOne(res.competition);
+  
         if (res.userState && this.user) {
           this.user.setLocal(res.userState);
+  
+          // 🔥 setti come attiva la competizione appena creata
+          this.store.setActive(res.competition.id);
         }
+  
         this.loader?.showToast?.('Competizione creata!', MSG_TYPE.SUCCESS, 4000);
         this.clearCompetitionsCache();
       }),

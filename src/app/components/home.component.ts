@@ -50,10 +50,12 @@ export class HomeComponent {
         return;
       } else {
         console.log('User state:', state);
-        if (!state.active_competition) {
-          this.loaderService.showToast(this.translateService.translate('no_active_competition'), MSG_TYPE.WARNING);
-          this.router.navigate(['/competitions']);
-        }
+        this.competitionService.activeCompetition$.subscribe(activeCompetition => {
+          if (!activeCompetition) {
+            this.loaderService.showToast(this.translateService.translate('no_active_competition'), MSG_TYPE.WARNING);
+            this.router.navigate(['/competitions']);
+          }
+        });
       }
     });
     this.playersService.getPlayers().subscribe(players => {

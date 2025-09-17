@@ -24,7 +24,7 @@
                             <span class="label">{{ 'nickname_label' | translate }}</span>
                             <input class="input" type="text" [placeholder]="'nickname' | translate"
                                 formControlName="nickname" autocomplete="off" />
-                            <small class="error" *ngIf="form?.get('nickname')?.invalid || form?.get('nickname')?.touched">
+                            <small class="error" *ngIf="form?.get('nickname')?.invalid">
                                 {{ 'nickname_error' | translate }}
                             </small>
                         </label>

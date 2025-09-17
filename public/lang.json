@@ -344,7 +344,7 @@
         "en": "No players yet"
     },
     "insert_players_init": {
-        "it": "Condividi il codice di invito ai tuoi amici per permettere loro di unirsi alla competizione e iniziare a registrare partite, <br> clicka qui per copiarlo negli appunti.",
+        "it": "Condividi il codice di invito ai tuoi amici per permettere loro di unirsi alla competizione e iniziare a registrare partite, <br> clicca qui per copiarlo negli appunti.",
         "en": "Share the invitation code with your friends to allow them to join the competition and start recording matches, <br> click here to copy it to the clipboard."
     },
     "invitation_code": {
@@ -604,7 +604,7 @@
         "en": "Player already exists in the competition."
     },
     "not_enough_players": {
-        "it": "Non ci sono abbastanza giocatori per aggiungere una partita. Clicka su <b>Aggiungi giocatori </b>",
+        "it": "Non ci sono abbastanza giocatori per aggiungere una partita. Clicca su <b>Aggiungi giocatori </b>",
         "en": "There are not enough players to add a match. Click on <b>Add players</b>"
     },
     "player": {
