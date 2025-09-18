@@ -3,7 +3,7 @@
 </div>
 <div class="register-container">
     <h2>{{"register_title"| translate}}</h2>
-    <form class="form-dark" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <form class="form-dark" [formGroup]="registerForm" (ngSubmit)="onRegister($event)">
         <div class="input-container">
             <i class="fa fa-envelope-o" aria-hidden="true"></i>
               <input id="email" type="email" formControlName="email" [placeholder]="'enter_email' | translate" required>
@@ -22,7 +22,7 @@
 
         <div class="mt-4 text-center">
             <button type="submit" [disabled]="registerForm.invalid">{{"register_title" | translate}}</button>
-            <button id="googleBtn" (click)="googleSignIn()" class="mt-4"><img src="/google.png">
+            <button id="googleBtn" type="button" (click)="googleSignIn($event)" class="mt-4"><img src="/google.png">
                 {{"register_google" | translate}}
             </button>
         </div>

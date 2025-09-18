@@ -101,13 +101,20 @@ export class CompleteProfileComponent implements OnInit {
   }
 
 
-  async saveProfile() {
+  async saveProfile(event: Event) {
+    event.preventDefault();
     const nickname = (this.form.value.nickname || '').trim();
     const file: File | null = this.form.value.avatar || null;
 
     if (nickname.length < 3) {
       this.form.get('nickname')?.markAsTouched();
       return;
+    }
+
+    const button = this.resolveButton(event);
+    if (button) {
+      button.disabled = true;
+      this.loaderService.addSpinnerToButton(button);
     }
 
     this.loaderService.startLittleLoader();
@@ -150,7 +157,21 @@ export class CompleteProfileComponent implements OnInit {
       console.error(err);
       this.loaderService?.showToast('Errore aggiornando il profilo', MSG_TYPE.ERROR, 4000);
     } finally {
+      if (button) {
+        button.disabled = false;
+        this.loaderService.removeSpinnerFromButton(button);
+      }
       this.loaderService.stopLittleLoader();
     }
+  }
+
+  private resolveButton(event?: Event): HTMLButtonElement | null {
+    if (!event) return null;
+    const submitter = (event as SubmitEvent).submitter as HTMLButtonElement | undefined;
+    if (submitter) return submitter;
+
+    const target = event.target as HTMLElement | null;
+    if (target instanceof HTMLButtonElement) return target;
+    return target?.closest('button') as HTMLButtonElement | null;
   }
 }

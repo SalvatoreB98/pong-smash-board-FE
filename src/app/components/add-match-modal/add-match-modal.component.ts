@@ -132,17 +132,33 @@ export class AddMatchModalComponent implements OnInit {
   }
 
   // ------- MATCH -------
-  addMatch() {
+  async addMatch(event?: SubmitEvent) {
+    event?.preventDefault();
     if (this.matchForm.invalid) return;
     if (this.matchForm.value.player1 === this.matchForm.value.player2) {
       alert('I Giocatori devono essere diversi!');
       return;
     }
 
-    this.sendData();
+    const button = this.resolveButton(event);
+    if (button) {
+      button.disabled = true;
+      this.loaderService.addSpinnerToButton(button);
+    }
+
+    try {
+      await this.sendData();
+    } catch (error) {
+      console.error('Error adding match:', error);
+    } finally {
+      if (button) {
+        button.disabled = false;
+        this.loaderService.removeSpinnerFromButton(button);
+      }
+    }
   }
 
-  private sendData() {
+  private async sendData(): Promise<void> {
     if (this.matchForm.invalid) return;
     this.isSending = true;
     const dateInput = new Date(this.matchForm.value.date);
@@ -163,10 +179,12 @@ export class AddMatchModalComponent implements OnInit {
 
     console.log('Saving match...', formData);
 
-    this.dataService.addMatch(formData).then(() => {
+    try {
+      await this.dataService.addMatch(formData);
       this.closeModal();
+    } finally {
       this.isSending = false;
-    });
+    }
   }
 
   closeModal() {
@@ -247,6 +265,16 @@ export class AddMatchModalComponent implements OnInit {
     });
 
     console.log("errors of points:", this.errorsOfPoints);
+  }
+
+  private resolveButton(event?: Event): HTMLButtonElement | null {
+    if (!event) return null;
+    const submitter = (event as SubmitEvent).submitter as HTMLButtonElement | undefined;
+    if (submitter) return submitter;
+
+    const target = event.target as HTMLElement | null;
+    if (target instanceof HTMLButtonElement) return target;
+    return target?.closest('button') as HTMLButtonElement | null;
   }
 }
 
