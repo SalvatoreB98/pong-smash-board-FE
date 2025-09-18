@@ -46,7 +46,7 @@
     <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
 </ng-container>
 
-<app-modal [label]="'manual_points'" *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
+<app-modal [fullscreen]="true" [label]="'manual_points'" *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
     [modalName]="modalService.MODALS['MANUAL_POINTS']"
     class="manual-points-modal">
     <app-manual-points [players]="players"></app-manual-points>

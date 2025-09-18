@@ -25,17 +25,6 @@ export class ModalComponent {
   closeModal(): void {
     this.modalService.closeModal();
   }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: Event) {
-    const target = event.target as HTMLElement;
-
-    if (this.modalService.isActiveModal(this.modalName)) {
-      if (this.modalRef && !this.modalRef.nativeElement.contains(target)) {
-        this.closeModal();
-      }
-    }
-  }
   toggleFullscreen(): void {
     this.fullscreen = !this.fullscreen;
   }
