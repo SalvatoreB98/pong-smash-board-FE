@@ -249,6 +249,8 @@ section {
     height: 4.6em;
     border-radius: 50%;
     object-fit: cover;
+    border: 3px solid $dark;
+    margin: 0.1em;
 }
 
 .my-modal {

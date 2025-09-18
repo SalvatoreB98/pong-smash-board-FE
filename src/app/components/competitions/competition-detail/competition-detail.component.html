@@ -22,10 +22,10 @@
       <div>
         <h1>{{ competition?.name }}</h1>
       </div>
-      <div *ngIf="competition?.management !== 'admin'" class="invitation-code-container">
+      <button *ngIf="competition?.management !== 'admin'" class="invitation-code-container button flex-column" type="button" (click)="copyCode()">
         <div>{{"invitation_code" | translate}}: </div>
         <div class="value code">{{ competition?.['code'] }}</div>
-      </div>
+      </button>
     </div>
     <div>
       <span>{{ "type" | translate }}: </span>
