@@ -23,6 +23,9 @@ export class CompetitionDetailComponent {
   activeCompetition$ = this.competitionService.activeCompetition$;
 
   constructor(public modalService: ModalService, private loader: LoaderService, private translateService: TranslationService) { }
+  
+  readonly detailsModalName = 'viewCompetitionModal';
+  readonly editModalName = 'editCompetitionModal';
 
   ngOnInit() {
     console.log('CompetitionDetailComponent initialized with competition:', this.competition?.id);
@@ -32,6 +35,27 @@ export class CompetitionDetailComponent {
     return !array || (Array.isArray(array) && array.length === 0);
   }
   onDropdownAction(action: string) {
+    if (!this.competition?.id) {
+      return;
+    }
+
+    switch (action) {
+      case 'favorite':
+        this.competitionService.updateActiveCompetition(this.competition.id).subscribe();
+        break;
+      case 'delete':
+        this.competitionService.remove(this.competition.id).subscribe(() => {
+          this.competitionService.getCompetitions(true);
+        });
+        break;
+      case 'details':
+        this.modalService.openModal(this.detailsModalName);
+        break;
+      case 'edit':
+        this.modalService.openModal(this.editModalName);
+        break;
+    }
+
     this.actionSelected.emit({ action, competition: this.competition });
   }
 

@@ -88,10 +88,22 @@ export class CompetitionApi {
 
   /** Elimina competizione */
   remove(id: number | string): Observable<{ success: boolean } | void> {
-    return this.http.delete<{ success: boolean } | void>(`${API_PATHS.getCompetitions}/${id}`);
+    return this.http.delete<{ success: boolean } | void>(API_PATHS.deleteCompetition, {
+      body: { competitionId: id },
+    });
   }
 
   join(code: string, userId: number | string): Observable<IJoinCompetitionResponse> {
     return this.http.post<IJoinCompetitionResponse>(API_PATHS.joinCompetition, { code, userId });
+  }
+
+  updateActiveCompetition(competitionId: number | string): Observable<any> {
+    return this.http.post<any>(API_PATHS.updateActiveCompetition, { competitionId });
+  }
+
+  deleteUserFromCompetition(competitionId: number | string, userId: number | string): Observable<any> {
+    return this.http.delete<any>(API_PATHS.deleteUserFromCompetition, {
+      body: { competitionId, userId },
+    });
   }
 }
