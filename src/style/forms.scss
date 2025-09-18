@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "variables" as *;
 
 // ---- Palette dark (puoi spostarla nel tuo file variables)
@@ -151,7 +152,7 @@ $border: #1f2937;
     }
 
     &:hover {
-      background: mix($field, #fff, 90%);
+      background: color.mix($field, #fff, $weight: 90%);
     }
   }
 }

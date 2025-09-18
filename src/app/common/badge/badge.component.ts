@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-badge',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.scss',
   standalone: true,

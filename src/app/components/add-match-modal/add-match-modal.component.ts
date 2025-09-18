@@ -11,7 +11,6 @@ import { TranslatePipe } from '../../utils/translate.pipe';
 import { MSG_TYPE } from '../../utils/enum';
 import { LoaderService } from '../../../services/loader.service';
 import { TranslationService } from '../../../services/translation.service';
-import { ManualPointsComponent } from './manual-points/manual-points.component';
 import { CompetitionService } from '../../../services/competitions.service';
 import { ICompetition } from '../../../api/competition.api';
 
@@ -20,7 +19,7 @@ import { ICompetition } from '../../../api/competition.api';
   standalone: true,
   templateUrl: './add-match-modal.component.html',
   styleUrls: ['./add-match-modal.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, SelectPlayerComponent, TranslatePipe, ManualPointsComponent]
+  imports: [CommonModule, ReactiveFormsModule, SelectPlayerComponent, TranslatePipe]
 })
 export class AddMatchModalComponent implements OnInit {
 

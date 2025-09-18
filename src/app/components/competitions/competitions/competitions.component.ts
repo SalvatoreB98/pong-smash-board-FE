@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { combineLatest, map, tap } from 'rxjs';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
-import { NavbarComponent } from '../../../common/navbar/navbar.component';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
 import { AddCompetitionModalComponent } from '../add-competition-modal/add-competition-modal.component';
@@ -24,7 +23,6 @@ import { LoaderService } from '../../../../services/loader.service';
   standalone: true,
   imports: [
     ...SHARED_IMPORTS,
-    NavbarComponent,
     ModalComponent,
     FormsModule,
     BottomNavbarComponent,

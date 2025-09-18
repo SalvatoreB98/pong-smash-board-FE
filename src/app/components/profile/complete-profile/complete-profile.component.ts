@@ -12,7 +12,6 @@ import { environment } from '../../../../environments/environment';
 import { LoaderService } from '../../../../services/loader.service';
 import { SupabaseAuthService } from '../../../../services/supabase-auth.service';
 import { UserService } from '../../../../services/user.service';
-import { NavbarComponent } from '../../../common/navbar/navbar.component';
 import { UserProgressStateEnum, MSG_TYPE } from '../../../utils/enum';
 import { TranslatePipe } from '../../../utils/translate.pipe';
 import { TranslationService } from '../../../../services/translation.service';
@@ -22,7 +21,7 @@ import { TranslationService } from '../../../../services/translation.service';
 @Component({
   selector: 'complete-profile',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, TranslatePipe, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, TranslatePipe, FormsModule, ReactiveFormsModule],
   templateUrl: './complete-profile.component.html',
   styleUrls: ['./complete-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

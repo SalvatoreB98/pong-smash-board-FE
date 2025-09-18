@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../common/navbar/navbar.component';
 import { MatchesComponent } from './matches/matches.component';
 import { IMatch } from '../interfaces/matchesInterfaces';
 import { IMatchResponse } from '../interfaces/responsesInterfaces';
@@ -24,7 +23,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, NavbarComponent, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent],
+  imports: [CommonModule, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

@@ -14,17 +14,15 @@ import { IUserState } from '../../../../services/interfaces/Interfaces';
 import { LoaderService } from '../../../../services/loader.service';
 import { SupabaseAuthService } from '../../../../services/supabase-auth.service';
 import { UserService } from '../../../../services/user.service';
-import { NavbarComponent } from '../../../common/navbar/navbar.component';
 import { MSG_TYPE } from '../../../utils/enum';
 import { TranslatePipe } from '../../../utils/translate.pipe';
 import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
 import { PlayerDetailComponent } from './player-detail/player-detail.component';
-import { BadgeComponent } from '../../../common/badge/badge.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NavbarComponent, TranslatePipe, BottomNavbarComponent, PlayerDetailComponent, BadgeComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslatePipe, BottomNavbarComponent, PlayerDetailComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
