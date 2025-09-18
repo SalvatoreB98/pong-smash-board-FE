@@ -244,11 +244,11 @@ export class ManualPointsComponent {
     element.style.animation = ''; // restore
 
     // reapply the class (keeps CSS control)
-    element.classList.add('highlight-once');
+    element.classList.add(this.isMobile ? 'highlight-once-mobile' : 'highlight-once');
 
     // quando finisce l’animazione la rimuovo
     element.addEventListener('animationend', () => {
-      element.classList.remove('highlight-once');
+      element.classList.remove(this.isMobile ? 'highlight-once-mobile' : 'highlight-once');
     }, { once: true });
   }
   isCompleted(): boolean {
