@@ -8,6 +8,7 @@ import { UserService } from '../services/user.service';
 import { AddCompetitionDto, CompetitionApi, ICompetition } from '../api/competition.api';
 import { CachedFetcher } from '../app/utils/helpers/cache.helpers';
 import { IPlayer } from './players.service';
+import { IUserState } from './interfaces/Interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class CompetitionService {
@@ -125,6 +126,47 @@ export class CompetitionService {
       catchError(err => {
         console.error('[CompetitionService] remove error:', err);
         this.loader?.showToast?.('Errore eliminazione competizione', MSG_TYPE.ERROR);
+        return EMPTY;
+      }),
+    );
+  }
+
+  updateActiveCompetition(competitionId: number | string): Observable<void> {
+    return this.api.updateActiveCompetition(competitionId).pipe(
+      tap((res: { userState?: IUserState } | any) => {
+        this.store.setActive(competitionId);
+        if (this.user) {
+          if (res?.userState) {
+            this.user.setLocal(res.userState);
+          } else {
+            this.user.setActiveCompetitionId?.(competitionId);
+          }
+        }
+        this.loader?.showToast?.('Competizione attiva aggiornata', MSG_TYPE.SUCCESS, 3000);
+      }),
+      map(() => void 0),
+      catchError(err => {
+        console.error('[CompetitionService] updateActiveCompetition error:', err);
+        this.loader?.showToast?.('Errore aggiornamento competizione attiva', MSG_TYPE.ERROR);
+        return EMPTY;
+      }),
+    );
+  }
+
+  deleteUserFromCompetition(competitionId: number | string, userId: number | string): Observable<void> {
+    return this.api.deleteUserFromCompetition(competitionId, userId).pipe(
+      tap(() => {
+        const competition = this.store.snapshotById?.(competitionId);
+        if (competition) {
+          const filteredPlayers = (competition.players ?? []).filter(player => String(player.id) !== String(userId));
+          this.store.upsertOne({ ...competition, players: filteredPlayers });
+        }
+        this.loader?.showToast?.('Giocatore rimosso dalla competizione', MSG_TYPE.SUCCESS, 3000);
+      }),
+      map(() => void 0),
+      catchError(err => {
+        console.error('[CompetitionService] deleteUserFromCompetition error:', err);
+        this.loader?.showToast?.('Errore rimozione giocatore', MSG_TYPE.ERROR);
         return EMPTY;
       }),
     );

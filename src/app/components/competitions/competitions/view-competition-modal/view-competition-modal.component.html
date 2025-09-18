@@ -1,0 +1,45 @@
+<div class="summary">
+    <h3>{{ competition?.name }}</h3>
+    <ul>
+        <li>
+            <span>{{ "best_of" | translate }}</span>
+            <span>{{ competition?.['sets_type'] }}</span>
+        </li>
+        <li>
+            <span>{{ "points_number" | translate }}</span>
+            <span>{{ competition?.['points_type'] }}</span>
+        </li>
+        <li>
+            <span>{{ "type" | translate }}</span>
+            <span class="competition-type">
+                {{ competition?.type }}
+                <i class="fa-solid" [class]="competition?.type === 'league' ? 'fa-users' : 'fa-user'"></i>
+            </span>
+        </li>
+        <li *ngIf="competition?.management !== 'admin'">
+            <span>{{ "invitation_code" | translate }}</span>
+            <span class="code">{{ competition?.['code'] }}</span>
+        </li>
+        <li>
+            <span>{{ "players" | translate }}</span>
+            <span>
+                <ng-container *ngIf="!isEmpty(competition?.['players']); else noPlayers">
+                    <span *ngFor="let p of competition?.['players']; let last = last">
+                        {{ p.nickname }}<span *ngIf="!last">, </span>
+                    </span>
+                </ng-container>
+                <ng-template #noPlayers>
+                    {{ "no_players" | translate }}
+                </ng-template>
+            </span>
+        </li>
+    </ul>
+    <div class="d-flex justify-content-center mt-3">
+        <button class="button-primary-ping" id="add-players-button"
+            (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
+            {{ "add_players" | translate }}
+            <i class="fa-solid fa-users ms-2"></i>
+            <i class="fa-solid fa-plus"></i>
+        </button>
+    </div>
+</div>

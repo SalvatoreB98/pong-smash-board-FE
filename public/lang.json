@@ -726,5 +726,13 @@
     "match_summary": {
         "it": "Riepilogo partita",
         "en": "Match summary"
+    },
+    "competition_details": {
+        "it": "Dettagli competizione",
+        "en": "Competition details"
+    },
+    "edit_competition": {
+        "it": "Modifica competizione",
+        "en": "Edit competition"
     }
 }

@@ -39,7 +39,8 @@
                                         {{ c?.players?.length == 1 ? ('player' | translate) : ('players' | translate) }}
                                     </div>
                                     <div class="players-list">
-                                        <img class="avatar" *ngFor="let player of c?.players" [src]="player.image_url || '/default-player.jpg'"
+                                        <img class="avatar" *ngFor="let player of c?.players"
+                                            [src]="player.image_url || '/default-player.jpg'"
                                             [alt]="player.name || 'player'">
                                     </div>
                                 </div>
@@ -51,13 +52,13 @@
                             </ng-template>
 
                             <div class="button-container">
-                                <button type="button" class="button-primary-ping">
+                                <button type="button" class="button-primary-ping"
+                                    (click)="modalService.openModal(modalService.MODALS['VIEW_COMPETITION']); competitionDetail = c;">
                                     {{ "visualize" | translate }} <i class="fa-solid fa-eye ms-2"></i>
                                 </button>
                             </div>
 
                             <app-dropdown [actions]="[
-                                { label: 'Edit', value: 'edit', icon: '<i class=\'fa-solid fa-pen\'></i>' },
                                 { label: 'Set as favorite', value: 'favorite', icon: '<i class=\'fa-solid fa-star\'></i>' },
                                 { label: 'Details', value: 'details', icon: '<i class=\'fa-solid fa-circle-info\'></i>' },
                                 { label: 'Delete', value: 'delete', icon: '<i class=\'fa-solid fa-trash\'></i>' }
@@ -112,6 +113,17 @@
         *ngIf="modalService.isActiveModal(modalService.MODALS['JOIN_COMPETITION'])"
         [modalName]="modalService.MODALS['JOIN_COMPETITION']">
         <app-join-competition-modal></app-join-competition-modal>
+    </app-modal>
+
+    <app-modal [isSmall]="true" [label]="'edit_competition'"
+        *ngIf="modalService.isActiveModal(modalService.MODALS['EDIT_COMPETITION'])"
+        [modalName]="modalService.MODALS['EDIT_COMPETITION']">
+        <app-edit-competition-modal></app-edit-competition-modal>
+    </app-modal>
+
+    <app-modal [isSmall]="true" [label]="''" *ngIf="modalService.isActiveModal(modalService.MODALS['VIEW_COMPETITION'])"
+        [modalName]="modalService.MODALS['VIEW_COMPETITION']">
+        <app-view-competition-modal [competition]="competitionDetail"></app-view-competition-modal>
     </app-modal>
 </ng-container>
 
