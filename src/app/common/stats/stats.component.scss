@@ -25,6 +25,7 @@ img {
   background: $gradient;
   transform: skew(-20deg);
   padding: 0.5em 1em;
+
   &>img,
   div {
     transform: skew(20deg);
@@ -40,6 +41,7 @@ img {
     transform: skew(-20deg) !important;
     opacity: 0.75;
   }
+
   .position {
     text-align: center;
   }
@@ -143,13 +145,10 @@ img {
 
 .bar {
   height: 100%;
+  background: $primary;
 }
 
-.bar.player1 {
-  background: $secondary;
-}
-
-.bar.player2 {
+.bar.winner {
   background: $primary-light;
 }
 
@@ -162,6 +161,7 @@ img {
   color: $primary-light;
   font-weight: bold;
 }
+
 .mini-info {
   display: none;
   position: absolute;
@@ -170,6 +170,7 @@ img {
   font-size: 0.625em;
   color: rgba(202, 202, 57, 0.905);
 }
+
 @media screen and (max-width: 37.5em) {
   .partite-tot {
     display: none;
@@ -178,24 +179,28 @@ img {
   .sconfitte {
     display: none;
   }
+
   .vittorie {
     display: none;
   }
 
   .stats-container,
   .stats-header {
-    grid-template-columns:  0.5fr 0.5fr repeat(3, 1fr);
+    grid-template-columns: 0.5fr 0.5fr repeat(3, 1fr);
     gap: 1.25em;
   }
+
   .stats-header {
     display: none;
   }
+
   .player {
     .name {
       font-size: 0.75em;
       text-align: center;
     }
   }
+
   .mini-info {
     display: block;
   }
