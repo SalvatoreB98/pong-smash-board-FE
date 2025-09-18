@@ -27,7 +27,13 @@ export class JoinCompetitionModalComponent {
     this.showInstructions = !this.showInstructions;
   }
 
-  async onSubmit() {
+  async onSubmit(event: Event) {
+    const button = this.resolveButton(event);
+    if (button) {
+      button.disabled = true;
+      this.loaderService.addSpinnerToButton(button);
+    }
+
     this.loaderService.startLittleLoader();
     try {
       const res = await this.competitionService.joinCompetition(this.competitionCode);
@@ -41,8 +47,22 @@ export class JoinCompetitionModalComponent {
         this.loaderService.showToast(this.translation.transform('competition_error'), MSG_TYPE.ERROR);
       }
     } finally {
+      if (button) {
+        button.disabled = false;
+        this.loaderService.removeSpinnerFromButton(button);
+      }
       this.loaderService.stopLittleLoader();
     }
+  }
+
+  private resolveButton(event?: Event): HTMLButtonElement | null {
+    if (!event) return null;
+    const submitter = (event as SubmitEvent).submitter as HTMLButtonElement | undefined;
+    if (submitter) return submitter;
+
+    const target = event.target as HTMLElement | null;
+    if (target instanceof HTMLButtonElement) return target;
+    return target?.closest('button') as HTMLButtonElement | null;
   }
 
 }

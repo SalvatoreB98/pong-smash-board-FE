@@ -32,9 +32,17 @@ export class LoginComponent {
     });
   }
 
-  async onLogin() {
-    this.loaderService.startLittleLoader();
+  async onLogin(event?: SubmitEvent) {
+    event?.preventDefault();
     if (this.loginForm.invalid) return;
+
+    const button = this.resolveButton(event);
+    if (button) {
+      button.disabled = true;
+      this.loaderService.addSpinnerToButton(button);
+    }
+
+    this.loaderService.startLittleLoader();
 
     const { email, password } = this.loginForm.value;
     const { data, error } = await this.supabaseAuthService.signIn(email, password);
@@ -49,12 +57,40 @@ export class LoginComponent {
       this.router.navigate(['/']); // Redirect to home after successful registration
       this.auth.checkAuth()
     }
+
+    if (button) {
+      button.disabled = false;
+      this.loaderService.removeSpinnerFromButton(button);
+    }
   }
 
   async googleSignIn(event: Event) {
     event.preventDefault();
+    const button = this.resolveButton(event);
+    if (button) {
+      button.disabled = true;
+      this.loaderService.addSpinnerToButton(button);
+    }
+
     this.loaderService.startLittleLoader();
-    await this.supabaseAuthService.signInWithGoogle();
+    try {
+      await this.supabaseAuthService.signInWithGoogle();
+    } finally {
+      if (button) {
+        button.disabled = false;
+        this.loaderService.removeSpinnerFromButton(button);
+      }
+    }
+  }
+
+  private resolveButton(event?: Event): HTMLButtonElement | null {
+    if (!event) return null;
+    const submitter = (event as SubmitEvent).submitter as HTMLButtonElement | undefined;
+    if (submitter) return submitter;
+
+    const target = event.target as HTMLElement | null;
+    if (target instanceof HTMLButtonElement) return target;
+    return target?.closest('button') as HTMLButtonElement | null;
   }
 
 }

@@ -31,12 +31,19 @@ export class RegisterComponent {
     );
   }
 
-  async onRegister() {
-    
+  async onRegister(event?: SubmitEvent) {
+    event?.preventDefault();
+
     if (this.registerForm.invalid) {
       const firstError = this.registerForm.errors ? Object.values(this.registerForm.errors)[0] : null;
       this.loaderService.showToast(firstError || 'Registration failed. Please try again.', MSG_TYPE.ERROR, 5000);
       return;
+    }
+
+    const button = this.resolveButton(event);
+    if (button) {
+      button.disabled = true;
+      this.loaderService.addSpinnerToButton(button);
     }
 
     const { email, password } = this.registerForm.value;
@@ -48,12 +55,31 @@ export class RegisterComponent {
     } else {
       console.log('User registered:', data);
       this.loaderService.showToast('Registration successful! Please check your email to verify your account.', MSG_TYPE.SUCCESS, 5000);
-      
-      this.router.navigate(['/complete-profile']); 
+
+      this.router.navigate(['/complete-profile']);
+    }
+
+    if (button) {
+      button.disabled = false;
+      this.loaderService.removeSpinnerFromButton(button);
     }
   }
-  async googleSignIn() {
-    await this.supabaseAuthService.signInWithGoogle();
+  async googleSignIn(event: Event) {
+    event.preventDefault();
+    const button = this.resolveButton(event);
+    if (button) {
+      button.disabled = true;
+      this.loaderService.addSpinnerToButton(button);
+    }
+
+    try {
+      await this.supabaseAuthService.signInWithGoogle();
+    } finally {
+      if (button) {
+        button.disabled = false;
+        this.loaderService.removeSpinnerFromButton(button);
+      }
+    }
   }
   private readonly passwordsMatch: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     console.log(this.registerForm)
@@ -61,4 +87,14 @@ export class RegisterComponent {
     const c = group.get('confirmPassword')?.value;
     return p && c && p !== c ? { passwordMismatch: true } : null;
   };
+
+  private resolveButton(event?: Event): HTMLButtonElement | null {
+    if (!event) return null;
+    const submitter = (event as SubmitEvent).submitter as HTMLButtonElement | undefined;
+    if (submitter) return submitter;
+
+    const target = event.target as HTMLElement | null;
+    if (target instanceof HTMLButtonElement) return target;
+    return target?.closest('button') as HTMLButtonElement | null;
+  }
 }

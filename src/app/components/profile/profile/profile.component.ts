@@ -127,7 +127,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.previewUrl = URL.createObjectURL(file);
   }
 
-  async saveProfile() {
+  async saveProfile(event: Event) {
+    event.preventDefault();
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -135,6 +136,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     const nickname = (this.form.value.nickname || '').trim();
     const file: File | null = this.form.value.avatar ?? null;
+
+    const button = this.resolveButton(event);
+    if (button) {
+      button.disabled = true;
+      this.loader.addSpinnerToButton(button);
+    }
 
     this.loader.startLittleLoader();
     try {
@@ -176,7 +183,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
       console.error(err);
       this.loader.showToast('Errore aggiornando il profilo', MSG_TYPE.ERROR, 4000);
     } finally {
+      if (button) {
+        button.disabled = false;
+        this.loader.removeSpinnerFromButton(button);
+      }
       this.loader.stopLittleLoader();
     }
+  }
+
+  private resolveButton(event?: Event): HTMLButtonElement | null {
+    if (!event) return null;
+    const submitter = (event as SubmitEvent).submitter as HTMLButtonElement | undefined;
+    if (submitter) return submitter;
+
+    const target = event.target as HTMLElement | null;
+    if (target instanceof HTMLButtonElement) return target;
+    return target?.closest('button') as HTMLButtonElement | null;
   }
 }
