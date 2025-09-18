@@ -34,6 +34,7 @@ export class LoaderService {
       </svg>
     `;
       buttonRef.appendChild(spinner);
+      buttonRef.style.opacity = '0.7';
     }
   }
 
@@ -41,6 +42,7 @@ export class LoaderService {
     const spinner = buttonRef.querySelector('.loader-spinner');
     if (buttonRef && spinner) {
       buttonRef.removeChild(spinner);
+      buttonRef.style.opacity = '1';      
     }
   }
 
