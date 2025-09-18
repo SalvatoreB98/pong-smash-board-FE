@@ -15,6 +15,8 @@ import { CompetitionDetailComponent } from '../competition-detail/competition-de
 import { AddPlayersModalComponent } from '../../add-players-modal/add-players-modal.component';
 import { Utils } from '../../../utils/Utils';
 import { JoinCompetitionModalComponent } from '../../join-competition-modal/join-competition-modal.component';
+import { ViewCompetitionModalComponent } from './view-competition-modal/view-competition-modal.component';
+import { EditCompetitionModalComponent } from './edit-competition-modal/edit-competition-modal.component';
 @Component({
   selector: 'app-competitions',
   standalone: true,
@@ -27,7 +29,9 @@ import { JoinCompetitionModalComponent } from '../../join-competition-modal/join
     AddCompetitionModalComponent,
     CompetitionDetailComponent,
     AddPlayersModalComponent,
-    JoinCompetitionModalComponent
+    JoinCompetitionModalComponent,
+    ViewCompetitionModalComponent,
+    EditCompetitionModalComponent
   ],
   templateUrl: './competitions.component.html',
   styleUrls: ['./competitions.component.scss']
@@ -42,6 +46,7 @@ export class CompetitionsComponent {
   userState$ = this.userService.getState();           // observable dallo user
   competitions$ = this.competitionService.list$;      // observable delle competizioni
   activeCompetition$ = this.competitionService.activeCompetition$;
+
   competitionDetail: ICompetition = {
     id: 0, name: '', description: '', start_date: '', end_date: '',
     type: '',
@@ -101,11 +106,12 @@ export class CompetitionsComponent {
         });
         break;
       case 'details':
-        this.modalService.openModal('competitionDetailsModal');
+        this.modalService.openModal('viewCompetitionModal');
         this.competitionDetail = competition;
         break;
     }
   }
+
   competitionsWithoutActive$ = combineLatest([
     this.competitionService.list$,
     this.competitionService.activeCompetition$
@@ -114,4 +120,5 @@ export class CompetitionsComponent {
       competitions.filter(c => c.id !== active?.id)
     )
   );
+
 }

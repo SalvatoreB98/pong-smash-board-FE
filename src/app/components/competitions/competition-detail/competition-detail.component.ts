@@ -14,7 +14,7 @@ export class CompetitionDetailComponent {
   @Input() competition: ICompetition | null = null;
   @Output() actionSelected = new EventEmitter<{ action: string, competition: ICompetition | null }>();
   private competitionService = inject(CompetitionService);
-  readonly detailsModalName = 'competitionDetailsModal';
+  readonly detailsModalName = 'viewCompetitionModal';
   readonly editModalName = 'editCompetitionModal';
   constructor(public modalService: ModalService) { }
 

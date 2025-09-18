@@ -214,7 +214,7 @@ button:disabled {
     color: $primary-ultra-light;
 
     &::before {
-        content: none; // tolgo il ✔
+        content: none;
     }
 
     &:last-child {
