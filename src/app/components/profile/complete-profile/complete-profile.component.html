@@ -24,7 +24,7 @@
                             <span class="label">{{ 'nickname_label' | translate }}</span>
                             <input class="input" type="text" [placeholder]="'nickname' | translate"
                                 formControlName="nickname" autocomplete="off" />
-                            <small class="error" *ngIf="form?.get('nickname')?.invalid">
+                            <small class="error" *ngIf="form.get('nickname')?.invalid">
                                 {{ 'nickname_error' | translate }}
                             </small>
                         </label>
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="button-container">
-                    <button class="primary mt-3" (click)="saveProfile($event)" [disabled]="form?.invalid">
+                    <button class="primary mt-3" (click)="saveProfile($event)" [disabled]="form.invalid">
                         {{ 'continue' | translate }}
                     </button>
                 </div>

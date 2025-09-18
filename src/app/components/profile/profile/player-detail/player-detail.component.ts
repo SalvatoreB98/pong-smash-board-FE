@@ -1,10 +1,9 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { BadgeComponent } from '../../../../common/badge/badge.component';
 
 @Component({
   selector: 'app-player-detail',
   templateUrl: './player-detail.component.html',
-  imports: [BadgeComponent],
+  imports: [],
   styleUrls: ['./player-detail.component.scss'],
   standalone: true,
 })
