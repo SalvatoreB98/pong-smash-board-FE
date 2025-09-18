@@ -8,6 +8,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn,
 import { SelectPlayerComponent } from '../../../utils/components/select-player/select-player.component';
 import { VoiceScoreComponent } from './voice-score/voice-score.component';
 import { ModalService } from '../../../../services/modal.service';
+import { LoaderService } from '../../../../services/loader.service';
 
 @Component({
   selector: 'app-manual-points',
@@ -57,7 +58,7 @@ export class ManualPointsComponent {
   isMobile = false;
   selectingPlayer: boolean = true;
 
-  constructor(private dataService: DataService, private fb: FormBuilder, private modalService: ModalService) { }
+  constructor(private dataService: DataService, private fb: FormBuilder, private modalService: ModalService, private loaderService: LoaderService) { }
 
   ngOnChanges() {
     console.info('player1 value:', this.player1);
@@ -254,7 +255,8 @@ export class ManualPointsComponent {
   isCompleted(): boolean {
     return this.player1SetsPoints >= this.maxSets || this.player2SetsPoints >= this.maxSets;
   }
-  saveMatch() {
+  saveMatch(target: EventTarget | null) {
+
     // 1. Verifica che la partita sia completata
     if (!this.isCompleted()) {
       alert('La partita non è ancora conclusa!');
@@ -266,14 +268,16 @@ export class ManualPointsComponent {
       alert('Seleziona entrambi i giocatori!');
       return;
     }
-
+    if (target instanceof HTMLElement) {
+      this.loaderService.addSpinnerToButton(target);
+    }
     // 3. Prepara data e ora
     const today = new Date();
     const formattedDate =
       today.toLocaleDateString('en-GB') +
       ` - ${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
 
-    const setsData = this.sets.map((s, i) => ({
+    const setsData = this.sets.map((s) => ({
       player1Points: s.player1 ?? s.player1 ?? 0,
       player2Points: s.player2 ?? s.player2 ?? 0
     }));
@@ -293,6 +297,9 @@ export class ManualPointsComponent {
     // 5. Chiamata al service
     this.dataService.addMatch(formData).then(() => {
       this.modalService.closeModal();
+      if (target instanceof HTMLElement) {
+        this.loaderService.removeSpinnerFromButton(target);
+      }
     }).catch(err => {
       console.error('Errore durante il salvataggio match', err);
     });
