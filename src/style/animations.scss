@@ -126,7 +126,7 @@
     }
 }
 
-.active {
+nav .active, .bottom-navbar .active {
     ::after {
         content: '';
         display: block;
