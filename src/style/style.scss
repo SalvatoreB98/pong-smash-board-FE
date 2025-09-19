@@ -273,6 +273,16 @@ section {
     animation: 0.2s in ease-in-out;
     padding-bottom: 4em;
 
+    &.transparent {
+        background: #ffffff00;
+        box-shadow: none;
+        overflow: hidden;
+        .close {
+            top: 70px;
+            left: 75%;
+        }
+    }
+
     .modal-content {
         position: static;
         padding-top: 2em;
@@ -335,10 +345,12 @@ section {
             filter: drop-shadow(0em 0em 0.625em #282828);
             z-index: 9000;
             padding: 0;
+
             &:hover {
                 transform: scale(0.95);
                 opacity: 0.9;
             }
+
             margin: 1em;
 
         }

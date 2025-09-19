@@ -15,13 +15,15 @@ export class ModalComponent {
   @ViewChild('modalRef') modalRef!: ElementRef;
   @Input() label: string = '';
   @Input() isSmall: boolean = false;
-  @Input() fullscreen: boolean = false; 
-  
+  @Input() fullscreen: boolean = false;
+  @Input() transparent = false;
+
   constructor(public modalService: ModalService) { }
 
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = '/default-player.jpg';
   }
+
   closeModal(): void {
     this.modalService.closeModal();
   }

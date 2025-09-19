@@ -33,6 +33,22 @@
                     </label>
                 </div>
             </div>
+            <span class="label mt-5">{{ 'is_part_of_competition' | translate }}</span>
+            <div class="segmented" role="radiogroup" [attr.aria-label]="'is_part_of_competition' | translate">
+                <label class="seg-item">
+                    <input type="radio" formControlName="isPartOfCompetitionCtrl" [value]="true" />
+                    <span>{{ 'yes' | translate }}</span>
+                </label>
+                <label class="seg-item">
+                    <input type="radio" formControlName="isPartOfCompetitionCtrl" [value]="false" />
+                    <span>{{ 'no' | translate }}</span>
+                    <div class="info ms-2" style="text-align: right;">
+                        <div class="info-input" title="{{ 'is_part_of_competition_info' | translate }}">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </label>
+            </div>
         </div>
     </form>
     <div class="actions d-flex justify-content-end">
@@ -157,6 +173,7 @@
 <div class="steps-wrapper" *ngIf="step == 6">
     <div class="summary form-card mt-3">
         <ul>
+            <li *ngIf="managementForm.value.isPartOfCompetitionCtrl"><i class="fa fa-registered"></i> {{ 'is_part_of_competition' | translate }}</li>
             <li>{{ 'management' | translate }}: {{ managementForm.value.managementCtrl }}</li>
             <li>{{ 'name' | translate }}: {{ competitionForm.value.nameCtrl }}</li>
             <li>{{ 'competition_type_label' | translate }}: {{ competitionForm.value.typeCtrl }}</li>

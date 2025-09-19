@@ -36,9 +36,11 @@ export class AddCompetitionModalComponent {
         pointsCtrl: [null, Validators.required],
       },
     );
+    
     this.managementForm = this.fb.group(
       {
         managementCtrl: [null, Validators.required],
+        isPartOfCompetitionCtrl: [true, Validators.required],
       },
     );
   }
@@ -87,6 +89,7 @@ export class AddCompetitionModalComponent {
         startDate: toYmd(formValue.startDate) ?? undefined,
         endDate: toYmd(formValue.endDate) ?? undefined,
         management: this.managementForm.value.managementCtrl,
+        isPartOfCompetition: this.managementForm.value.isPartOfCompetitionCtrl,
       };
 
       console.log('Saving competition...', payload);

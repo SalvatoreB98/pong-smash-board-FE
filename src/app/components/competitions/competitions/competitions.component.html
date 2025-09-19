@@ -121,7 +121,7 @@
         <app-edit-competition-modal></app-edit-competition-modal>
     </app-modal>
 
-    <app-modal [isSmall]="true" [label]="''" *ngIf="modalService.isActiveModal(modalService.MODALS['VIEW_COMPETITION'])"
+    <app-modal [transparent]="true" [isSmall]="true" [label]="''" *ngIf="modalService.isActiveModal(modalService.MODALS['VIEW_COMPETITION'])"
         [modalName]="modalService.MODALS['VIEW_COMPETITION']">
         <app-view-competition-modal [competition]="competitionDetail"></app-view-competition-modal>
     </app-modal>

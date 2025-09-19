@@ -734,5 +734,21 @@
     "edit_competition": {
         "it": "Modifica competizione",
         "en": "Edit competition"
+    },
+    "is_part_of_competition": {
+        "it": "Farai parte della competizione come giocatore",
+        "en": "You will be part of the competition as a player"
+    },
+    "is_part_of_competition_info": {
+        "it": "Clicca qui se vuoi partecipare alla competizione che stai creando. In questo modo sarai un giocatore del torneo.",
+        "en": "Click here if you want to participate in the competition you are creating. This way you will be a player in the tournament."
+    },
+    "yes": {
+        "it": "Sì",
+        "en": "Yes"
+    },
+    "no": {
+        "it": "No",
+        "en": "No"
     }
 }
