@@ -8,7 +8,7 @@ import { AddCompetitionModalComponent } from '../add-competition-modal/add-compe
 import { CompetitionStartComponent } from '../../profile/complete-profile/competition-start/competition-start.component';
 import { UserProgressStateEnum } from '../../../utils/enum';
 import { CompetitionService } from '../../../../services/competitions.service';
-import { ICompetition } from '../../../../api/competition.api';
+import { CompetitionType, ICompetition } from '../../../../api/competition.api';
 import { UserService } from '../../../../services/user.service';
 import { ModalService } from '../../../../services/modal.service';
 import { CompetitionDetailComponent } from '../competition-detail/competition-detail.component';
@@ -49,7 +49,7 @@ export class CompetitionsComponent {
 
   competitionDetail: ICompetition = {
     id: 0, name: '', description: '', start_date: '', end_date: '',
-    type: '',
+    type: 'league' as CompetitionType,
     setsType: 0,
     pointsType: 0,
     management: 'self'

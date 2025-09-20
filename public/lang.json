@@ -187,13 +187,49 @@
         "it": "Eliminazione diretta",
         "en": "Single elimination"
     },
+    "competition_type_elimination_description": {
+        "it": "Bracket a eliminazione diretta, chi perde è fuori.",
+        "en": "Single elimination bracket, lose and you are out."
+    },
     "competition_type_league": {
         "it": "Campionato",
         "en": "League"
     },
+    "competition_type_league_description": {
+        "it": "Ogni giocatore affronta tutti gli avversari, classifica a punti.",
+        "en": "Everyone plays everyone, standings decide the winner."
+    },
     "competition_type_group_knockout": {
         "it": "Misto",
         "en": "Group and knockout"
+    },
+    "competition_type_group_knockout_description": {
+        "it": "Fase a gironi con eliminazione diretta finale (in arrivo).",
+        "en": "Group phase followed by a knockout bracket (coming soon)."
+    },
+    "beta_label": {
+        "it": "Beta",
+        "en": "Beta"
+    },
+    "round": {
+        "it": "Turno",
+        "en": "Round"
+    },
+    "elimination_mode_description": {
+        "it": "Anteprima del tabellone: definisci gli accoppiamenti iniziali e preparati agli scontri diretti.",
+        "en": "Bracket preview: seed the initial matchups and get ready for direct elimination clashes."
+    },
+    "elimination_waiting_player": {
+        "it": "Slot libero",
+        "en": "Waiting for player"
+    },
+    "elimination_mode_work_in_progress": {
+        "it": "La modalità eliminazione è in sviluppo: presto potrai registrare incontri e avanzamenti automatici.",
+        "en": "Elimination mode is under development: soon you will record matches and automatic advancements."
+    },
+    "elimination_not_enough_players": {
+        "it": "Servono almeno due giocatori per generare il tabellone.",
+        "en": "At least two players are required to generate the bracket."
     },
     "competition_sets_label": {
         "it": "Set (meglio di)",
