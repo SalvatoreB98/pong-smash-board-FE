@@ -8,3 +8,14 @@
         color: rgb(141, 142, 142);
     }
 }
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.league-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}

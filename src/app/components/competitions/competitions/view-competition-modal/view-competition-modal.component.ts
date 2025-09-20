@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { ICompetition } from '../../../../../api/competition.api';
+import { CompetitionType, ICompetition } from '../../../../../api/competition.api';
 import { CompetitionService } from '../../../../../services/competitions.service';
 import { ModalService } from '../../../../../services/modal.service';
 import { SHARED_IMPORTS } from '../../../../common/imports/shared.imports';
@@ -24,5 +24,16 @@ export class ViewCompetitionModalComponent {
 
   isEmpty(array: any): boolean {
     return !array || (Array.isArray(array) && array.length === 0);
+  }
+
+  getCompetitionTypeIcon(type?: CompetitionType | string | null): string {
+    switch (type) {
+      case 'elimination':
+        return 'fa-sitemap';
+      case 'group_knockout':
+        return 'fa-diagram-project';
+      default:
+        return 'fa-users';
+    }
   }
 }

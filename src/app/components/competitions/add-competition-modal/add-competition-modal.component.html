@@ -82,32 +82,27 @@
         <div class="field">
             <span class="label">{{ 'competition_type_label' | translate }}</span>
             <div class="segmented" role="radiogroup" [attr.aria-label]="'competition_type_label' | translate">
-                <label class="seg-item">
-                    <input type="radio" value="league" formControlName="typeCtrl" />
-                    <span class="large-img-select">
-                        <span>{{ 'competition_type_league' | translate }}</span>
-                        <img src="/numbered-list.png" alt="">
-                    </span>
-                </label>
-
-                <label class="seg-item disabled">
-                    <span class="large-img-select">
-                        <div class="not-available">
-                            {{ 'not_available' | translate }}
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        </div>
-                        <span class="marquee">{{ 'competition_type_elimination' | translate }}</span>
-                    </span>
-                </label>
-
-                <label class="seg-item disabled">
-                    <span class="large-img-select">
-                        <div class="not-available">
-                            {{ 'not_available' | translate }}
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        </div>
-                        <span>{{ 'competition_type_group_knockout' | translate }}</span>
-                    </span>
+                <label class="seg-item" *ngFor="let type of competitionTypes"
+                    [class.disabled]="type.disabled">
+                    <ng-container *ngIf="!type.disabled; else disabledType">
+                        <input type="radio" [value]="type.value" formControlName="typeCtrl" />
+                        <span class="large-img-select">
+                            <span class="label-text">{{ type.labelKey | translate }}</span>
+                            <img [src]="type.icon" [attr.alt]="type.labelKey | translate">
+                            <span class="badge" *ngIf="type.badgeKey">{{ type.badgeKey | translate }}</span>
+                            <p class="description" *ngIf="type.descriptionKey">{{ type.descriptionKey | translate }}</p>
+                        </span>
+                    </ng-container>
+                    <ng-template #disabledType>
+                        <span class="large-img-select">
+                            <div class="not-available">
+                                {{ 'not_available' | translate }}
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            </div>
+                            <span class="label-text">{{ type.labelKey | translate }}</span>
+                            <p class="description" *ngIf="type.descriptionKey">{{ type.descriptionKey | translate }}</p>
+                        </span>
+                    </ng-template>
                 </label>
             </div>
         </div>
@@ -171,7 +166,7 @@
             <li *ngIf="managementForm.value.isPartOfCompetitionCtrl"><i class="fa fa-registered"></i> {{ 'is_part_of_competition' | translate }}</li>
             <li>{{ 'management' | translate }}: {{ managementForm.value.managementCtrl }}</li>
             <li>{{ 'name' | translate }}: {{ competitionForm.value.nameCtrl }}</li>
-            <li>{{ 'competition_type_label' | translate }}: {{ competitionForm.value.typeCtrl }}</li>
+            <li>{{ 'competition_type_label' | translate }}: {{ ('competition_type_' + (competitionForm.value.typeCtrl || 'league')) | translate }}</li>
             <li>{{ 'competition_sets_label' | translate }}: {{ competitionForm.value.setsCtrl }}</li>
             <li>{{ 'competition_points_label' | translate }}: {{ competitionForm.value.pointsCtrl }}</li>
         </ul>

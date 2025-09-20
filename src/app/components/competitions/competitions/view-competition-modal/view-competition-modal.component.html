@@ -12,8 +12,8 @@
         <li>
             <span>{{ "type" | translate }}</span>
             <span class="competition-type">
-                {{ competition?.type }}
-                <i class="fa-solid" [class]="competition?.type === 'league' ? 'fa-users' : 'fa-user'"></i>
+                {{ ('competition_type_' + (competition?.type || 'league')) | translate }}
+                <i [ngClass]="['fa-solid', getCompetitionTypeIcon(competition?.type)]"></i>
             </span>
         </li>
         <li *ngIf="competition?.management !== 'admin'">
