@@ -17,7 +17,7 @@
 
         <!-- Altre competizioni -->
         <ng-container *ngIf="competitions$ | async as competitions">
-            <section class="others" *ngIf="competitions.length > 1">
+            <section class="others" *ngIf="competitions.length > 0">
                 <h3>{{ "other_competitions" | translate }}</h3>
                 <div class="other-competitions-container">
                     <ng-container *ngFor="let c of competitionsWithoutActive$ | async; trackBy: trackById">
