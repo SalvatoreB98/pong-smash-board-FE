@@ -46,7 +46,8 @@
   align-items: center;
   border-radius: $border-radius;
   z-index: 15;
-  animation: in-slide 0.3s ease-out;
+  animation: in-slide 0.4s cubic-bezier(.97, .04, .37, 1.01);
+
   &.error {
     background-color: rgba(136, 43, 43, 0.799);
     color: white;
@@ -94,6 +95,7 @@
   animation: ping-bounce 1s infinite linear;
   filter: drop-shadow(0em 0em 0.3125em black);
   transform: scale(0.3);
+
   &.a {
     animation-delay: 0s;
   }
@@ -111,34 +113,44 @@
   0% {
     transform: translateY(60%) scale(0.5) skewX(0deg);
   }
+
   20% {
     transform: translateY(-200%) scale(0.9) skewX(-10deg);
   }
+
   30% {
     transform: translateY(-120%) scale(0.7) skewX(10deg);
   }
+
   40% {
     transform: translateY(30%) scale(0.6) skewX(0deg);
   }
+
   50% {
     transform: translateY(0%) scale(0.7) skewX(-5deg) rotate(-5deg);
   }
+
   60% {
     transform: translateY(-120%) scale(0.7) skewX(-10deg) rotate(10deg);
   }
+
   70% {
     transform: translateY(-200%) scale(0.9) skewX(10deg) rotate(-10deg);
   }
+
   80% {
     transform: translateY(-120%) scale(0.7) skewX(-10deg) rotate(10deg);
   }
+
   90% {
     transform: translateY(40%) scale(0.55) skewX(0deg) rotate(0deg);
   }
+
   100% {
     transform: translateY(60%) scale(0.5) skewX(0deg) rotate(0deg);
   }
 }
+
 @media screen and (max-width: 48em) {
   .loader-small {
     padding: 0.5em 1em;

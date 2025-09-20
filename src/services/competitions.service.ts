@@ -79,13 +79,13 @@ export class CompetitionService {
   add(dto: AddCompetitionDto): Observable<ICompetition> {
     return this.api.add(dto).pipe(
       tap(res => {
+        if(res.players) {
+          res.competition.players = res.players;
+        }
         this.store.addOne(res.competition);
-  
         if (res.userState && this.user) {
           this.user.setLocal(res.userState);
-  
-          // 🔥 setti come attiva la competizione appena creata
-          this.store.setActive(res.competition.id);
+            this.store.setActive(res.competition.id);
         }
   
         this.loader?.showToast?.('Competizione creata!', MSG_TYPE.SUCCESS, 4000);

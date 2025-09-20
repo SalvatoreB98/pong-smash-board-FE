@@ -38,7 +38,10 @@ export class CompetitionStore {
   size$ = this._state$.pipe(map(s => s.ids.length));
 
   activeCompetition$ = this._state$.pipe(
-    map(s => (s.activeId ? s.entities[String(s.activeId)] ?? null : null))
+    map(s => {
+      console.log('[CompetitionStore] ⭐ activeCompetition$ recomputed', s.activeId ? s.entities[String(s.activeId)] ?? null : null);
+      return (s.activeId ? s.entities[String(s.activeId)] ?? null : null)
+    })
   );
 
   // ---------- SNAPSHOTS ----------

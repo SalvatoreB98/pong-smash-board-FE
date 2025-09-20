@@ -73,25 +73,23 @@
 
     100% {
         transform: scale(1);
-        filter: drop-shadow(0px 0px 1000px rgba($primary-light, 0));
+        filter: drop-shadow(0px 0px 1000px transparent);
     }
 }
 
-@media (max-width: 600px) {
-    @keyframes highlight-once {
-        0% {
-            transform: scale(0.95);
-            filter: drop-shadow(0px 0px 1px $primary-light);
-        }
+@keyframes highlight-once-mobile {
+    0% {
+        transform: scale(0.95);
+        filter: none;
+    }
 
-        50% {
-            transform: scale(1.07);
-        }
+    50% {
+        transform: scale(1.07);
+    }
 
-        100% {
-            transform: scale(1);
-            filter: drop-shadow(0px 0px 300px rgba($primary-light, 0));
-        }
+    100% {
+        transform: scale(1);
+        filter: none;
     }
 }
 

@@ -41,6 +41,7 @@ export interface AddCompetitionDto {
 
 // tipica risposta del tuo /api/add-competition
 export interface AddCompetitionResponse {
+  players: any;
   message?: string;
   competition: ICompetition;
   userState?: IUserState;

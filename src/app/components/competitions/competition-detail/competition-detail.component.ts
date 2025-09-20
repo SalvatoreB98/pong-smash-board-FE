@@ -16,6 +16,10 @@ import { TranslationService } from '../../../../services/translation.service';
 export class CompetitionDetailComponent {
 
   @Input() competition: ICompetition | null = null;
+
+  ngOnChanges() {
+    console.log('Competition input changed:', this.competition);
+  }
   @Output() actionSelected = new EventEmitter<{ action: string, competition: ICompetition | null }>();
   
   copied: boolean = false;
