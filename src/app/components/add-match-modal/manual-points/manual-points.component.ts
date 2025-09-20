@@ -9,6 +9,7 @@ import { SelectPlayerComponent } from '../../../utils/components/select-player/s
 import { VoiceScoreComponent } from './voice-score/voice-score.component';
 import { ModalService } from '../../../../services/modal.service';
 import { LoaderService } from '../../../../services/loader.service';
+import { Utils } from '../../../utils/Utils';
 
 @Component({
   selector: 'app-manual-points',
@@ -245,11 +246,11 @@ export class ManualPointsComponent {
     element.style.animation = ''; // restore
 
     // reapply the class (keeps CSS control)
-    element.classList.add(this.isMobile ? 'highlight-once-mobile' : 'highlight-once');
+    element.classList.add(Utils.isIos() ? 'highlight-once-mobile' : 'highlight-once');
 
     // quando finisce l’animazione la rimuovo
     element.addEventListener('animationend', () => {
-      element.classList.remove(this.isMobile ? 'highlight-once-mobile' : 'highlight-once');
+      element.classList.remove(Utils.isIos() ? 'highlight-once-mobile' : 'highlight-once');
     }, { once: true });
   }
   isCompleted(): boolean {

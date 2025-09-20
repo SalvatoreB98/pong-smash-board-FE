@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MSG_TYPE } from '../app/utils/enum';
 import { TranslationService } from './translation.service';
+import { Utils } from '../app/utils/Utils';
 
 @Injectable({
   providedIn: 'root'
@@ -69,7 +70,7 @@ export class LoaderService {
     setTimeout(() => {
       if (message.includes('not_enough_players')) {
         const button = document.getElementById('add-players-button');
-        if (button) {
+        if (button && !Utils.isIos()) {
           button.classList.add('highlight');
         }
       }

@@ -44,4 +44,11 @@ export class Utils {
 
     return nums;
   };
+  static isAndroid(): boolean {
+    return /Android/i.test(navigator.userAgent);
+  }
+
+  static isIos(): boolean {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  }
 }

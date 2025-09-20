@@ -15,7 +15,8 @@
     }
 
     .circle.active {
-        background-color: #ffffffde;
+        background-color: transparent;
+        border: 0.1em solid #ffffffde;
     }
 
     .circle.completed {
