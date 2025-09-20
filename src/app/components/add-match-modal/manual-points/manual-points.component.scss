@@ -231,6 +231,9 @@ button:disabled {
         transform: translate(0%, -50%);
         padding: 0;
     }
+    .actions {
+        padding: 0 2em;
+    }
 }
 
 @media screen and (max-width: 600px) {
