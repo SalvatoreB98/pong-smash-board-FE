@@ -19,11 +19,14 @@ import { IPlayer, PlayersService } from '../../services/players.service';
 import { LoaderService } from '../../services/loader.service';
 import { TranslationService } from '../../services/translation.service';
 import { ManualPointsComponent } from './add-match-modal/manual-points/manual-points.component';
+import { EliminationBracketComponent } from './elimination-bracket/elimination-bracket.component';
+import { EliminationRound } from '../interfaces/elimination-bracket.interface';
+import { ICompetition } from '../../api/competition.api';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent],
+  imports: [CommonModule, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent, EliminationBracketComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -39,6 +42,9 @@ export class HomeComponent {
   clickedMatch: IMatch | undefined;
   userState$ = this.userService.getState();
   players: IPlayer[] = [];
+  activeCompetition: ICompetition | null = null;
+  isEliminationMode = false;
+  eliminationRounds: EliminationRound[] = [];
 
   constructor(public modalService: ModalService, private loaderService: LoaderService, private translateService: TranslationService, private router: Router) { }
 
@@ -54,6 +60,9 @@ export class HomeComponent {
             this.loaderService.showToast(this.translateService.translate('no_active_competition'), MSG_TYPE.WARNING);
             this.router.navigate(['/competitions']);
           }
+          this.activeCompetition = activeCompetition ?? null;
+          this.isEliminationMode = (activeCompetition?.type === 'elimination');
+          this.updateEliminationRounds();
         });
       }
     });
@@ -64,6 +73,7 @@ export class HomeComponent {
         this.loaderService.showToast('not_enough_players', MSG_TYPE.WARNING);
         this.router.navigate(['/competitions']);
       }
+      this.updateEliminationRounds();
     });
     this.matches$.subscribe(matches => {
       this.matches = matches;
@@ -74,6 +84,51 @@ export class HomeComponent {
 
   setClickedMatch(match: IMatch) {
     this.clickedMatch = match;
+  }
+
+  private updateEliminationRounds() {
+    if (!this.isEliminationMode) {
+      this.eliminationRounds = [];
+      return;
+    }
+
+    if (this.players.length < 2) {
+      this.eliminationRounds = [];
+      return;
+    }
+
+    this.eliminationRounds = this.buildInitialEliminationBracket(this.players);
+  }
+
+  private buildInitialEliminationBracket(players: IPlayer[]): EliminationRound[] {
+    if (!players.length) {
+      return [];
+    }
+
+    const totalSlots = Math.pow(2, Math.ceil(Math.log2(Math.max(2, players.length))));
+    const seeding: (IPlayer | null)[] = [...players];
+
+    while (seeding.length < totalSlots) {
+      seeding.push(null);
+    }
+
+    const roundLabel = `${this.translateService.translate('round')} 1`;
+    const round: EliminationRound = {
+      name: roundLabel,
+      matches: []
+    };
+
+    for (let i = 0; i < totalSlots; i += 2) {
+      round.matches.push({
+        id: `round-1-match-${i / 2 + 1}`,
+        slots: [
+          { seed: i + 1, player: seeding[i] ?? null },
+          { seed: i + 2, player: seeding[i + 1] ?? null }
+        ]
+      });
+    }
+
+    return [round];
   }
 
 }

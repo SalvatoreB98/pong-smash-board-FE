@@ -29,8 +29,8 @@
     </div>
     <div>
       <span>{{ "type" | translate }}: </span>
-      <span class="value competition-type">{{ competition?.type }}</span>
-      <i class="fa-solid" [class]="competition?.type === 'league' ? 'fa-users' : 'fa-user'"></i>
+      <span class="value competition-type">{{ ('competition_type_' + (competition?.type || 'league')) | translate }}</span>
+      <i [ngClass]="['fa-solid', getCompetitionTypeIcon(competition?.type)]"></i>
     </div>
 
     <div class="players-container d-flex justify-content-between align-items-center">

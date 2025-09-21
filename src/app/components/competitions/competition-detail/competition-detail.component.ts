@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
-import { ICompetition } from '../../../../api/competition.api';
+import { CompetitionType, ICompetition } from '../../../../api/competition.api';
 import { ModalService } from '../../../../services/modal.service';
 import { MSG_TYPE } from '../../../utils/enum';
 import { CompetitionService } from '../../../../services/competitions.service';
@@ -79,5 +79,16 @@ export class CompetitionDetailComponent {
         this.loader.showToast(this.translateService.translate('code_not_available'), MSG_TYPE.ERROR);
       }
     });
+  }
+
+  getCompetitionTypeIcon(type?: CompetitionType | string | null): string {
+    switch (type) {
+      case 'elimination':
+        return 'fa-sitemap';
+      case 'group_knockout':
+        return 'fa-diagram-project';
+      default:
+        return 'fa-users';
+    }
   }
 }

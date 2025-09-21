@@ -5,10 +5,12 @@ import { API_PATHS } from '../api/api.config';
 import { IJoinCompetitionResponse, IUserState } from '../services/interfaces/Interfaces'; // adatta il path
 
 // --- Modelli ---
+export type CompetitionType = 'league' | 'elimination' | 'group_knockout';
+
 export interface ICompetition {
   id: number | string;
   name: string;
-  type: string;
+  type: CompetitionType;
   setsType: number;
   sets_type?: number; // alias per setsType
   pointsType: number;
@@ -31,7 +33,7 @@ export interface ICompetitionsResponse {
 // payload per la creazione
 export interface AddCompetitionDto {
   name: string;
-  type: string;       // "league" | "elimination" | ...
+  type: CompetitionType;       // "league" | "elimination" | ...
   bestOf: number;
   pointsTo: number;
   startDate?: string;

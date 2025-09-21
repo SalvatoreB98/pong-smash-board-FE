@@ -1,0 +1,49 @@
+<section class="elimination-wrapper" *ngIf="competition as active">
+  <header class="elimination-header">
+    <div>
+      <h2>{{ active.name }}</h2>
+      <p>{{ 'elimination_mode_description' | translate }}</p>
+    </div>
+    <div class="meta">
+      <div class="meta-item">
+        <span class="label">{{ 'best_of' | translate }}</span>
+        <span class="value">{{ active['sets_type'] }}</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">{{ 'points_number' | translate }}</span>
+        <span class="value">{{ active['points_type'] }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="bracket" *ngIf="rounds.length; else emptyBracket">
+    <div class="bracket-round" *ngFor="let round of rounds; trackBy: trackByRound">
+      <h3>{{ round.name }}</h3>
+      <div class="bracket-matches">
+        <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
+          <div class="slot" *ngFor="let slot of match.slots">
+            <span class="seed">#{{ slot.seed }}</span>
+            <img class="avatar" src="{{ slot.player?.image_url }}" alt="">
+            <span class="player" *ngIf="slot.player; else waiting">
+              {{ slot.player.nickname || slot.player.name }}
+            </span>
+            <ng-template #waiting>
+              <span class="player waiting">{{ 'elimination_waiting_player' | translate }}</span>
+            </ng-template>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <footer class="elimination-footer">
+    <i class="fa-solid fa-hammer"></i>
+    <span>{{ 'elimination_mode_work_in_progress' | translate }}</span>
+  </footer>
+</section>
+
+<ng-template #emptyBracket>
+  <div class="empty-bracket">
+    <p>{{ 'elimination_not_enough_players' | translate }}</p>
+  </div>
+</ng-template>

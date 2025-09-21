@@ -18,8 +18,6 @@
                             <p class="mt-3">{{ "management_type_admin" | translate }}</p>
                         </span>
                     </label>
-                </div>
-                <div class="segmented" role="radiogroup" [attr.aria-label]="'management_type' | translate">
                     <label class="seg-item">
                         <input type="radio" value="self" formControlName="managementCtrl" />
                         <span class="large-img-select">
@@ -82,32 +80,27 @@
         <div class="field">
             <span class="label">{{ 'competition_type_label' | translate }}</span>
             <div class="segmented" role="radiogroup" [attr.aria-label]="'competition_type_label' | translate">
-                <label class="seg-item">
-                    <input type="radio" value="league" formControlName="typeCtrl" />
-                    <span class="large-img-select">
-                        <span>{{ 'competition_type_league' | translate }}</span>
-                        <img src="/numbered-list.png" alt="">
-                    </span>
-                </label>
-
-                <label class="seg-item disabled">
-                    <span class="large-img-select">
-                        <div class="not-available">
-                            {{ 'not_available' | translate }}
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        </div>
-                        <span class="marquee">{{ 'competition_type_elimination' | translate }}</span>
-                    </span>
-                </label>
-
-                <label class="seg-item disabled">
-                    <span class="large-img-select">
-                        <div class="not-available">
-                            {{ 'not_available' | translate }}
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        </div>
-                        <span>{{ 'competition_type_group_knockout' | translate }}</span>
-                    </span>
+                <label class="seg-item" *ngFor="let type of competitionTypes"
+                    [class.disabled]="type.disabled">
+                    <ng-container *ngIf="!type.disabled; else disabledType">
+                        <input type="radio" [value]="type.value" formControlName="typeCtrl" />
+                        <span class="large-img-select">
+                            <span class="label-text">{{ type.labelKey | translate }}</span>
+                            <img [src]="type.icon" [attr.alt]="type.labelKey | translate">
+                            <span class="badge" *ngIf="type.badgeKey">{{ type.badgeKey | translate }}</span>
+                            <p class="description" *ngIf="type.descriptionKey">{{ type.descriptionKey | translate }}</p>
+                        </span>
+                    </ng-container>
+                    <ng-template #disabledType>
+                        <span class="large-img-select">
+                            <div class="not-available">
+                                {{ 'not_available' | translate }}
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            </div>
+                            <span class="label-text">{{ type.labelKey | translate }}</span>
+                            <p class="description" *ngIf="type.descriptionKey">{{ type.descriptionKey | translate }}</p>
+                        </span>
+                    </ng-template>
                 </label>
             </div>
         </div>
@@ -167,13 +160,37 @@
 <!-- STEP 6 – RIEPILOGO -->
 <div class="steps-wrapper" *ngIf="step == 6">
     <div class="summary form-card mt-3">
-        <ul>
-            <li *ngIf="managementForm.value.isPartOfCompetitionCtrl"><i class="fa fa-registered"></i> {{ 'is_part_of_competition' | translate }}</li>
-            <li>{{ 'management' | translate }}: {{ managementForm.value.managementCtrl }}</li>
-            <li>{{ 'name' | translate }}: {{ competitionForm.value.nameCtrl }}</li>
-            <li>{{ 'competition_type_label' | translate }}: {{ competitionForm.value.typeCtrl }}</li>
-            <li>{{ 'competition_sets_label' | translate }}: {{ competitionForm.value.setsCtrl }}</li>
-            <li>{{ 'competition_points_label' | translate }}: {{ competitionForm.value.pointsCtrl }}</li>
+        <ul class="list-group list-group-flush">
+            <li *ngIf="managementForm.value.isPartOfCompetitionCtrl" class="list-group-itemtext-light d-flex align-items-center">
+                <i class="fa fa-user-plus me-2 text-primary"></i>
+                <span class="fw-bold me-2">{{ 'is_part_of_competition' | translate }}:</span>
+                <span class="ms-auto">{{ 'yes' | translate }}</span>
+            </li>
+            <li class="list-group-item text-light d-flex align-items-center">
+                <i [class]="managementForm.value.managementCtrl == 'admin' ? 'fa fa-lock me-2 text-warning' : 'fa fa-lock-open me-2 text-success'"></i>
+                <span class="fw-bold me-2">{{ 'management' | translate }}:</span>
+                <span class="ms-auto">{{ managementForm.value.managementCtrl | titlecase }}</span>
+            </li>
+            <li class="list-group-item text-light d-flex align-items-center">
+                <i class="fa fa-trophy me-2 text-warning"></i>
+                <span class="fw-bold me-2">{{ 'name' | translate }}:</span>
+                <span class="ms-auto">{{ competitionForm.value.nameCtrl }}</span>
+            </li>
+            <li class="list-group-item text-light d-flex align-items-center">
+                <i class="fa fa-list me-2 text-info"></i>
+                <span class="fw-bold me-2">{{ 'competition_type_label' | translate }}:</span>
+                <span class="ms-auto">{{ ('competition_type_' + (competitionForm.value.typeCtrl || 'league')) | translate }}</span>
+            </li>
+            <li class="list-group-item text-light d-flex align-items-center">
+                <i class="fa fa-th me-2 text-secondary"></i>
+                <span class="fw-bold me-2">{{ 'competition_sets_label' | translate }}:</span>
+                <span class="ms-auto">{{ competitionForm.value.setsCtrl }}</span>
+            </li>
+            <li class="list-group-item text-light d-flex align-items-center">
+                <i class="fa fa-star me-2 text-warning"></i>
+                <span class="fw-bold me-2">{{ 'competition_points_label' | translate }}:</span>
+                <span class="ms-auto">{{ competitionForm.value.pointsCtrl }}</span>
+            </li>
         </ul>
     </div>
     <div class="actions d-flex justify-content-between">
