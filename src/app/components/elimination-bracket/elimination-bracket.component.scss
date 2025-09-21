@@ -97,7 +97,6 @@
 
 .slot {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 1rem;
   padding: 0.5rem 0.75rem;
@@ -112,7 +111,6 @@
 }
 
 .player {
-  flex: 1;
   font-size: 1rem;
   font-weight: 600;
   text-align: right;

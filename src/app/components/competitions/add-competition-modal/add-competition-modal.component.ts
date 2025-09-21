@@ -24,28 +24,32 @@ export class AddCompetitionModalComponent {
   competitionForm: FormGroup;
   step = 1;
   managementForm: FormGroup;
-  competitionTypes: { value: CompetitionType; icon: string; labelKey: string; descriptionKey?: string; badgeKey?: string; disabled?: boolean; }[] = [
-    {
-      value: 'league',
-      icon: '/numbered-list.png',
-      labelKey: 'competition_type_league',
-      descriptionKey: 'competition_type_league_description'
-    },
-    {
-      value: 'elimination',
-      icon: '/vs.svg',
-      labelKey: 'competition_type_elimination',
-      descriptionKey: 'competition_type_elimination_description',
-      badgeKey: 'beta_label'
-    },
-    {
-      value: 'group_knockout',
-      icon: '/trophy.png',
-      labelKey: 'competition_type_group_knockout',
-      descriptionKey: 'competition_type_group_knockout_description',
-      disabled: true
-    }
-  ];
+  
+  getCompetitionTypes(): { value: CompetitionType; icon: string; labelKey: string; descriptionKey?: string; badgeKey?: string; disabled?: boolean; }[] {
+    return [
+      {
+        value: 'league',
+        icon: '/numbered-list.png',
+        labelKey: 'competition_type_league',
+        descriptionKey: 'competition_type_league_description'
+      },
+      {
+        value: 'elimination',
+        icon: '/vs.svg',
+        labelKey: 'competition_type_elimination',
+        descriptionKey: 'competition_type_elimination_description',
+        badgeKey: 'beta_label',
+        disabled: this.managementForm.get('managementCtrl')?.value !== 'admin'
+      },
+      {
+        value: 'group_knockout',
+        icon: '/trophy.png',
+        labelKey: 'competition_type_group_knockout',
+        descriptionKey: 'competition_type_group_knockout_description',
+        disabled: true
+      }
+    ];
+  }
 
   constructor(private fb: FormBuilder, public modalService: ModalService, private competitionService: CompetitionService, private loaderService: LoaderService, private userService: UserService) {
 
