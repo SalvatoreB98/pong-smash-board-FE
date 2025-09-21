@@ -104,31 +104,53 @@ export class HomeComponent {
     if (!players.length) {
       return [];
     }
+    // Calcola il numero totale di slot (potenza di 2 >= num giocatori)
+    // Se i giocatori sono già una potenza di 2, usa quel numero, altrimenti prendi la potenza di 2 successiva
+    const nextPow2 = (n: number) => Math.pow(2, Math.ceil(Math.log2(n)));
+    const totalSlots = nextPow2(players.length);
 
-    const totalSlots = Math.pow(2, Math.ceil(Math.log2(Math.max(2, players.length))));
+    // Se siamo già a una potenza di 2, non aggiungere slot extra
+    // Se no, fermati alla potenza di 2 immediatamente superiore (es: 7 -> 8, 9 -> 16)
     const seeding: (IPlayer | null)[] = [...players];
 
+    // Aggiungi bye/null se necessario
     while (seeding.length < totalSlots) {
       seeding.push(null);
     }
 
-    const roundLabel = `${this.translateService.translate('round')} 1`;
-    const round: EliminationRound = {
-      name: roundLabel,
-      matches: []
-    };
+    const rounds: EliminationRound[] = [];
+    let currentRoundPlayers = seeding;
+    let roundNumber = 1;
 
-    for (let i = 0; i < totalSlots; i += 2) {
-      round.matches.push({
-        id: `round-1-match-${i / 2 + 1}`,
-        slots: [
-          { seed: i + 1, player: seeding[i] ?? null },
-          { seed: i + 2, player: seeding[i + 1] ?? null }
-        ]
-      });
+    while (currentRoundPlayers.length > 1) {
+      const roundLabel = `${this.translateService.translate('round')} ${roundNumber}`;
+      const round: EliminationRound = {
+        name: roundLabel,
+        matches: []
+      };
+
+      for (let i = 0; i < currentRoundPlayers.length; i += 2) {
+        round.matches.push({
+          id: `round-${roundNumber}-match-${i / 2 + 1}`,
+          slots: [
+            { seed: i + 1, player: currentRoundPlayers[i] ?? null },
+            { seed: i + 2, player: currentRoundPlayers[i + 1] ?? null }
+          ]
+        });
+      }
+
+      rounds.push(round);
+
+      // Prepara i vincitori (placeholder null per ora) per il prossimo round
+      const nextRoundPlayers: (IPlayer | null)[] = [];
+      for (let i = 0; i < round.matches.length; i++) {
+        nextRoundPlayers.push(null); // Saranno riempiti dopo i risultati reali
+      }
+      currentRoundPlayers = nextRoundPlayers;
+      roundNumber++;
     }
 
-    return [round];
+    return rounds;
   }
 
 }
