@@ -44,20 +44,24 @@
             </section>
         </div>
     </ng-template>
-    <app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])"
-        [modalName]="modalService.MODALS['ADD_MATCH']">
-        <app-add-match-modal [players]="players" [player1]="player1Selected"
-            [player2]="player2Selected"></app-add-match-modal>
-    </app-modal>
-    <app-modal [label]="'match_details'" *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])"
-        [modalName]="modalService.MODALS['SHOW_MATCH']">
-        <app-show-match-modal [match]="clickedMatch"></app-show-match-modal>
-    </app-modal>
+
     <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
 </ng-container>
+
+<app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])"
+    [modalName]="modalService.MODALS['ADD_MATCH']">
+    <add-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="players"
+        [player1]="player1Selected" [player2]="player2Selected"></add-match-modal>
+</app-modal>
+
+<app-modal [label]="'match_details'" *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])"
+    [modalName]="modalService.MODALS['SHOW_MATCH']">
+    <app-show-match-modal [match]="clickedMatch"></app-show-match-modal>
+</app-modal>
 
 <app-modal [fullscreen]="true" [label]="'manual_points'"
     *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
     [modalName]="modalService.MODALS['MANUAL_POINTS']" class="manual-points-modal">
-    <app-manual-points [players]="players" [player1]="player1Selected" [player2]="player2Selected"></app-manual-points>
+    <app-manual-points [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="players"
+        [player1]="player1Selected" [player2]="player2Selected"></app-manual-points>
 </app-modal>

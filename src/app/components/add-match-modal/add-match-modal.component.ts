@@ -16,7 +16,7 @@ import { ICompetition } from '../../../api/competition.api';
 import { IPlayer } from '../../../services/players.service';
 
 @Component({
-  selector: 'app-add-match-modal',
+  selector: 'add-match-modal',
   standalone: true,
   templateUrl: './add-match-modal.component.html',
   styleUrls: ['./add-match-modal.component.scss'],
@@ -30,7 +30,8 @@ export class AddMatchModalComponent implements OnInit {
   @Input() players: IPlayer[] = [];
   @Input() player1: IPlayer | null = null;
   @Input() player2: IPlayer | null = null;
-  
+  @Input() isAlreadySelected: boolean = false;
+
   errorsOfSets: string[] = [];
   errorsOfPoints: string[] = [];
 
