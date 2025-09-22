@@ -24,9 +24,10 @@
           <div class="slot" *ngFor="let slot of match.slots">
             <span class="seed">#{{ slot.seed }}</span>
             <img class="avatar" src="{{ slot.player?.image_url || 'default-player.jpg' }}" alt="">
-            <span class="player" *ngIf="slot.player; else waiting">
-              {{ slot.player.nickname || slot.player.name }}
-            </span>
+            <div class="player" *ngIf="slot.player; else waiting">
+              <span class="player-name">{{ slot.player.nickname || slot.player.name }}</span>
+              <span class="player-score" *ngIf="slot.score !== undefined && slot.score !== null">{{ slot.score }}</span>
+            </div>
             <ng-template #waiting>
               <span class="player waiting">{{ 'elimination_waiting_player' | translate }}</span>
             </ng-template>

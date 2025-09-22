@@ -3,6 +3,7 @@ import { IPlayer } from '../../services/players.service';
 export interface EliminationMatchSlot {
   seed: number;
   player: IPlayer | null;
+  score?: number | null;
 }
 
 export interface EliminationMatch {
