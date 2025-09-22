@@ -70,6 +70,8 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 1.75em;
+    color: white;
 
     &::before {
       content: '';
@@ -77,6 +79,16 @@
       height: 0.5rem;
       border-radius: 50%;
       background: $orange;
+    }
+  }
+
+  &:last-child {
+    .bracket-matches {
+      display: flex;
+
+      .bracket-match {
+        flex-grow: 1;
+      }
     }
   }
 }
@@ -159,10 +171,6 @@
   text-align: center;
 }
 
-.bracket h3 {
-  font-size: 1.75em;
-  color: $orange;
-}
 
 @media screen and (max-width: 48rem) {
   .elimination-header {
