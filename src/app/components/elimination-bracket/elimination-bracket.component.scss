@@ -76,7 +76,7 @@
       width: 0.5rem;
       height: 0.5rem;
       border-radius: 50%;
-      background: $primary;
+      background: $orange;
     }
   }
 }
@@ -157,7 +157,10 @@
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
 }
-
+.bracket h3 {
+  font-size: 1.75em;
+  color: $orange;
+}
 @media screen and (max-width: 48rem) {
   .elimination-header {
     flex-direction: column;
