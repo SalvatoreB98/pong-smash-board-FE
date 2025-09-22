@@ -51,7 +51,7 @@
                 <!-- Player 1 -->
                 <div class="col-12 col-md-5 mb-3 mb-md-0">
                     <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'"
-                        (playerSelected)="setPlayer($event)">
+                        [selectedPlayerId]="playersForm.get('player1')?.value" (playerSelected)="setPlayer($event)">
                     </app-select-player>
                 </div>
 
@@ -63,7 +63,7 @@
                 <!-- Player 2 -->
                 <div class="col-12 col-md-5">
                     <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'"
-                        (playerSelected)="setPlayer($event)">
+                        [selectedPlayerId]="playersForm.get('player2')?.value" (playerSelected)="setPlayer($event)">
                     </app-select-player>
                 </div>
             </div>

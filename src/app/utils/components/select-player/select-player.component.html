@@ -4,7 +4,10 @@
 
     <!-- Fake input field -->
     <div class="input-field position-relative" style="text-align: left;" (click)="toggleDropdown($event)" [class.open]="showDropdown">
-        <span *ngIf="!selectedPlayer" class="my-placeholder">
+        <span *ngIf="!selectedPlayer && players?.length === 0" class="my-placeholder">
+            {{"loading" | translate}}...
+        </span>
+        <span *ngIf="!selectedPlayer && players?.length > 0" class="my-placeholder">
             {{"Select a player" | translate}}...
         </span>
         <span *ngIf="selectedPlayer">

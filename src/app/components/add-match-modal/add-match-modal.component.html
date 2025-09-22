@@ -10,11 +10,13 @@
         <!-- GIOCATORI -->
         <div class="row mt-3">
             <div class="col-md-6">
-                <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'" (playerSelected)="setPlayer($event)">
+                <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'"
+                    [selectedPlayerId]="matchForm.get('player1')?.value" (playerSelected)="setPlayer($event)">
                 </app-select-player>
             </div>
             <div class="col-md-6">
-                <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'" (playerSelected)="setPlayer($event)">
+                <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'"
+                    [selectedPlayerId]="matchForm.get('player2')?.value" (playerSelected)="setPlayer($event)">
                 </app-select-player>
             </div>
         </div>

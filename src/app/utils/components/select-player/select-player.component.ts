@@ -23,6 +23,7 @@ import { TranslatePipe } from '../../translate.pipe';
 export class SelectPlayerComponent implements OnInit, OnChanges {
   @Input() players: { id?: number; nickname: string }[] = [];
   @Input() playerNumber: string = '';
+  @Input() selectedPlayerId: number | string | null = null;
 
   @Output() playerSelected = new EventEmitter<any>();
 
@@ -45,6 +46,34 @@ export class SelectPlayerComponent implements OnInit, OnChanges {
     if (changes['players'] && this.players) {
       this.filteredPlayers = [...this.players];
     }
+
+    if (changes['selectedPlayerId'] || changes['players']) {
+      this.updateSelectedPlayer();
+    }
+  }
+
+  private updateSelectedPlayer() {
+    const parsedId = this.parseSelectedPlayerId(this.selectedPlayerId);
+    if (parsedId === null) {
+      this.selectedPlayer = null;
+      return;
+    }
+
+    const matchedPlayer = this.players.find((player) => player.id === parsedId) || null;
+    this.selectedPlayer = matchedPlayer;
+  }
+
+  private parseSelectedPlayerId(value: number | string | null): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+
+    if (typeof value === 'number') {
+      return Number.isNaN(value) ? null : value;
+    }
+
+    const parsed = Number(value);
+    return Number.isNaN(parsed) ? null : parsed;
   }
 
   toggleDropdown(event: Event) {
