@@ -124,23 +124,33 @@ export class HomeComponent {
     const rounds: EliminationRound[] = [];
     let currentRoundPlayers = seeding;
     let roundNumber = 1;
+    // Mappa per i nomi dei round in base al numero di slot
+    const roundNames: { [key: number]: string } = {
+      32: 'one_sixteenth_finals',
+      16: 'one_eighth_finals',
+      8: 'quarter_finals',
+      4: 'semi_finals',
+      2: 'finals'
+    };
 
-    while (currentRoundPlayers.length > 1) {
-      const roundLabel = `${this.translateService.translate('round')} ${roundNumber}`;
+    let slotsInRound = currentRoundPlayers.length;
+
+    while (slotsInRound > 1) {
+      const roundName = roundNames[slotsInRound] || `${this.translateService.translate('round')} ${roundNumber}`;
       const round: EliminationRound = {
-        roundNumber,
-        name: roundLabel,
-        matches: []
+      roundNumber,
+      name: roundName,
+      matches: []
       };
 
       for (let i = 0; i < currentRoundPlayers.length; i += 2) {
-        round.matches.push({
-          id: `round-${roundNumber}-match-${i / 2 + 1}`,
-          slots: [
-            { seed: i + 1, player: currentRoundPlayers[i] ?? null },
-            { seed: i + 2, player: currentRoundPlayers[i + 1] ?? null }
-          ]
-        });
+      round.matches.push({
+        id: `round-${roundNumber}-match-${i / 2 + 1}`,
+        slots: [
+        { seed: i + 1, player: currentRoundPlayers[i] ?? null },
+        { seed: i + 2, player: currentRoundPlayers[i + 1] ?? null }
+        ]
+      });
       }
 
       rounds.push(round);
@@ -148,9 +158,10 @@ export class HomeComponent {
       // Prepara i vincitori (placeholder null per ora) per il prossimo round
       const nextRoundPlayers: (IPlayer | null)[] = [];
       for (let i = 0; i < round.matches.length; i++) {
-        nextRoundPlayers.push(null); // Saranno riempiti dopo i risultati reali
+      nextRoundPlayers.push(null); // Saranno riempiti dopo i risultati reali
       }
       currentRoundPlayers = nextRoundPlayers;
+      slotsInRound = currentRoundPlayers.length;
       roundNumber++;
     }
 

@@ -99,6 +99,7 @@
   display: grid;
   gap: 0.5rem;
   display: flex;
+
   button {
     min-height: 2.75rem;
     font-weight: 600;
@@ -157,10 +158,12 @@
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
 }
+
 .bracket h3 {
   font-size: 1.75em;
   color: $orange;
 }
+
 @media screen and (max-width: 48rem) {
   .elimination-header {
     flex-direction: column;
@@ -173,5 +176,17 @@
 
   .player {
     text-align: left;
+  }
+}
+
+@media screen and (min-width: 64rem) {
+  .elimination-wrapper {
+    max-width: 1000px;
+  }
+
+  .bracket-matches {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
 }
