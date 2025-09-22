@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { ICompetition } from '../../../api/competition.api';
 import { TranslatePipe } from '../../utils/translate.pipe';
 import { EliminationRound } from '../../interfaces/elimination-bracket.interface';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-elimination-bracket',
@@ -14,6 +15,7 @@ import { EliminationRound } from '../../interfaces/elimination-bracket.interface
 export class EliminationBracketComponent {
   @Input() competition: ICompetition | null = null;
   @Input() rounds: EliminationRound[] = [];
+  modalService = inject(ModalService);
 
   ngOnInit() {
     console.log('EliminationBracketComponent initialized');
