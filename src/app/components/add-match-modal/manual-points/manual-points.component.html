@@ -50,7 +50,7 @@
             <div class="row align-items-center justify-content-center">
                 <!-- Player 1 -->
                 <div class="col-12 col-md-5 mb-3 mb-md-0">
-                    <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'"
+                    <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'" [initialPlayer]="player1"
                         (playerSelected)="setPlayer($event)">
                     </app-select-player>
                 </div>
@@ -62,7 +62,7 @@
 
                 <!-- Player 2 -->
                 <div class="col-12 col-md-5">
-                    <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'"
+                    <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'" [initialPlayer]="player2"
                         (playerSelected)="setPlayer($event)">
                     </app-select-player>
                 </div>
