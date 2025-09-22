@@ -37,4 +37,20 @@ export class EliminationBracketComponent {
     const objectToEmit = { modalName, player1, player2 };
     this.playersSelected.emit(objectToEmit);
   }
+  getRoundName(round: number): string {
+    switch (round) {
+      case 1:
+        return 'one_sixteenth_finals';
+      case 2:
+        return 'one_eighth_finals';
+      case 3:
+        return 'quarter_finals';
+      case 4:
+        return 'semi_finals';
+      case 5:
+        return 'finals';
+      default:
+        return `round_${round}`;
+    }
+  }
 }

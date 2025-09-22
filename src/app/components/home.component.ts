@@ -128,6 +128,7 @@ export class HomeComponent {
     while (currentRoundPlayers.length > 1) {
       const roundLabel = `${this.translateService.translate('round')} ${roundNumber}`;
       const round: EliminationRound = {
+        roundNumber,
         name: roundLabel,
         matches: []
       };

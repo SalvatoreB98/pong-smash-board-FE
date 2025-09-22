@@ -18,7 +18,7 @@
 
   <div class="bracket" *ngIf="rounds.length; else emptyBracket">
     <div class="bracket-round" *ngFor="let round of rounds; trackBy: trackByRound">
-      <h3>{{ round.name }}</h3>
+      <h3>{{ getRoundName(round.roundNumber) | translate }}</h3>
       <div class="bracket-matches">
         <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
           <div class="slot" *ngFor="let slot of match.slots">

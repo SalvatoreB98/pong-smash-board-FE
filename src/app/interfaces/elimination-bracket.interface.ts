@@ -14,4 +14,5 @@ export interface EliminationMatch {
 export interface EliminationRound {
   name: string;
   matches: EliminationMatch[];
+  roundNumber: number;
 }

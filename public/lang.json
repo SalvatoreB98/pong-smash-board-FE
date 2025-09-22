@@ -799,4 +799,25 @@
         "it": "Finale",
         "en": "Final"
     }
+    ,
+    "one_sixteenth_finals": {
+        "it": "Sedicesimi di finale",
+        "en": "Round of 32"
+    },
+    "one_eighth_finals": {
+        "it": "Ottavi di finale",
+        "en": "Round of 16"
+    },
+    "quarter_finals": {
+        "it": "Quarti di finale",
+        "en": "Quarterfinals"
+    },
+    "semi_finals": {
+        "it": "Semifinali",
+        "en": "Semifinals"
+    },
+    "finals": {
+        "it": "Finale",
+        "en": "Final"
+    }
 }
