@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../translate.pipe';
+import { IPlayer } from '../../../../services/players.service';
 
 @Component({
   selector: 'app-select-player',
@@ -21,8 +22,9 @@ import { TranslatePipe } from '../../translate.pipe';
   styleUrls: ['./select-player.component.scss'],
 })
 export class SelectPlayerComponent implements OnInit, OnChanges {
-  @Input() players: { id?: number; nickname: string }[] = [];
+  @Input() players: IPlayer[] = [];
   @Input() playerNumber: string = '';
+  @Input() initialPlayer: IPlayer | null = null;
 
   @Output() playerSelected = new EventEmitter<any>();
 
@@ -44,6 +46,10 @@ export class SelectPlayerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['players'] && this.players) {
       this.filteredPlayers = [...this.players];
+    }
+
+    if (changes['players'] || changes['initialPlayer']) {
+      this.setSelectedPlayer();
     }
   }
 
@@ -77,5 +83,19 @@ export class SelectPlayerComponent implements OnInit, OnChanges {
     player.playerNumber = this.playerNumber;
     this.playerSelected.emit(player);
     this.closeDropdown();
+  }
+
+  private setSelectedPlayer() {
+    if (this.initialPlayer?.id) {
+      const matchedPlayer = this.players.find(
+        (player) => player.id === this.initialPlayer?.id
+      );
+      if (matchedPlayer) {
+        this.selectedPlayer = matchedPlayer;
+        return;
+      }
+    }
+
+    this.selectedPlayer = null;
   }
 }

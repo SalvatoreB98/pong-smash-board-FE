@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ICompetition } from '../../../api/competition.api';
 import { TranslatePipe } from '../../utils/translate.pipe';
 import { EliminationRound } from '../../interfaces/elimination-bracket.interface';
+import { ModalService } from '../../../services/modal.service';
+import { IPlayer } from '../../../services/players.service';
 
 @Component({
   selector: 'app-elimination-bracket',
@@ -14,6 +16,8 @@ import { EliminationRound } from '../../interfaces/elimination-bracket.interface
 export class EliminationBracketComponent {
   @Input() competition: ICompetition | null = null;
   @Input() rounds: EliminationRound[] = [];
+  modalService = inject(ModalService);
+  @Output() playersSelected = new EventEmitter<{ modalName: string, player1: IPlayer | null, player2: IPlayer | null }>();
 
   ngOnInit() {
     console.log('EliminationBracketComponent initialized');
@@ -22,12 +26,15 @@ export class EliminationBracketComponent {
   }
 
   trackByRound(index: number, round: EliminationRound) {
-    console.log('trackByRound called:', index, round);
     return `${round.name}-${index}`;
   }
 
   trackByMatch(index: number, _match: unknown) {
-    console.log('trackByMatch called:', index, _match);
     return index;
+  }
+  openModal(modalName: string, player1: any, player2: any) {
+    console.log('openModal called with:', modalName, player1, player2);
+    const objectToEmit = { modalName, player1, player2 };
+    this.playersSelected.emit(objectToEmit);
   }
 }

@@ -13,9 +13,10 @@ import { LoaderService } from '../../../services/loader.service';
 import { TranslationService } from '../../../services/translation.service';
 import { CompetitionService } from '../../../services/competitions.service';
 import { ICompetition } from '../../../api/competition.api';
+import { IPlayer } from '../../../services/players.service';
 
 @Component({
-  selector: 'app-add-match-modal',
+  selector: 'add-match-modal',
   standalone: true,
   templateUrl: './add-match-modal.component.html',
   styleUrls: ['./add-match-modal.component.scss'],
@@ -25,7 +26,11 @@ export class AddMatchModalComponent implements OnInit {
 
   @Output() closeModalEvent = new EventEmitter<void>();
   @Output() openManualPointsEvent = new EventEmitter<void>();
-  @Input() players: any[] = [];
+
+  @Input() players: IPlayer[] = [];
+  @Input() player1: IPlayer | null = null;
+  @Input() player2: IPlayer | null = null;
+  @Input() isAlreadySelected: boolean = false;
 
   errorsOfSets: string[] = [];
   errorsOfPoints: string[] = [];
@@ -67,8 +72,8 @@ export class AddMatchModalComponent implements OnInit {
   initializeForm() {
     this.matchForm = this.fb.group({
       date: [new Date().toISOString().split('T')[0], Validators.required],
-      player1: ['', Validators.required],
-      player2: ['', Validators.required],
+      player1: [this.player1?.id, Validators.required],
+      player2: [this.player2?.id, Validators.required],
       p1Score: [null, [Validators.required, Validators.min(1), Validators.max(this.maxSets)]],
       p2Score: [null, [Validators.required, Validators.min(1), Validators.max(this.maxSets)]],
       isShowSetsPointsTrue: [false],
@@ -76,6 +81,9 @@ export class AddMatchModalComponent implements OnInit {
     });
     this.matchForm.get('p1Score')?.valueChanges.subscribe(() => this.sanitizeInput('p1Score'));
     this.matchForm.get('p2Score')?.valueChanges.subscribe(() => this.sanitizeInput('p2Score'));
+    console.log('Initial form value:', this.matchForm.value);
+    console.log('Initial player 1:', this.player1);
+    console.log('Initial player 2:', this.player2);
   }
 
   get setsPoints(): FormArray {

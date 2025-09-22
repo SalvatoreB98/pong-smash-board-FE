@@ -786,5 +786,17 @@
     "no": {
         "it": "No",
         "en": "No"
+    },
+    "quarterfinals": {
+        "it": "Quarti di finale",
+        "en": "Quarterfinals"
+    },
+    "semifinals": {
+        "it": "Semifinali",
+        "en": "Semifinals"
+    },
+    "final": {
+        "it": "Finale",
+        "en": "Final"
     }
 }

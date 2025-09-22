@@ -95,6 +95,17 @@
   border: 0.0625rem dashed rgba(255, 255, 255, 0.08);
 }
 
+.bracket-match-actions {
+  display: grid;
+  gap: 0.5rem;
+  display: flex;
+  button {
+    min-height: 2.75rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+}
+
 .slot {
   display: flex;
   align-items: center;

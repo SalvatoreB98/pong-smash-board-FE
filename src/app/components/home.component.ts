@@ -46,6 +46,9 @@ export class HomeComponent {
   isEliminationMode = false;
   eliminationRounds: EliminationRound[] = [];
 
+  player1Selected: IPlayer | null = null;
+  player2Selected: IPlayer | null = null;
+
   constructor(public modalService: ModalService, private loaderService: LoaderService, private translateService: TranslationService, private router: Router) { }
 
   ngOnInit() {
@@ -152,5 +155,10 @@ export class HomeComponent {
 
     return rounds;
   }
-
+  onClickRound(event: any) {
+    console.log(event);
+    this.player1Selected = event.player1;
+    this.player2Selected = event.player2;
+    this.modalService.openModal(this.modalService.MODALS[event.modalName]);
+  }
 }
