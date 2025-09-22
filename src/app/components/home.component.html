@@ -1,7 +1,8 @@
 <ng-container *ngIf="userState$ | async as state">
     <div class="wrapper" *ngIf="players.length >= 2">
         <ng-container *ngIf="isEliminationMode && activeCompetition; else leagueMode">
-            <app-elimination-bracket [competition]="activeCompetition" [rounds]="eliminationRounds"></app-elimination-bracket>
+            <app-elimination-bracket (playersSelected)="onClickRound($event)" [competition]="activeCompetition"
+                [rounds]="eliminationRounds"></app-elimination-bracket>
         </ng-container>
     </div>
     <ng-template #leagueMode>
@@ -26,7 +27,8 @@
                     </div>
                     <div class="button-container">
                         <div>
-                            <button type="button" class="bg-secondary position-relative" (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
+                            <button type="button" class="bg-secondary position-relative"
+                                (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
                                 {{ "add_manual_set_points" | translate }}
                                 <div class="circle-live"></div>
                             </button>
@@ -44,7 +46,8 @@
     </ng-template>
     <app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])"
         [modalName]="modalService.MODALS['ADD_MATCH']">
-        <app-add-match-modal [players]="players"></app-add-match-modal>
+        <app-add-match-modal [players]="players" [player1]="player1Selected"
+            [player2]="player2Selected"></app-add-match-modal>
     </app-modal>
     <app-modal [label]="'match_details'" *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])"
         [modalName]="modalService.MODALS['SHOW_MATCH']">
@@ -53,8 +56,8 @@
     <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
 </ng-container>
 
-<app-modal [fullscreen]="true" [label]="'manual_points'" *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
-    [modalName]="modalService.MODALS['MANUAL_POINTS']"
-    class="manual-points-modal">
-    <app-manual-points [players]="players"></app-manual-points>
+<app-modal [fullscreen]="true" [label]="'manual_points'"
+    *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
+    [modalName]="modalService.MODALS['MANUAL_POINTS']" class="manual-points-modal">
+    <app-manual-points [players]="players" [player1]="player1Selected" [player2]="player2Selected"></app-manual-points>
 </app-modal>

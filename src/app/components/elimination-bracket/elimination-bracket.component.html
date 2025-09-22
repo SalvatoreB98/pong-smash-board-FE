@@ -33,13 +33,14 @@
           </div>
 
           <div class="bracket-match-actions">
-            <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">
+            <button type="button" 
+              (click)="openModal('ADD_MATCH', match.slots[0].player, match.slots[1].player)">
               {{ 'add_match' | translate }}
               <span class="m-1"></span>
               <i class="fa fa-file-text-o" aria-hidden="true"></i>
             </button>
             <button type="button" class="bg-secondary position-relative"
-              (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
+              (click)="openModal('MANUAL_POINTS', match.slots[0].player, match.slots[1].player)">
               {{ 'add_manual_set_points' | translate }}
               <div class="circle-live"></div>
             </button>

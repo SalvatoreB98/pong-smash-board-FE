@@ -98,7 +98,7 @@
 .bracket-match-actions {
   display: grid;
   gap: 0.5rem;
-
+  display: flex;
   button {
     min-height: 2.75rem;
     font-weight: 600;

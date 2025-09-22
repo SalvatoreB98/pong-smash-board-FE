@@ -44,7 +44,7 @@ export class ManualPointsComponent {
   initialMaxPoints = 21;
   @Input() player2: IPlayer | null = null;
   @Input() player1: IPlayer | null = null;
-  @Input() players: any[] = [];
+  @Input() players: IPlayer[] = [];
 
   playersForm!: FormGroup;
 
@@ -64,6 +64,12 @@ export class ManualPointsComponent {
   ngOnChanges() {
     console.info('player1 value:', this.player1);
     console.info('player2 value:', this.player2);
+    if(this.playersForm) {
+      this.playersForm.patchValue({
+        player1: this.player1 || null,
+        player2: this.player2 || null
+      });
+    }
   }
 
 
@@ -76,8 +82,8 @@ export class ManualPointsComponent {
       this.maxSets = this.competition?.['sets_type'] || 10;
     });
     this.playersForm = this.fb.group({
-      player1: [null, Validators.required],
-      player2: [null, Validators.required]
+      player1: [this.player1?.id, Validators.required],
+      player2: [this.player2?.id, Validators.required]
     });
     this.playersForm.valueChanges.subscribe((val) => {
       this.player1 = this.players.find(p => p.id === val.player1) || null;
