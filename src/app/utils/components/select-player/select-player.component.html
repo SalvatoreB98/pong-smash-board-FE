@@ -3,7 +3,7 @@
     <label>{{ "Player" | translate }} {{ playerNumber }}</label>
 
     <!-- Fake input field -->
-    <div class="input-field position-relative" style="text-align: left;" (click)="toggleDropdown($event)" [class.open]="showDropdown">
+    <div #playerSelectRef class="input-field position-relative" style="text-align: left;" (click)="toggleDropdown($event)" [class.open]="showDropdown">
         <span *ngIf="!selectedPlayer" class="my-placeholder">
             {{"Select a player" | translate}}...
         </span>

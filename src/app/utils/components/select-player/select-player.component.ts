@@ -29,6 +29,7 @@ export class SelectPlayerComponent implements OnInit, OnChanges {
   @Output() playerSelected = new EventEmitter<any>();
 
   @ViewChild('searchInput') searchInput!: ElementRef;
+  @ViewChild('playerSelectRef') playerSelectRef!: ElementRef;
 
   searchCtrl = new FormControl('');
   filteredPlayers: any[] = [];
@@ -50,10 +51,19 @@ export class SelectPlayerComponent implements OnInit, OnChanges {
 
     if (changes['players'] || changes['initialPlayer']) {
       this.setSelectedPlayer();
+      if (this.initialPlayer) {
+        if (this.playerSelectRef && this.playerSelectRef.nativeElement) {
+          this.playerSelectRef.nativeElement.style.cursor = this.initialPlayer ? 'not-allowed' : 'pointer';
+          this.playerSelectRef.nativeElement.style.opacity = this.initialPlayer ? '0.5' : '1';
+        }
+      }
     }
   }
 
   toggleDropdown(event: Event) {
+    if (this.initialPlayer) {
+      return;
+    }
     event.stopPropagation(); // non propagare al document
     this.searchCtrl.setValue('');
     this.showDropdown = !this.showDropdown;
@@ -62,6 +72,7 @@ export class SelectPlayerComponent implements OnInit, OnChanges {
       setTimeout(() => this.searchInput?.nativeElement?.focus(), 50);
     }
   }
+
 
   closeDropdown() {
     this.showDropdown = false;
@@ -72,8 +83,8 @@ export class SelectPlayerComponent implements OnInit, OnChanges {
 
     this.filteredPlayers = searchValue
       ? this.players.filter((player) =>
-          (player.nickname || '').toLowerCase().includes(searchValue)
-        )
+        (player.nickname || '').toLowerCase().includes(searchValue)
+      )
       : [...this.players];
   }
 
