@@ -185,6 +185,12 @@
   .player {
     text-align: left;
   }
+  .bracket-match-actions {
+    button {
+      font-size: 0.75em;
+      white-space: nowrap;
+    }
+  }
 }
 
 @media screen and (min-width: 64rem) {

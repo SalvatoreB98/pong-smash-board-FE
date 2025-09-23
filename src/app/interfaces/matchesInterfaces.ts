@@ -6,6 +6,9 @@ export interface IMatch {
   player1_score: number;
   player2_score: number;
   setsPoints: number[][];
+  player1_id?: number;
+  player2_id?: number;
+  winner_id?: number;
 }
 
 export interface IWins {

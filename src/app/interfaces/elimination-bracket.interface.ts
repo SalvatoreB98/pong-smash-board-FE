@@ -9,6 +9,8 @@ export interface EliminationMatch {
   id: string;
   slots: [EliminationMatchSlot, EliminationMatchSlot];
   winnerId?: number | string | null;
+  player1Score?: number;
+  player2Score?: number;
 }
 
 export interface EliminationRound {

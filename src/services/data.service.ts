@@ -232,7 +232,10 @@ export class DataService {
     localStorage.setItem('loggedInPlayer', JSON.stringify(player));
   }
 
-
+  setMatches(matches: IMatch[]) {
+    this.matches = matches;
+    this.matchesSubject.next(this.matches);
+  }
   getStats() {
 
   }
