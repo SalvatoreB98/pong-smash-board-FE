@@ -36,7 +36,7 @@ export class HomeComponent {
   playersService = inject(PlayersService);
   matches$ = this.dataService.matchesObs;
   competitionService = inject(CompetitionService);
-  matches: any;
+  matches: IMatch[] = [];
   isAddMatchModalOpen: boolean = false;
   isShowMatchModalOpen: boolean = false;
   clickedMatch: IMatch | undefined;
@@ -79,10 +79,14 @@ export class HomeComponent {
       this.updateEliminationRounds();
     });
     this.matches$.subscribe(matches => {
-      this.matches = matches;
+      this.matches = matches ?? [];
+      this.updateEliminationRounds();
     });
     this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 }) // cache 5 minuti
-      .then(res => this.matches = res.matches);
+      .then(res => {
+        this.matches = res.matches;
+        this.updateEliminationRounds();
+      });
   }
 
   setClickedMatch(match: IMatch) {
@@ -138,19 +142,26 @@ export class HomeComponent {
     while (slotsInRound > 1) {
       const roundName = roundNames[slotsInRound] || `${this.translateService.translate('round')} ${roundNumber}`;
       const round: EliminationRound = {
-      roundNumber,
-      name: roundName,
-      matches: []
+        roundNumber,
+        name: roundName,
+        matches: []
       };
 
       for (let i = 0; i < currentRoundPlayers.length; i += 2) {
-      round.matches.push({
-        id: `round-${roundNumber}-match-${i / 2 + 1}`,
-        slots: [
-        { seed: i + 1, player: currentRoundPlayers[i] ?? null },
-        { seed: i + 2, player: currentRoundPlayers[i + 1] ?? null }
-        ]
-      });
+        const player1 = currentRoundPlayers[i] ?? null;
+        const player2 = currentRoundPlayers[i + 1] ?? null;
+        const matchResult = this.getMatchResultForPlayers(player1, player2);
+
+        round.matches.push({
+          id: `round-${roundNumber}-match-${i / 2 + 1}`,
+          slots: [
+            { seed: i + 1, player: player1 },
+            { seed: i + 2, player: player2 }
+          ],
+          player1Score: matchResult.player1Score,
+          player2Score: matchResult.player2Score,
+          winnerId: matchResult.winnerId
+        });
       }
 
       rounds.push(round);
@@ -158,7 +169,7 @@ export class HomeComponent {
       // Prepara i vincitori (placeholder null per ora) per il prossimo round
       const nextRoundPlayers: (IPlayer | null)[] = [];
       for (let i = 0; i < round.matches.length; i++) {
-      nextRoundPlayers.push(null); // Saranno riempiti dopo i risultati reali
+        nextRoundPlayers.push(null); // Saranno riempiti dopo i risultati reali
       }
       currentRoundPlayers = nextRoundPlayers;
       slotsInRound = currentRoundPlayers.length;
@@ -167,6 +178,74 @@ export class HomeComponent {
 
     return rounds;
   }
+
+  private getMatchResultForPlayers(player1: IPlayer | null, player2: IPlayer | null): {
+    player1Score?: number;
+    player2Score?: number;
+    winnerId: number | string | null;
+  } {
+    if (!player1 || !player2 || !this.matches?.length) {
+      return { winnerId: null };
+    }
+
+    const relevantMatches = this.matches.filter(match => {
+      const p1 = Number(match.player1_id);
+      const p2 = Number(match.player2_id);
+      return (
+        (p1 === player1.id && p2 === player2.id) ||
+        (p1 === player2.id && p2 === player1.id)
+      );
+    });
+
+    if (!relevantMatches.length) {
+      return { winnerId: null };
+    }
+
+    const latestMatch = [...relevantMatches].sort((a, b) => {
+      const dateA = this.getMatchTimestamp(a);
+      const dateB = this.getMatchTimestamp(b);
+
+      if (dateA !== dateB) {
+        return dateB - dateA;
+      }
+
+      return (Number(b.id) || 0) - (Number(a.id) || 0);
+    })[0];
+
+    if (!latestMatch) {
+      return { winnerId: null };
+    }
+
+    const winnerId = (latestMatch as any)?.winner_id ?? null;
+    const player1Id = Number(latestMatch.player1_id);
+    const player2Id = Number(latestMatch.player2_id);
+
+    if (player1Id === player1.id && player2Id === player2.id) {
+      return {
+        player1Score: latestMatch.player1_score,
+        player2Score: latestMatch.player2_score,
+        winnerId
+      };
+    }
+
+    return {
+      player1Score: latestMatch.player2_score,
+      player2Score: latestMatch.player1_score,
+      winnerId
+    };
+  }
+
+  private getMatchTimestamp(match: IMatch): number {
+    const matchAny = match as any;
+    const dateString = matchAny?.created ?? matchAny?.created_at ?? match.data;
+    const date = dateString ? new Date(dateString).getTime() : 0;
+    if (!Number.isNaN(date) && date !== 0) {
+      return date;
+    }
+
+    return Number(match.id) || 0;
+  }
+
   onClickRound(event: any) {
     console.log(event);
     this.player1Selected = event.player1;

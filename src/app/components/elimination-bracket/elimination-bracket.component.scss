@@ -126,6 +126,17 @@
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
   background: rgba(15, 23, 42, 0.25);
+
+  &.winner {
+    border: 0.0625rem solid rgba(255, 255, 255, 0.25);
+    background: rgba(15, 23, 42, 0.45);
+  }
+
+  .score {
+    margin-left: auto;
+    font-weight: 700;
+    font-size: 1rem;
+  }
 }
 
 .seed {

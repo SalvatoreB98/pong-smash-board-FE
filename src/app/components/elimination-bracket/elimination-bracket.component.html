@@ -21,11 +21,17 @@
       <h3>{{ round.name | translate }}</h3>
       <div class="bracket-matches">
         <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
-          <div class="slot" *ngFor="let slot of match.slots">
+          <div class="slot"
+            *ngFor="let slot of match.slots; let slotIndex = index"
+            [class.winner]="isSlotWinner(slot, match.winnerId)">
             <span class="seed">#{{ slot.seed }}</span>
             <img class="avatar" src="{{ slot.player?.image_url || 'default-player.jpg' }}" alt="">
             <span class="player" *ngIf="slot.player; else waiting">
               {{ slot.player.nickname || slot.player.name }}
+            </span>
+            <span class="score"
+              *ngIf="slot.player && (slotIndex === 0 ? match.player1Score !== undefined && match.player1Score !== null : match.player2Score !== undefined && match.player2Score !== null)">
+              {{ slotIndex === 0 ? match.player1Score : match.player2Score }}
             </span>
             <ng-template #waiting>
               <span class="player waiting">{{ 'elimination_waiting_player' | translate }}</span>
