@@ -220,7 +220,7 @@
         "en": "Bracket preview: seed the initial matchups and get ready for direct elimination clashes."
     },
     "elimination_waiting_player": {
-        "it": "Slot libero",
+        "it": "Chi sarà a passare il turno?",
         "en": "Waiting for player"
     },
     "elimination_mode_work_in_progress": {
@@ -819,5 +819,9 @@
     "finals": {
         "it": "Finale",
         "en": "Final"
+    },
+    "view_details": {
+        "it": "Vedi dettagli",
+        "en": "View details"
     }
 }

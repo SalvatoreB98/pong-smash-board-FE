@@ -21,8 +21,7 @@
       <h3>{{ round.name | translate }}</h3>
       <div class="bracket-matches">
         <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
-          <div class="slot"
-            *ngFor="let slot of match.slots; let slotIndex = index"
+          <div class="slot" *ngFor="let slot of match.slots; let slotIndex = index"
             [class.winner]="isSlotWinner(slot, match.winnerId)">
             <span class="seed">#{{ slot.seed }}</span>
             <img class="avatar" src="{{ slot.player?.image_url || 'default-player.jpg' }}" alt="">
@@ -39,17 +38,23 @@
           </div>
 
           <div class="bracket-match-actions">
-            <button type="button" 
+            <button type="button" *ngIf="match.winnerId === null"
               (click)="openModal('ADD_MATCH', match.slots[0].player, match.slots[1].player)">
               {{ 'add_match' | translate }}
               <span class="m-1"></span>
               <i class="fa fa-file-text-o" aria-hidden="true"></i>
             </button>
-            <button type="button" class="bg-secondary position-relative"
+            <button type="button" class="bg-secondary position-relative" *ngIf="match.winnerId === null"
               (click)="openModal('MANUAL_POINTS', match.slots[0].player, match.slots[1].player)">
               {{ 'add_manual_set_points' | translate }}
               <div class="circle-live"></div>
             </button>
+            <div class="d-flex justify-content-center">
+              <button type="button" class="other ps-2 pe-2" *ngIf="match.winnerId !== null">
+                {{ 'view_details' | translate }}
+                <i class="fa fa-info-circle ms-2" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
         </article>
       </div>

@@ -23,15 +23,15 @@ export class LoaderService {
   }
 
   addSpinnerToButton(buttonRef: HTMLElement) {
-    if (buttonRef) {
+    if (buttonRef && !buttonRef.querySelector('.loader-spinner')) {
       const spinner = document.createElement('span');
       spinner.className = 'loader-spinner';
       spinner.style.marginLeft = '8px';
       spinner.innerHTML = `
       <svg width="16" height="16" viewBox="0 0 50 50">
-        <circle cx="25" cy="25" r="20" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="31.415, 31.415" transform="rotate(72 25 25)">
-          <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/>
-        </circle>
+      <circle cx="25" cy="25" r="20" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="31.415, 31.415" transform="rotate(72 25 25)">
+        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/>
+      </circle>
       </svg>
     `;
       buttonRef.appendChild(spinner);
