@@ -128,8 +128,11 @@
   background: rgba(15, 23, 42, 0.25);
 
   &.winner {
-    border: 0.0625rem solid rgba(255, 255, 255, 0.25);
-    background: rgba(15, 23, 42, 0.45);
+    filter: drop-shadow(0 0 40px $primary);
+    background: rgba($primary, 0.15);
+    .score {
+      color: $primary-light;
+    }
   }
 
   .score {
