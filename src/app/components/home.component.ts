@@ -111,16 +111,13 @@ export class HomeComponent {
     if (!players.length) {
       return [];
     }
-    // Calcola il numero totale di slot (potenza di 2 >= num giocatori)
-    // Se i giocatori sono già una potenza di 2, usa quel numero, altrimenti prendi la potenza di 2 successiva
+
+    // Calcola numero di slot (prossima potenza di 2 >= num giocatori)
     const nextPow2 = (n: number) => Math.pow(2, Math.ceil(Math.log2(n)));
     const totalSlots = nextPow2(players.length);
 
-    // Se siamo già a una potenza di 2, non aggiungere slot extra
-    // Se no, fermati alla potenza di 2 immediatamente superiore (es: 7 -> 8, 9 -> 16)
+    // Seeding iniziale
     const seeding: (IPlayer | null)[] = [...players];
-
-    // Aggiungi bye/null se necessario
     while (seeding.length < totalSlots) {
       seeding.push(null);
     }
@@ -128,23 +125,26 @@ export class HomeComponent {
     const rounds: EliminationRound[] = [];
     let currentRoundPlayers = seeding;
     let roundNumber = 1;
-    // Mappa per i nomi dei round in base al numero di slot
-    const roundNames: { [key: number]: string } = {
+
+    const roundNames: Record<number, string> = {
       32: 'one_sixteenth_finals',
       16: 'one_eighth_finals',
       8: 'quarter_finals',
       4: 'semi_finals',
-      2: 'finals'
+      2: 'finals',
     };
 
     let slotsInRound = currentRoundPlayers.length;
 
     while (slotsInRound > 1) {
-      const roundName = roundNames[slotsInRound] || `${this.translateService.translate('round')} ${roundNumber}`;
+      const roundName =
+        roundNames[slotsInRound] ||
+        `${this.translateService.translate('round')} ${roundNumber}`;
+
       const round: EliminationRound = {
         roundNumber,
         name: roundName,
-        matches: []
+        matches: [],
       };
 
       const nextRoundPlayers: (IPlayer | null)[] = [];
@@ -152,15 +152,26 @@ export class HomeComponent {
       for (let i = 0; i < currentRoundPlayers.length; i += 2) {
         const player1 = currentRoundPlayers[i] ?? null;
         const player2 = currentRoundPlayers[i + 1] ?? null;
+
         const matchResult = this.getMatchResultForPlayers(player1, player2);
 
-        let winnerId = matchResult.winnerId;
+        let winnerId: number | null = null;
 
-        if (!winnerId) {
-          if (player1 && !player2) {
-            winnerId = player1.id;
-          } else if (!player1 && player2) {
-            winnerId = player2.id;
+        // ✅ winner solo se c’è un match giocato
+        const matchPlayed =
+          matchResult.player1Score !== undefined &&
+          matchResult.player2Score !== undefined;
+
+        if (matchPlayed) {
+          winnerId = matchResult.winnerId ? Number(matchResult.winnerId) : null;
+        } else {
+          // ✅ fallback bye solo nel primo round
+          if (roundNumber === 1) {
+            if (player1 && !player2) {
+              winnerId = player1.id;
+            } else if (!player1 && player2) {
+              winnerId = player2.id;
+            }
           }
         }
 
@@ -174,11 +185,11 @@ export class HomeComponent {
           id: `round-${roundNumber}-match-${i / 2 + 1}`,
           slots: [
             { seed: i + 1, player: player1 },
-            { seed: i + 2, player: player2 }
+            { seed: i + 2, player: player2 },
           ],
           player1Score: matchResult.player1Score,
           player2Score: matchResult.player2Score,
-          winnerId
+          winnerId: matchPlayed ? winnerId : null, // 👈 winner solo se c’è stato match
         });
       }
 
@@ -191,6 +202,7 @@ export class HomeComponent {
 
     return rounds;
   }
+
 
   private getMatchResultForPlayers(
     player1: IPlayer | null,
