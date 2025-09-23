@@ -5,8 +5,8 @@ export interface Match {
   player2_name: string;
   p1: number | string;
   p2: number | string;
-  player1_img?: string;
-  player2_img?: string;
+  player1_img?: string | null;
+  player2_img?: string | null;
 }
 
 export interface PlayerStanding {
@@ -28,6 +28,6 @@ export interface HeadToHeadRow {
   player2: string;
   scored1: number;
   scored2: number;
-  player1_img?: string;
-  player2_img?: string;
+  player1_img?: string | null;
+  player2_img?: string | null;
 }

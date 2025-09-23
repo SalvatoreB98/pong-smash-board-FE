@@ -37,6 +37,46 @@
     }
   }
 
+  .general-info {
+    border-radius: var(--border-radius);
+    margin: 0 0 1em 0;
+    padding: 1em;
+
+    h5 {
+      margin-bottom: 0.75em;
+      font-weight: 700;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.5em;
+      justify-content: center;
+      align-items: center;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+
+      .label {
+        font-weight: 600;
+        opacity: 0.7;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        margin-right: 1em;
+      }
+
+      .value {
+        font-weight: 700;
+      }
+    }
+  }
+
   img {
     height: 100%;
     border-radius: 31.25em;
@@ -76,6 +116,13 @@
       font-style: italic;
       position: absolute;
       font-size: 0.5625em;
+    }
+
+    &:nth-child(even) {
+      background: #5b98e822;
+    }
+    &:nth-child(odd) {
+      background: #5b98e80e;
     }
   }
 

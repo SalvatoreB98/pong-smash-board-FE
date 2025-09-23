@@ -1,13 +1,23 @@
 <div class="modal-content dettagli-partita">
     <p>{{ match?.desc || '' }}</p>
     <div class="data">{{ match.created | date: 'dd/MM/yyyy HH:mm' }}</div>
+    <div class="general-info" *ngIf="match?.competitionType || match?.competitionName || match?.roundLabel">
+        <h5 class="text-center">{{ match.roundLabel }}</h5>
+        <ul>
+            <li *ngIf="match?.competitionType">
+                <span class="label">{{ 'competition_type_label' | translate }}</span>
+                <span class="value">{{ ('competition_type_' + match.competitionType) | translate }}</span>
+            </li>
+        </ul>
+    </div>
     <div class="match-container">
         <div class="player player-1">
             <div class="p-3">
                 <img [src]="match.player1_img" (error)="onImageError($event)">
             </div>
             <div class="text-center">{{ match?.player1_name }}</div>
-            <div class="score" [ngClass]="{'won': match?.player1_score > match?.player2_score}">{{ match?.player1_score }}</div>
+            <div class="score" [ngClass]="{'won': match?.player1_score > match?.player2_score}">{{ match?.player1_score
+                }}</div>
         </div>
         <div class="vs">
             <img src="/vs.svg" alt="{{ 'vs' | translate }}">
@@ -17,7 +27,7 @@
                 <img [src]="match.player2_img" (error)="onImageError($event)">
             </div>
             <div class="text-center">{{ match?.player2_name }}</div>
-            <div class="score">{{ match?.player2_score }}</div>
+            <div class="score" [ngClass]="{'won': match?.player2_score > match?.player1_score}">{{ match?.player2_score }}</div>
         </div>
     </div>
     <div class="other" *ngIf="match?.match_sets?.length > 1">
@@ -25,9 +35,12 @@
         <div class="sets-points">
             <div class="set" *ngFor="let set of match.match_sets; let i = index">
                 <div class="n-set">{{ i + 1 }}º {{ 'set' | translate }}</div>
-                <div><span [ngClass]="{ 'won': set.player1_score > set.player2_score }">{{ set.player1_score }}</span></div>
-                <div class="separator">{{ set.player1_score == 20 || set.player2_score == 20 ? ('advantage' | translate) : '-' }}</div>
-                <div><span [ngClass]="{ 'won': set.player2_score > set.player1_score }">{{ set.player2_score }}</span></div>
+                <div><span [ngClass]="{ 'won': set.player1_score > set.player2_score }">{{ set.player1_score }}</span>
+                </div>
+                <div class="separator">{{ set.player1_score == 20 || set.player2_score == 20 ? ('advantage' | translate)
+                    : '-' }}</div>
+                <div><span [ngClass]="{ 'won': set.player2_score > set.player1_score }">{{ set.player2_score }}</span>
+                </div>
             </div>
         </div>
     </div>
