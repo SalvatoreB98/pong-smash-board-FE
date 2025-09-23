@@ -147,10 +147,28 @@ export class HomeComponent {
         matches: []
       };
 
+      const nextRoundPlayers: (IPlayer | null)[] = [];
+
       for (let i = 0; i < currentRoundPlayers.length; i += 2) {
         const player1 = currentRoundPlayers[i] ?? null;
         const player2 = currentRoundPlayers[i + 1] ?? null;
         const matchResult = this.getMatchResultForPlayers(player1, player2);
+
+        let winnerId = matchResult.winnerId;
+
+        if (!winnerId) {
+          if (player1 && !player2) {
+            winnerId = player1.id;
+          } else if (!player1 && player2) {
+            winnerId = player2.id;
+          }
+        }
+
+        const winnerPlayer = winnerId
+          ? this.players.find(p => String(p.id) === String(winnerId)) ?? null
+          : null;
+
+        nextRoundPlayers.push(winnerPlayer);
 
         round.matches.push({
           id: `round-${roundNumber}-match-${i / 2 + 1}`,
@@ -160,17 +178,12 @@ export class HomeComponent {
           ],
           player1Score: matchResult.player1Score,
           player2Score: matchResult.player2Score,
-          winnerId: matchResult.winnerId
+          winnerId
         });
       }
 
       rounds.push(round);
 
-      // Prepara i vincitori (placeholder null per ora) per il prossimo round
-      const nextRoundPlayers: (IPlayer | null)[] = [];
-      for (let i = 0; i < round.matches.length; i++) {
-        nextRoundPlayers.push(null); // Saranno riempiti dopo i risultati reali
-      }
       currentRoundPlayers = nextRoundPlayers;
       slotsInRound = currentRoundPlayers.length;
       roundNumber++;
