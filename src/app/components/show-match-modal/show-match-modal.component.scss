@@ -38,15 +38,13 @@
   }
 
   .general-info {
-    background: rgba(255, 255, 255, 0.05);
     border-radius: var(--border-radius);
-    margin: 1em 0;
+    margin: 0 0 1em 0;
     padding: 1em;
 
     h5 {
       margin-bottom: 0.75em;
       font-weight: 700;
-      color: $light;
     }
 
     ul {
@@ -55,13 +53,14 @@
       margin: 0;
       display: grid;
       gap: 0.5em;
+      justify-content: center;
+      align-items: center;
     }
 
     li {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: $light;
       font-size: 0.875rem;
 
       .label {
@@ -117,6 +116,13 @@
       font-style: italic;
       position: absolute;
       font-size: 0.5625em;
+    }
+
+    &:nth-child(even) {
+      background: #5b98e822;
+    }
+    &:nth-child(odd) {
+      background: #5b98e80e;
     }
   }
 
