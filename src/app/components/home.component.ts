@@ -216,21 +216,36 @@ export class HomeComponent {
       return { winnerId: null };
     }
 
-    const winnerId = (latestMatch as any)?.winner_id ?? null;
     const player1Id = Number(latestMatch.player1_id);
     const player2Id = Number(latestMatch.player2_id);
 
-    if (player1Id === player1.id && player2Id === player2.id) {
-      return {
-        player1Score: latestMatch.player1_score,
-        player2Score: latestMatch.player2_score,
-        winnerId
-      };
+    const playersInSameOrder = player1Id === player1.id && player2Id === player2.id;
+
+    const player1ScoreRaw = playersInSameOrder
+      ? latestMatch.player1_score
+      : latestMatch.player2_score;
+    const player2ScoreRaw = playersInSameOrder
+      ? latestMatch.player2_score
+      : latestMatch.player1_score;
+
+    const normalizedPlayer1Score = player1ScoreRaw !== undefined ? Number(player1ScoreRaw) : NaN;
+    const normalizedPlayer2Score = player2ScoreRaw !== undefined ? Number(player2ScoreRaw) : NaN;
+
+    const isPlayer1ScoreValid = Number.isFinite(normalizedPlayer1Score);
+    const isPlayer2ScoreValid = Number.isFinite(normalizedPlayer2Score);
+
+    let winnerId: number | string | null = null;
+    if (isPlayer1ScoreValid && isPlayer2ScoreValid) {
+      if (normalizedPlayer1Score > normalizedPlayer2Score) {
+        winnerId = player1.id;
+      } else if (normalizedPlayer2Score > normalizedPlayer1Score) {
+        winnerId = player2.id;
+      }
     }
 
     return {
-      player1Score: latestMatch.player2_score,
-      player2Score: latestMatch.player1_score,
+      player1Score: isPlayer1ScoreValid ? normalizedPlayer1Score : undefined,
+      player2Score: isPlayer2ScoreValid ? normalizedPlayer2Score : undefined,
       winnerId
     };
   }
