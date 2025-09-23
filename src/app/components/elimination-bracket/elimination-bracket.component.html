@@ -39,18 +39,20 @@
 
           <div class="bracket-match-actions">
             <button type="button" *ngIf="match.winnerId === null"
-              (click)="openModal('ADD_MATCH', match.slots[0].player, match.slots[1].player)">
+              (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player })">
               {{ 'add_match' | translate }}
               <span class="m-1"></span>
               <i class="fa fa-file-text-o" aria-hidden="true"></i>
             </button>
             <button type="button" class="bg-secondary position-relative" *ngIf="match.winnerId === null"
-              (click)="openModal('MANUAL_POINTS', match.slots[0].player, match.slots[1].player)">
+              (click)="openModal('MANUAL_POINTS', { player1: match.slots[0].player, player2: match.slots[1].player })">
               {{ 'add_manual_set_points' | translate }}
               <div class="circle-live"></div>
             </button>
             <div class="d-flex justify-content-center">
-              <button type="button" class="other ps-2 pe-2" *ngIf="match.winnerId !== null">
+              <button type="button" class="other ps-2 pe-2"
+                *ngIf="match.matchData"
+                (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: match.roundKey ?? round.name, roundLabel: match.roundLabel })">
                 {{ 'view_details' | translate }}
                 <i class="fa fa-info-circle ms-2" aria-hidden="true"></i>
               </button>

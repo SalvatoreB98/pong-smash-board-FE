@@ -5,6 +5,16 @@ import { TranslatePipe } from '../../utils/translate.pipe';
 import { EliminationMatchSlot, EliminationRound } from '../../interfaces/elimination-bracket.interface';
 import { ModalService } from '../../../services/modal.service';
 import { IPlayer } from '../../../services/players.service';
+import { IMatch } from '../../interfaces/matchesInterfaces';
+
+export interface EliminationModalEvent {
+  modalName: string;
+  player1: IPlayer | null;
+  player2: IPlayer | null;
+  match?: IMatch | null;
+  roundName?: string | null;
+  roundLabel?: string;
+}
 
 @Component({
   selector: 'app-elimination-bracket',
@@ -17,7 +27,7 @@ export class EliminationBracketComponent {
   @Input() competition: ICompetition | null = null;
   @Input() rounds: EliminationRound[] = [];
   modalService = inject(ModalService);
-  @Output() playersSelected = new EventEmitter<{ modalName: string, player1: IPlayer | null, player2: IPlayer | null }>();
+  @Output() playersSelected = new EventEmitter<EliminationModalEvent>();
 
   ngOnInit() {
     console.log('EliminationBracketComponent initialized');
@@ -32,10 +42,22 @@ export class EliminationBracketComponent {
   trackByMatch(index: number, _match: unknown) {
     return index;
   }
-  openModal(modalName: string, player1: any, player2: any) {
-    console.log('openModal called with:', modalName, player1, player2);
-    const objectToEmit = { modalName, player1, player2 };
-    this.playersSelected.emit(objectToEmit);
+  openModal(modalName: string, options: {
+    player1?: IPlayer | null;
+    player2?: IPlayer | null;
+    match?: IMatch | null;
+    roundName?: string | null;
+    roundLabel?: string;
+  } = {}) {
+    console.log('openModal called with:', modalName, options);
+    this.playersSelected.emit({
+      modalName,
+      player1: options.player1 ?? null,
+      player2: options.player2 ?? null,
+      match: options.match ?? null,
+      roundName: options.roundName ?? null,
+      roundLabel: options.roundLabel,
+    });
   }
 
   isSlotWinner(slot: EliminationMatchSlot, winnerId: number | string | null | undefined): boolean {

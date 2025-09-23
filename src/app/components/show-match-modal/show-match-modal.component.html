@@ -1,6 +1,24 @@
 <div class="modal-content dettagli-partita">
     <p>{{ match?.desc || '' }}</p>
     <div class="data">{{ match.created | date: 'dd/MM/yyyy HH:mm' }}</div>
+    <div class="general-info"
+        *ngIf="match?.competitionType || match?.competitionName || match?.roundLabel">
+        <h5 class="text-center">{{ 'match_general_info' | translate }}</h5>
+        <ul>
+            <li *ngIf="match?.competitionName">
+                <span class="label">{{ 'competition_name_label' | translate }}</span>
+                <span class="value">{{ match.competitionName }}</span>
+            </li>
+            <li *ngIf="match?.competitionType">
+                <span class="label">{{ 'competition_type_label' | translate }}</span>
+                <span class="value">{{ ('competition_type_' + match.competitionType) | translate }}</span>
+            </li>
+            <li *ngIf="match?.roundLabel">
+                <span class="label">{{ 'round' | translate }}</span>
+                <span class="value">{{ match.roundLabel }}</span>
+            </li>
+        </ul>
+    </div>
     <div class="match-container">
         <div class="player player-1">
             <div class="p-3">

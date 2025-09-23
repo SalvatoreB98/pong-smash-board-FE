@@ -1,4 +1,5 @@
 import { IPlayer } from '../../services/players.service';
+import { IMatch } from './matchesInterfaces';
 
 export interface EliminationMatchSlot {
   seed: number;
@@ -11,6 +12,9 @@ export interface EliminationMatch {
   winnerId?: number | string | null;
   player1Score?: number;
   player2Score?: number;
+  matchData?: IMatch | null;
+  roundKey?: string | null;
+  roundLabel?: string;
 }
 
 export interface EliminationRound {

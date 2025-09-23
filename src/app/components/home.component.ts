@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatchesComponent } from './matches/matches.component';
-import { IMatch } from '../interfaces/matchesInterfaces';
+import { CompetitionMode, IMatch } from '../interfaces/matchesInterfaces';
 import { IMatchResponse } from '../interfaces/responsesInterfaces';
 import { DataService } from '../../services/data.service';
 import { AddMatchModalComponent } from './add-match-modal/add-match-modal.component';
@@ -19,10 +19,17 @@ import { IPlayer, PlayersService } from '../../services/players.service';
 import { LoaderService } from '../../services/loader.service';
 import { TranslationService } from '../../services/translation.service';
 import { ManualPointsComponent } from './add-match-modal/manual-points/manual-points.component';
-import { EliminationBracketComponent } from './elimination-bracket/elimination-bracket.component';
+import { EliminationBracketComponent, EliminationModalEvent } from './elimination-bracket/elimination-bracket.component';
 import { EliminationRound } from '../interfaces/elimination-bracket.interface';
 import { ICompetition } from '../../api/competition.api';
 import { Router } from '@angular/router';
+
+type MatchWithContext = IMatch & {
+  competitionType?: CompetitionMode;
+  competitionName?: string;
+  roundName?: string | null;
+  roundLabel?: string;
+};
 
 @Component({
   selector: 'app-home',
@@ -39,7 +46,7 @@ export class HomeComponent {
   matches: IMatch[] = [];
   isAddMatchModalOpen: boolean = false;
   isShowMatchModalOpen: boolean = false;
-  clickedMatch: IMatch | undefined;
+  clickedMatch: MatchWithContext | undefined;
   userState$ = this.userService.getState();
   players: IPlayer[] = [];
   activeCompetition: ICompetition | null = null;
@@ -90,7 +97,13 @@ export class HomeComponent {
   }
 
   setClickedMatch(match: IMatch) {
-    this.clickedMatch = match;
+    this.clickedMatch = {
+      ...match,
+      competitionType: 'league',
+      competitionName: this.activeCompetition?.name ?? undefined,
+      roundName: match.roundName ?? null,
+      roundLabel: match.roundLabel ?? undefined,
+    };
   }
 
   private updateEliminationRounds() {
@@ -137,9 +150,13 @@ export class HomeComponent {
     let slotsInRound = currentRoundPlayers.length;
 
     while (slotsInRound > 1) {
+      const roundKey = roundNames[slotsInRound] ?? null;
       const roundName =
-        roundNames[slotsInRound] ||
+        roundKey ||
         `${this.translateService.translate('round')} ${roundNumber}`;
+      const roundLabel = roundKey
+        ? this.translateService.translate(roundKey)
+        : roundName;
 
       const round: EliminationRound = {
         roundNumber,
@@ -190,6 +207,9 @@ export class HomeComponent {
           player1Score: matchResult.player1Score,
           player2Score: matchResult.player2Score,
           winnerId: matchPlayed ? winnerId : null, // 👈 winner solo se c’è stato match
+          matchData: matchResult.match ?? null,
+          roundKey,
+          roundLabel,
         });
       }
 
@@ -211,9 +231,10 @@ export class HomeComponent {
     player1Score?: number;
     player2Score?: number;
     winnerId: number | string | null;
+    match?: IMatch | null;
   } {
     if (!player1 || !player2 || !this.matches?.length) {
-      return { winnerId: null };
+      return { winnerId: null, match: null };
     }
 
     const relevantMatches = this.matches.filter(match => {
@@ -226,7 +247,7 @@ export class HomeComponent {
     });
 
     if (!relevantMatches.length) {
-      return { winnerId: null };
+      return { winnerId: null, match: null };
     }
 
     // prendi l’ultimo match
@@ -237,7 +258,7 @@ export class HomeComponent {
       return (Number(b.id) || 0) - (Number(a.id) || 0);
     })[0];
 
-    if (!latestMatch) return { winnerId: null };
+    if (!latestMatch) return { winnerId: null, match: null };
 
     // punteggi originali
     let p1Score = latestMatch.player1_score;
@@ -256,7 +277,8 @@ export class HomeComponent {
     return {
       player1Score: p1Score,
       player2Score: p2Score,
-      winnerId
+      winnerId,
+      match: latestMatch,
     };
   }
 
@@ -271,10 +293,31 @@ export class HomeComponent {
     return Number(match.id) || 0;
   }
 
-  onClickRound(event: any) {
+  onClickRound(event: EliminationModalEvent) {
     console.log(event);
-    this.player1Selected = event.player1;
-    this.player2Selected = event.player2;
+    this.player1Selected = event.player1 ?? null;
+    this.player2Selected = event.player2 ?? null;
+
+    if (event.modalName === 'SHOW_MATCH') {
+      if (!event.match) {
+        return;
+      }
+
+      const roundLabel = event.roundLabel
+        ?? (event.roundName ? this.translateService.translate(event.roundName) : undefined);
+
+      this.clickedMatch = {
+        ...event.match,
+        competitionType: 'elimination',
+        competitionName: this.activeCompetition?.name ?? undefined,
+        roundName: event.roundName ?? null,
+        roundLabel,
+      };
+
+      this.modalService.openModal(this.modalService.MODALS['SHOW_MATCH']);
+      return;
+    }
+
     this.modalService.openModal(this.modalService.MODALS[event.modalName]);
   }
 }

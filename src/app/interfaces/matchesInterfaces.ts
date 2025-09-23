@@ -1,3 +1,12 @@
+export interface IMatchSet {
+  id: number;
+  match_id: number;
+  player1_score: number;
+  player2_score: number;
+}
+
+export type CompetitionMode = 'league' | 'elimination';
+
 export interface IMatch {
   id: string;
   data: string;
@@ -9,6 +18,16 @@ export interface IMatch {
   player1_id?: number;
   player2_id?: number;
   winner_id?: number;
+  created?: string;
+  desc?: string;
+  tournament_id?: number;
+  player1_img?: string | null;
+  player2_img?: string | null;
+  match_sets?: IMatchSet[];
+  competitionType?: CompetitionMode;
+  competitionName?: string;
+  roundName?: string | null;
+  roundLabel?: string;
 }
 
 export interface IWins {
