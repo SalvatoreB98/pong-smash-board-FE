@@ -1,4 +1,4 @@
-<div class="debug-overlay">
+<div class="debug-overlay" *ngIf="isDebugMode">
     <ng-container *ngIf="!isVisible">
         <button (click)="open()">Open debugger</button>
     </ng-container>

@@ -18,7 +18,7 @@ export class DebugOverlayComponent {
   private comp = inject(CompetitionService);
   private user = inject(UserService);
   private auth = inject(AuthService, { optional: true });
-
+  isDebugMode = !environment.production;
   // stream principali
   list$ = this.comp.list$;
   active$ = this.comp.activeCompetition$;
