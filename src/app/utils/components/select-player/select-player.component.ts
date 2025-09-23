@@ -106,7 +106,5 @@ export class SelectPlayerComponent implements OnInit, OnChanges {
         return;
       }
     }
-
-    this.selectedPlayer = null;
   }
 }

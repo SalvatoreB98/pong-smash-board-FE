@@ -5,7 +5,7 @@
     <!-- Fake input field -->
     <div #playerSelectRef class="input-field position-relative" style="text-align: left;" (click)="toggleDropdown($event)" [class.open]="showDropdown">
         <span *ngIf="!selectedPlayer" class="my-placeholder">
-            {{"Select a player" | translate}}...
+            {{"select_player" | translate}}...
         </span>
         <span *ngIf="selectedPlayer">
             <strong>{{ selectedPlayer.nickname }}</strong>
