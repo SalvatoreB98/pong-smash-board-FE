@@ -192,7 +192,10 @@ export class HomeComponent {
     return rounds;
   }
 
-  private getMatchResultForPlayers(player1: IPlayer | null, player2: IPlayer | null): {
+  private getMatchResultForPlayers(
+    player1: IPlayer | null,
+    player2: IPlayer | null
+  ): {
     player1Score?: number;
     player2Score?: number;
     winnerId: number | string | null;
@@ -214,36 +217,33 @@ export class HomeComponent {
       return { winnerId: null };
     }
 
+    // prendi l’ultimo match
     const latestMatch = [...relevantMatches].sort((a, b) => {
       const dateA = this.getMatchTimestamp(a);
       const dateB = this.getMatchTimestamp(b);
-
-      if (dateA !== dateB) {
-        return dateB - dateA;
-      }
-
+      if (dateA !== dateB) return dateB - dateA;
       return (Number(b.id) || 0) - (Number(a.id) || 0);
     })[0];
 
-    if (!latestMatch) {
-      return { winnerId: null };
+    if (!latestMatch) return { winnerId: null };
+
+    // punteggi originali
+    let p1Score = latestMatch.player1_score;
+    let p2Score = latestMatch.player2_score;
+
+    // se i player erano invertiti, ribalta i punteggi
+    if (latestMatch.player1_id !== player1.id) {
+      [p1Score, p2Score] = [p2Score, p1Score];
     }
 
-    const winnerId = (latestMatch as any)?.winner_id ?? null;
-    const player1Id = Number(latestMatch.player1_id);
-    const player2Id = Number(latestMatch.player2_id);
-
-    if (player1Id === player1.id && player2Id === player2.id) {
-      return {
-        player1Score: latestMatch.player1_score,
-        player2Score: latestMatch.player2_score,
-        winnerId
-      };
-    }
+    // calcola il winner
+    let winnerId: number | null = null;
+    if (p1Score > p2Score) winnerId = player1.id;
+    else if (p2Score > p1Score) winnerId = player2.id;
 
     return {
-      player1Score: latestMatch.player2_score,
-      player2Score: latestMatch.player1_score,
+      player1Score: p1Score,
+      player2Score: p2Score,
       winnerId
     };
   }
