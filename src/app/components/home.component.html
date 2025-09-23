@@ -7,11 +7,11 @@
     </div>
     <ng-template #leagueMode>
         <div class="league-wrapper">
-            <p *ngIf="matches?.length === 0" class="mt-4 text-center">
+            <p *ngIf="matches.length === 0" class="mt-4 text-center">
                 {{ "matches_not_found" | translate }}
             </p>
             <section style="padding: 0;">
-                <app-matches *ngIf="matches?.length > 0" [matches]="matches" (matchEmitter)="setClickedMatch($event)">
+                <app-matches *ngIf="matches.length > 0" [matches]="matches" (matchEmitter)="setClickedMatch($event)">
                 </app-matches>
                 <div class="buttons-home-matches">
                     <div class="button-container mt-3">
@@ -40,7 +40,7 @@
                 </div>
             </section>
             <section>
-                <app-stats *ngIf="matches?.length > 0"></app-stats>
+                <app-stats *ngIf="matches.length > 0"></app-stats>
             </section>
         </div>
     </ng-template>

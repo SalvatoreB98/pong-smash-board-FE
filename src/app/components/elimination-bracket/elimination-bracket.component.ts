@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ICompetition } from '../../../api/competition.api';
 import { TranslatePipe } from '../../utils/translate.pipe';
-import { EliminationRound } from '../../interfaces/elimination-bracket.interface';
+import { EliminationMatchSlot, EliminationRound } from '../../interfaces/elimination-bracket.interface';
 import { ModalService } from '../../../services/modal.service';
 import { IPlayer } from '../../../services/players.service';
 
@@ -36,6 +36,14 @@ export class EliminationBracketComponent {
     console.log('openModal called with:', modalName, player1, player2);
     const objectToEmit = { modalName, player1, player2 };
     this.playersSelected.emit(objectToEmit);
+  }
+
+  isSlotWinner(slot: EliminationMatchSlot, winnerId: number | string | null | undefined): boolean {
+    if (!slot?.player || winnerId == null) {
+      return false;
+    }
+
+    return String(slot.player.id) === String(winnerId);
   }
 
 }
