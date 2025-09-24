@@ -1,3 +1,5 @@
+@use '../../../style/variables.scss' as *;
+
 :host {
   display: block;
   color: var(--primary-ultra-light);
@@ -8,7 +10,11 @@ section {
   position: relative;
   overflow: hidden;
 }
-
+a {
+  cursor: pointer;
+  padding: 1em;
+  text-align: center;
+}
 .landing-hero {
   padding: clamp(4rem, 8vw, 8rem) 0;
   background: radial-gradient(circle at top left, rgba(40, 74, 166, 0.45), transparent 55%),
@@ -129,13 +135,13 @@ section {
 
 .floating-card {
   position: absolute;
-  width: clamp(8rem, 15vw, 12rem);
-  height: clamp(8rem, 15vw, 12rem);
+  width: clamp(15rem, 20vw, 15rem);
+  height: clamp(15rem, 20vw, 15rem);
   border-radius: 50%;
-  background: rgba(64, 55, 135, 0.2);
-  backdrop-filter: blur(8px);
+  background: rgba($orange, 0.2);
+  backdrop-filter: blur(1px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  animation: float 12s ease-in-out infinite;
+  animation: float 10s ease-in-out infinite;
   z-index: 0;
 }
 
@@ -299,7 +305,7 @@ section {
   }
 
   50% {
-    transform: translate3d(0, -15px, 0) scale(1.05);
+    transform: translate3d(0, -50vh, 0) scale(1.05);
   }
 }
 
