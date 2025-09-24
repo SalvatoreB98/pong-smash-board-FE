@@ -54,7 +54,7 @@ export class AddCompetitionModalComponent {
 
     this.competitionForm = this.fb.group(
       {
-        nameCtrl: ['', [Validators.required, Validators.minLength(3)]],
+        nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
         typeCtrl: [null, Validators.required],
         setsCtrl: [null, Validators.required],
         pointsCtrl: [null, Validators.required],

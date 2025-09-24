@@ -236,8 +236,8 @@
         "en": "Round"
     },
     "elimination_mode_description": {
-        "it": "Anteprima del tabellone: definisci gli accoppiamenti iniziali e preparati agli scontri diretti.",
-        "en": "Bracket preview: seed the initial matchups and get ready for direct elimination clashes."
+        "it": "Questa competizione è in modalità eliminazione diretta.",
+        "en": "This competition is in single elimination mode."
     },
     "elimination_waiting_player": {
         "it": "Chi sarà a passare il turno?",
