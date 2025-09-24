@@ -1,13 +1,13 @@
 <ng-container *ngIf="userState$ | async as state">
     <ng-container [ngSwitch]="activeCompetition?.type">
         <ng-container *ngSwitchCase="'elimination'">
-            <div class="wrapper" *ngIf="players.length >= 2 && activeCompetition">
+            <div class="wrapper" *ngIf="competitionQualifiedPlayers.length >= 2 && activeCompetition">
                 <app-elimination-bracket (playersSelected)="onClickRound($event)"
                     [competition]="activeCompetition" [rounds]="eliminationRounds"></app-elimination-bracket>
             </div>
         </ng-container>
         <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition"
-            [matches]="matches" [players]="players" [rounds]="eliminationRounds"
+            [matches]="matches" [players]="players" [qualifiedPlayers]="competitionQualifiedPlayers" [rounds]="eliminationRounds"
             (matchSelected)="setClickedMatch($event)" (roundSelected)="onClickRound($event)"></app-group-knockout>
         <ng-container *ngSwitchDefault>
             <div class="league-wrapper">
