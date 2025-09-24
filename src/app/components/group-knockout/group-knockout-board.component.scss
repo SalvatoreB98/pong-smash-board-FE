@@ -11,7 +11,7 @@
   backdrop-filter: blur(12px);
   max-width: 1000px;
   margin: auto;
-  background: $gradient;
+  background: $background-harmony;
 }
 
 .board__header {
@@ -34,7 +34,7 @@
   min-width: 2rem;
   height: 2rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: $background-harmony;
   font-size: 0.95rem;
   font-weight: 600;
 }
@@ -68,9 +68,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: $primary-ultra-light;
   font-weight: 600;
-  color: #fff;
+  color: black;
   text-transform: uppercase;
   font-size: 0.95rem;
 }
@@ -118,26 +118,26 @@
   grid-template-columns: 2.5fr 1fr 1fr 1fr;
   align-items: center;
   padding: 0.5rem 0.75rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: $background-harmony;
   border-radius: 0.5rem;
 }
 
 .board__table-header {
   font-weight: 700;
   font-size: 0.98rem;
-  background: rgba(255, 255, 255, 0.07);
+  background: $background-harmony;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .board__table-row {
   font-size: 0.97rem;
   margin-top: 0.25rem;
-  background: rgba(255,255,255,0.04);
+  background: $gradient2;
   transition: background 0.15s;
 }
 
 .board__table-row:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba($background-harmony, 0.85);
 }
 
 .board__th,

@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { MatchesComponent } from '../matches/matches.component';
-import { StatsComponent } from '../../common/stats/stats.component';
 import { EliminationBracketComponent, EliminationModalEvent } from '../elimination-bracket/elimination-bracket.component';
 import { IMatch } from '../../interfaces/matchesInterfaces';
 import { EliminationRound } from '../../interfaces/elimination-bracket.interface';
@@ -17,7 +16,6 @@ import { GroupKnockoutBoardComponent } from './group-knockout-board.component';
   imports: [
     CommonModule,
     MatchesComponent,
-    StatsComponent,
     EliminationBracketComponent,
     GroupKnockoutBoardComponent,
     TranslatePipe,
