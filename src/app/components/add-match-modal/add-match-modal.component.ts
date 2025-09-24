@@ -74,8 +74,8 @@ export class AddMatchModalComponent implements OnInit {
       date: [new Date().toISOString().split('T')[0], Validators.required],
       player1: [this.player1?.id, Validators.required],
       player2: [this.player2?.id, Validators.required],
-      p1Score: [null, [Validators.required, Validators.min(1), Validators.max(this.maxSets)]],
-      p2Score: [null, [Validators.required, Validators.min(1), Validators.max(this.maxSets)]],
+      p1Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets)]],
+      p2Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets)]],
       isShowSetsPointsTrue: [false],
       setsPoints: this.fb.array([]),
     });

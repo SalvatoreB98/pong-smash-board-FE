@@ -34,7 +34,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-
+  max-width: 1000px;
+  margin: auto;
   p {
     color: rgb(141, 142, 142);
   }
