@@ -896,8 +896,8 @@
         "en": "Organize, track and grow every challenge with"
     },
     "hero_subtitle": {
-        "it": "Dal primo match all'ultimo smash: un'esperienza fluida...",
-        "en": "From the first match to the final smash: a seamless experience..."
+        "it": "Gestisci tornei di ping pong, registra incontri, aggiorna classifiche e condividi statistiche live con il tuo club.",
+        "en": "Manage ping pong tournaments, record matches, update standings and share live stats with your club."
     },
     "cta_start": {
         "it": "Inizia ora",
@@ -960,8 +960,8 @@
         "en": "The headquarters of your pong community"
     },
     "features_subtitle": {
-        "it": "Tutto quello che ti serve...",
-        "en": "Everything you need..."
+        "it": "Calendari automatici, tabelloni dinamici e ranking aggiornati per una gestione completa di club, leghe e tornei.",
+        "en": "Automatic schedules, dynamic brackets and up-to-date rankings for end-to-end club, league and tournament management."
     },
     "features_cta": {
         "it": "Attiva subito",
@@ -972,32 +972,32 @@
         "en": "From registration to full tournament in 3 steps"
     },
     "how_subtitle": {
-        "it": "Un flusso progettato per accompagnare...",
-        "en": "A flow designed to guide..."
+        "it": "Dalla creazione della competizione alle analisi post-partita: ogni passaggio è guidato e pronto per essere condiviso con il tuo team.",
+        "en": "From creating the competition to post-match analytics: every step is guided and ready to share with your team."
     },
     "how_step1_title": {
         "it": "Definisci il tuo format",
         "en": "Define your format"
     },
     "how_step1_text": {
-        "it": "Scegli gironi, eliminazione...",
-        "en": "Choose groups, elimination..."
+        "it": "Scegli gironi, eliminazione diretta o format misti, imposta regole di punteggio e crea in pochi clic la tua lobby.",
+        "en": "Pick groups, single elimination or mixed formats, set scoring rules and spin up your lobby in a few clicks."
     },
     "how_step2_title": {
         "it": "Invita, registra, ingaggia",
         "en": "Invite, register, engage"
     },
     "how_step2_text": {
-        "it": "Condividi la lobby...",
-        "en": "Share the lobby..."
+        "it": "Invita giocatori e staff, registra iscrizioni, assegna campi e tieni tutti sincronizzati con notifiche e tabelloni aggiornati.",
+        "en": "Invite players and staff, register sign-ups, assign tables and keep everyone in sync with notifications and live brackets."
     },
     "how_step3_title": {
         "it": "Monitora e racconta",
         "en": "Monitor and tell the story"
     },
     "how_step3_text": {
-        "it": "Risultati live, leaderboard dinamiche...",
-        "en": "Live results, dynamic leaderboards..."
+        "it": "Registra i set in tempo reale, aggiorna classifiche automatiche e genera report condivisibili con statistiche dettagliate.",
+        "en": "Log sets in real time, update automatic leaderboards and publish shareable reports with detailed statistics."
     },
     "how_cta1": {
         "it": "Apri il tuo torneo",
