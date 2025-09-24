@@ -23,22 +23,18 @@ img {
 .stats-container {
   background: $dark;
   background: $gradient;
-  transform: skew(-20deg);
   padding: 0.5em 1em;
 
   &>img,
   div {
-    transform: skew(20deg);
     text-align: center;
   }
 
   .win-rate {
-    transform: skew(0);
   }
 
   .win-rate-bar {
     height: 0.3125em;
-    transform: skew(-20deg) !important;
     opacity: 0.75;
   }
 
@@ -140,7 +136,6 @@ img {
   position: relative;
   height: 0.75em;
   display: flex;
-  transform: skew(-30deg);
 }
 
 .bar {
