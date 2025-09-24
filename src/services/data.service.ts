@@ -10,6 +10,7 @@ import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_PATHS } from '../api/api.config';
 import { UserService } from './user.service';
+import { RankingService } from './ranking.service';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
@@ -75,6 +76,7 @@ export class DataService {
   private _id = Math.random().toString(36).slice(2);
 
   private userService = inject(UserService);
+  private rankingService = inject(RankingService);
 
   constructor(private loaderService: LoaderService, private http: HttpClient) {
     console.log('[DataService] ctor', this._id);
@@ -219,6 +221,8 @@ export class DataService {
       this.loaderService?.showToast('Salvato con successo!', MSG_TYPE.SUCCESS, 5000);
       this.matches = responseData.matches || [];
       this.matchesSubject.next(this.matches);
+      this.rankingService.triggerRefresh();
+
       console.log('Success:', responseData);
     } catch (error: any) {
       console.info('Error:', error);

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { IRankingResponse } from './data.service';
 import { API_PATHS } from '../api/api.config';
@@ -7,9 +7,12 @@ import { environment } from '../environments/environment';
 import { CachedFetcher } from '../app/utils/helpers/cache.helpers'
 @Injectable({ providedIn: 'root' })
 export class RankingService {
+
+  private refresh$ = new Subject<void>();
+  refreshObs$ = this.refresh$.asObservable();
   private fetcherMap: Map<string, CachedFetcher<IRankingResponse>> = new Map();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getFetcher(competition_id: string): CachedFetcher<IRankingResponse> {
     if (!this.fetcherMap.has(competition_id)) {
@@ -36,5 +39,9 @@ export class RankingService {
     if (fetcher) {
       fetcher.clear();
     }
+  }
+
+  triggerRefresh() {
+    this.refresh$.next();
   }
 }
