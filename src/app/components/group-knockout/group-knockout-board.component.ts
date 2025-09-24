@@ -1,7 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { IPlayer } from '../../../services/players.service';
 import { TranslatePipe } from '../../utils/translate.pipe';
+
+interface PlayerRow {
+  id: string;
+  name: string;
+  lastname: string;
+  nickname?: string;
+  victories: number;
+  points: number;
+  defeats: number;
+  image_url?: string;
+}
+
+interface GroupedPlayers {
+  name: string;
+  players: PlayerRow[];
+}
 
 @Component({
   selector: 'app-group-knockout-board',
@@ -10,14 +26,46 @@ import { TranslatePipe } from '../../utils/translate.pipe';
   templateUrl: './group-knockout-board.component.html',
   styleUrl: './group-knockout-board.component.scss'
 })
-export class GroupKnockoutBoardComponent {
+export class GroupKnockoutBoardComponent implements OnChanges {
   @Input() players: IPlayer[] = [];
+  @Input() groupSize = 4;
 
-  trackByPlayer(_index: number, player: IPlayer) {
+  groupedPlayers: GroupedPlayers[] = [];
+
+  ngOnChanges() {
+    this.groupPlayers();
+  }
+
+  private groupPlayers() {
+    this.groupedPlayers = [];
+    if (!this.players || this.players.length === 0) return;
+
+    // Trasforma IPlayer in PlayerRow con valori iniziali
+    const playerRows: PlayerRow[] = this.players.map(player => ({
+      id: String(player.id),
+      name: player.name ?? '',
+      lastname: player.lastname ?? '',
+      nickname: player.nickname,
+      victories: 0,
+      points: 0,
+      defeats: 0,
+      image_url: player.image_url
+    }));
+
+    for (let i = 0; i < playerRows.length; i += this.groupSize) {
+      const groupNumber = Math.floor(i / this.groupSize) + 1;
+      this.groupedPlayers.push({
+        name: groupNumber.toString(),
+        players: playerRows.slice(i, i + this.groupSize)
+      });
+    }
+  }
+
+  trackByPlayer(_index: number, player: PlayerRow) {
     return player.id;
   }
 
-  getInitials(player: IPlayer): string {
+  getInitials(player: PlayerRow): string {
     const nickname = player.nickname ?? '';
     const name = player.name ?? '';
     const lastname = player.lastname ?? '';

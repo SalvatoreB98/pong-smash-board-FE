@@ -31,14 +31,16 @@
         </div>
       </div>
     </section>
-    <section>
-      <app-stats *ngIf="matches.length > 0"></app-stats>
-    </section>
+
   </div>
-  <div class="wrapper" *ngIf="qualifiedPlayers.length >= 2; else eliminationEmpty">
-    <app-group-knockout-board [players]="qualifiedPlayers"></app-group-knockout-board>
-    <app-elimination-bracket [competition]="competition" [rounds]="rounds"
-      (playersSelected)="onRoundSelected($event)"></app-elimination-bracket>
+  <div *ngIf="qualifiedPlayers.length >= 2; else eliminationEmpty">
+    <section class="mb-5">
+      <app-group-knockout-board [players]="qualifiedPlayers"></app-group-knockout-board>
+    </section>
+    <section>
+      <app-elimination-bracket [competition]="competition" [rounds]="rounds"
+        (playersSelected)="onRoundSelected($event)"></app-elimination-bracket>
+    </section>
   </div>
 </div>
 
