@@ -172,9 +172,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
       }
 
-      await firstValueFrom(
+      const response = await firstValueFrom(
         this.http.post<UpdateProfileResponse>(API_PATHS.updateProfile, { nickname, imageUrl })
       );
+
+      this.userService.patchLocal({
+        nickname: response.nickname,
+        image_url: response.imageUrl ?? null,
+        state: response.state,
+      });
 
       this.loader.showToast('Profilo aggiornato!', MSG_TYPE.SUCCESS, 3000);
     } catch (err) {

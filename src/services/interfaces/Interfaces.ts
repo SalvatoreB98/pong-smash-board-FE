@@ -36,7 +36,7 @@ export interface IUserState {
   updated_at: string; // ISO 8601
   nickname: string;
   player_id: number;
-  image_url: string;
+  image_url: string | null;
   email: string;
   name: string | null;
   lastname: string | null;

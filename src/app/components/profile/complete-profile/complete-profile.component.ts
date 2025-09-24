@@ -61,8 +61,8 @@ export class CompleteProfileComponent implements OnInit {
     await firstValueFrom(this.userService.getState());
     console.log('User state fetched:', this.userService.getState());
     this.userState$.subscribe(s => {
-      if (s.state === UserProgressStateEnum.PROFILE_COMPLETED) {
-        this.router.navigate(['/competition']);
+      if (s?.state === UserProgressStateEnum.PROFILE_COMPLETED) {
+        this.router.navigate(['/competitions']);
       }
     });
   }
@@ -146,9 +146,15 @@ export class CompleteProfileComponent implements OnInit {
       }
 
       // 5) salva profilo
-      await firstValueFrom(
+      const response = await firstValueFrom(
         this.http.post<UpdateProfileResponse>(API_PATHS.updateProfile, { nickname, imageUrl })
       );
+
+      this.userService.patchLocal({
+        nickname: response.nickname,
+        image_url: response.imageUrl ?? null,
+        state: response.state,
+      });
 
       this.loaderService?.showToast('Profilo aggiornato!', MSG_TYPE.SUCCESS, 3000);
       this.router.navigate(['/competitions']);
