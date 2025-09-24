@@ -41,6 +41,11 @@
   }
 }
 
+.buttons-home-matches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 @media screen and (max-width: 62.5em) {
   .buttons-home-matches {
     flex-direction: column;

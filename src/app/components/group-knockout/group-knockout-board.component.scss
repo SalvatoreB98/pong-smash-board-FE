@@ -21,6 +21,19 @@
   gap: 1rem;
 }
 
+#group-knockout-board-title {
+  font-size: 2em;
+
+  &::before {
+    display: inline-block;
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: $orange;
+  }
+}
+
 .board__title {
   font-size: 1.1rem;
   font-weight: 600;
@@ -105,6 +118,7 @@
   font-size: 0.95rem;
   opacity: 0.75;
 }
+
 .board__table {
   display: flex;
   flex-direction: column;
@@ -126,7 +140,7 @@
   font-weight: 700;
   font-size: 0.98rem;
   background: $background-harmony;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .board__table-row {
@@ -171,16 +185,19 @@
 }
 
 @media (max-width: 48rem) {
+
   .board__table-header,
   .board__table-row {
     grid-template-columns: 2fr 1fr 1fr 1fr;
     font-size: 0.93rem;
     padding: 0.4rem 0.5rem;
   }
+
   .board__group-title {
     font-size: 0.98rem;
   }
 }
+
 @media (max-width: 48rem) {
   .board {
     padding: 1rem;

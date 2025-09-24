@@ -250,8 +250,8 @@ export class HomeComponent {
   private refreshCompetitionQualifiedPlayers() {
     const qualifiedFromCompetition = this.extractCompetitionPlayers(
       (this.activeCompetition as any)?.qualifiedPlayers
-        ?? (this.activeCompetition as any)?.qualified_players
-        ?? null
+      ?? (this.activeCompetition as any)?.qualified_players
+      ?? null
     );
 
     if (qualifiedFromCompetition.length > 0) {
@@ -486,5 +486,13 @@ export class HomeComponent {
     }
 
     this.modalService.openModal(this.modalService.MODALS[event.modalName]);
+  }
+
+  get canStartElimination(): boolean {
+    return !!this.activeCompetition && this.competitionQualifiedPlayers.length >= 2;
+  }
+
+  get hasMatches(): boolean {
+    return this.matches?.length > 0;
   }
 }

@@ -3,7 +3,7 @@
     <h2 id="group-knockout-board-title" class="board__title">
       {{ 'group_knockout_board_title' | translate }}
     </h2>
-    <span class="board__count" *ngIf="players.length">{{ players.length }}</span>
+    <span class="board__count" *ngIf="players.length">{{ players.length }} {{ 'players' | translate }}</span>
   </header>
 
   <ng-container *ngIf="groupedPlayers?.length; else emptyState">
