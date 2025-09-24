@@ -11,7 +11,7 @@ import { ProfileComponent } from './components/profile/profile/profile.component
 import { CompleteProfileComponent } from './components/profile/complete-profile/complete-profile.component';
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent },
+  { path: 'landing', component: LandingComponent },
   { path: 'home-page', component: HomeComponent, canActivate: [AuthGuard, FlowGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -19,5 +19,5 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard, FlowGuard] },
   { path: 'complete-profile', component: CompleteProfileComponent, canActivate: [AuthGuard] },
   { path: 'competitions', component: CompetitionsComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '', pathMatch: 'full' }
+  { path: '**', redirectTo: 'home-page', pathMatch: 'full' }
 ];
