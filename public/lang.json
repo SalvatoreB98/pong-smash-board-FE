@@ -1023,14 +1023,6 @@
         "it": "Accedi alle analytics",
         "en": "Access analytics"
     },
-    "testimonials_title": {
-        "it": "Club e coach parlano di noi",
-        "en": "Clubs and coaches talk about us"
-    },
-    "testimonials_subtitle": {
-        "it": "Design e performance pensati per chi vive di match point.",
-        "en": "Design and performance built for those who live by match points."
-    },
     "cta_panel_title": {
         "it": "Pronto a trasformare la tua prossima competizione?",
         "en": "Ready to transform your next competition?"
@@ -1043,18 +1035,7 @@
         "it": "Crea account gratuito",
         "en": "Create free account"
     },
-    "faq_title": {
-        "it": "Perché funziona per marketing, staff tecnico e sponsor",
-        "en": "Why it works for marketing, staff and sponsors"
-    },
-    "faq_subtitle": {
-        "it": "Workflow condivisi, notifiche smart...",
-        "en": "Shared workflows, smart notifications..."
-    },
-    "faq_stat1": {
-        "it": "di soddisfazione organizzatori",
-        "en": "organizer satisfaction"
-    },
+
     "faq_stat2": {
         "it": "engagement sponsor",
         "en": "sponsor engagement"
@@ -1063,10 +1044,7 @@
         "it": "supporto dedicato",
         "en": "dedicated support"
     },
-    "faq_q1": {
-        "it": "Posso personalizzare il brand della competizione?",
-        "en": "Can I customize the competition brand?"
-    },
+
     "faq_a1": {
         "it": "Certo, puoi impostare palette, loghi...",
         "en": "Of course, you can set palettes, logos..."
@@ -1118,29 +1096,5 @@
     "highlight3_desc": {
         "it": "Analizza performance, identifica i trend dei giocatori e prepara le prossime sfide con report visivi e smart analytics.",
         "en": "Analyze performance, identify player trends and prepare upcoming challenges with visual reports and smart analytics."
-    },
-    "testimonial1_quote": {
-        "it": "«Abbiamo ridotto del 60% il tempo speso a organizzare tornei weekend grazie a Pong Smash Board.»",
-        "en": "“We cut weekend tournament organization time by 60% thanks to Pong Smash Board.”"
-    },
-    "testimonial1_name": {
-        "it": "Martina L.",
-        "en": "Martina L."
-    },
-    "testimonial1_role": {
-        "it": "Founder, Ping Pong Club Milano",
-        "en": "Founder, Ping Pong Club Milan"
-    },
-    "testimonial2_quote": {
-        "it": "«Statistiche live, ranking automatici e zero fogli Excel: finalmente posso concentrarmi sui giocatori.»",
-        "en": "“Live stats, automatic rankings and no Excel sheets: finally I can focus on the players.”"
-    },
-    "testimonial2_name": {
-        "it": "Luca P.",
-        "en": "Luca P."
-    },
-    "testimonial2_role": {
-        "it": "Coach Professionista",
-        "en": "Professional Coach"
     }
 }

@@ -54,7 +54,17 @@ a {
   backdrop-filter: blur(10px);
   color: var(--primary-ultra-light);
 }
-
+.social-proof {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  .avatars {
+    width: auto;
+    min-width: 10em;
+  }
+}
 .social-proof .avatar {
   width: 2.75rem;
   height: 2.75rem;
@@ -63,6 +73,9 @@ a {
   border: 2px solid rgba(255, 255, 255, 0.3);
   margin-left: -0.9rem;
   animation: pulse 3s infinite;
+  width: 100%;
+  align-self: center;
+  justify-self: center;
 }
 
 .social-proof .avatar:first-child {
@@ -288,14 +301,19 @@ a {
 }
 
 .cta-panel {
-  background: linear-gradient(120deg, rgba(40, 74, 166, 0.6), rgba(199, 99, 96, 0.6));
-  border-radius: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 1.5rem 3rem -2rem rgba(0, 0, 0, 0.7);
+  background: $gradient;
+  border-radius: $border-radius;
 }
 
 .landing-faq {
   background: rgba(2, 11, 18, 0.96);
+}
+.button.primary {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 999px;
+  padding-inline: 1.75rem;
+  font-weight: 600;
 }
 
 @keyframes float {
