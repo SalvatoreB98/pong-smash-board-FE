@@ -103,6 +103,8 @@ export class CompetitionDetailComponent {
       return;
     }
     this.competitionService.removePlayerFromCompetition(this.competition.id, playerId).subscribe(() => {
+      this.competition?.players?.splice(this.competition.players.findIndex(p => p.id === playerId), 1);
+      this.loader.showToast(this.translateService.translate('player_removed'), MSG_TYPE.SUCCESS);
     });
   }
   openAreYouSureModal(playerId: number) {
