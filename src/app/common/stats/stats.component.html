@@ -10,7 +10,7 @@
   <div class="win-rate" title="{{ 'ratingTitle' | translate }}">{{ "rating" | translate }}</div>
   <div class="win-rate" title="{{ 'winRateTitle' | translate }}">{{ "winRate" | translate }}</div>
 </div>
-<div *ngFor="let player of standings; let i = index; trackBy: trackByPlayer" class="stats-container mt-2 my-container">
+<div *ngFor="let player of standings; let i = index;" class="stats-container mt-2 my-container">
   <div class="position">
     <i *ngIf="i < 3" class="fa-solid fa-medal position-{{ i + 1 }}"></i> {{i+1}}
   </div>

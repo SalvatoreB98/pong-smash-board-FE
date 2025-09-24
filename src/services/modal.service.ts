@@ -42,8 +42,10 @@ export class ModalService {
     document?.querySelector('html')?.style.removeProperty('overflow');
     document?.querySelector('html')?.style.setProperty('margin-right', '0');
     let wrapper = document.querySelector('.wrapper') as HTMLElement;
-    wrapper.style.removeProperty('filter');
-    wrapper.style.removeProperty('pointer-events');
-    wrapper.style.removeProperty('user-select');
+    if (wrapper) {
+      wrapper.style.removeProperty('filter');
+      wrapper.style.removeProperty('pointer-events');
+      wrapper.style.removeProperty('user-select');
+    }
   }
 }

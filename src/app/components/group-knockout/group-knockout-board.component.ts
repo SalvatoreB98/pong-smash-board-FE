@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { IPlayer } from '../../../services/players.service';
 import { TranslatePipe } from '../../utils/translate.pipe';
+import { ModalService } from '../../../services/modal.service';
 
 interface PlayerRow {
   id: string;
@@ -32,6 +33,7 @@ export class GroupKnockoutBoardComponent implements OnChanges {
 
   groupedPlayers: GroupedPlayers[] = [];
 
+  constructor(public modalService: ModalService) { }
   ngOnChanges() {
     this.groupPlayers();
   }

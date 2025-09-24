@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DataService } from '../../../services/data.service';
 import { CommonModule } from '@angular/common';
 import { RankingService } from '../../../services/ranking.service';
@@ -43,20 +43,30 @@ export class StatsComponent implements OnInit {
   headToHeadData: HeadToHeadRow[] = [];
   players: string[] | undefined;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private cdr: ChangeDetectorRef) {
 
   }
 
   async ngOnInit() {
+    await this.refreshRanking();
+
+    this.rankingService.refreshObs$.subscribe(() => {
+      this.refreshRanking();
+    });
+  }
+
+  private async refreshRanking() {
     let activeCompetitionId = '';
     const userState = await firstValueFrom(this.userService.getState());
-    if (userState && userState.active_competition_id) {
+    if (userState?.active_competition_id) {
       activeCompetitionId = String(userState.active_competition_id);
     }
+
     const res = await this.rankingService.getRanking(activeCompetitionId, false);
     this.standings = res.ranking.map(item => ({
-      id: item.id, // ensure id is present
-      image_url: item.image_url || '/default-player.jpg', 
+      id: item.id,
+      image_url: item.image_url || '/default-player.jpg',
+      nickname: item.nickname,         
       playerName: item.nickname,
       wins: item.wins,
       lost: item.played - item.wins || 0,
@@ -64,6 +74,8 @@ export class StatsComponent implements OnInit {
       winRate: item.winrate ?? 0,
       rating: item.rating || 0
     }));
+    this.cdr.detectChanges();
+
   }
 
   // se vuoi cambiare classifica (es. con bottoni), richiami questa

@@ -43,9 +43,9 @@ export class AddPlayersModalComponent extends ModalComponent {
   addPlayerForm: FormGroup = this.fb.group({
     name: [''],
     surname: [''],
-    nickname: ['', { validators: [Validators.required], updateOn: 'blur' }],
+    nickname: ['', { validators: [Validators.required], updateOn: 'change' }],
     file: [null],
-    email: ['', { validators: [Validators.email], updateOn: 'blur' }],
+    email: ['', { validators: [Validators.email], updateOn: 'change' }],
   });
 
   playersToAdd: IPlayerToAdd[] = [];

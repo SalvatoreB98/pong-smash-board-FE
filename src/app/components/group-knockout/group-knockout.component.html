@@ -1,49 +1,41 @@
-<div class="group-knockout-wrapper">
-  <div class="league-wrapper">
-    <p *ngIf="matches.length === 0" class="mt-4 text-center">
-      {{ 'matches_not_found' | translate }}
-    </p>
-    <section style="padding: 0;">
-      <app-matches *ngIf="matches.length > 0" [matches]="matches" (matchEmitter)="onMatchSelected($event)">
-      </app-matches>
-      <div class="buttons-home-matches">
-        <div class="button-container mt-3">
-          <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">
-            {{ 'add_match' | translate }}
-            <span class="m-1"></span>
-            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-          </button>
-          <p class="small text-center mt-3">
-            {{ 'add_match_description' | translate }}
-          </p>
-        </div>
-        <div class="button-container">
-          <div>
-            <button type="button" class="bg-secondary position-relative"
-              (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
-              {{ 'add_manual_set_points' | translate }}
-              <div class="circle-live"></div>
-            </button>
-          </div>
-          <p class="small text-center mt-3">
-            {{ 'add_manual_set_points_description' | translate }}
-          </p>
-        </div>
+<div class="group-knockout-wrapper pt-5">
+  <section class="board-section mt-5">
+    <app-group-knockout-board [players]="boardPlayers"></app-group-knockout-board>
+    <div class="buttons-home-matches" aria-label="group-knockout-actions">
+      <div class="button-container mt-3">
+        <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">
+          {{ 'add_match' | translate }}
+          <span class="m-1"></span>
+          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+        </button>
+        <p class="small text-center mt-3">
+          {{ 'add_match_description' | translate }}
+        </p>
       </div>
-    </section>
+      <div class="button-container">
+        <div>
+          <button type="button" class="bg-secondary position-relative"
+            (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
+            {{ 'add_manual_set_points' | translate }}
+            <div class="circle-live"></div>
+          </button>
+        </div>
+        <p class="small text-center mt-3">
+          {{ 'add_manual_set_points_description' | translate }}
+        </p>
+      </div>
+    </div>
+  </section>
 
-  </div>
-  <div *ngIf="qualifiedPlayers.length >= 2; else eliminationEmpty">
-    <section class="mb-5">
-      <app-group-knockout-board [players]="qualifiedPlayers"></app-group-knockout-board>
-    </section>
-    <section>
+  <section class="finals-section">
+    <h2 class="finals-section__title">{{ 'group_knockout_finals_title' | translate }}</h2>
+    <ng-container *ngIf="qualifiedPlayers.length >= 2 && rounds.length > 0; else eliminationEmpty">
       <app-elimination-bracket [competition]="competition" [rounds]="rounds"
         (playersSelected)="onRoundSelected($event)"></app-elimination-bracket>
-    </section>
-  </div>
+    </ng-container>
+  </section>
 </div>
 
 <ng-template #eliminationEmpty>
-  <p class="no-qualified text-center mt-3">{{ 'group_knockout_board_empty' | translate }}</p>
+  <p class="no-qualified text-center mt-3">{{ 'group_knockout_finals_empty' | translate }}</p>
 </ng-template>

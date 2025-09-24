@@ -10,9 +10,11 @@ import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_PATHS } from '../api/api.config';
 import { UserService } from './user.service';
+import { RankingService } from './ranking.service';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
+  matchesElimination?: IMatch[] | null;
   wins: Record<string, number>;
   totPlayed: Record<string, number>;
   points: any;
@@ -52,17 +54,20 @@ export class DataService {
   players: string[] = [];
   loader!: LoaderComponent;
   points: any;
+  matchesElimination: IMatch[] = [];
 
   private winsSubject = new BehaviorSubject<Record<string, number>>({});
   private totPlayedSubject = new BehaviorSubject<Record<string, number>>({});
   private pointsSubject = new BehaviorSubject<Record<string, number>>({});
   private matchesSubject = new BehaviorSubject<IMatch[]>([]);
+  private matchesEliminationSubject = new BehaviorSubject<IMatch[]>([]);
   private playersSubject = new BehaviorSubject<string[]>([]);
 
   public winsObs = this.winsSubject.asObservable();
   public totPlayedObs = this.totPlayedSubject.asObservable();
   public pointsObs = this.pointsSubject.asObservable();
   public matchesObs = this.matchesSubject.asObservable();
+  public matchesEliminationObs = this.matchesEliminationSubject.asObservable();
   public playersObs = this.playersSubject.asObservable();
 
   private _loaded = false;                 // abbiamo già i dati?
@@ -71,6 +76,7 @@ export class DataService {
   private _id = Math.random().toString(36).slice(2);
 
   private userService = inject(UserService);
+  private rankingService = inject(RankingService);
 
   constructor(private loaderService: LoaderService, private http: HttpClient) {
     console.log('[DataService] ctor', this._id);
@@ -155,11 +161,13 @@ export class DataService {
     this.totPlayed = data.totPlayed || {};
     this.points = data.points || {};
     this.players = data.players || [];
+    this.matchesElimination = data.matchesElimination || [];
     this.monthlyWinRates = data.monthlyWinRates || {};
     this.badges = data.badges || {};
 
     // 👉 aggiorna gli stream reattivi
     this.matchesSubject.next(this.matches);
+    this.matchesEliminationSubject.next(this.matchesElimination);
     this.winsSubject.next(this.wins);
     this.totPlayedSubject.next(this.totPlayed);
     this.pointsSubject.next(this.points);
@@ -169,6 +177,7 @@ export class DataService {
   private generateReturnObject(): MatchData {
     return {
       matches: this.matches,
+      matchesElimination: this.matchesElimination,
       wins: this.wins,
       totPlayed: this.totPlayed,
       points: this.points,
@@ -212,6 +221,8 @@ export class DataService {
       this.loaderService?.showToast('Salvato con successo!', MSG_TYPE.SUCCESS, 5000);
       this.matches = responseData.matches || [];
       this.matchesSubject.next(this.matches);
+      this.rankingService.triggerRefresh();
+
       console.log('Success:', responseData);
     } catch (error: any) {
       console.info('Error:', error);
