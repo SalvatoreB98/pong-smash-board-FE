@@ -74,6 +74,7 @@ export class DataService {
   private _lastLoadedAt = 0;               // timestamp dell’ultimo load
   private _loadingPromise?: Promise<IMatchResponse>; // dedup calls
   private _id = Math.random().toString(36).slice(2);
+  private _activeCompetitionId: number | null = null;
 
   private userService = inject(UserService);
   private rankingService = inject(RankingService);
@@ -90,6 +91,16 @@ export class DataService {
   async fetchMatches(
     options?: { force?: boolean; ttlMs?: number }
   ): Promise<IMatchResponse> {
+    const currentCompetitionId = this.userService.snapshot()?.active_competition_id ?? null;
+
+    // Se la competizione attiva è cambiata, resettiamo la cache locale
+    if (this._activeCompetitionId !== currentCompetitionId) {
+      this._activeCompetitionId = currentCompetitionId;
+      this._loaded = false;
+      this._loadingPromise = undefined;
+      this.resetData();
+    }
+
     const force = !!options?.force;
     const ttlMs = options?.ttlMs ?? 0;
     const now = Date.now();
@@ -172,6 +183,25 @@ export class DataService {
     this.totPlayedSubject.next(this.totPlayed);
     this.pointsSubject.next(this.points);
     this.playersSubject.next(this.players);
+  }
+
+  private resetData(): void {
+    this.matches = [];
+    this.matchesElimination = [];
+    this.wins = {};
+    this.totPlayed = {};
+    this.points = {};
+    this.players = [];
+    this.monthlyWinRates = {};
+    this.badges = {};
+    this.raw = {};
+
+    this.matchesSubject.next([]);
+    this.matchesEliminationSubject.next([]);
+    this.winsSubject.next({});
+    this.totPlayedSubject.next({});
+    this.pointsSubject.next({});
+    this.playersSubject.next([]);
   }
 
   private generateReturnObject(): MatchData {
