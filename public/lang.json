@@ -1096,5 +1096,9 @@
     "highlight3_desc": {
         "it": "Analizza performance, identifica i trend dei giocatori e prepara le prossime sfide con report visivi e smart analytics.",
         "en": "Analyze performance, identify player trends and prepare upcoming challenges with visual reports and smart analytics."
+    },
+    "footer_link": {
+        "it": "Pagina di presentazione",
+        "en": "Landing page"
     }
 }

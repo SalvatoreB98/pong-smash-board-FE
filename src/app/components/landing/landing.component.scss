@@ -10,16 +10,22 @@ section {
   position: relative;
   overflow: hidden;
 }
+
 a {
   cursor: pointer;
   padding: 1em;
   text-align: center;
+  &.btn {
+    border-radius: $border-radius;
+  }
 }
+
 .landing-hero {
   padding: clamp(4rem, 8vw, 8rem) 0;
   background: radial-gradient(circle at top left, rgba(40, 74, 166, 0.45), transparent 55%),
     radial-gradient(circle at bottom right, rgba(199, 99, 96, 0.35), transparent 50%),
     var(--gradient);
+  margin-bottom: 0;
 }
 
 .badge.tracking {
@@ -54,17 +60,20 @@ a {
   backdrop-filter: blur(10px);
   color: var(--primary-ultra-light);
 }
+
 .social-proof {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+
   .avatars {
     width: auto;
     min-width: 10em;
   }
 }
+
 .social-proof .avatar {
   width: 2.75rem;
   height: 2.75rem;
@@ -308,6 +317,7 @@ a {
 .landing-faq {
   background: rgba(2, 11, 18, 0.96);
 }
+
 .button.primary {
   background: var(--primary);
   color: #fff;
@@ -317,6 +327,7 @@ a {
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translate3d(0, 0, 0) scale(1);
@@ -328,6 +339,7 @@ a {
 }
 
 @keyframes grow {
+
   0%,
   100% {
     transform: scaleY(0.85);
@@ -339,6 +351,7 @@ a {
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     transform: scale(1);
@@ -374,4 +387,3 @@ a {
     display: none;
   }
 }
-
