@@ -65,6 +65,8 @@ export class AddMatchModalComponent implements OnInit {
       console.log('Active competition:', this.competition);
       this.maxPoints = this.competition?.points_type || 11;
       this.maxSets = this.competition?.sets_type || 5;
+      this.updateScoreValidators();
+      this.resanitizeScores();
     });
   }
 
@@ -74,11 +76,14 @@ export class AddMatchModalComponent implements OnInit {
       date: [new Date().toISOString().split('T')[0], Validators.required],
       player1: [this.player1?.id, Validators.required],
       player2: [this.player2?.id, Validators.required],
-      p1Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets)]],
-      p2Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets)]],
+      p1Score: [null, [Validators.required, Validators.min(0)]],
+      p2Score: [null, [Validators.required, Validators.min(0)]],
       isShowSetsPointsTrue: [false],
       setsPoints: this.fb.array([]),
+    }, {
+      validators: [this.createBestOfValidator()]
     });
+    this.updateScoreValidators();
     this.matchForm.get('p1Score')?.valueChanges.subscribe(() => this.sanitizeInput('p1Score'));
     this.matchForm.get('p2Score')?.valueChanges.subscribe(() => this.sanitizeInput('p2Score'));
     console.log('Initial form value:', this.matchForm.value);
@@ -97,7 +102,10 @@ export class AddMatchModalComponent implements OnInit {
   updateContainers(event: any) {
     this.isShowSetsPointsTrue = this.matchForm.value.isShowSetsPointsTrue;
     const totalPoints = (this.matchForm.value.p1Score || 0) + (this.matchForm.value.p2Score || 0);
-    const totalSets = this.isShowSetsPointsTrue ? Math.max(totalPoints, 1) : 0;
+    const maxConfiguredSets = this.getConfiguredMaxSets();
+    const totalSets = this.isShowSetsPointsTrue
+      ? Math.min(Math.max(totalPoints, 1), maxConfiguredSets)
+      : 0;
 
     this.setsPoints.clear();
     for (let i = 0; i < totalSets && i < 10; i++) {
@@ -206,10 +214,10 @@ export class AddMatchModalComponent implements OnInit {
     const otherControlName = controlName === 'p1Score' ? 'p2Score' : 'p1Score';
     const otherControl = this.matchForm.get(otherControlName);
     if (!control) return;
-    const max = this.competition?.sets_type || this.maxSets;
+    const max = this.getConfiguredMaxSets();
+    const setsToWin = this.getSetsToWin();
     let value = Number(control.value);
-
-    this.errorsOfSets.length = 0; // Reset errors
+    const errors: string[] = [];
 
     // Se l'input è una stringa con più cifre, prendi solo l'ultima
     if (!isNaN(value) && typeof control.value === 'string' && control.value.length > 1) {
@@ -218,20 +226,38 @@ export class AddMatchModalComponent implements OnInit {
 
     if (isNaN(value) || value < 0) {
       value = 0;
-      this.errorsOfSets.push('number_positive');
+      errors.push('number_positive');
     }
-    if (value > max) {
-      value = max;
-      this.errorsOfSets.push(`number_maximum ${max}`);
+    if (value > setsToWin) {
+      value = setsToWin;
+      errors.push(`number_maximum ${setsToWin}`);
     }
-    if (otherControl && value === Number(otherControl.value)) {
-      value = Math.max(1, Math.min(value, max - 1));
-      this.errorsOfSets.push('number_equal');
+    const otherValue = Number(otherControl?.value ?? NaN);
+    if (!isNaN(otherValue)) {
+      if (value + otherValue > max) {
+        value = Math.max(0, max - otherValue);
+        errors.push(`number_maximum ${max}`);
+      }
+      if (value === otherValue && value !== 0) {
+        value = Math.max(0, Math.min(otherValue - 1, setsToWin - 1));
+        errors.push('number_equal');
+      }
     }
     if (control.value !== value) {
       control.setValue(value, { emitEvent: true });
     }
+    this.matchForm.updateValueAndValidity({ emitEvent: false });
+    this.updateContainers(null);
+    this.setErrorsOfSets(errors);
     console.log("errors:", this.errorsOfSets);
+  }
+
+  private setErrorsOfSets(errors: string[]) {
+    const formErrors = this.matchForm.errors;
+    if (formErrors?.['bestOfInvalid']) {
+      errors.push('best_of_invalid');
+    }
+    this.errorsOfSets = errors;
   }
 
   checkPointsError() {
@@ -282,6 +308,81 @@ export class AddMatchModalComponent implements OnInit {
     const target = event.target as HTMLElement | null;
     if (target instanceof HTMLButtonElement) return target;
     return target?.closest('button') as HTMLButtonElement | null;
+  }
+
+  private getConfiguredMaxSets(): number {
+    return this.competition?.sets_type || this.maxSets;
+  }
+
+  private getSetsToWin(): number {
+    const max = this.getConfiguredMaxSets();
+    return Math.floor(max / 2) + 1;
+  }
+
+  private updateScoreValidators(): void {
+    const setsToWin = this.getSetsToWin();
+    const p1Control = this.matchForm?.get('p1Score');
+    const p2Control = this.matchForm?.get('p2Score');
+    if (p1Control && p2Control) {
+      p1Control.setValidators([Validators.required, Validators.min(0), Validators.max(setsToWin)]);
+      p2Control.setValidators([Validators.required, Validators.min(0), Validators.max(setsToWin)]);
+      p1Control.updateValueAndValidity({ emitEvent: false });
+      p2Control.updateValueAndValidity({ emitEvent: false });
+      this.matchForm?.updateValueAndValidity({ emitEvent: false });
+    }
+  }
+
+  private resanitizeScores(): void {
+    const p1Control = this.matchForm?.get('p1Score');
+    const p2Control = this.matchForm?.get('p2Score');
+    if (p1Control?.value !== null && p1Control?.value !== undefined) {
+      this.sanitizeInput('p1Score');
+    }
+    if (p2Control?.value !== null && p2Control?.value !== undefined) {
+      this.sanitizeInput('p2Score');
+    }
+    this.updateContainers(null);
+  }
+
+  private createBestOfValidator(): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const p1 = group.get('p1Score')?.value;
+      const p2 = group.get('p2Score')?.value;
+
+      if (p1 === null || p1 === undefined || p2 === null || p2 === undefined) {
+        return null;
+      }
+
+      const p1Score = Number(p1);
+      const p2Score = Number(p2);
+
+      if (isNaN(p1Score) || isNaN(p2Score)) {
+        return null;
+      }
+
+      if (p1Score === p2Score) {
+        return { bestOfInvalid: true };
+      }
+
+      const max = this.getConfiguredMaxSets();
+      const setsToWin = this.getSetsToWin();
+      const winnerScore = Math.max(p1Score, p2Score);
+      const loserScore = Math.min(p1Score, p2Score);
+
+      if (winnerScore !== setsToWin) {
+        return { bestOfInvalid: true };
+      }
+
+      if (loserScore > setsToWin - 1) {
+        return { bestOfInvalid: true };
+      }
+
+      if (winnerScore + loserScore > max) {
+        return { bestOfInvalid: true };
+      }
+
+      return null;
+    };
   }
 }
 

@@ -363,6 +363,10 @@
         "it": "Al meglio di",
         "en": "Best of"
     },
+    "best_of_invalid": {
+        "it": "Risultato non valido: il vincitore deve raggiungere i set previsti.",
+        "en": "Invalid result: the winner must reach the required number of sets."
+    },
     "points_number": {
         "it": "Punti a",
         "en": "Points to"
