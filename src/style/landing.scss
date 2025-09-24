@@ -1,0 +1,68 @@
+app-landing {
+  .stats-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+
+  .stat {
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    color: var(--primary-ultra-light);
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .stat .value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-light);
+  }
+
+  .stat .label {
+    font-size: 0.875rem;
+    opacity: 0.7;
+  }
+
+  .accordion-item {
+    background: rgba(5, 19, 28, 0.8);
+    border: none;
+  }
+
+  .accordion-button {
+    background: transparent;
+    color: var(--primary-ultra-light);
+    font-weight: 600;
+  }
+
+  .accordion-button:not(.collapsed) {
+    color: var(--primary-light);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .accordion-body {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--primary-ultra-light);
+  }
+
+  .btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .btn-primary {
+    background: linear-gradient(120deg, var(--primary), var(--primary-light));
+    border: none;
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.05);
+  }
+}
