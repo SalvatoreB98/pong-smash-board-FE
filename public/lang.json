@@ -211,6 +211,14 @@
         "it": "Fase a gironi con eliminazione diretta finale (in arrivo).",
         "en": "Group phase followed by a knockout bracket (coming soon)."
     },
+    "group_knockout_board_title": {
+        "it": "Tabellone qualificati",
+        "en": "Qualified bracket"
+    },
+    "group_knockout_board_empty": {
+        "it": "Nessun giocatore qualificato al tabellone.",
+        "en": "No qualified players for the bracket."
+    },
     "beta_label": {
         "it": "Beta",
         "en": "Beta"

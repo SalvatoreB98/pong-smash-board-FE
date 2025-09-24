@@ -35,8 +35,13 @@
       <app-stats *ngIf="matches.length > 0"></app-stats>
     </section>
   </div>
-  <div class="wrapper" *ngIf="players.length >= 2">
+  <div class="wrapper" *ngIf="qualifiedPlayers.length >= 2; else eliminationEmpty">
+    <app-group-knockout-board [players]="qualifiedPlayers"></app-group-knockout-board>
     <app-elimination-bracket [competition]="competition" [rounds]="rounds"
       (playersSelected)="onRoundSelected($event)"></app-elimination-bracket>
   </div>
 </div>
+
+<ng-template #eliminationEmpty>
+  <p class="no-qualified text-center mt-3">{{ 'group_knockout_board_empty' | translate }}</p>
+</ng-template>

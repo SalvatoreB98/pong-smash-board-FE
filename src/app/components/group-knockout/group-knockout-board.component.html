@@ -1,0 +1,30 @@
+<section class="board" aria-labelledby="group-knockout-board-title">
+  <header class="board__header">
+    <h2 id="group-knockout-board-title" class="board__title">
+      {{ 'group_knockout_board_title' | translate }}
+    </h2>
+    <span class="board__count" *ngIf="players.length > 0">{{ players.length }}</span>
+  </header>
+
+  <ul class="board__list" *ngIf="players.length > 0; else emptyState">
+    <li class="board__item" *ngFor="let player of players; trackBy: trackByPlayer">
+      <div class="board__avatar" *ngIf="player.image_url; else initials">
+        <img [src]="player.image_url" [alt]="player.nickname || player.name" loading="lazy" />
+      </div>
+      <ng-template #initials>
+        <span class="board__avatar board__avatar--initials">{{ getInitials(player) }}</span>
+      </ng-template>
+
+      <div class="board__info">
+        <span class="board__name">{{ player.nickname || player.name }}</span>
+        <span class="board__meta" *ngIf="player.nickname && player.name">
+          {{ player.name }} <ng-container *ngIf="player.lastname">{{ player.lastname }}</ng-container>
+        </span>
+      </div>
+    </li>
+  </ul>
+
+  <ng-template #emptyState>
+    <p class="board__empty">{{ 'group_knockout_board_empty' | translate }}</p>
+  </ng-template>
+</section>
