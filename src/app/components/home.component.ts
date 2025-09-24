@@ -23,6 +23,7 @@ import { EliminationBracketComponent, EliminationModalEvent } from './eliminatio
 import { EliminationRound } from '../interfaces/elimination-bracket.interface';
 import { ICompetition } from '../../api/competition.api';
 import { Router } from '@angular/router';
+import { GroupKnockoutComponent } from './group-knockout/group-knockout.component';
 
 type MatchWithContext = IMatch & {
   competitionType?: CompetitionMode;
@@ -33,7 +34,7 @@ type MatchWithContext = IMatch & {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent, EliminationBracketComponent],
+  imports: [CommonModule, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -51,6 +52,7 @@ export class HomeComponent {
   players: IPlayer[] = [];
   activeCompetition: ICompetition | null = null;
   isEliminationMode = false;
+  isGroupKnockoutMode = false;
   eliminationRounds: EliminationRound[] = [];
 
   player1Selected: IPlayer | null = null;
@@ -72,6 +74,7 @@ export class HomeComponent {
           }
           this.activeCompetition = activeCompetition ?? null;
           this.isEliminationMode = (activeCompetition?.type === 'elimination');
+          this.isGroupKnockoutMode = (activeCompetition?.type === 'group_knockout');
           this.updateEliminationRounds();
         });
       }
@@ -97,9 +100,10 @@ export class HomeComponent {
   }
 
   setClickedMatch(match: IMatch) {
+    const competitionType = (this.activeCompetition?.type ?? 'league') as CompetitionMode;
     this.clickedMatch = {
       ...match,
-      competitionType: 'league',
+      competitionType,
       competitionName: this.activeCompetition?.name ?? undefined,
       roundName: match.roundName ?? null,
       roundLabel: match.roundLabel ?? undefined,
@@ -107,7 +111,8 @@ export class HomeComponent {
   }
 
   private updateEliminationRounds() {
-    if (!this.isEliminationMode) {
+    const shouldBuildBracket = this.isEliminationMode || this.isGroupKnockoutMode;
+    if (!shouldBuildBracket) {
       this.eliminationRounds = [];
       return;
     }
