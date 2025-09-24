@@ -46,7 +46,6 @@ export class AddCompetitionModalComponent {
         icon: '/trophy.png',
         labelKey: 'competition_type_group_knockout',
         descriptionKey: 'competition_type_group_knockout_description',
-        disabled: true
       }
     ];
   }

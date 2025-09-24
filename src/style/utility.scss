@@ -116,6 +116,7 @@ small.error {
     border: 0.0625em solid rgba($primary-light, 0.2);
     max-width: 500px;
     margin: 2em auto;
+
     h3 {
         font-size: 1.4rem;
         font-weight: 700;
@@ -152,6 +153,17 @@ small.error {
     }
 }
 
+.delete {
+    all: unset;
+    cursor: pointer;
+    background-color: $contrast;
+    border-radius: $border-radius;
+    display: grid;
+    place-items: center;
+    width: 1.5em;
+    height: 1.5em;
+}
+
 @keyframes scrollText {
     0% {
         transform: translateX(0);
@@ -160,4 +172,5 @@ small.error {
     100% {
         transform: translateX(-50%);
     }
+
 }

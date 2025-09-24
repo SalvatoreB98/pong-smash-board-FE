@@ -1,0 +1,6 @@
+@use '../../../style/variables.scss' as *;
+
+.cancel {
+    background-color: $contrast!important;
+    color: black!important;
+}

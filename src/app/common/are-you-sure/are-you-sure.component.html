@@ -1,0 +1,10 @@
+<div class="are-you-sure-modal">
+    <h2>{{ 'are_you_sure' | translate }}</h2>
+    <div>
+        <p class="mt-5">{{ body }}</p>
+        <div class="d-flex justify-content-between mt-5">
+            <button type="button" class="cancel contrast" (click)="cancelled.emit(true)">{{ 'cancel' | translate }}</button>
+            <button type="button" class="yes bg-secondary" (click)="confirmed.emit(true)">{{ 'delete' | translate }} <i class="fas fa-trash"></i></button>
+        </div>
+    </div>
+</div>

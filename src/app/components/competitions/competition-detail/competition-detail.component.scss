@@ -108,6 +108,25 @@
   animation: highlight 2s ease-in-out 2;
 }
 
+.players {
+  all: unset;
+  cursor: pointer;
+  position: relative;
+
+  .delete {
+    position: absolute;
+    right: 0;
+    opacity: 0;
+  }
+
+  &:hover, &:focus-within {
+    .delete {
+      opacity: 1;
+    }
+  }
+
+}
+
 @keyframes highlight {
   0% {
     transform: scale(1);

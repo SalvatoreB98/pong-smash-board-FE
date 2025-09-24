@@ -104,9 +104,9 @@ export class CompetitionApi {
     return this.http.post<any>(API_PATHS.updateActiveCompetition, { competitionId });
   }
 
-  deleteUserFromCompetition(competitionId: number | string, userId: number | string): Observable<any> {
-    return this.http.delete<any>(API_PATHS.deleteUserFromCompetition, {
-      body: { competitionId, userId },
+  deletePlayer(competitionId: number | string, playerId: number | string): Observable<any> {
+    return this.http.delete<any>(API_PATHS.deletePlayer, {
+      body: { competitionId, playerId },
     });
   }
 }

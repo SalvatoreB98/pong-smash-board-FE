@@ -827,5 +827,22 @@
     "view_details": {
         "it": "Vedi dettagli",
         "en": "View details"
+    },
+    "are_you_sure": {
+        "it": "Sei sicuro?",
+        "en": "Are you sure?"
+    },
+
+    "are-you-sure-deleting": {
+        "it": "Sei sicuro di voler eliminare il giocatore?",
+        "en": "Are you sure you want to delete the player?"
+    },
+    "delete_player": {
+        "it": "Elimina giocatore",
+        "en": "Delete player"
+    },
+    "delete": {
+        "it": "Elimina",
+        "en": "Delete"
     }
 }

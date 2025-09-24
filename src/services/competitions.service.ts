@@ -153,8 +153,8 @@ export class CompetitionService {
     );
   }
 
-  deleteUserFromCompetition(competitionId: number | string, userId: number | string): Observable<void> {
-    return this.api.deleteUserFromCompetition(competitionId, userId).pipe(
+  deletePlayer(competitionId: number | string, userId: number | string): Observable<void> {
+    return this.api.deletePlayer(competitionId, userId).pipe(
       tap(() => {
         const competition = this.store.snapshotById?.(competitionId);
         if (competition) {
@@ -165,7 +165,7 @@ export class CompetitionService {
       }),
       map(() => void 0),
       catchError(err => {
-        console.error('[CompetitionService] deleteUserFromCompetition error:', err);
+        console.error('[CompetitionService] deletePlayer error:', err);
         this.loader?.showToast?.('Errore rimozione giocatore', MSG_TYPE.ERROR);
         return EMPTY;
       }),
@@ -244,5 +244,7 @@ export class CompetitionService {
     this.store.clear();
     this.clearCompetitionsCache();
   }
-
+  removePlayerFromCompetition(competitionId: number | string, playerId: number | string): Observable<void> {
+    return this.api.deletePlayer(competitionId, playerId);
+  }
 }

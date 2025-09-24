@@ -6,28 +6,35 @@ import { MSG_TYPE } from '../../../utils/enum';
 import { CompetitionService } from '../../../../services/competitions.service';
 import { LoaderService } from '../../../../services/loader.service';
 import { TranslationService } from '../../../../services/translation.service';
+import { ModalComponent } from '../../../common/modal/modal.component';
+import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
+import { ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-competition-detail',
-  imports: [...SHARED_IMPORTS],
+  imports: [...SHARED_IMPORTS, ModalComponent, AreYouSureComponent],
   templateUrl: './competition-detail.component.html',
   styleUrl: './competition-detail.component.scss'
 })
 export class CompetitionDetailComponent {
 
   @Input() competition: ICompetition | null = null;
+  areYouSureVisible: boolean = false;
+  playerIdToDelete: number = -1;
+
+  @ViewChild('competitionDetail', { static: true }) competitionDetailRef!: ElementRef<HTMLElement>;
 
   ngOnChanges() {
     console.log('Competition input changed:', this.competition);
   }
   @Output() actionSelected = new EventEmitter<{ action: string, competition: ICompetition | null }>();
-  
+
   copied: boolean = false;
   private competitionService = inject(CompetitionService);
   activeCompetition$ = this.competitionService.activeCompetition$;
 
   constructor(public modalService: ModalService, private loader: LoaderService, private translateService: TranslationService) { }
-  
+
   readonly detailsModalName = 'viewCompetitionModal';
   readonly editModalName = 'editCompetitionModal';
 
@@ -90,5 +97,23 @@ export class CompetitionDetailComponent {
       default:
         return 'fa-users';
     }
+  }
+  deletePlayer(playerId: number) {
+    if (!this.competition?.id) {
+      return;
+    }
+    this.competitionService.removePlayerFromCompetition(this.competition.id, playerId).subscribe(() => {
+    });
+  }
+  openAreYouSureModal(playerId: number) {
+    this.playerIdToDelete = playerId;
+    this.areYouSureVisible = true;
+  }
+  onDeleteConfirmed() {
+    this.areYouSureVisible = false;
+    this.deletePlayer(this.playerIdToDelete);
+  }
+  onDeleteCancelled() {
+    this.areYouSureVisible = false;
   }
 }
