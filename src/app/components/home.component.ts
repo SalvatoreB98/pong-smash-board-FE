@@ -43,18 +43,22 @@ export class HomeComponent {
   userService = inject(UserService);
   playersService = inject(PlayersService);
   matches$ = this.dataService.matchesObs;
+  matchesElimination$ = this.dataService.matchesEliminationObs;
   competitionService = inject(CompetitionService);
   matches: IMatch[] = [];
+  matchesElimination: IMatch[] = [];
   isAddMatchModalOpen: boolean = false;
   isShowMatchModalOpen: boolean = false;
   clickedMatch: MatchWithContext | undefined;
   userState$ = this.userService.getState();
   players: IPlayer[] = [];
+  groupStagePlayers: IPlayer[] = [];
   competitionQualifiedPlayers: IPlayer[] = [];
   activeCompetition: ICompetition | null = null;
   isEliminationMode = false;
   isGroupKnockoutMode = false;
   eliminationRounds: EliminationRound[] = [];
+  modalPlayers: IPlayer[] = [];
 
   player1Selected: IPlayer | null = null;
   player2Selected: IPlayer | null = null;
@@ -77,7 +81,9 @@ export class HomeComponent {
           this.isEliminationMode = (activeCompetition?.type === 'elimination');
           this.isGroupKnockoutMode = (activeCompetition?.type === 'group_knockout');
           this.refreshCompetitionQualifiedPlayers();
+          this.refreshGroupStagePlayers();
           this.updateEliminationRounds();
+          this.updateModalPlayers();
         });
       }
     });
@@ -89,16 +95,24 @@ export class HomeComponent {
         this.router.navigate(['/competitions']);
       }
       this.refreshCompetitionQualifiedPlayers();
+      this.refreshGroupStagePlayers();
       this.updateEliminationRounds();
+      this.updateModalPlayers();
     });
     this.matches$.subscribe(matches => {
-    this.matches = matches ?? [];
-    this.updateEliminationRounds();
-  });
+      this.matches = matches ?? [];
+      this.updateEliminationRounds();
+    });
+    this.matchesElimination$.subscribe(matches => {
+      this.matchesElimination = matches ?? [];
+      this.updateEliminationRounds();
+    });
     this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 }) // cache 5 minuti
       .then(res => {
         this.matches = res.matches;
+        this.matchesElimination = res.matchesElimination ?? [];
         this.updateEliminationRounds();
+        this.updateModalPlayers();
       });
   }
 
@@ -125,10 +139,14 @@ export class HomeComponent {
       return;
     }
 
-    this.eliminationRounds = this.buildInitialEliminationBracket(this.competitionQualifiedPlayers);
+    const bracketMatches = this.getBracketMatches();
+    this.eliminationRounds = this.buildInitialEliminationBracket(
+      this.competitionQualifiedPlayers,
+      bracketMatches
+    );
   }
 
-  private buildInitialEliminationBracket(players: IPlayer[]): EliminationRound[] {
+  private buildInitialEliminationBracket(players: IPlayer[], matches: IMatch[]): EliminationRound[] {
     if (!players.length) {
       return [];
     }
@@ -178,7 +196,7 @@ export class HomeComponent {
         const player1 = currentRoundPlayers[i] ?? null;
         const player2 = currentRoundPlayers[i + 1] ?? null;
 
-        const matchResult = this.getMatchResultForPlayers(player1, player2);
+        const matchResult = this.getMatchResultForPlayers(player1, player2, matches);
 
         let winnerId: number | null = null;
 
@@ -238,10 +256,62 @@ export class HomeComponent {
 
     if (qualifiedFromCompetition.length > 0) {
       this.competitionQualifiedPlayers = qualifiedFromCompetition;
+      this.updateModalPlayers();
       return;
     }
 
     this.competitionQualifiedPlayers = [...this.players];
+    this.updateModalPlayers();
+  }
+
+  private refreshGroupStagePlayers() {
+    if (!this.isGroupKnockoutMode) {
+      this.groupStagePlayers = [];
+      this.updateModalPlayers();
+      return;
+    }
+
+    const compAny = this.activeCompetition as any;
+    const candidateSources = [
+      compAny?.groupPlayers,
+      compAny?.group_players,
+      compAny?.boardPlayers,
+      compAny?.board_players,
+      compAny?.groupKnockoutPlayers,
+      compAny?.group_knockout_players,
+    ];
+
+    for (const source of candidateSources) {
+      const players = this.extractCompetitionPlayers(source);
+      if (players.length) {
+        this.groupStagePlayers = players;
+        this.updateModalPlayers();
+        return;
+      }
+    }
+
+    const groupCollections = compAny?.groups
+      ?? compAny?.groupKnockoutGroups
+      ?? compAny?.group_knockout_groups
+      ?? null;
+
+    if (Array.isArray(groupCollections)) {
+      const aggregated = groupCollections.flatMap((group: any) =>
+        this.extractCompetitionPlayers(group?.players ?? group?.members ?? group?.playerList ?? [])
+      );
+
+      if (aggregated.length) {
+        this.groupStagePlayers = aggregated;
+        this.updateModalPlayers();
+        return;
+      }
+    }
+
+    this.groupStagePlayers = this.extractCompetitionPlayers(compAny?.players ?? []);
+    if (!this.groupStagePlayers.length && this.players?.length) {
+      this.groupStagePlayers = [...this.players];
+    }
+    this.updateModalPlayers();
   }
 
   private extractCompetitionPlayers(source: unknown): IPlayer[] {
@@ -295,20 +365,46 @@ export class HomeComponent {
   }
 
 
+  private updateModalPlayers() {
+    if (this.isGroupKnockoutMode) {
+      const combined = [...this.groupStagePlayers, ...this.competitionQualifiedPlayers];
+      const unique = new Map<string, IPlayer>();
+      combined.forEach(player => {
+        if (!player) {
+          return;
+        }
+        unique.set(String(player.id), player);
+      });
+      this.modalPlayers = Array.from(unique.values());
+      return;
+    }
+
+    this.modalPlayers = [...this.players];
+  }
+
+  private getBracketMatches(): IMatch[] {
+    if (this.isGroupKnockoutMode) {
+      return this.matchesElimination ?? [];
+    }
+
+    return this.matches ?? [];
+  }
+
   private getMatchResultForPlayers(
     player1: IPlayer | null,
-    player2: IPlayer | null
+    player2: IPlayer | null,
+    matches: IMatch[]
   ): {
     player1Score?: number;
     player2Score?: number;
     winnerId: number | string | null;
     match?: IMatch | null;
   } {
-    if (!player1 || !player2 || !this.matches?.length) {
+    if (!player1 || !player2 || !matches?.length) {
       return { winnerId: null, match: null };
     }
 
-    const relevantMatches = this.matches.filter(match => {
+    const relevantMatches = matches.filter(match => {
       const p1 = Number(match.player1_id);
       const p2 = Number(match.player2_id);
       return (

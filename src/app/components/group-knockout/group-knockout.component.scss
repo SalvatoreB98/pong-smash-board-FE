@@ -2,21 +2,28 @@
   display: block;
 }
 
+
 .group-knockout-wrapper {
   display: flex;
   flex-direction: column;
+  gap: 2.5rem;
 }
 
-.league-wrapper {
+.board-section {
   display: flex;
   flex-direction: column;
-  gap: 1.5em;
+  gap: 1.5rem;
 }
 
-.wrapper {
+.finals-section {
   display: flex;
   flex-direction: column;
-  gap: 1.5em;
+  gap: 1.5rem;
+}
+
+.finals-section__title {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .no-qualified {
@@ -24,13 +31,17 @@
 }
 
 .buttons-home-matches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+
   p {
     color: rgb(141, 142, 142);
   }
 }
 
 @media screen and (max-width: 62.5em) {
-  .wrapper {
-    margin-top: 4.6em;
+  .buttons-home-matches {
+    flex-direction: column;
   }
 }

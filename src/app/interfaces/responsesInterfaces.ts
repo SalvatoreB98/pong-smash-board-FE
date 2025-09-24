@@ -1,5 +1,8 @@
+import { IMatch } from './matchesInterfaces';
+
 export interface IMatchResponse {
-  matches: any;
+  matches: IMatch[] | any;
+  matchesElimination?: IMatch[] | null;
   points: any;
   totPlayed: {};
   wins: {};

@@ -7,8 +7,8 @@
             </div>
         </ng-container>
         <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition"
-            [matches]="matches" [players]="players" [qualifiedPlayers]="competitionQualifiedPlayers" [rounds]="eliminationRounds"
-            (matchSelected)="setClickedMatch($event)" (roundSelected)="onClickRound($event)"></app-group-knockout>
+            [boardPlayers]="groupStagePlayers" [qualifiedPlayers]="competitionQualifiedPlayers"
+            [rounds]="eliminationRounds" (roundSelected)="onClickRound($event)"></app-group-knockout>
         <ng-container *ngSwitchDefault>
             <div class="league-wrapper">
                 <p *ngIf="matches.length === 0" class="mt-4 text-center">
@@ -56,7 +56,7 @@
 
 <app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])"
     [modalName]="modalService.MODALS['ADD_MATCH']">
-    <add-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="players"
+    <add-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="modalPlayers"
         [player1]="player1Selected" [player2]="player2Selected"></add-match-modal>
 </app-modal>
 
@@ -68,6 +68,6 @@
 <app-modal [fullscreen]="true" [label]="'manual_points'"
     *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
     [modalName]="modalService.MODALS['MANUAL_POINTS']" class="manual-points-modal">
-    <app-manual-points [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="players"
+    <app-manual-points [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="modalPlayers"
         [player1]="player1Selected" [player2]="player2Selected"></app-manual-points>
 </app-modal>

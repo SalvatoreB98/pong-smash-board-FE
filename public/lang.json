@@ -215,6 +215,14 @@
         "it": "Tabellone",
         "en": "Bracket"
     },
+    "group_knockout_finals_title": {
+        "it": "Fase finali",
+        "en": "Final stage"
+    },
+    "group_knockout_finals_empty": {
+        "it": "La fase finale non è ancora disponibile.",
+        "en": "The final stage is not available yet."
+    },
     "group_knockout_board_empty": {
         "it": "Nessun giocatore qualificato al tabellone.",
         "en": "No qualified players for the bracket."

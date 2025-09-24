@@ -13,6 +13,7 @@ import { UserService } from './user.service';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
+  matchesElimination?: IMatch[] | null;
   wins: Record<string, number>;
   totPlayed: Record<string, number>;
   points: any;
@@ -52,17 +53,20 @@ export class DataService {
   players: string[] = [];
   loader!: LoaderComponent;
   points: any;
+  matchesElimination: IMatch[] = [];
 
   private winsSubject = new BehaviorSubject<Record<string, number>>({});
   private totPlayedSubject = new BehaviorSubject<Record<string, number>>({});
   private pointsSubject = new BehaviorSubject<Record<string, number>>({});
   private matchesSubject = new BehaviorSubject<IMatch[]>([]);
+  private matchesEliminationSubject = new BehaviorSubject<IMatch[]>([]);
   private playersSubject = new BehaviorSubject<string[]>([]);
 
   public winsObs = this.winsSubject.asObservable();
   public totPlayedObs = this.totPlayedSubject.asObservable();
   public pointsObs = this.pointsSubject.asObservable();
   public matchesObs = this.matchesSubject.asObservable();
+  public matchesEliminationObs = this.matchesEliminationSubject.asObservable();
   public playersObs = this.playersSubject.asObservable();
 
   private _loaded = false;                 // abbiamo già i dati?
@@ -155,11 +159,13 @@ export class DataService {
     this.totPlayed = data.totPlayed || {};
     this.points = data.points || {};
     this.players = data.players || [];
+    this.matchesElimination = data.matchesElimination || [];
     this.monthlyWinRates = data.monthlyWinRates || {};
     this.badges = data.badges || {};
 
     // 👉 aggiorna gli stream reattivi
     this.matchesSubject.next(this.matches);
+    this.matchesEliminationSubject.next(this.matchesElimination);
     this.winsSubject.next(this.wins);
     this.totPlayedSubject.next(this.totPlayed);
     this.pointsSubject.next(this.points);
@@ -169,6 +175,7 @@ export class DataService {
   private generateReturnObject(): MatchData {
     return {
       matches: this.matches,
+      matchesElimination: this.matchesElimination,
       wins: this.wins,
       totPlayed: this.totPlayed,
       points: this.points,
