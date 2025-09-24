@@ -14,7 +14,7 @@
                 <p *ngIf="matches.length === 0" class="mt-4 text-center">
                     {{ "matches_not_found" | translate }}
                 </p>
-                <section style="padding: 0;">
+                <section>
                     <app-matches *ngIf="matches.length > 0" [matches]="matches"
                         (matchEmitter)="setClickedMatch($event)">
                     </app-matches>
