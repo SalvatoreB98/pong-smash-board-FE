@@ -12,7 +12,7 @@ import { ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-competition-detail',
-  imports: [...SHARED_IMPORTS, ModalComponent, AreYouSureComponent],
+  imports: [...SHARED_IMPORTS],
   templateUrl: './competition-detail.component.html',
   styleUrl: './competition-detail.component.scss'
 })
