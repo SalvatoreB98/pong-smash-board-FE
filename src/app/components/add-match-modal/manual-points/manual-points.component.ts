@@ -32,6 +32,7 @@ export class ManualPointsComponent {
   @Input() players: IPlayer[] = [];
 
   playersForm!: FormGroup;
+  matchDate: string = new Date().toISOString().split('T')[0];
 
   player1Points = 0;
   player2Points = 0;
@@ -52,7 +53,8 @@ export class ManualPointsComponent {
     if (this.playersForm) {
       this.playersForm.patchValue({
         player1: this.player1 || null,
-        player2: this.player2 || null
+        player2: this.player2 || null,
+        date: this.matchDate
       });
     }
   }
@@ -68,13 +70,19 @@ export class ManualPointsComponent {
     });
     this.playersForm = this.fb.group({
       player1: [this.player1?.id, Validators.required],
-      player2: [this.player2?.id, Validators.required]
+      player2: [this.player2?.id, Validators.required],
+      date: [this.matchDate, Validators.required]
     });
     this.playersForm.valueChanges.subscribe((val) => {
       this.player1 = this.players.find(p => p.id === val.player1) || null;
       this.player2 = this.players.find(p => p.id === val.player2) || null;
+      if (val.date) {
+        this.matchDate = val.date;
+      }
       console.log(val, this.player1, this.player2);
     });
+
+    this.matchDate = this.playersForm.get('date')?.value;
     
     if (this.isAlreadySelected && this.player1 && this.player2) {
       this.selectingPlayer = false;
@@ -187,6 +195,7 @@ export class ManualPointsComponent {
     if (this.playersForm.valid) {
       this.player1 = this.players.find(p => p.id === this.playersForm.get('player1')?.value) || null;
       this.player2 = this.players.find(p => p.id === this.playersForm.get('player2')?.value) || null;
+      this.matchDate = this.playersForm.get('date')?.value || this.matchDate;
       this.selectingPlayer = false;
     }
   }
@@ -284,10 +293,11 @@ export class ManualPointsComponent {
       this.loaderService.addSpinnerToButton(target);
     }
     // 3. Prepara data e ora
-    const today = new Date();
+    const selectedDate = this.buildDateFromInput(this.matchDate || this.playersForm.get('date')?.value);
+    const now = new Date();
     const formattedDate =
-      today.toLocaleDateString('en-GB') +
-      ` - ${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
+      selectedDate.toLocaleDateString('en-GB') +
+      ` - ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
     const setsData = this.sets.map((s) => ({
       player1Points: s.player1 ?? s.player1 ?? 0,
@@ -315,5 +325,23 @@ export class ManualPointsComponent {
     }).catch(err => {
       console.error('Errore durante il salvataggio match', err);
     });
+  }
+
+  private buildDateFromInput(value: string | null | undefined): Date {
+    if (!value) {
+      return new Date();
+    }
+
+    const parts = value.split('-');
+    if (parts.length !== 3) {
+      return new Date(value);
+    }
+
+    const [year, month, day] = parts.map(part => Number(part));
+    if ([year, month, day].some(num => Number.isNaN(num))) {
+      return new Date(value);
+    }
+
+    return new Date(year, (month ?? 1) - 1, day ?? 1);
   }
 }

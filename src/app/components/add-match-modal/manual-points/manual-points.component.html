@@ -47,6 +47,16 @@
                 {{ 'manual_points_description' | translate }}
             </p>
 
+            <div class="row justify-content-center mb-4">
+                <div class="col-12 col-md-6">
+                    <label for="manual-match-date" class="my-placeholder d-block text-center text-md-start mb-2">
+                        {{ 'date' | translate }}
+                    </label>
+                    <input id="manual-match-date" type="date" class="my-placeholder w-100" formControlName="date"
+                        required>
+                </div>
+            </div>
+
             <div class="row align-items-center justify-content-center">
                 <!-- Player 1 -->
                 <div class="col-12 col-md-5 mb-3 mb-md-0">
@@ -78,6 +88,10 @@
     </div>
 
     <div *ngIf="isCompleted()">
+        <p class="text-center" *ngIf="matchDate">
+            {{ 'date' | translate }}:
+            {{ matchDate | date: 'dd/MM/yyyy' }}
+        </p>
         <div class="summary mt-5" *ngIf="sets.length > 0">
             <h3>{{ 'match_summary' | translate }}</h3>
             <ul>
