@@ -2,18 +2,17 @@
   <div class="container position-relative">
     <div class="row align-items-center">
       <div class="col-md-7">
-        <span class="badge rounded-pill text-uppercase tracking">La dashboard dei tornei di ping pong</span>
+        <span class="badge rounded-pill text-uppercase tracking">{{ "hero_badge" | translate }}</span>
         <h1 class="display-4 fw-bold mt-3">
-          Organizza, segui e fai crescere ogni sfida con <span class="gradient-text">Pong Smash Board</span>
+          {{ "hero_title" | translate }} <span class="gradient-text">Pong Smash Board</span>
         </h1>
         <p class="lead mt-4">
-          Dal primo match all'ultimo smash: un'esperienza fluida per club, community e professionisti che vogliono una regia
-          impeccabile, dati smart e coinvolgimento continuo.
+          {{ "hero_subtitle" | translate }}
         </p>
         <div class="cta-group d-flex flex-column flex-sm-row gap-3 mt-4">
-          <a routerLink="/register" class="btn btn-primary btn-lg px-4 shadow-lg">Inizia ora</a>
-          <a routerLink="/login" class="btn btn-outline-light btn-lg px-4">Accedi</a>
-          <a href="#features" class="btn btn-link text-decoration-none">Scopri di più</a>
+          <a routerLink="/register" class="btn btn-primary btn-lg px-4 shadow-lg">{{ "cta_start" | translate }}</a>
+          <a routerLink="/login" class="btn btn-outline-light btn-lg px-4">{{ "cta_login" | translate }}</a>
+          <a href="#features" class="btn btn-link text-decoration-none">{{ "cta_more" | translate }}</a>
         </div>
         <div class="social-proof mt-5 d-flex align-items-center gap-3 flex-wrap">
           <div class="avatars d-flex align-items-center">
@@ -21,27 +20,27 @@
             <span class="avatar"></span>
             <span class="avatar"></span>
           </div>
-          <p class="m-0 small opacity-75">Oltre 120 club hanno già digitalizzato i loro tornei con noi.</p>
+          <p class="m-0 small opacity-75">{{ "hero_socialproof" | translate }}</p>
         </div>
       </div>
       <div class="col-md-5 mt-5 mt-md-0">
         <div class="preview-card shadow-lg">
           <div class="preview-header d-flex justify-content-between align-items-center">
-            <span class="fw-semibold">Competizione Elite - Round Finale</span>
-            <span class="badge bg-gradient">Live</span>
+            <span class="fw-semibold">{{ "preview_header" | translate }}</span>
+            <span class="badge bg-gradient">{{ "preview_live" | translate }}</span>
           </div>
           <div class="preview-body mt-4">
             <div class="match d-flex justify-content-between align-items-center">
               <div>
-                <h4>Team Smash</h4>
-                <span>Ranking #1</span>
+                <h4>{{ "preview_team1" | translate }}</h4>
+                <span>{{ "preview_team1_rank" | translate }}</span>
               </div>
               <div class="score">3</div>
             </div>
             <div class="match d-flex justify-content-between align-items-center">
               <div>
-                <h4>Spin Masters</h4>
-                <span>Ranking #2</span>
+                <h4>{{ "preview_team2" | translate }}</h4>
+                <span>{{ "preview_team2_rank" | translate }}</span>
               </div>
               <div class="score muted">2</div>
             </div>
@@ -49,15 +48,16 @@
               <div class="progress">
                 <div class="progress-bar" role="progressbar" style="width: 68%"></div>
               </div>
-              <small class="mt-2 d-block text-uppercase">Set 4 - Analisi in corso</small>
+              <small class="mt-2 d-block text-uppercase">{{ "preview_progress" | translate }}</small>
             </div>
           </div>
           <div class="preview-footer mt-4 d-flex justify-content-between align-items-center">
             <div>
-              <span class="d-block text-uppercase small">Aggiornamento automatico</span>
-              <span class="highlight">Statistiche sincronizzate</span>
+              <span class="d-block text-uppercase small">{{ "preview_footer_auto" | translate }}</span>
+              <span class="highlight">{{ "preview_footer_stats" | translate }}</span>
             </div>
-            <a routerLink="/login" class="btn btn-sm btn-primary rounded-pill">Entra nella dashboard</a>
+            <a routerLink="/login" class="btn btn-sm btn-primary rounded-pill">{{ "preview_footer_cta" | translate
+              }}</a>
           </div>
         </div>
       </div>
@@ -71,11 +71,8 @@
   <div class="container">
     <div class="row text-center">
       <div class="col-lg-8 mx-auto">
-        <h2 class="fw-bold">Il quartier generale della tua community pongistica</h2>
-        <p class="mt-3">
-          Tutto quello che ti serve per creare esperienze di gioco memorabili: workflow guidati, automazioni e storytelling
-          visivo pensati da coach, arbitri e marketer.
-        </p>
+        <h2 class="fw-bold">{{ "features_title" | translate }}</h2>
+        <p class="mt-3">{{ "features_subtitle" | translate }}</p>
       </div>
     </div>
     <div class="row mt-5 g-4">
@@ -84,9 +81,9 @@
           <div class="icon-wrapper">
             <i [ngClass]="['fa', item.icon]"></i>
           </div>
-          <h3 class="h5 mt-3">{{ item.title }}</h3>
-          <p class="opacity-75">{{ item.description }}</p>
-          <a routerLink="/register" class="stretched-link">Attiva subito</a>
+          <h3 class="h5 mt-3">{{ item.title | translate }}</h3>
+          <p class="opacity-75">{{ item.description | translate }}</p>
+          <a routerLink="/register" class="stretched-link">{{ "features_cta" | translate }}</a>
         </div>
       </div>
     </div>
@@ -97,41 +94,39 @@
   <div class="container">
     <div class="row align-items-center gy-5">
       <div class="col-lg-6">
-        <h2 class="fw-bold">Dalla registrazione al torneo completo in 3 step</h2>
-        <p class="mt-3">
-          Un flusso progettato per accompagnare organizzatori, responsabili marketing e tecnici di squadra in ogni decisione.
-        </p>
+        <h2 class="fw-bold">{{ "how_title" | translate }}</h2>
+        <p class="mt-3">{{ "how_subtitle" | translate }}</p>
         <ul class="timeline list-unstyled mt-4">
           <li>
             <span class="timeline-index">01</span>
             <div>
-              <h4>Definisci il tuo format</h4>
-              <p>Scegli gironi, eliminazione o format misti e personalizza punteggi, set e comunicazioni automatiche.</p>
+              <h4>{{ "how_step1_title" | translate }}</h4>
+              <p>{{ "how_step1_text" | translate }}</p>
             </div>
           </li>
           <li>
             <span class="timeline-index">02</span>
             <div>
-              <h4>Invita, registra, ingaggia</h4>
-              <p>Condividi la lobby con i giocatori, raccogli iscrizioni e crea hype con notifiche e contenuti visual.</p>
+              <h4>{{ "how_step2_title" | translate }}</h4>
+              <p>{{ "how_step2_text" | translate }}</p>
             </div>
           </li>
           <li>
             <span class="timeline-index">03</span>
             <div>
-              <h4>Monitora e racconta</h4>
-              <p>Risultati live, leaderboard dinamiche e report pronti per sponsor, social e partner media.</p>
+              <h4>{{ "how_step3_title" | translate }}</h4>
+              <p>{{ "how_step3_text" | translate }}</p>
             </div>
           </li>
         </ul>
         <div class="d-flex flex-wrap gap-3 mt-4">
-          <a routerLink="/register" class="btn btn-primary">Apri il tuo torneo</a>
-          <a routerLink="/login" class="btn btn-outline-light">Prova la demo live</a>
+          <a routerLink="/register" class="btn btn-primary">{{ "how_cta1" | translate }}</a>
+          <a routerLink="/login" class="btn btn-outline-light">{{ "how_cta2" | translate }}</a>
         </div>
       </div>
       <div class="col-lg-6">
         <div class="insight-card">
-          <h5 class="text-uppercase small">Insight in tempo reale</h5>
+          <h5 class="text-uppercase small">{{ "insight_title" | translate }}</h5>
           <div class="chart-placeholder mt-4">
             <div class="bar bar-1"></div>
             <div class="bar bar-2"></div>
@@ -140,10 +135,10 @@
           </div>
           <div class="mt-4 d-flex justify-content-between align-items-center">
             <div>
-              <span class="d-block text-uppercase small">Player spotlight</span>
-              <strong>+22% rally vinti</strong>
+              <span class="d-block text-uppercase small">{{ "insight_spotlight" | translate }}</span>
+              <strong>{{ "insight_value" | translate }}</strong>
             </div>
-            <a routerLink="/login" class="btn btn-sm btn-contrast">Accedi alle analytics</a>
+            <a routerLink="/login" class="btn btn-sm btn-contrast">{{ "insight_cta" | translate }}</a>
           </div>
         </div>
       </div>
@@ -155,19 +150,17 @@
   <div class="container">
     <div class="row text-center">
       <div class="col-lg-8 mx-auto">
-        <h2 class="fw-bold">Club e coach parlano di noi</h2>
-        <p class="mt-3 opacity-75">
-          Design e performance pensati per chi vive di match point. Fidati di chi ha già cambiato il modo di gestire i tornei.
-        </p>
+        <h2 class="fw-bold">{{ "testimonials_title" | translate }}</h2>
+        <p class="mt-3 opacity-75">{{ "testimonials_subtitle" | translate }}</p>
       </div>
     </div>
     <div class="row mt-5 g-4">
       <div class="col-md-6" *ngFor="let testimonial of testimonials">
         <div class="testimonial p-4 h-100">
-          <p class="mb-4">{{ testimonial.quote }}</p>
+          <p class="mb-4">{{ testimonial.quote | translate }}</p>
           <div>
-            <span class="fw-semibold">{{ testimonial.name }}</span>
-            <span class="d-block small opacity-75">{{ testimonial.role }}</span>
+            <span class="fw-semibold">{{ testimonial.name | translate }}</span>
+            <span class="d-block small opacity-75">{{ testimonial.role | translate }}</span>
           </div>
         </div>
       </div>
@@ -175,11 +168,11 @@
     <div class="cta-panel mt-5 p-4 p-md-5 text-center text-md-start">
       <div class="row align-items-center gy-3">
         <div class="col-md-8">
-          <h3 class="fw-bold">Pronto a trasformare la tua prossima competizione?</h3>
-          <p class="m-0">Crea un account gratuito e inizia a costruire un'esperienza memorabile per giocatori e pubblico.</p>
+          <h3 class="fw-bold">{{ "cta_panel_title" | translate }}</h3>
+          <p class="m-0">{{ "cta_panel_subtitle" | translate }}</p>
         </div>
         <div class="col-md-4 text-md-end">
-          <a routerLink="/register" class="btn btn-light btn-lg text-dark">Crea account gratuito</a>
+          <a routerLink="/register" class="btn btn-light btn-lg text-dark">{{ "cta_panel_cta" | translate }}</a>
         </div>
       </div>
     </div>
@@ -190,22 +183,20 @@
   <div class="container">
     <div class="row align-items-center gy-4">
       <div class="col-lg-6">
-        <h2 class="fw-bold">Perché funziona per marketing, staff tecnico e sponsor</h2>
-        <p class="mt-3">
-          Workflow condivisi, notifiche smart e KPI chiari trasformano ogni torneo in un'occasione di crescita per la tua community.
-        </p>
+        <h2 class="fw-bold">{{ "faq_title" | translate }}</h2>
+        <p class="mt-3">{{ "faq_subtitle" | translate }}</p>
         <div class="stats-grid mt-4">
           <div class="stat">
             <span class="value">98%</span>
-            <span class="label">di soddisfazione organizzatori</span>
+            <span class="label">{{ "faq_stat1" | translate }}</span>
           </div>
           <div class="stat">
             <span class="value">2x</span>
-            <span class="label">engagement sponsor</span>
+            <span class="label">{{ "faq_stat2" | translate }}</span>
           </div>
           <div class="stat">
             <span class="value">24/7</span>
-            <span class="label">supporto dedicato</span>
+            <span class="label">{{ "faq_stat3" | translate }}</span>
           </div>
         </div>
       </div>
@@ -215,51 +206,42 @@
             <h2 class="accordion-header" id="headingOne">
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                 aria-expanded="true" aria-controls="collapseOne">
-                Posso personalizzare il brand della competizione?
+                {{ "faq_q1" | translate }}
               </button>
             </h2>
             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
               data-bs-parent="#landingAccordion">
-              <div class="accordion-body">
-                Certo, puoi impostare palette, loghi e contenuti editoriali per ogni torneo così da comunicare in modo coerente
-                con sponsor e partner.
-              </div>
+              <div class="accordion-body">{{ "faq_a1" | translate }}</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingTwo">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                aria-expanded="false" aria-controls="collapseTwo">
-                È previsto un supporto per l'onboarding del team?
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                {{ "faq_q2" | translate }}
               </button>
             </h2>
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
               data-bs-parent="#landingAccordion">
-              <div class="accordion-body">
-                Il nostro team Customer Success ti accompagna nella configurazione iniziale e offre sessioni di formazione per
-                arbitri, staff marketing e allenatori.
-              </div>
+              <div class="accordion-body">{{ "faq_a2" | translate }}</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingThree">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
-                aria-expanded="false" aria-controls="collapseThree">
-                Posso integrare Pong Smash Board con altri strumenti?
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                {{ "faq_q3" | translate }}
               </button>
             </h2>
             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
               data-bs-parent="#landingAccordion">
-              <div class="accordion-body">
-                Sì, l'API aperta permette di collegare CRM, piattaforme newsletter e digital signage per esperienze multicanale
-                impeccabili.
-              </div>
+              <div class="accordion-body">{{ "faq_a3" | translate }}</div>
             </div>
           </div>
         </div>
         <div class="mt-4 text-center text-lg-start">
-          <a routerLink="/login" class="btn btn-primary me-lg-3">Accedi alla piattaforma</a>
-          <a routerLink="/register" class="btn btn-outline-light">Richiedi una demo guidata</a>
+          <a routerLink="/login" class="btn btn-primary me-lg-3">{{ "faq_cta1" | translate }}</a>
+          <a routerLink="/register" class="btn btn-outline-light">{{ "faq_cta2" | translate }}</a>
         </div>
       </div>
     </div>

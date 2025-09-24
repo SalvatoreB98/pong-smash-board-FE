@@ -818,8 +818,7 @@
     "final": {
         "it": "Finale",
         "en": "Final"
-    }
-    ,
+    },
     "one_sixteenth_finals": {
         "it": "Sedicesimi di finale",
         "en": "Round of 32"
@@ -848,7 +847,6 @@
         "it": "Sei sicuro?",
         "en": "Are you sure?"
     },
-
     "are-you-sure-deleting": {
         "it": "Sei sicuro di voler eliminare il giocatore?",
         "en": "Are you sure you want to delete the player?"
@@ -888,6 +886,261 @@
     "player_removed": {
         "it": "Giocatore rimosso con successo.",
         "en": "Player removed successfully."
+    },
+    "hero_badge": {
+        "it": "La dashboard dei tornei di ping pong",
+        "en": "The ping pong tournaments dashboard"
+    },
+    "hero_title": {
+        "it": "Organizza, segui e fai crescere ogni sfida con",
+        "en": "Organize, track and grow every challenge with"
+    },
+    "hero_subtitle": {
+        "it": "Dal primo match all'ultimo smash: un'esperienza fluida...",
+        "en": "From the first match to the final smash: a seamless experience..."
+    },
+    "cta_start": {
+        "it": "Inizia ora",
+        "en": "Start now"
+    },
+    "cta_login": {
+        "it": "Accedi",
+        "en": "Login"
+    },
+    "cta_more": {
+        "it": "Scopri di più",
+        "en": "Learn more"
+    },
+    "hero_socialproof": {
+        "it": "Oltre 120 club hanno già digitalizzato i loro tornei con noi.",
+        "en": "Over 120 clubs have already digitized their tournaments with us."
+    },
+    "preview_header": {
+        "it": "Competizione Elite - Round Finale",
+        "en": "Elite Competition - Final Round"
+    },
+    "preview_live": {
+        "it": "Live",
+        "en": "Live"
+    },
+    "preview_team1": {
+        "it": "Team Smash",
+        "en": "Team Smash"
+    },
+    "preview_team1_rank": {
+        "it": "Ranking #1",
+        "en": "Ranking #1"
+    },
+    "preview_team2": {
+        "it": "Spin Masters",
+        "en": "Spin Masters"
+    },
+    "preview_team2_rank": {
+        "it": "Ranking #2",
+        "en": "Ranking #2"
+    },
+    "preview_progress": {
+        "it": "Set 4 - Analisi in corso",
+        "en": "Set 4 - Analysis in progress"
+    },
+    "preview_footer_auto": {
+        "it": "Aggiornamento automatico",
+        "en": "Automatic update"
+    },
+    "preview_footer_stats": {
+        "it": "Statistiche sincronizzate",
+        "en": "Synchronized statistics"
+    },
+    "preview_footer_cta": {
+        "it": "Entra nella dashboard",
+        "en": "Enter the dashboard"
+    },
+    "features_title": {
+        "it": "Il quartier generale della tua community pongistica",
+        "en": "The headquarters of your pong community"
+    },
+    "features_subtitle": {
+        "it": "Tutto quello che ti serve...",
+        "en": "Everything you need..."
+    },
+    "features_cta": {
+        "it": "Attiva subito",
+        "en": "Activate now"
+    },
+    "how_title": {
+        "it": "Dalla registrazione al torneo completo in 3 step",
+        "en": "From registration to full tournament in 3 steps"
+    },
+    "how_subtitle": {
+        "it": "Un flusso progettato per accompagnare...",
+        "en": "A flow designed to guide..."
+    },
+    "how_step1_title": {
+        "it": "Definisci il tuo format",
+        "en": "Define your format"
+    },
+    "how_step1_text": {
+        "it": "Scegli gironi, eliminazione...",
+        "en": "Choose groups, elimination..."
+    },
+    "how_step2_title": {
+        "it": "Invita, registra, ingaggia",
+        "en": "Invite, register, engage"
+    },
+    "how_step2_text": {
+        "it": "Condividi la lobby...",
+        "en": "Share the lobby..."
+    },
+    "how_step3_title": {
+        "it": "Monitora e racconta",
+        "en": "Monitor and tell the story"
+    },
+    "how_step3_text": {
+        "it": "Risultati live, leaderboard dinamiche...",
+        "en": "Live results, dynamic leaderboards..."
+    },
+    "how_cta1": {
+        "it": "Apri il tuo torneo",
+        "en": "Open your tournament"
+    },
+    "how_cta2": {
+        "it": "Prova la demo live",
+        "en": "Try the live demo"
+    },
+    "insight_title": {
+        "it": "Insight in tempo reale",
+        "en": "Real-time insights"
+    },
+    "insight_spotlight": {
+        "it": "Player spotlight",
+        "en": "Player spotlight"
+    },
+    "insight_value": {
+        "it": "+22% rally vinti",
+        "en": "+22% rallies won"
+    },
+    "insight_cta": {
+        "it": "Accedi alle analytics",
+        "en": "Access analytics"
+    },
+    "testimonials_title": {
+        "it": "Club e coach parlano di noi",
+        "en": "Clubs and coaches talk about us"
+    },
+    "testimonials_subtitle": {
+        "it": "Design e performance pensati per chi vive di match point.",
+        "en": "Design and performance built for those who live by match points."
+    },
+    "cta_panel_title": {
+        "it": "Pronto a trasformare la tua prossima competizione?",
+        "en": "Ready to transform your next competition?"
+    },
+    "cta_panel_subtitle": {
+        "it": "Crea un account gratuito...",
+        "en": "Create a free account..."
+    },
+    "cta_panel_cta": {
+        "it": "Crea account gratuito",
+        "en": "Create free account"
+    },
+    "faq_title": {
+        "it": "Perché funziona per marketing, staff tecnico e sponsor",
+        "en": "Why it works for marketing, staff and sponsors"
+    },
+    "faq_subtitle": {
+        "it": "Workflow condivisi, notifiche smart...",
+        "en": "Shared workflows, smart notifications..."
+    },
+    "faq_stat1": {
+        "it": "di soddisfazione organizzatori",
+        "en": "organizer satisfaction"
+    },
+    "faq_stat2": {
+        "it": "engagement sponsor",
+        "en": "sponsor engagement"
+    },
+    "faq_stat3": {
+        "it": "supporto dedicato",
+        "en": "dedicated support"
+    },
+    "faq_q1": {
+        "it": "Posso personalizzare il brand della competizione?",
+        "en": "Can I customize the competition brand?"
+    },
+    "faq_a1": {
+        "it": "Certo, puoi impostare palette, loghi...",
+        "en": "Of course, you can set palettes, logos..."
+    },
+    "faq_q2": {
+        "it": "È previsto un supporto per l'onboarding del team?",
+        "en": "Is there onboarding support for the team?"
+    },
+    "faq_a2": {
+        "it": "Il nostro team Customer Success ti accompagna...",
+        "en": "Our Customer Success team supports you..."
+    },
+    "faq_q3": {
+        "it": "Posso integrare Pong Smash Board con altri strumenti?",
+        "en": "Can I integrate Pong Smash Board with other tools?"
+    },
+    "faq_a3": {
+        "it": "Sì, l'API aperta permette di collegare...",
+        "en": "Yes, the open API allows you to connect..."
+    },
+    "faq_cta1": {
+        "it": "Accedi alla piattaforma",
+        "en": "Access the platform"
+    },
+    "faq_cta2": {
+        "it": "Richiedi una demo guidata",
+        "en": "Request a guided demo"
+    },
+    "highlight1_title": {
+        "it": "Gestione intuitiva delle competizioni",
+        "en": "Intuitive competition management"
+    },
+    "highlight1_desc": {
+        "it": "Crea tornei a gironi o ad eliminazione, personalizza regole e lascia che la piattaforma pensi a calendario e classifiche.",
+        "en": "Create group or knockout tournaments, customize rules and let the platform handle schedules and rankings."
+    },
+    "highlight2_title": {
+        "it": "Match tracking in tempo reale",
+        "en": "Real-time match tracking"
+    },
+    "highlight2_desc": {
+        "it": "Aggiorna risultati e statistiche live, sincronizzati con tutti i dispositivi della tua squadra o del tuo club.",
+        "en": "Update results and live stats, synchronized across all your team or club devices."
+    },
+    "highlight3_title": {
+        "it": "Insights da coach professionista",
+        "en": "Professional coach insights"
+    },
+    "highlight3_desc": {
+        "it": "Analizza performance, identifica i trend dei giocatori e prepara le prossime sfide con report visivi e smart analytics.",
+        "en": "Analyze performance, identify player trends and prepare upcoming challenges with visual reports and smart analytics."
+    },
+    "testimonial1_quote": {
+        "it": "«Abbiamo ridotto del 60% il tempo speso a organizzare tornei weekend grazie a Pong Smash Board.»",
+        "en": "“We cut weekend tournament organization time by 60% thanks to Pong Smash Board.”"
+    },
+    "testimonial1_name": {
+        "it": "Martina L.",
+        "en": "Martina L."
+    },
+    "testimonial1_role": {
+        "it": "Founder, Ping Pong Club Milano",
+        "en": "Founder, Ping Pong Club Milan"
+    },
+    "testimonial2_quote": {
+        "it": "«Statistiche live, ranking automatici e zero fogli Excel: finalmente posso concentrarmi sui giocatori.»",
+        "en": "“Live stats, automatic rankings and no Excel sheets: finally I can focus on the players.”"
+    },
+    "testimonial2_name": {
+        "it": "Luca P.",
+        "en": "Luca P."
+    },
+    "testimonial2_role": {
+        "it": "Coach Professionista",
+        "en": "Professional Coach"
     }
-
 }
