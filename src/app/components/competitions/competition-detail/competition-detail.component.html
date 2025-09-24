@@ -70,8 +70,3 @@
                             ]" (actionSelected)="onDropdownAction($event)"></app-dropdown>
 </div>
 
-<app-modal [label]="'are_you_sure'" *ngIf="areYouSureVisible"
-  [modalName]="modalService.MODALS['ARE_YOU_SURE']"
-  (closeModalEvent)="areYouSureVisible = false">
-  <are-you-sure [body]="'are-you-sure-deleting' | translate" (confirmed)="onDeleteConfirmed()" (cancelled)="onDeleteCancelled()"></are-you-sure>
-</app-modal>

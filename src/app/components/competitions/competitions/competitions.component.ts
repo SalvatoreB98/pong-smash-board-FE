@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { combineLatest, map } from 'rxjs';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
@@ -17,6 +17,7 @@ import { Utils } from '../../../utils/Utils';
 import { JoinCompetitionModalComponent } from '../../join-competition-modal/join-competition-modal.component';
 import { ViewCompetitionModalComponent } from './view-competition-modal/view-competition-modal.component';
 import { EditCompetitionModalComponent } from './edit-competition-modal/edit-competition-modal.component';
+import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
 @Component({
   selector: 'app-competitions',
   standalone: true,
@@ -31,12 +32,15 @@ import { EditCompetitionModalComponent } from './edit-competition-modal/edit-com
     AddPlayersModalComponent,
     JoinCompetitionModalComponent,
     ViewCompetitionModalComponent,
-    EditCompetitionModalComponent
+    EditCompetitionModalComponent,
+    AreYouSureComponent
   ],
   templateUrl: './competitions.component.html',
   styleUrls: ['./competitions.component.scss']
 })
 export class CompetitionsComponent {
+
+  @ViewChild(CompetitionDetailComponent) competitionDetailComponent!: CompetitionDetailComponent;
   PROGRESS_STATE = UserProgressStateEnum;
   // services
   userService = inject(UserService);
@@ -120,5 +124,11 @@ export class CompetitionsComponent {
       competitions.filter(c => c.id !== active?.id)
     )
   );
-
+  onDeleteConfirmed() {
+    this.modalService.closeModal();
+    this.competitionDetailComponent.onDeleteConfirmed();
+  }
+  onDeleteCancelled() {
+    this.modalService.closeModal();
+  }
 }

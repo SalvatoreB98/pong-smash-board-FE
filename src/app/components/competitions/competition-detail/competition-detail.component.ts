@@ -19,7 +19,7 @@ import { ElementRef, ViewChild } from '@angular/core';
 export class CompetitionDetailComponent {
 
   @Input() competition: ICompetition | null = null;
-  areYouSureVisible: boolean = false;
+
   playerIdToDelete: number = -1;
 
   @ViewChild('competitionDetail', { static: true }) competitionDetailRef!: ElementRef<HTMLElement>;
@@ -109,13 +109,13 @@ export class CompetitionDetailComponent {
   }
   openAreYouSureModal(playerId: number) {
     this.playerIdToDelete = playerId;
-    this.areYouSureVisible = true;
+    this.modalService.openModal(this.modalService.MODALS['ARE_YOU_SURE']);
   }
   onDeleteConfirmed() {
-    this.areYouSureVisible = false;
+    this.modalService.closeModal();
     this.deletePlayer(this.playerIdToDelete);
   }
   onDeleteCancelled() {
-    this.areYouSureVisible = false;
+    this.modalService.closeModal();
   }
 }
