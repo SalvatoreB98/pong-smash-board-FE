@@ -211,6 +211,14 @@
         "it": "Fase a gironi con eliminazione diretta finale (in arrivo).",
         "en": "Group phase followed by a knockout bracket (coming soon)."
     },
+    "group_knockout_board_title": {
+        "it": "Tabellone",
+        "en": "Bracket"
+    },
+    "group_knockout_board_empty": {
+        "it": "Nessun giocatore qualificato al tabellone.",
+        "en": "No qualified players for the bracket."
+    },
     "beta_label": {
         "it": "Beta",
         "en": "Beta"
@@ -827,5 +835,47 @@
     "view_details": {
         "it": "Vedi dettagli",
         "en": "View details"
+    },
+    "are_you_sure": {
+        "it": "Sei sicuro?",
+        "en": "Are you sure?"
+    },
+
+    "are-you-sure-deleting": {
+        "it": "Sei sicuro di voler eliminare il giocatore?",
+        "en": "Are you sure you want to delete the player?"
+    },
+    "delete_player": {
+        "it": "Elimina giocatore",
+        "en": "Delete player"
+    },
+    "delete": {
+        "it": "Elimina",
+        "en": "Delete"
+    },
+    "group_knockout_board_group": {
+        "it": "Girone",
+        "en": "Group"
+    },
+    "group_knockout_board_wins": {
+        "it": "Vittorie",
+        "en": "Wins"
+    },
+    "group_knockout_board_losses": {
+        "it": "Sconfitte",
+        "en": "Losses"
+    },
+    "group_knockout_board_points_for": {
+        "it": "Punti fatti",
+        "en": "Points for"
+    },
+    "group_knockout_board_points": {
+        "it": "Punti subiti",
+        "en": "Points against"
+    },
+    "group_knockout_board_player": {
+        "it": "Giocatore",
+        "en": "Player"
     }
+
 }

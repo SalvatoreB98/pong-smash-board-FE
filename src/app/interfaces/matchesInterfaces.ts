@@ -5,7 +5,7 @@ export interface IMatchSet {
   player2_score: number;
 }
 
-export type CompetitionMode = 'league' | 'elimination';
+export type CompetitionMode = 'league' | 'elimination' | 'group_knockout';
 
 export interface IMatch {
   id: string;

@@ -22,24 +22,27 @@
       <div>
         <h1>{{ competition?.name }}</h1>
       </div>
-      <button *ngIf="competition?.management !== 'admin'" class="invitation-code-container button flex-column" type="button" (click)="copyCode()">
+      <button *ngIf="competition?.management !== 'admin'" class="invitation-code-container button flex-column"
+        type="button" (click)="copyCode()">
         <div>{{"invitation_code" | translate}}: </div>
         <div class="value code">{{ competition?.['code'] }}</div>
       </button>
     </div>
     <div>
       <span>{{ "type" | translate }}: </span>
-      <span class="value competition-type">{{ ('competition_type_' + (competition?.type || 'league')) | translate }}</span>
+      <span class="value competition-type">{{ ('competition_type_' + (competition?.type || 'league')) | translate
+        }}</span>
       <i [ngClass]="['fa-solid', getCompetitionTypeIcon(competition?.type)]"></i>
     </div>
 
     <div class="players-container d-flex justify-content-between align-items-center">
       <div class="competition-players-container">
-        <div class="players" *ngFor="let p of competition?.['players']">
+        <button class="players" *ngFor="let p of competition?.['players']">
           <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
           <img *ngIf="!p.image_url" class="avatar" [src]="'default-player.jpg'" />
           <span class="player-name">{{ p.nickname }}</span>
-        </div>
+          <button class="delete" (click)="openAreYouSureModal(p.id)"><i class="fa-solid fa-xmark"></i></button>
+        </button>
         <div *ngIf="isEmpty(competition?.['players'])">
           {{ "no_players" | translate }}
         </div>
@@ -48,7 +51,8 @@
     <div class="d-flex flex-column">
       <div>
         <div style="min-width: 9.375em">
-          <button class="button-primary-ping" id="add-players-button" (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
+          <button class="button-primary-ping" id="add-players-button"
+            (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
             {{ "add_players" | translate }}
             <i class="fa-solid fa-users ms-2"></i>
             <i class="fa-solid fa-plus"></i>
@@ -65,3 +69,9 @@
                                 { label: 'Delete', value: 'delete', icon: '<i class=\'fa-solid fa-trash\'></i>' }
                             ]" (actionSelected)="onDropdownAction($event)"></app-dropdown>
 </div>
+
+<app-modal [label]="'are_you_sure'" *ngIf="areYouSureVisible"
+  [modalName]="modalService.MODALS['ARE_YOU_SURE']"
+  (closeModalEvent)="areYouSureVisible = false">
+  <are-you-sure [body]="'are-you-sure-deleting' | translate" (confirmed)="onDeleteConfirmed()" (cancelled)="onDeleteCancelled()"></are-you-sure>
+</app-modal>

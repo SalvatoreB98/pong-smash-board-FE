@@ -23,6 +23,7 @@ import { EliminationBracketComponent, EliminationModalEvent } from './eliminatio
 import { EliminationRound } from '../interfaces/elimination-bracket.interface';
 import { ICompetition } from '../../api/competition.api';
 import { Router } from '@angular/router';
+import { GroupKnockoutComponent } from './group-knockout/group-knockout.component';
 
 type MatchWithContext = IMatch & {
   competitionType?: CompetitionMode;
@@ -33,7 +34,7 @@ type MatchWithContext = IMatch & {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent, EliminationBracketComponent],
+  imports: [CommonModule, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -49,8 +50,10 @@ export class HomeComponent {
   clickedMatch: MatchWithContext | undefined;
   userState$ = this.userService.getState();
   players: IPlayer[] = [];
+  competitionQualifiedPlayers: IPlayer[] = [];
   activeCompetition: ICompetition | null = null;
   isEliminationMode = false;
+  isGroupKnockoutMode = false;
   eliminationRounds: EliminationRound[] = [];
 
   player1Selected: IPlayer | null = null;
@@ -72,6 +75,8 @@ export class HomeComponent {
           }
           this.activeCompetition = activeCompetition ?? null;
           this.isEliminationMode = (activeCompetition?.type === 'elimination');
+          this.isGroupKnockoutMode = (activeCompetition?.type === 'group_knockout');
+          this.refreshCompetitionQualifiedPlayers();
           this.updateEliminationRounds();
         });
       }
@@ -83,12 +88,13 @@ export class HomeComponent {
         this.loaderService.showToast('not_enough_players', MSG_TYPE.WARNING);
         this.router.navigate(['/competitions']);
       }
+      this.refreshCompetitionQualifiedPlayers();
       this.updateEliminationRounds();
     });
     this.matches$.subscribe(matches => {
-      this.matches = matches ?? [];
-      this.updateEliminationRounds();
-    });
+    this.matches = matches ?? [];
+    this.updateEliminationRounds();
+  });
     this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 }) // cache 5 minuti
       .then(res => {
         this.matches = res.matches;
@@ -97,9 +103,10 @@ export class HomeComponent {
   }
 
   setClickedMatch(match: IMatch) {
+    const competitionType = (this.activeCompetition?.type ?? 'league') as CompetitionMode;
     this.clickedMatch = {
       ...match,
-      competitionType: 'league',
+      competitionType,
       competitionName: this.activeCompetition?.name ?? undefined,
       roundName: match.roundName ?? null,
       roundLabel: match.roundLabel ?? undefined,
@@ -107,17 +114,18 @@ export class HomeComponent {
   }
 
   private updateEliminationRounds() {
-    if (!this.isEliminationMode) {
+    const shouldBuildBracket = this.isEliminationMode || this.isGroupKnockoutMode;
+    if (!shouldBuildBracket) {
       this.eliminationRounds = [];
       return;
     }
 
-    if (this.players.length < 2) {
+    if (this.competitionQualifiedPlayers.length < 2) {
       this.eliminationRounds = [];
       return;
     }
 
-    this.eliminationRounds = this.buildInitialEliminationBracket(this.players);
+    this.eliminationRounds = this.buildInitialEliminationBracket(this.competitionQualifiedPlayers);
   }
 
   private buildInitialEliminationBracket(players: IPlayer[]): EliminationRound[] {
@@ -192,9 +200,7 @@ export class HomeComponent {
           }
         }
 
-        const winnerPlayer = winnerId
-          ? this.players.find(p => String(p.id) === String(winnerId)) ?? null
-          : null;
+        const winnerPlayer = winnerId ? this.findPlayerById(winnerId) : null;
 
         nextRoundPlayers.push(winnerPlayer);
 
@@ -221,6 +227,71 @@ export class HomeComponent {
     }
 
     return rounds;
+  }
+
+  private refreshCompetitionQualifiedPlayers() {
+    const qualifiedFromCompetition = this.extractCompetitionPlayers(
+      (this.activeCompetition as any)?.qualifiedPlayers
+        ?? (this.activeCompetition as any)?.qualified_players
+        ?? null
+    );
+
+    if (qualifiedFromCompetition.length > 0) {
+      this.competitionQualifiedPlayers = qualifiedFromCompetition;
+      return;
+    }
+
+    this.competitionQualifiedPlayers = [...this.players];
+  }
+
+  private extractCompetitionPlayers(source: unknown): IPlayer[] {
+    if (!Array.isArray(source)) {
+      return [];
+    }
+
+    return source
+      .map(raw => this.normalizePlayer(raw))
+      .filter((player): player is IPlayer => player !== null);
+  }
+
+  private normalizePlayer(player: any): IPlayer | null {
+    if (!player) {
+      return null;
+    }
+
+    const id = player.id ?? player.player_id ?? player.playerId;
+    if (id === null || id === undefined) {
+      return null;
+    }
+
+    const baseName = player.name ?? player.nickname ?? undefined;
+    const resolvedName = typeof baseName === 'string' && baseName.trim().length > 0
+      ? baseName.trim()
+      : `Player ${id}`;
+
+    const normalized: IPlayer = {
+      id: Number(id),
+      name: resolvedName,
+      lastname: player.lastname ?? player.last_name ?? player.surname ?? undefined,
+      nickname: player.nickname ?? player.nick_name ?? undefined,
+      image_url: player.image_url ?? player.imageUrl ?? player.avatar_url ?? undefined,
+    };
+
+    return normalized;
+  }
+
+  private findPlayerById(playerId: number | string | null | undefined): IPlayer | null {
+    if (playerId === null || playerId === undefined) {
+      return null;
+    }
+
+    const targetId = String(playerId);
+
+    return (
+      this.competitionQualifiedPlayers.find(player => String(player.id) === targetId)
+      ?? this.players.find(player => String(player.id) === targetId)
+      ?? null
+    );
   }
 
 
