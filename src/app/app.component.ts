@@ -14,4 +14,5 @@ import { SHARED_IMPORTS } from './common/imports/shared.imports';
 })
 export class AppComponent {
   title = 'pong-smash-board';
+  isLandingPage = window.location.pathname.includes('/landing');
 }
