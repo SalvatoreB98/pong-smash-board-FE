@@ -146,4 +146,8 @@ export class StatsComponent implements OnInit {
     const g = Math.round(255 * frac);
     return `rgb(${r}, ${g}, 0)`;
   }
+  barWidth(value: number, total: number): number {
+    if (total === 0) return 1;
+    return Math.max(5, Math.min(100, (value * 100) / total));
+  }
 }

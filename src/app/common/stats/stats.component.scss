@@ -141,6 +141,15 @@ img {
 .bar {
   height: 100%;
   background: $primary;
+  border-radius: $border-radius;
+  &.left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  &.right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 }
 
 .bar.winner {
