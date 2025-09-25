@@ -7,7 +7,7 @@ import { TranslatePipe } from '../../utils/translate.pipe';
   selector: 'app-modal',
   imports: [TranslatePipe, CommonModule],
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent {
 
