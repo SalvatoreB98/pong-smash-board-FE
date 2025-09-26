@@ -876,12 +876,16 @@
         "en": "Points for"
     },
     "group_knockout_board_points": {
-        "it": "Punti subiti",
-        "en": "Points against"
+        "it": "Differenza punti set",
+        "en": "Set points difference"
     },
     "group_knockout_board_player": {
         "it": "Giocatore",
         "en": "Player"
+    },
+    "select_group": {
+        "it": "Seleziona girone",
+        "en": "Select group"
     },
     "player_removed": {
         "it": "Giocatore rimosso con successo.",

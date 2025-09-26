@@ -14,6 +14,7 @@ import { TranslationService } from '../../../services/translation.service';
 import { CompetitionService } from '../../../services/competitions.service';
 import { ICompetition } from '../../../api/competition.api';
 import { IPlayer } from '../../../services/players.service';
+import { Group } from '../../interfaces/group.interface';
 
 @Component({
   selector: 'add-match-modal',
@@ -31,6 +32,7 @@ export class AddMatchModalComponent implements OnInit {
   @Input() player1: IPlayer | null = null;
   @Input() player2: IPlayer | null = null;
   @Input() isAlreadySelected: boolean = false;
+  @Input() groups: Group[] = [];
 
   errorsOfSets: string[] = [];
   errorsOfPoints: string[] = [];
@@ -65,6 +67,7 @@ export class AddMatchModalComponent implements OnInit {
       console.log('Active competition:', this.competition);
       this.maxPoints = this.competition?.points_type || 11;
       this.maxSets = this.competition?.sets_type || 5;
+      this.updateGroupValidators();
     });
   }
 
@@ -78,9 +81,21 @@ export class AddMatchModalComponent implements OnInit {
       p2Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets)]],
       isShowSetsPointsTrue: [false],
       setsPoints: this.fb.array([]),
+      groupId: [null],
     });
     this.matchForm.get('p1Score')?.valueChanges.subscribe(() => this.sanitizeInput('p1Score'));
     this.matchForm.get('p2Score')?.valueChanges.subscribe(() => this.sanitizeInput('p2Score'));
+    this.matchForm.get('groupId')?.valueChanges.subscribe(value => {
+      if (!this.isGroupKnockout()) {
+        return;
+      }
+
+      if (value === null || value === undefined) {
+        return;
+      }
+
+      this.matchForm.patchValue({ player1: null, player2: null }, { emitEvent: false });
+    });
     console.log('Initial form value:', this.matchForm.value);
     console.log('Initial player 1:', this.player1);
     console.log('Initial player 2:', this.player2);
@@ -119,6 +134,15 @@ export class AddMatchModalComponent implements OnInit {
 
     const loggedInPlayerId = this.dataService.getLoggedInPlayerId();
     let filteredPlayers = this.players.filter(p => p.id !== loggedInPlayerId);
+
+    const selectedGroupId = this.matchForm.get('groupId')?.value;
+    if (this.isGroupKnockout() && selectedGroupId) {
+      const group = this.groups.find(g => g.id === selectedGroupId);
+      if (group) {
+        const allowedIds = new Set(group.players.map(member => Number(member.playerId)));
+        filteredPlayers = filteredPlayers.filter(p => allowedIds.has(Number(p.id)));
+      }
+    }
 
     const selectedPlayer1 = this.matchForm.get('player1')?.value;
     const selectedPlayer2 = this.matchForm.get('player2')?.value;
@@ -181,7 +205,8 @@ export class AddMatchModalComponent implements OnInit {
       player2: this.matchForm.value.player2,
       p1Score: this.matchForm.value.p1Score,
       p2Score: this.matchForm.value.p2Score,
-      setsPoints: this.setsPoints.value
+      setsPoints: this.setsPoints.value,
+      groupId: this.matchForm.value.groupId ?? undefined,
     };
 
     console.log('Saving match...', formData);
@@ -197,8 +222,6 @@ export class AddMatchModalComponent implements OnInit {
   closeModal() {
     this.modalService.closeModal();
   }
-
-
 
   sanitizeInput(controlName: string) {
     if (!controlName) return;
@@ -282,6 +305,26 @@ export class AddMatchModalComponent implements OnInit {
     const target = event.target as HTMLElement | null;
     if (target instanceof HTMLButtonElement) return target;
     return target?.closest('button') as HTMLButtonElement | null;
+  }
+
+  private updateGroupValidators() {
+    const control = this.matchForm?.get('groupId');
+    if (!control) {
+      return;
+    }
+
+    if (this.isGroupKnockout()) {
+      control.addValidators(Validators.required);
+    } else {
+      control.clearValidators();
+      control.setValue(null, { emitEvent: false });
+    }
+
+    control.updateValueAndValidity({ emitEvent: false });
+  }
+
+  isGroupKnockout(): boolean {
+    return this.competition?.type === 'group_knockout';
   }
 }
 

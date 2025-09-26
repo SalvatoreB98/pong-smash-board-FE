@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatchesComponent } from './matches/matches.component';
 import { CompetitionMode, IMatch } from '../interfaces/matchesInterfaces';
-import { IMatchResponse } from '../interfaces/responsesInterfaces';
 import { DataService } from '../../services/data.service';
 import { AddMatchModalComponent } from './add-match-modal/add-match-modal.component';
 import { ModalComponent } from '../common/modal/modal.component';
@@ -24,6 +23,7 @@ import { EliminationRound } from '../interfaces/elimination-bracket.interface';
 import { ICompetition } from '../../api/competition.api';
 import { Router } from '@angular/router';
 import { GroupKnockoutComponent } from './group-knockout/group-knockout.component';
+import { Group, KnockoutStageData, mapGroupPlayerToIPlayer } from '../interfaces/group.interface';
 
 type MatchWithContext = IMatch & {
   competitionType?: CompetitionMode;
@@ -44,6 +44,8 @@ export class HomeComponent {
   playersService = inject(PlayersService);
   matches$ = this.dataService.matchesObs;
   matchesElimination$ = this.dataService.matchesEliminationObs;
+  groups$ = this.dataService.groupsObs;
+  knockout$ = this.dataService.knockoutObs;
   competitionService = inject(CompetitionService);
   matches: IMatch[] = [];
   matchesElimination: IMatch[] = [];
@@ -52,7 +54,7 @@ export class HomeComponent {
   clickedMatch: MatchWithContext | undefined;
   userState$ = this.userService.getState();
   players: IPlayer[] = [];
-  groupStagePlayers: IPlayer[] = [];
+  groups: Group[] = [];
   competitionQualifiedPlayers: IPlayer[] = [];
   activeCompetition: ICompetition | null = null;
   isEliminationMode = false;
@@ -70,49 +72,46 @@ export class HomeComponent {
       if (!state) {
         console.error('User state is null or undefined');
         return;
-      } else {
-        console.log('User state:', state);
-        this.competitionService.activeCompetition$.subscribe(activeCompetition => {
-          if (!activeCompetition) {
-            this.loaderService.showToast(this.translateService.translate('no_active_competition'), MSG_TYPE.WARNING);
-            this.router.navigate(['/competitions']);
-          }
-          this.activeCompetition = activeCompetition ?? null;
-          this.isEliminationMode = (activeCompetition?.type === 'elimination');
-          this.isGroupKnockoutMode = (activeCompetition?.type === 'group_knockout');
-          this.refreshCompetitionQualifiedPlayers();
-          this.refreshGroupStagePlayers();
-          this.updateEliminationRounds();
-          this.updateModalPlayers();
-        });
       }
+
+      this.competitionService.activeCompetition$.subscribe(activeCompetition => {
+        if (!activeCompetition) {
+          this.loaderService.showToast(this.translateService.translate('no_active_competition'), MSG_TYPE.WARNING);
+          this.router.navigate(['/competitions']);
+        }
+
+        this.handleCompetitionChange(activeCompetition ?? null);
+      });
     });
+
     this.playersService.getPlayers().subscribe(players => {
-      this.players = players;
-      console.log(this.players);
-      if (players.length < 2) {
-        this.loaderService.showToast('not_enough_players', MSG_TYPE.WARNING);
-        this.router.navigate(['/competitions']);
-      }
-      this.refreshCompetitionQualifiedPlayers();
-      this.refreshGroupStagePlayers();
-      this.updateEliminationRounds();
-      this.updateModalPlayers();
+      this.handlePlayersUpdate(players);
     });
+
     this.matches$.subscribe(matches => {
       this.matches = matches ?? [];
-      this.updateEliminationRounds();
     });
+
     this.matchesElimination$.subscribe(matches => {
       this.matchesElimination = matches ?? [];
-      this.updateEliminationRounds();
     });
-    this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 }) // cache 5 minuti
+
+    this.groups$.subscribe(groups => {
+      this.groups = groups ?? [];
+      this.refreshModalPlayers();
+    });
+
+    this.knockout$.subscribe(knockout => {
+      this.handleKnockoutUpdate(knockout);
+    });
+
+    this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 })
       .then(res => {
         this.matches = res.matches;
         this.matchesElimination = res.matchesElimination ?? [];
-        this.updateEliminationRounds();
-        this.updateModalPlayers();
+        if (this.isEliminationMode || this.isGroupKnockoutMode) {
+          this.requestKnockoutData();
+        }
       });
   }
 
@@ -127,337 +126,85 @@ export class HomeComponent {
     };
   }
 
-  private updateEliminationRounds() {
-    const shouldBuildBracket = this.isEliminationMode || this.isGroupKnockoutMode;
-    if (!shouldBuildBracket) {
+  private handleCompetitionChange(activeCompetition: ICompetition | null) {
+    const previousCompetitionId = this.activeCompetition?.id ?? null;
+    this.activeCompetition = activeCompetition;
+    this.isEliminationMode = (activeCompetition?.type === 'elimination');
+    this.isGroupKnockoutMode = (activeCompetition?.type === 'group_knockout');
+
+    if ((this.isEliminationMode || this.isGroupKnockoutMode) && previousCompetitionId !== activeCompetition?.id) {
+      this.requestKnockoutData(true);
+    } else {
+      this.groups = [];
+      this.competitionQualifiedPlayers = [];
       this.eliminationRounds = [];
-      return;
     }
 
-    if (this.competitionQualifiedPlayers.length < 2) {
+    this.refreshModalPlayers();
+  }
+
+  private handlePlayersUpdate(players: IPlayer[]) {
+    this.players = players ?? [];
+    if (this.players.length < 2) {
+      this.loaderService.showToast('not_enough_players', MSG_TYPE.WARNING);
+      this.router.navigate(['/competitions']);
+    }
+
+    this.refreshModalPlayers();
+  }
+
+  private handleKnockoutUpdate(knockout: KnockoutStageData | null) {
+    if (!knockout) {
+      this.competitionQualifiedPlayers = [];
       this.eliminationRounds = [];
+      this.refreshModalPlayers();
       return;
     }
 
-    const bracketMatches = this.getBracketMatches();
-    this.eliminationRounds = this.buildInitialEliminationBracket(
-      this.competitionQualifiedPlayers,
-      bracketMatches
-    );
+    const qualifiedPlayers = knockout.qualifiedPlayers ?? [];
+    this.competitionQualifiedPlayers = qualifiedPlayers.map(mapGroupPlayerToIPlayer);
+    this.eliminationRounds = knockout.rounds ?? [];
+    this.refreshModalPlayers();
   }
 
-  private buildInitialEliminationBracket(players: IPlayer[], matches: IMatch[]): EliminationRound[] {
-    if (!players.length) {
-      return [];
-    }
-
-    // Calcola numero di slot (prossima potenza di 2 >= num giocatori)
-    const nextPow2 = (n: number) => Math.pow(2, Math.ceil(Math.log2(n)));
-    const totalSlots = nextPow2(players.length);
-
-    // Seeding iniziale
-    const seeding: (IPlayer | null)[] = [...players];
-    while (seeding.length < totalSlots) {
-      seeding.push(null);
-    }
-
-    const rounds: EliminationRound[] = [];
-    let currentRoundPlayers = seeding;
-    let roundNumber = 1;
-
-    const roundNames: Record<number, string> = {
-      32: 'one_sixteenth_finals',
-      16: 'one_eighth_finals',
-      8: 'quarter_finals',
-      4: 'semi_finals',
-      2: 'finals',
-    };
-
-    let slotsInRound = currentRoundPlayers.length;
-
-    while (slotsInRound > 1) {
-      const roundKey = roundNames[slotsInRound] ?? null;
-      const roundName =
-        roundKey ||
-        `${this.translateService.translate('round')} ${roundNumber}`;
-      const roundLabel = roundKey
-        ? this.translateService.translate(roundKey)
-        : roundName;
-
-      const round: EliminationRound = {
-        roundNumber,
-        name: roundName,
-        matches: [],
-      };
-
-      const nextRoundPlayers: (IPlayer | null)[] = [];
-
-      for (let i = 0; i < currentRoundPlayers.length; i += 2) {
-        const player1 = currentRoundPlayers[i] ?? null;
-        const player2 = currentRoundPlayers[i + 1] ?? null;
-
-        const matchResult = this.getMatchResultForPlayers(player1, player2, matches);
-
-        let winnerId: number | null = null;
-
-        // ✅ winner solo se c’è un match giocato
-        const matchPlayed =
-          matchResult.player1Score !== undefined &&
-          matchResult.player2Score !== undefined;
-
-        if (matchPlayed) {
-          winnerId = matchResult.winnerId ? Number(matchResult.winnerId) : null;
-        } else {
-          // ✅ fallback bye solo nel primo round
-          if (roundNumber === 1) {
-            if (player1 && !player2) {
-              winnerId = player1.id;
-            } else if (!player1 && player2) {
-              winnerId = player2.id;
-            }
-          }
-        }
-
-        const winnerPlayer = winnerId ? this.findPlayerById(winnerId) : null;
-
-        nextRoundPlayers.push(winnerPlayer);
-
-        round.matches.push({
-          id: `round-${roundNumber}-match-${i / 2 + 1}`,
-          slots: [
-            { seed: i + 1, player: player1 },
-            { seed: i + 2, player: player2 },
-          ],
-          player1Score: matchResult.player1Score,
-          player2Score: matchResult.player2Score,
-          winnerId: matchPlayed ? winnerId : null, // 👈 winner solo se c’è stato match
-          matchData: matchResult.match ?? null,
-          roundKey,
-          roundLabel,
-        });
-      }
-
-      rounds.push(round);
-
-      currentRoundPlayers = nextRoundPlayers;
-      slotsInRound = currentRoundPlayers.length;
-      roundNumber++;
-    }
-
-    return rounds;
+  private requestKnockoutData(force = false) {
+    const options = force ? { force: true } : undefined;
+    this.dataService.fetchGroups(options).catch(error => {
+      console.error('Failed to load group data:', error);
+    });
   }
 
-  private refreshCompetitionQualifiedPlayers() {
-    const qualifiedFromCompetition = this.extractCompetitionPlayers(
-      (this.activeCompetition as any)?.qualifiedPlayers
-      ?? (this.activeCompetition as any)?.qualified_players
-      ?? null
-    );
-
-    if (qualifiedFromCompetition.length > 0) {
-      this.competitionQualifiedPlayers = qualifiedFromCompetition;
-      this.updateModalPlayers();
-      return;
-    }
-
-    this.competitionQualifiedPlayers = [...this.players];
-    this.updateModalPlayers();
-  }
-
-  private refreshGroupStagePlayers() {
-    if (!this.isGroupKnockoutMode) {
-      this.groupStagePlayers = [];
-      this.updateModalPlayers();
-      return;
-    }
-
-    const compAny = this.activeCompetition as any;
-    const candidateSources = [
-      compAny?.groupPlayers,
-      compAny?.group_players,
-      compAny?.boardPlayers,
-      compAny?.board_players,
-      compAny?.groupKnockoutPlayers,
-      compAny?.group_knockout_players,
-    ];
-
-    for (const source of candidateSources) {
-      const players = this.extractCompetitionPlayers(source);
-      if (players.length) {
-        this.groupStagePlayers = players;
-        this.updateModalPlayers();
-        return;
-      }
-    }
-
-    const groupCollections = compAny?.groups
-      ?? compAny?.groupKnockoutGroups
-      ?? compAny?.group_knockout_groups
-      ?? null;
-
-    if (Array.isArray(groupCollections)) {
-      const aggregated = groupCollections.flatMap((group: any) =>
-        this.extractCompetitionPlayers(group?.players ?? group?.members ?? group?.playerList ?? [])
-      );
-
-      if (aggregated.length) {
-        this.groupStagePlayers = aggregated;
-        this.updateModalPlayers();
-        return;
-      }
-    }
-
-    this.groupStagePlayers = this.extractCompetitionPlayers(compAny?.players ?? []);
-    if (!this.groupStagePlayers.length && this.players?.length) {
-      this.groupStagePlayers = [...this.players];
-    }
-    this.updateModalPlayers();
-  }
-
-  private extractCompetitionPlayers(source: unknown): IPlayer[] {
-    if (!Array.isArray(source)) {
-      return [];
-    }
-
-    return source
-      .map(raw => this.normalizePlayer(raw))
-      .filter((player): player is IPlayer => player !== null);
-  }
-
-  private normalizePlayer(player: any): IPlayer | null {
-    if (!player) {
-      return null;
-    }
-
-    const id = player.id ?? player.player_id ?? player.playerId;
-    if (id === null || id === undefined) {
-      return null;
-    }
-
-    const baseName = player.name ?? player.nickname ?? undefined;
-    const resolvedName = typeof baseName === 'string' && baseName.trim().length > 0
-      ? baseName.trim()
-      : `Player ${id}`;
-
-    const normalized: IPlayer = {
-      id: Number(id),
-      name: resolvedName,
-      lastname: player.lastname ?? player.last_name ?? player.surname ?? undefined,
-      nickname: player.nickname ?? player.nick_name ?? undefined,
-      image_url: player.image_url ?? player.imageUrl ?? player.avatar_url ?? undefined,
-    };
-
-    return normalized;
-  }
-
-  private findPlayerById(playerId: number | string | null | undefined): IPlayer | null {
-    if (playerId === null || playerId === undefined) {
-      return null;
-    }
-
-    const targetId = String(playerId);
-
-    return (
-      this.competitionQualifiedPlayers.find(player => String(player.id) === targetId)
-      ?? this.players.find(player => String(player.id) === targetId)
-      ?? null
-    );
-  }
-
-
-  private updateModalPlayers() {
+  private refreshModalPlayers() {
     if (this.isGroupKnockoutMode) {
-      const combined = [...this.groupStagePlayers, ...this.competitionQualifiedPlayers];
+      const groupedPlayers = this.getPlayersFromGroups(this.groups);
       const unique = new Map<string, IPlayer>();
-      combined.forEach(player => {
-        if (!player) {
-          return;
-        }
+      groupedPlayers.forEach(player => {
+        unique.set(String(player.id), player);
+      });
+      this.competitionQualifiedPlayers.forEach(player => {
         unique.set(String(player.id), player);
       });
       this.modalPlayers = Array.from(unique.values());
       return;
     }
 
+    if (this.isEliminationMode && this.competitionQualifiedPlayers.length) {
+      this.modalPlayers = [...this.competitionQualifiedPlayers];
+      return;
+    }
+
     this.modalPlayers = [...this.players];
   }
 
-  private getBracketMatches(): IMatch[] {
-    if (this.isGroupKnockoutMode) {
-      return this.matchesElimination ?? [];
-    }
-
-    return this.matches ?? [];
-  }
-
-  private getMatchResultForPlayers(
-    player1: IPlayer | null,
-    player2: IPlayer | null,
-    matches: IMatch[]
-  ): {
-    player1Score?: number;
-    player2Score?: number;
-    winnerId: number | string | null;
-    match?: IMatch | null;
-  } {
-    if (!player1 || !player2 || !matches?.length) {
-      return { winnerId: null, match: null };
-    }
-
-    const relevantMatches = matches.filter(match => {
-      const p1 = Number(match.player1_id);
-      const p2 = Number(match.player2_id);
-      return (
-        (p1 === player1.id && p2 === player2.id) ||
-        (p1 === player2.id && p2 === player1.id)
-      );
+  private getPlayersFromGroups(groups: Group[]): IPlayer[] {
+    const unique = new Map<string, IPlayer>();
+    groups.forEach(group => {
+      group.players.forEach(member => {
+        const mapped = mapGroupPlayerToIPlayer(member);
+        unique.set(String(mapped.id), mapped);
+      });
     });
-
-    if (!relevantMatches.length) {
-      return { winnerId: null, match: null };
-    }
-
-    // prendi l’ultimo match
-    const latestMatch = [...relevantMatches].sort((a, b) => {
-      const dateA = this.getMatchTimestamp(a);
-      const dateB = this.getMatchTimestamp(b);
-      if (dateA !== dateB) return dateB - dateA;
-      return (Number(b.id) || 0) - (Number(a.id) || 0);
-    })[0];
-
-    if (!latestMatch) return { winnerId: null, match: null };
-
-    // punteggi originali
-    let p1Score = latestMatch.player1_score;
-    let p2Score = latestMatch.player2_score;
-
-    // se i player erano invertiti, ribalta i punteggi
-    if (latestMatch.player1_id !== player1.id) {
-      [p1Score, p2Score] = [p2Score, p1Score];
-    }
-
-    // calcola il winner
-    let winnerId: number | null = null;
-    if (p1Score > p2Score) winnerId = player1.id;
-    else if (p2Score > p1Score) winnerId = player2.id;
-
-    return {
-      player1Score: p1Score,
-      player2Score: p2Score,
-      winnerId,
-      match: latestMatch,
-    };
-  }
-
-  private getMatchTimestamp(match: IMatch): number {
-    const matchAny = match as any;
-    const dateString = matchAny?.created ?? matchAny?.created_at ?? match.data;
-    const date = dateString ? new Date(dateString).getTime() : 0;
-    if (!Number.isNaN(date) && date !== 0) {
-      return date;
-    }
-
-    return Number(match.id) || 0;
+    return Array.from(unique.values());
   }
 
   onClickRound(event: EliminationModalEvent) {

@@ -129,7 +129,7 @@
 .board__table-header,
 .board__table-row {
   display: grid;
-  grid-template-columns: 2.5fr 1fr 1fr 1fr;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr;
   align-items: center;
   padding: 0.5rem 0.75rem;
   background: $background-harmony;
@@ -188,7 +188,7 @@
 
   .board__table-header,
   .board__table-row {
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     font-size: 0.93rem;
     padding: 0.4rem 0.5rem;
   }

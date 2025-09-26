@@ -3,6 +3,7 @@ import { MSG_TYPE } from "../app/utils/enum";
 import mockData from '../app/utils/mock.json';
 import { environment } from '../environments/environment';
 import { IMatch } from '../app/interfaces/matchesInterfaces';
+import { Group, GroupStageResponse, KnockoutStageData } from '../app/interfaces/group.interface';
 import { IMatchResponse } from '../app/interfaces/responsesInterfaces';
 import { LoaderComponent } from '../app/utils/components/loader/loader.component';
 import { LoaderService } from './loader.service';
@@ -55,12 +56,16 @@ export class DataService {
   loader!: LoaderComponent;
   points: any;
   matchesElimination: IMatch[] = [];
+  groups: Group[] = [];
+  knockoutStage: KnockoutStageData | null = null;
 
   private winsSubject = new BehaviorSubject<Record<string, number>>({});
   private totPlayedSubject = new BehaviorSubject<Record<string, number>>({});
   private pointsSubject = new BehaviorSubject<Record<string, number>>({});
   private matchesSubject = new BehaviorSubject<IMatch[]>([]);
   private matchesEliminationSubject = new BehaviorSubject<IMatch[]>([]);
+  private groupsSubject = new BehaviorSubject<Group[]>([]);
+  private knockoutSubject = new BehaviorSubject<KnockoutStageData | null>(null);
   private playersSubject = new BehaviorSubject<string[]>([]);
 
   public winsObs = this.winsSubject.asObservable();
@@ -68,13 +73,17 @@ export class DataService {
   public pointsObs = this.pointsSubject.asObservable();
   public matchesObs = this.matchesSubject.asObservable();
   public matchesEliminationObs = this.matchesEliminationSubject.asObservable();
+  public groupsObs = this.groupsSubject.asObservable();
+  public knockoutObs = this.knockoutSubject.asObservable();
   public playersObs = this.playersSubject.asObservable();
 
   private _loaded = false;                 // abbiamo già i dati?
   private _lastLoadedAt = 0;               // timestamp dell’ultimo load
   private _loadingPromise?: Promise<IMatchResponse>; // dedup calls
+  private _groupsLoadingPromise?: Promise<GroupStageResponse>;
   private _id = Math.random().toString(36).slice(2);
   private _activeCompetitionId: number | null = null;
+  private _groupsLoaded = false;
 
   private userService = inject(UserService);
   private rankingService = inject(RankingService);
@@ -167,12 +176,12 @@ export class DataService {
   private assignData(data: any): void {
     this.raw = data;
 
-    this.matches = data.matches || [];
+    this.matches = (data.matches || []).map((match: any) => this.normalizeMatch(match));
     this.wins = data.wins || {};
     this.totPlayed = data.totPlayed || {};
     this.points = data.points || {};
     this.players = data.players || [];
-    this.matchesElimination = data.matchesElimination || [];
+    this.matchesElimination = (data.matchesElimination || []).map((match: any) => this.normalizeMatch(match));
     this.monthlyWinRates = data.monthlyWinRates || {};
     this.badges = data.badges || {};
 
@@ -188,6 +197,8 @@ export class DataService {
   private resetData(): void {
     this.matches = [];
     this.matchesElimination = [];
+    this.groups = [];
+    this.knockoutStage = null;
     this.wins = {};
     this.totPlayed = {};
     this.points = {};
@@ -195,9 +206,12 @@ export class DataService {
     this.monthlyWinRates = {};
     this.badges = {};
     this.raw = {};
+    this._groupsLoaded = false;
 
     this.matchesSubject.next([]);
     this.matchesEliminationSubject.next([]);
+    this.groupsSubject.next([]);
+    this.knockoutSubject.next(null);
     this.winsSubject.next({});
     this.totPlayedSubject.next({});
     this.pointsSubject.next({});
@@ -226,7 +240,7 @@ export class DataService {
     };
   }
 
-  async addMatch(data: { p1Score: number; p2Score: number;[key: string]: any }): Promise<void> {
+  async addMatch(data: { p1Score: number; p2Score: number; groupId?: string | null;[key: string]: any }): Promise<void> {
     console.log(data);
 
     if (data?.p1Score == null || data?.p2Score == null) {
@@ -243,7 +257,10 @@ export class DataService {
       }
 
       const responseData = await firstValueFrom(
-        this.http.post<IMatchResponse>(url, { ...data, competitionId: userState.active_competition_id })
+        this.http.post<IMatchResponse>(url, {
+          ...data,
+          competitionId: userState.active_competition_id,
+        })
       );
 
       // aggiorna lo store locale con i dati restituiti
@@ -252,6 +269,12 @@ export class DataService {
       this.matches = responseData.matches || [];
       this.matchesSubject.next(this.matches);
       this.rankingService.triggerRefresh();
+
+      try {
+        await this.fetchGroups({ force: true });
+      } catch (err) {
+        console.error('Failed to refresh groups after match:', err);
+      }
 
       console.log('Success:', responseData);
     } catch (error: any) {
@@ -279,5 +302,65 @@ export class DataService {
   }
   getStats() {
 
+  }
+
+  // Cambia la firma:
+  async fetchGroups(options?: { force?: boolean }): Promise<GroupStageResponse> {
+    const competitionId = this.userService.snapshot()?.active_competition_id ?? null;
+    if (!competitionId) {
+      this.assignGroups([]);
+      return { groups: [] };
+    }
+
+    if (!options?.force && this._groupsLoaded) {
+      return this.generateGroupsReturnObject();
+    }
+
+    if (this._groupsLoadingPromise) {
+      return this._groupsLoadingPromise;
+    }
+
+    this._groupsLoadingPromise = this._fetchAndAssignGroups(String(competitionId));
+    try {
+      const res = await this._groupsLoadingPromise;
+      this._groupsLoaded = true;
+      return res;
+    } finally {
+      this._groupsLoadingPromise = undefined;
+    }
+  }
+
+  private async _fetchAndAssignGroups(competitionId: string): Promise<GroupStageResponse> {
+    try {
+      const data = await firstValueFrom(
+        this.http.get<Group[]>(API_PATHS.getGroups, {
+          params: { competitionId },
+        })
+      );
+      this.assignGroups(data);
+      return this.generateGroupsReturnObject();
+    } catch (error) {
+      console.error('Error fetching groups:', error);
+      this.assignGroups([]);
+      return this.generateGroupsReturnObject();
+    }
+  }
+
+  private assignGroups(data: Group[]): void {
+    this.groups = data ?? [];
+    this.groupsSubject.next(this.groups);
+  }
+
+  private generateGroupsReturnObject(): GroupStageResponse {
+    return { groups: [...this.groups] };
+  }
+
+
+  private normalizeMatch(raw: any): IMatch {
+    return {
+      ...(raw as IMatch),
+      setsPoints: raw?.setsPoints ?? raw?.sets_points ?? [],
+      groupId: raw?.groupId ?? raw?.group_id ?? undefined,
+    };
   }
 }
