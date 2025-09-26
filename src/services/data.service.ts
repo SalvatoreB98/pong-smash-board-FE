@@ -108,7 +108,7 @@ export class DataService {
       this._loaded = false;
       this._loadingPromise = undefined;
       this.resetData();
-  }
+    }
 
     const force = !!options?.force;
     const ttlMs = options?.ttlMs ?? 0;
@@ -240,7 +240,7 @@ export class DataService {
     };
   }
 
-  async addMatch(data: { p1Score: number; p2Score: number; groupId?: string | null; [key: string]: any }): Promise<void> {
+  async addMatch(data: { p1Score: number; p2Score: number; groupId?: string | null;[key: string]: any }): Promise<void> {
     console.log(data);
 
     if (data?.p1Score == null || data?.p2Score == null) {
@@ -304,12 +304,12 @@ export class DataService {
 
   }
 
+  // Cambia la firma:
   async fetchGroups(options?: { force?: boolean }): Promise<GroupStageResponse> {
     const competitionId = this.userService.snapshot()?.active_competition_id ?? null;
     if (!competitionId) {
-      const empty: GroupStageResponse = { groups: [] };
-      this.assignGroups(empty);
-      return empty;
+      this.assignGroups([]);
+      return { groups: [] };
     }
 
     if (!options?.force && this._groupsLoaded) {
@@ -333,7 +333,7 @@ export class DataService {
   private async _fetchAndAssignGroups(competitionId: string): Promise<GroupStageResponse> {
     try {
       const data = await firstValueFrom(
-        this.http.get<GroupStageResponse>(API_PATHS.getGroups, {
+        this.http.get<Group[]>(API_PATHS.getGroups, {
           params: { competitionId },
         })
       );
@@ -341,26 +341,20 @@ export class DataService {
       return this.generateGroupsReturnObject();
     } catch (error) {
       console.error('Error fetching groups:', error);
-      const empty: GroupStageResponse = { groups: [] };
-      this.assignGroups(empty);
-      throw error;
+      this.assignGroups([]);
+      return this.generateGroupsReturnObject();
     }
   }
 
-  private assignGroups(data: GroupStageResponse): void {
-    this.groups = data.groups ?? [];
-    this.knockoutStage = data.knockout ?? null;
-
+  private assignGroups(data: Group[]): void {
+    this.groups = data ?? [];
     this.groupsSubject.next(this.groups);
-    this.knockoutSubject.next(this.knockoutStage);
   }
 
   private generateGroupsReturnObject(): GroupStageResponse {
-    return {
-      groups: [...this.groups],
-      knockout: this.knockoutStage ? { ...this.knockoutStage } : undefined,
-    };
+    return { groups: [...this.groups] };
   }
+
 
   private normalizeMatch(raw: any): IMatch {
     return {
