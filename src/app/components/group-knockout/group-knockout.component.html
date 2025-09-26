@@ -1,6 +1,6 @@
 <div class="group-knockout-wrapper pt-5">
   <section class="board-section mt-5">
-    <app-group-knockout-board [players]="boardPlayers"></app-group-knockout-board>
+    <app-group-knockout-board [groups]="groups"></app-group-knockout-board>
     <div class="buttons-home-matches" aria-label="group-knockout-actions">
       <div class="button-container mt-3">
         <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match">

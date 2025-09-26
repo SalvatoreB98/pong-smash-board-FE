@@ -7,6 +7,15 @@
             <input id="date" type="date" class="my-placeholder" formControlName="date" required>
         </div>
 
+        <!-- GIRONE -->
+        <div class="mt-3" *ngIf="isGroupKnockout()">
+            <label for="groupId" class="my-placeholder">{{ 'group_knockout_board_group' | translate }}</label>
+            <select id="groupId" class="my-placeholder" formControlName="groupId" required>
+                <option [ngValue]="null">{{ 'select_group' | translate }}</option>
+                <option *ngFor="let group of groups" [ngValue]="group.id">{{ group.name }}</option>
+            </select>
+        </div>
+
         <!-- GIOCATORI -->
         <div class="row mt-3">
             <div class="col-md-6">

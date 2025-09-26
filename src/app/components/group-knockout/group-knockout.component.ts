@@ -7,6 +7,7 @@ import { ICompetition } from '../../../api/competition.api';
 import { TranslatePipe } from '../../utils/translate.pipe';
 import { ModalService } from '../../../services/modal.service';
 import { GroupKnockoutBoardComponent } from './group-knockout-board.component';
+import { Group } from '../../interfaces/group.interface';
 
 @Component({
   selector: 'app-group-knockout',
@@ -22,7 +23,7 @@ import { GroupKnockoutBoardComponent } from './group-knockout-board.component';
 })
 export class GroupKnockoutComponent {
   @Input() rounds: EliminationRound[] = [];
-  @Input() boardPlayers: IPlayer[] = [];
+  @Input() groups: Group[] = [];
   @Input() qualifiedPlayers: IPlayer[] = [];
   @Input() competition: ICompetition | null = null;
 

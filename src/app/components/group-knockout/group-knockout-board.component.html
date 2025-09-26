@@ -3,40 +3,42 @@
     <h2 id="group-knockout-board-title" class="board__title">
       {{ 'group_knockout_board_title' | translate }}
     </h2>
-    <span class="board__count" *ngIf="players.length">{{ players.length }} {{ 'players' | translate }}</span>
+    <span class="board__count" *ngIf="totalPlayers">{{ totalPlayers }} {{ 'players' | translate }}</span>
   </header>
 
-  <ng-container *ngIf="groupedPlayers?.length; else emptyState">
-    <div *ngFor="let group of groupedPlayers">
+  <ng-container *ngIf="groups?.length; else emptyState">
+    <div *ngFor="let group of groups; trackBy: trackByGroup">
       <h3 class="board__group-title">
-        {{ 'group_knockout_board_group' | translate }} {{ group.name }}
+        {{ group.name }}
       </h3>
       <div class="board__table">
         <div class="board__table-header">
           <span class="board__th">{{ 'group_knockout_board_player' | translate }}</span>
           <span class="board__th">{{ 'group_knockout_board_wins' | translate }}</span>
           <span class="board__th">{{ 'group_knockout_board_losses' | translate }}</span>
+          <span class="board__th">{{ 'group_knockout_board_points_for' | translate }}</span>
           <span class="board__th">{{ 'group_knockout_board_points' | translate }}</span>
         </div>
-        <div class="board__table-row" *ngFor="let playerRow of group.players; let i = index; trackBy: trackByPlayer">
+        <div class="board__table-row" *ngFor="let player of group.players; let i = index; trackBy: trackByPlayer">
           <div class="board__td board__player-info">
             <span class="board__position">{{ i + 1 }}</span>
-            <div class="board__avatar" *ngIf="playerRow.image_url; else initials">
-              <img [src]="playerRow.image_url" [alt]="playerRow.nickname || playerRow.name" loading="lazy" />
+            <div class="board__avatar" *ngIf="player.imageUrl; else initials">
+              <img [src]="player.imageUrl" [alt]="player.nickname || player.name" loading="lazy" />
             </div>
             <ng-template #initials>
-              <span class="board__avatar board__avatar--initials">{{ getInitials(playerRow) }}</span>
+              <span class="board__avatar board__avatar--initials">{{ getInitials(player) }}</span>
             </ng-template>
             <div class="board__info">
-              <span class="board__name">{{ playerRow.nickname || playerRow.name }}</span>
-              <span class="board__meta" *ngIf="playerRow.nickname && playerRow.name">
-                {{ playerRow.name }} <ng-container *ngIf="playerRow.lastname">{{ playerRow.lastname }}</ng-container>
+              <span class="board__name">{{ player.nickname || player.name }}</span>
+              <span class="board__meta" *ngIf="player.nickname && player.name">
+                {{ player.name }} <ng-container *ngIf="player.surname">{{ player.surname }}</ng-container>
               </span>
             </div>
           </div>
-          <div class="board__td">{{ playerRow.victories || 0 }}</div>
-          <div class="board__td">{{ playerRow.defeats || 0 }}</div>
-          <div class="board__td">{{ playerRow.points || 0 }}</div>
+          <div class="board__td">{{ player.wins || 0 }}</div>
+          <div class="board__td">{{ player.losses || 0 }}</div>
+          <div class="board__td">{{ player.points || 0 }}</div>
+          <div class="board__td">{{ player.scoreDifference ?? 0 }}</div>
         </div>
       </div>
     </div>
