@@ -22,7 +22,7 @@
                         <div class="buttons-home-matches">
                             <div class="button-container mt-3">
                                 <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
-                                    class="add-match">
+                                    class="add-match p-2 text-center">
                                     {{ "add_match" | translate}}
                                     <span class="m-1"></span>
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
@@ -33,7 +33,7 @@
                             </div>
                             <div class="button-container">
                                 <div>
-                                    <button type="button" class="bg-secondary position-relative"
+                                    <button type="button" class="bg-secondary position-relative p-2 text-center"
                                         (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
                                         {{ "add_manual_set_points" | translate }}
                                         <div class="circle-live"></div>
