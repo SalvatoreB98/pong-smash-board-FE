@@ -28,11 +28,11 @@
                 <strong>{{ maxSets }}</strong>
             </div>
             <div class="col-6">
-                <input type="number" formControlName="p1Score" min="0" max="99" [placeholder]="'score1' | translate"
+                <input type="number" inputmode="numeric" formControlName="p1Score" min="0" max="99" [placeholder]="'score1' | translate"
                     (input)="updateContainers($event)" (change)="sanitizeInput('p1Score')">
             </div>
             <div class="col-6">
-                <input type="number" formControlName="p2Score" min="0" max="99" [placeholder]="'score2' | translate"
+                <input type="number" inputmode="numeric" formControlName="p2Score" min="0" max="99" [placeholder]="'score2' | translate"
                     (input)="updateContainers($event)" (change)="sanitizeInput('p2Score')">
             </div>
             <div class="text-danger" style="min-height: 1.5em;">
@@ -53,10 +53,10 @@
                     <div class="input-container" *ngFor="let set of setsPoints.controls; let i = index"
                         [formGroup]="getSetFormGroup(i)">
 
-                        <input class="top" type="number" formControlName="player1Points" [min]="0"
+                        <input class="top" inputmode="numeric" type="number" formControlName="player1Points" [min]="0"
                             [max]="competition?.pointsType || maxPoints" />
 
-                        <input class="bottom" type="number" formControlName="player2Points" [min]="0"
+                        <input class="bottom" inputmode="numeric" type="number" formControlName="player2Points" [min]="0"
                             [max]="competition?.pointsType || maxPoints" />
                     </div>
                 </div>
