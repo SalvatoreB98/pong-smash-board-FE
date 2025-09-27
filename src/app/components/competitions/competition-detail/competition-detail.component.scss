@@ -8,13 +8,6 @@
   max-width: 37.5em;
   margin: auto;
   background: $dark;
-
-  app-dropdown {
-    position: absolute;
-    top: 3em;
-    right: 1em;
-    cursor: pointer;
-  }
 }
 
 .top {
@@ -56,6 +49,12 @@
     font-size: 2em;
     margin: 0;
   }
+}
+
+.top__actions {
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
 
 .competition-players-container {
@@ -125,6 +124,45 @@
     }
   }
 
+}
+
+.detail-actions {
+  margin-top: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1em;
+
+  #add-players-button {
+    flex: 1 1 auto;
+    min-width: 12.5em;
+  }
+}
+
+@media (max-width: 40rem) {
+  .competition-detail {
+    padding: 2em 1.5em;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+  }
+
+  .top__actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .detail-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    #add-players-button {
+      width: 100%;
+    }
+  }
 }
 
 @keyframes highlight {

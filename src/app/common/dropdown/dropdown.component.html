@@ -1,15 +1,32 @@
-<div class="relative inline-block text-left">
-    <!-- Dots button -->
-    <button class="dots" (click)="toggle()" *ngIf="!isOpen">...</button>
+<div class="dropdown" [class.open]="isOpen">
+  <button
+    type="button"
+    class="dropdown__trigger"
+    (click)="toggle()"
+    aria-haspopup="true"
+    [attr.aria-expanded]="isOpen"
+    [attr.aria-label]="isOpen ? 'Chiudi menu azioni' : 'Apri menu azioni'"
+  >
+    <span class="dropdown__trigger-visual" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
 
-    <!-- Dropdown menu -->
-    <div *ngIf="isOpen" class="dropdown-dots d-flex flex-column">
-        <button *ngFor="let a of actions" (click)="select(a.value)"
-            [style]="a.value === 'delete' ? 'color: var(--contrast);' : ''">
-            <div class="d-flex justify-content-left" style="gap: 0.625em;">
-                <span *ngIf="a.icon" [innerHTML]="a.icon"></span>
-                 {{ a.label }}
-            </div>
-        </button>
-    </div>
+  <div *ngIf="isOpen" class="dropdown__panel" role="menu">
+    <button
+      *ngFor="let a of actions"
+      type="button"
+      (click)="select(a.value)"
+      class="dropdown__item"
+      role="menuitem"
+      [class.dropdown__item--danger]="a.value === 'delete'"
+    >
+      <div class="dropdown__item-content">
+        <span *ngIf="a.icon" class="dropdown__item-icon" [innerHTML]="a.icon"></span>
+        <span class="dropdown__item-label">{{ a.label }}</span>
+      </div>
+    </button>
+  </div>
 </div>
