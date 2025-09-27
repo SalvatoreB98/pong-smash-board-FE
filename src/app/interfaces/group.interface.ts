@@ -9,7 +9,7 @@ export interface Group {
 }
 
 export interface GroupPlayer {
-  playerId: string;
+  id: string;
   name: string;
   surname?: string;
   nickname?: string;
@@ -33,7 +33,7 @@ export interface KnockoutStageData {
 
 export function mapGroupPlayerToIPlayer(player: GroupPlayer): IPlayer {
   return {
-    id: Number(player.playerId),
+    id: Number(player.id),
     name: player.name,
     lastname: player.surname,
     nickname: player.nickname,

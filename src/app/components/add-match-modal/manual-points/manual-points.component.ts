@@ -285,7 +285,7 @@ export class ManualPointsComponent implements OnChanges, OnInit {
     }
 
     return groups.find(group => {
-      const members = new Set(group.players.map(member => Number(member.playerId)));
+      const members = new Set(group.players.map(member => Number(member.id)));
       const player1Ok = !this.player1 || members.has(Number(this.player1.id));
       const player2Ok = !this.player2 || members.has(Number(this.player2.id));
       return player1Ok && player2Ok;
@@ -493,7 +493,7 @@ export class ManualPointsComponent implements OnChanges, OnInit {
       player2Points: s.player2 ?? s.player2 ?? 0
     }));
 
-    const formData: Record<string, unknown> = {
+    const formData: { [key: string]: any; p1Score: number; p2Score: number; groupId?: string | null } = {
       date: formattedDate,
       player1: this.player1.id,
       player2: this.player2.id,
@@ -503,7 +503,7 @@ export class ManualPointsComponent implements OnChanges, OnInit {
     };
 
     if (this.isGroupMode && this.selectedGroupId) {
-      formData['groupId'] = this.selectedGroupId;
+      formData.groupId = this.selectedGroupId;
     }
 
     this.dataService.addMatch(formData).then(() => {

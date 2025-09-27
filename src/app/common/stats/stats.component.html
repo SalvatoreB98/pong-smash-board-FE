@@ -69,7 +69,7 @@
         <div class="bars">
           <div
             class="bar left player1"
-            [class.winner]="row.scored1 > row.scored2"
+            [class.winner]="row.scored1 >= row.scored2"
             [style.width.%]="barWidth(row.scored1, row.scored1 + row.scored2)">
           </div>
           <div

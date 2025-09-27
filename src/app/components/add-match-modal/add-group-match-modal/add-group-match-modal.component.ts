@@ -160,7 +160,7 @@ export class AddGroupMatchModalComponent implements OnInit {
     }
 
     return this.groups.find(group => {
-      const members = new Set(group.players.map(player => Number(player.playerId)));
+      const members = new Set(group.players.map(player => Number(player.id)));
       const player1Ok = !this.player1 || members.has(Number(this.player1.id));
       const player2Ok = !this.player2 || members.has(Number(this.player2.id));
       return player1Ok && player2Ok;

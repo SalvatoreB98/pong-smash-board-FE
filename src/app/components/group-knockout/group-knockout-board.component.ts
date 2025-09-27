@@ -21,7 +21,7 @@ export class GroupKnockoutBoardComponent {
   }
 
   trackByPlayer(_index: number, player: GroupPlayer) {
-    return player.playerId;
+    return player.id;
   }
 
   getInitials(player: GroupPlayer): string {
