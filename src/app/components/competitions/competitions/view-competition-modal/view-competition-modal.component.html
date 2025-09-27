@@ -1,52 +1,84 @@
-<div class="summary">
+<div class="summary competition-modal animate-in">
+  <div class="modal-heading">
     <h3>{{ competition?.name }}</h3>
-    <ul>
-        <li>
-            <span>{{ "best_of" | translate }}</span>
-            <span>{{ competition?.['sets_type'] }}</span>
-        </li>
-        <li>
-            <span>{{ "points_number" | translate }}</span>
-            <span>{{ competition?.['points_type'] }}</span>
-        </li>
-        <li>
-            <span>{{ "type" | translate }}</span>
-            <span class="competition-type">
-                {{ ('competition_type_' + (competition?.type || 'league')) | translate }}
-                <i [ngClass]="['fa-solid', getCompetitionTypeIcon(competition?.type)]"></i>
-            </span>
-        </li>
-        <li *ngIf="competition?.management !== 'admin'">
-            <span>{{ "invitation_code" | translate }}</span>
-            <span class="code">{{ competition?.['code'] }}</span>
-        </li>
-        <li>
-            <span>{{ "players" | translate }}</span>
-            <span>
-                <ng-container *ngIf="!isEmpty(competition?.['players']); else noPlayers">
-                    <span *ngFor="let p of competition?.['players']; let last = last">
-                        {{ p.nickname }}<span *ngIf="!last">, </span>
-                    </span>
-                </ng-container>
-                <ng-template #noPlayers>
-                    {{ "no_players" | translate }}
-                </ng-template>
-            </span>
-        </li>
-    </ul>
-    <div class="d-flex justify-content-center mt-3">
-        <div class="button-container">
-            <button type="button" class="cancel" (click)="modalService.closeModal()">
-                {{ "close" | translate }}
-            </button>
-        </div>
-        <div class="button-container d-flex justify-content-center">
-            <button type="button" class="button-primary-ping" id="add-players-button"
-                (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
-                {{ "add_players" | translate }}
-                <i class="fa-solid fa-users ms-2"></i>
-                <i class="fa-solid fa-plus"></i>
-            </button>
-        </div>
+    <p class="meta-created" *ngIf="competition?.created_at">
+      {{ competition?.created_at | date: 'medium' }}
+    </p>
+  </div>
+
+  <div class="meta-grid">
+    <div class="meta-item">
+      <span class="meta-icon" aria-hidden="true">🏆</span>
+      <div class="meta-content">
+        <span class="label">{{ "best_of" | translate }}</span>
+        <span class="value">{{ competition?.['sets_type'] }}</span>
+      </div>
     </div>
+
+    <div class="meta-item">
+      <span class="meta-icon" aria-hidden="true">🎯</span>
+      <div class="meta-content">
+        <span class="label">{{ "points_number" | translate }}</span>
+        <span class="value">{{ competition?.['points_type'] }}</span>
+      </div>
+    </div>
+
+    <div class="meta-item">
+      <span class="meta-icon" aria-hidden="true">📂</span>
+      <div class="meta-content">
+        <span class="label">{{ "type" | translate }}</span>
+        <span class="value competition-type">
+          {{ ('competition_type_' + (competition?.type || 'league')) | translate }}
+          <i [ngClass]="['fa-solid', getCompetitionTypeIcon(competition?.type)]"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="meta-item" *ngIf="competition?.['admin']">
+      <span class="meta-icon" aria-hidden="true">👤</span>
+      <div class="meta-content">
+        <span class="label">{{ "admin" | translate }}</span>
+        <span class="value">{{ competition?.['admin']?.nickname || competition?.['admin']?.name }}</span>
+      </div>
+    </div>
+
+    <div class="meta-item" *ngIf="competition?.management !== 'admin'">
+      <span class="meta-icon" aria-hidden="true">🔐</span>
+      <div class="meta-content">
+        <span class="label">{{ "invitation_code" | translate }}</span>
+        <span class="value code">{{ competition?.['code'] }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="players-section">
+    <div class="section-header">
+      <h4>{{ "players" | translate }}</h4>
+    </div>
+
+    <ng-container *ngIf="!isEmpty(competition?.['players']); else noPlayers">
+      <div class="players-grid">
+        <div class="player-card" *ngFor="let p of competition?.['players']">
+          <div class="player-avatar" aria-hidden="true">
+            {{ p.nickname | slice:0:2 | uppercase }}
+          </div>
+          <span class="player-nickname">{{ p.nickname }}</span>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noPlayers>
+      <p class="empty-state">{{ "no_players" | translate }}</p>
+    </ng-template>
+  </div>
+
+  <div class="actions">
+    <button type="button" class="cta button-primary-ping" id="add-players-button"
+      (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
+      <i class="fa-solid fa-user-plus"></i>
+      <span>+ {{ "add_players" | translate }}</span>
+    </button>
+    <button type="button" class="cancel" (click)="modalService.closeModal()">
+      {{ "close" | translate }}
+    </button>
+  </div>
 </div>
