@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { combineLatest, map } from 'rxjs';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
@@ -63,15 +63,16 @@ export class CompetitionsComponent {
   constructor(
     public modalService: ModalService,
     private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
+
   ) {
     this.createForm();
   }
 
-  ngOnInit() {
-    this.competitionService.getCompetitions().then((data) => {
-      this.competitionDetail = data[0];
-      console.log('[Competitions] competitions loaded', data);
-    });
+  async ngOnInit() {
+    const data = await this.competitionService.getCompetitions();
+    this.competitionDetail = { ...data[0] };
+    this.cdr.detectChanges();
   }
 
   createForm() {
@@ -98,8 +99,8 @@ export class CompetitionsComponent {
 
     switch (action) {
       case 'edit':
+        this.competitionDetail = { ...competition };
         this.modalService.openModal('editCompetitionModal');
-        this.competitionDetail = competition;
         break;
       case 'favorite':
         this.competitionService.updateActiveCompetition(competition.id).subscribe();
@@ -110,8 +111,8 @@ export class CompetitionsComponent {
         });
         break;
       case 'details':
+        this.competitionDetail = { ...competition };
         this.modalService.openModal('viewCompetitionModal');
-        this.competitionDetail = competition;
         break;
     }
   }
@@ -130,5 +131,9 @@ export class CompetitionsComponent {
   }
   onDeleteCancelled() {
     this.modalService.closeModal();
+  }
+  updateCompetitionDetail(competition: ICompetition) {
+    this.competitionDetail = { ...competition };
+    this.cdr.detectChanges();
   }
 }

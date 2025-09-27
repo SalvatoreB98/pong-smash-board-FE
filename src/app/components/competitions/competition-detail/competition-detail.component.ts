@@ -28,7 +28,7 @@ export class CompetitionDetailComponent {
     console.log('Competition input changed:', this.competition);
   }
   @Output() actionSelected = new EventEmitter<{ action: string, competition: ICompetition | null }>();
-
+  @Output() changeCompetitionSelected = new EventEmitter<ICompetition>();
   copied: boolean = false;
   private competitionService = inject(CompetitionService);
   activeCompetition$ = this.competitionService.activeCompetition$;
@@ -40,11 +40,16 @@ export class CompetitionDetailComponent {
 
   ngOnInit() {
     console.log('CompetitionDetailComponent initialized with competition:', this.competition?.id);
+    this.activeCompetition$.subscribe(comp => {
+      console.log('Active competition updated:', comp);
+      this.competition = comp;
+    });
   }
 
   isEmpty(array: any): boolean {
     return !array || (Array.isArray(array) && array.length === 0);
   }
+  
   onDropdownAction(action: string) {
     if (!this.competition?.id) {
       return;
@@ -60,6 +65,7 @@ export class CompetitionDetailComponent {
         });
         break;
       case 'details':
+        this.changeCompetitionSelected.emit(this.competition);
         this.modalService.openModal(this.detailsModalName);
         break;
       case 'edit':
