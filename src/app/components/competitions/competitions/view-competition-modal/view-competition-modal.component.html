@@ -59,8 +59,8 @@
     <ng-container *ngIf="!isEmpty(competition?.['players']); else noPlayers">
       <div class="players-grid">
         <div class="player-card" *ngFor="let p of competition?.['players']">
-          <div class="player-avatar" aria-hidden="true">
-            {{ p.nickname | slice:0:2 | uppercase }}
+          <div class="player-avatar" aria-hidden="true" [ngStyle]="{'background-image': 'url(' + (p.image_url || '/default-player.jpg') + ')'}">
+            {{ p.nickname | slice:0:2 | uppercase }} 
           </div>
           <span class="player-nickname">{{ p.nickname }}</span>
         </div>
