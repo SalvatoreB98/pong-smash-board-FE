@@ -34,7 +34,7 @@ type MatchWithContext = IMatch & {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent],
+  imports: [CommonModule, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

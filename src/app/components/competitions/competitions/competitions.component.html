@@ -51,18 +51,20 @@
                                 <p class="no-players">{{ "no_players_small" | translate }}</p>
                             </ng-template>
 
-                            <div class="button-container">
-                                <button type="button" class="button-primary-ping"
-                                    (click)="modalService.openModal(modalService.MODALS['VIEW_COMPETITION']); competitionDetail = c;">
-                                    {{ "visualize" | translate }} <i class="fa-solid fa-eye ms-2"></i>
-                                </button>
-                            </div>
+                            <div class="comp__actions">
+                                <div class="button-container">
+                                    <button type="button" class="button-primary-ping"
+                                        (click)="modalService.openModal(modalService.MODALS['VIEW_COMPETITION']); competitionDetail = c;">
+                                        {{ "visualize" | translate }} <i class="fa-solid fa-eye ms-2"></i>
+                                    </button>
+                                </div>
 
-                            <app-dropdown [actions]="[
-                                { label: 'Set as favorite', value: 'favorite', icon: '<i class=\'fa-solid fa-star\'></i>' },
-                                { label: 'Details', value: 'details', icon: '<i class=\'fa-solid fa-circle-info\'></i>' },
-                                { label: 'Delete', value: 'delete', icon: '<i class=\'fa-solid fa-trash\'></i>' }
-                            ]" (actionSelected)="onDropdownAction($event, c)"></app-dropdown>
+                                <app-dropdown [actions]="[
+                                    { label: 'Set as favorite', value: 'favorite', icon: '<i class=\'fa-solid fa-star\'></i>' },
+                                    { label: 'Details', value: 'details', icon: '<i class=\'fa-solid fa-circle-info\'></i>' },
+                                    { label: 'Delete', value: 'delete', icon: '<i class=\'fa-solid fa-trash\'></i>' }
+                                ]" (actionSelected)="onDropdownAction($event, c)"></app-dropdown>
+                            </div>
                         </div>
                     </ng-container>
                 </div>
