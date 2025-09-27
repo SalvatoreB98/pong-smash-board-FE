@@ -2,6 +2,34 @@
   display: block;
 }
 
+.other-competitions-container {
+  position: static !important;
+  /* non creare stacking */
+  overflow: visible !important;
+  /* lascia uscire il menu */
+}
+
+.comp {
+  overflow: visible;
+  /* idem */
+  z-index: auto;
+}
+
+.dropdown__panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 9999;
+  /* sopra le card */
+}
+.dropdown__panel {
+  position: fixed !important;
+  top: auto !important;
+  left: auto !important;
+  transform: translate(var(--x, 0), var(--y, 0));
+  z-index: 99999 !important;
+}
+
 .dropdown {
   display: flex;
   flex-direction: column;
@@ -12,6 +40,7 @@
   margin-left: auto;
   visibility: visible;
   opacity: 1;
+  position: relative;
 }
 
 .dropdown__trigger {
@@ -26,8 +55,6 @@
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(6px);
   transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
-
   &:hover {
     transform: scale(0.96);
     background: rgba(255, 255, 255, 0.12);
@@ -104,8 +131,8 @@
 
 @media (max-width: 40rem) {
   .dropdown {
-    width: 100%;
     align-items: stretch;
+    position: relative;
   }
 
   .dropdown__trigger {
@@ -115,5 +142,6 @@
   .dropdown__panel {
     width: 100%;
     max-width: none;
+    position: relative;
   }
 }
