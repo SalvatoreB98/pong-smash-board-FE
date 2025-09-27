@@ -10,6 +10,8 @@
   position: relative;
   width: min-content;
   margin-left: auto;
+  visibility: visible;
+  opacity: 1;
 }
 
 .dropdown__trigger {
@@ -51,7 +53,7 @@
 }
 
 .dropdown__panel {
-  position: relative;
+  position: absolute;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;

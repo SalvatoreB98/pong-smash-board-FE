@@ -1,32 +1,19 @@
 <div class="dropdown" [class.open]="isOpen">
-  <button
-    type="button"
-    class="dropdown__trigger"
-    (click)="toggle()"
-    aria-haspopup="true"
-    [attr.aria-expanded]="isOpen"
-    [attr.aria-label]="isOpen ? 'Chiudi menu azioni' : 'Apri menu azioni'"
-  >
+  <button type="button" class="dropdown__trigger" (click)="toggle()" aria-haspopup="true" [attr.aria-expanded]="isOpen"
+    [attr.aria-label]="isOpen ? 'Chiudi menu azioni' : 'Apri menu azioni'">
     <span class="dropdown__trigger-visual" aria-hidden="true">
       <span></span>
       <span></span>
       <span></span>
     </span>
   </button>
-
-  <div *ngIf="isOpen" class="dropdown__panel" role="menu">
-    <button
-      *ngFor="let a of actions"
-      type="button"
-      (click)="select(a.value)"
-      class="dropdown__item"
-      role="menuitem"
-      [class.dropdown__item--danger]="a.value === 'delete'"
-    >
-      <div class="dropdown__item-content">
-        <span *ngIf="a.icon" class="dropdown__item-icon" [innerHTML]="a.icon"></span>
-        <span class="dropdown__item-label">{{ a.label }}</span>
-      </div>
-    </button>
-  </div>
+</div>
+<div *ngIf="isOpen" class="dropdown__panel" role="menu">
+  <button *ngFor="let a of actions" type="button" (click)="select(a.value)" class="dropdown__item" role="menuitem"
+    [class.dropdown__item--danger]="a.value === 'delete'">
+    <div class="dropdown__item-content">
+      <span *ngIf="a.icon" class="dropdown__item-icon" [innerHTML]="a.icon"></span>
+      <span class="dropdown__item-label">{{ a.label }}</span>
+    </div>
+  </button>
 </div>
