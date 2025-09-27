@@ -34,10 +34,6 @@
                             <!-- Players -->
                             <div class="players-section">
                                 <div *ngIf="hasPlayers(c?.players); else noPlayers">
-                                    <div class="players-count">
-                                        {{ c?.players?.length }}
-                                        {{ c?.players?.length == 1 ? ('player' | translate) : ('players' | translate) }}
-                                    </div>
                                     <div class="players-list">
                                         <img class="avatar" *ngFor="let player of c?.players"
                                             [src]="player.image_url || '/default-player.jpg'"
