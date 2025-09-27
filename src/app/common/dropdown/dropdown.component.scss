@@ -12,8 +12,8 @@
     }
 
     position: absolute;
-    bottom: 0;
-    right: 0;
+    right: env(safe-area-inset-right);
+    bottom: env(safe-area-inset-bottom);
 }
 
 .relative {
