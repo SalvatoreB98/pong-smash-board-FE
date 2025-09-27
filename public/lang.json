@@ -791,6 +791,10 @@
         "it": "Modifica competizione",
         "en": "Edit competition"
     },
+    "close": {
+        "it": "Chiudi",
+        "en": "Close"
+    },
     "is_part_of_competition": {
         "it": "Vuoi partecipare alla competizione come giocatore?",
         "en": "Do you want to join the competition as a player?"
