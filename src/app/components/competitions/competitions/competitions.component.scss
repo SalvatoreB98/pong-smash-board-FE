@@ -25,7 +25,10 @@
         border-radius: $border-radius;
         filter: drop-shadow(0em 0em 0.625em black);
         padding: 1em;
-        padding-bottom: 2em;
+        padding-bottom: 1.5em;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
 
         &.add {
             cursor: pointer;
@@ -79,6 +82,7 @@
 }
 
 .players-section {
+    position: relative;
     background: $gradient;
     border-radius: $border-radius;
     overflow: hidden;
@@ -106,10 +110,46 @@
     font-size: 0.7em;
 }
 
-app-dropdown {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+.comp__actions {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75em;
+
+    .button-container {
+        margin: 0;
+        flex: 1 1 auto;
+
+        button {
+            width: 100%;
+        }
+    }
+
+    .menu-trigger {
+        border: none;
+        background: rgba(15, 23, 42, 0.65);
+        color: #f8fafc;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 999px;
+        font-size: 1.5rem;
+        transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 0.75rem 2rem rgba(15, 23, 42, 0.3);
+
+        &:hover {
+            transform: scale(0.96);
+            background: rgba(15, 23, 42, 0.85);
+        }
+
+        &:focus-visible {
+            outline: 2px solid rgba(56, 189, 248, 0.8);
+            outline-offset: 2px;
+        }
+    }
 }
 
 @media screen and (max-width: 37.5em) {
@@ -122,6 +162,19 @@ app-dropdown {
     .others {
         .comp {
             width: 100%;
+            gap: 0.75em;
+        }
+    }
+
+    .comp__actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        .menu-trigger {
+            width: 100%;
+            font-size: 1.25rem;
+            height: 3rem;
+            border-radius: 0.75rem;
         }
     }
 }

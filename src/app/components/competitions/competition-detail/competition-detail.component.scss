@@ -8,13 +8,6 @@
   max-width: 37.5em;
   margin: auto;
   background: $dark;
-
-  app-dropdown {
-    position: absolute;
-    top: 3em;
-    right: 1em;
-    cursor: pointer;
-  }
 }
 
 .top {
@@ -56,6 +49,12 @@
     font-size: 2em;
     margin: 0;
   }
+}
+
+.top__actions {
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
 
 .competition-players-container {
@@ -125,6 +124,77 @@
     }
   }
 
+}
+
+.detail-actions {
+  margin-top: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1em;
+
+  #add-players-button {
+    flex: 1 1 auto;
+    min-width: 12.5em;
+  }
+
+  .menu-trigger {
+    border: none;
+    background: rgba(15, 23, 42, 0.65);
+    color: #f8fafc;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    font-size: 1.5rem;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0.75rem 2rem rgba(15, 23, 42, 0.3);
+
+    &:hover {
+      transform: scale(0.96);
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(56, 189, 248, 0.8);
+      outline-offset: 2px;
+    }
+  }
+}
+
+@media (max-width: 40rem) {
+  .competition-detail {
+    padding: 2em 1.5em;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+  }
+
+  .top__actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .detail-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    #add-players-button {
+      width: 100%;
+    }
+
+    .menu-trigger {
+      width: 100%;
+      border-radius: 0.75rem;
+      height: 3rem;
+      font-size: 1.25rem;
+    }
+  }
 }
 
 @keyframes highlight {

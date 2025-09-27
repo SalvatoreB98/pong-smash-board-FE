@@ -22,16 +22,17 @@
       <div>
         <h1>{{ competition?.name }}</h1>
       </div>
-      <button *ngIf="competition?.management !== 'admin'" class="invitation-code-container button flex-column"
-        type="button" (click)="copyCode()">
-        <div>{{"invitation_code" | translate}}: </div>
-        <div class="value code">{{ competition?.['code'] }}</div>
-      </button>
+      <div class="top__actions" *ngIf="competition?.management !== 'admin'">
+        <button class="invitation-code-container button flex-column"
+          type="button" (click)="copyCode()">
+          <div>{{"invitation_code" | translate}}: </div>
+          <div class="value code">{{ competition?.['code'] }}</div>
+        </button>
+      </div>
     </div>
     <div>
       <span>{{ "type" | translate }}: </span>
-      <span class="value competition-type">{{ ('competition_type_' + (competition?.type || 'league')) | translate
-        }}</span>
+      <span class="value competition-type">{{ ('competition_type_' + (competition?.type || 'league')) | translate }}</span>
       <i [ngClass]="['fa-solid', getCompetitionTypeIcon(competition?.type)]"></i>
     </div>
 
@@ -48,25 +49,27 @@
         </div>
       </div>
     </div>
-    <div class="d-flex flex-column">
-      <div>
-        <div >
-          <button class="button-primary-ping" id="add-players-button"
-            (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
-            {{ "add_players" | translate }}
-            <i class="fa-solid fa-users ms-2"></i>
-            <i class="fa-solid fa-plus"></i>
-          </button>
-        </div>
-      </div>
-      <div>
-      </div>
+
+    <div class="detail-actions">
+      <button class="button-primary-ping" id="add-players-button"
+        (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
+        {{ "add_players" | translate }}
+        <i class="fa-solid fa-users ms-2"></i>
+        <i class="fa-solid fa-plus"></i>
+      </button>
+
+      <button
+        #detailMenuTrigger
+        type="button"
+        class="menu-trigger"
+        aria-haspopup="true"
+        [attr.aria-label]="'actions' | translate"
+        (click)="dropdownService.open(detailMenuActions, detailMenuTrigger)"
+        [attr.data-competition-id]="competition?.id ?? ''"
+        data-dropdown-source="competition-detail"
+      >
+        <span aria-hidden="true">⋮</span>
+      </button>
     </div>
   </div>
-  <app-dropdown [actions]="[
-                                { label: 'Set as favorite', value: 'favorite', icon: '<i class=\'fa-solid fa-star\'></i>' },
-                                { label: 'Details', value: 'details', icon: '<i class=\'fa-solid fa-circle-info\'></i>' },
-                                { label: 'Delete', value: 'delete', icon: '<i class=\'fa-solid fa-trash\'></i>' }
-                            ]" (actionSelected)="onDropdownAction($event)"></app-dropdown>
 </div>
-
