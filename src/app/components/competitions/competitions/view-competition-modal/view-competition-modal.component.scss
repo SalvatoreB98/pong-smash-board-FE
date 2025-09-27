@@ -1,5 +1,6 @@
+@use '../../../../../style/variables.scss' as *;
+
 .summary.competition-modal {
-  background: linear-gradient(145deg, #0f172a, #1e293b);
   color: #e2e8f0;
   border-radius: 20px;
   padding: 2rem;
@@ -143,12 +144,13 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.4), rgba(34, 197, 94, 0.9));
-  color: #0f172a;
+  color: white;
+  text-shadow: 1px 1px 4px #000000b0;
   font-weight: 700;
   font-size: 1.25rem;
   text-transform: uppercase;
-  box-shadow: 0 12px 25px rgba(34, 197, 94, 0.35);
+  background-size: cover;
+
 }
 
 .player-nickname {
@@ -173,41 +175,7 @@
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-}
-
-.actions button {
-  border-radius: 999px;
-  padding: 0.9rem 1.75rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  transition: transform 200ms ease, box-shadow 200ms ease;
-}
-
-.actions .cta {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: #0f172a;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  box-shadow: 0 20px 40px rgba(34, 197, 94, 0.35);
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 24px 45px rgba(34, 197, 94, 0.45);
-  }
-}
-
-.actions .cancel {
-  background: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
-  border: 1px solid rgba(248, 113, 113, 0.45);
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 35px rgba(248, 113, 113, 0.25);
-    background: rgba(239, 68, 68, 0.2);
-  }
-}
+} 
 
 @keyframes fadeIn {
   from {
@@ -244,4 +212,11 @@
     width: 100%;
     justify-content: center;
   }
+}
+.summary {
+    position: relative;
+    background: transparent;
+    filter: none;
+    box-shadow: none;
+    border: none;
 }
