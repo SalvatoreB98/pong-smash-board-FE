@@ -1,10 +1,11 @@
 <div class="modal-overlay">
-    <div #modalRef class="my-modal" [class.transparent]="transparent" [class.small]="isSmall" [class.fullscreen]="fullscreen">
+    <div #modalRef class="my-modal" [class.transparent]="transparent" [class.small]="isSmall"
+        [class.fullscreen]="fullscreen">
         <button class="close" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
         <h2>{{label | translate}}</h2>
         <ng-content></ng-content>
-        <button *ngIf="!transparent" class="fullscreen-btn" (click)="toggleFullscreen()">
-            <i  class="fa" [class]="fullscreen ? 'fa-compress' : 'fa-expand'" style="font-size: 1.5em;"></i>
-        </button>
     </div>
+    <button *ngIf="!transparent" class="fullscreen-btn" (click)="toggleFullscreen()">
+        <i class="fa" [class]="fullscreen ? 'fa-compress' : 'fa-expand'" style="font-size: 1.5em;"></i>
+    </button>
 </div>

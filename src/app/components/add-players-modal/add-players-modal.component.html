@@ -99,6 +99,9 @@
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         </li>
+                        <div *ngIf="playersToAdd.length === 0" class="text-center p-2" style="opacity: 0.4;">
+                            {{ 'no_players_added' | translate }}
+                        </div>
                     </ul>
 
                     <div *ngIf="playersToAdd.length > 0" class="button-container mt-3">

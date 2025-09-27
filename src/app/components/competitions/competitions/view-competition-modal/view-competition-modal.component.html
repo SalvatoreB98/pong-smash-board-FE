@@ -75,9 +75,9 @@
     <button type="button" class="cta button-primary-ping" id="add-players-button"
       (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
       <i class="fa-solid fa-user-plus"></i>
-      <span>+ {{ "add_players" | translate }}</span>
+      <span> {{ "add_players" | translate }}</span>
     </button>
-    <button type="button" class="cancel" (click)="modalService.closeModal()">
+    <button type="button" class="cancel text-center" (click)="modalService.closeModal()">
       {{ "close" | translate }}
     </button>
   </div>
