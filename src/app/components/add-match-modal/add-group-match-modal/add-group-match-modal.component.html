@@ -1,0 +1,92 @@
+<app-step-indicator [activeStep]="step" [totalSteps]="totalSteps"></app-step-indicator>
+<div class="modal-content">
+  <ng-container [ngSwitch]="step">
+    <form *ngSwitchCase="1" class="form-dark" [formGroup]="groupForm" (ngSubmit)="onContinueToMatch()">
+      <label for="groupId" class="my-placeholder">{{ 'group_knockout_board_group' | translate }}</label>
+      <select id="groupId" class="my-placeholder" formControlName="groupId" required>
+        <option [ngValue]="null">{{ 'select_group' | translate }}</option>
+        <option *ngFor="let group of groups" [ngValue]="group.id">{{ group.name }}</option>
+      </select>
+      <div class="modal-buttons d-flex justify-content-end mt-4">
+        <button type="submit" class="btn btn-primary">{{ 'continue' | translate }}</button>
+      </div>
+    </form>
+
+    <form *ngSwitchCase="2" class="form-dark" [formGroup]="matchForm" (ngSubmit)="addMatch($event)">
+      <div class="selected-group" *ngIf="selectedGroup">
+        <span>{{ 'group_knockout_board_group' | translate }}: <strong>{{ selectedGroup.name }}</strong></span>
+        <button type="button" class="link" (click)="onBackToGroupSelection()">
+          {{ 'edit' | translate }}
+        </button>
+      </div>
+
+      <div>
+        <label for="date" class="my-placeholder">{{ 'date' | translate }}</label>
+        <input id="date" type="date" class="my-placeholder" formControlName="date" required>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'" [initialPlayer]="player1"
+            (playerSelected)="setPlayer($event)">
+          </app-select-player>
+        </div>
+        <div class="col-md-6">
+          <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'" [initialPlayer]="player2"
+            (playerSelected)="setPlayer($event)">
+          </app-select-player>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="info">
+          {{ 'best_of' | translate }}
+          <strong>{{ maxSets }}</strong>
+        </div>
+        <div class="col-6">
+          <input type="number" inputmode="numeric" formControlName="p1Score" min="0" max="99"
+            [placeholder]="'score1' | translate" (input)="updateContainers()" (change)="sanitizeInput('p1Score')">
+        </div>
+        <div class="col-6">
+          <input type="number" inputmode="numeric" formControlName="p2Score" min="0" max="99"
+            [placeholder]="'score2' | translate" (input)="updateContainers()" (change)="sanitizeInput('p2Score')">
+        </div>
+        <div class="text-danger" style="min-height: 1.5em;">
+          <div *ngFor="let error of errorsOfSets">{{ error | translate }}</div>
+        </div>
+      </div>
+
+      <label class="d-flex mt-4 mb-3 justify-content-center" style="max-width: 300px; margin: auto;">
+        <span style="margin-right: 1em">{{ 'Add set points' | translate }}</span>
+        <input type="checkbox" formControlName="isShowSetsPointsTrue" (change)="updateContainers()">
+      </label>
+
+      <div class="row" *ngIf="isShowSetsPointsTrue">
+        <div class="wrapper-points">
+          <div class="input-container-wrapper d-flex justify-content-center">
+            <div class="input-container" *ngFor="let set of setsPoints.controls; let i = index"
+              [formGroup]="getSetFormGroup(i)">
+              <input class="top" inputmode="numeric" type="number" formControlName="player1Points" [min]="0"
+                [max]="competition?.pointsType || maxPoints" />
+              <input class="bottom" inputmode="numeric" type="number" formControlName="player2Points" [min]="0"
+                [max]="competition?.pointsType || maxPoints" />
+            </div>
+          </div>
+        </div>
+        <div class="text-danger text-center mt-2" style="min-height: 1.5em;">
+          <div *ngFor="let error of errorsOfPoints">{{ 'Problem' | translate }}: {{ error | translate }}</div>
+        </div>
+      </div>
+
+      <div class="modal-buttons d-flex justify-content-between mt-3">
+        <button type="button" class="button-close" (click)="closeModal()">
+          {{ 'cancel' | translate }}
+        </button>
+        <button type="submit"
+          [disabled]="matchForm.invalid || errorsOfSets.length > 0 || errorsOfPoints.length > 0 || isSending">
+          {{ 'add_match' | translate }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</div>

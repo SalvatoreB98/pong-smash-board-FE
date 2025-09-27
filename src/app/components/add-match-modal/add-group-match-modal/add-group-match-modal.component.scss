@@ -1,0 +1,39 @@
+@use '../../../../style/variables.scss' as *;
+
+:host {
+  display: block;
+}
+
+.form-dark input.top {
+  margin-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.form-dark input.bottom {
+  margin-bottom: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.selected-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  .link {
+    background: none;
+    border: none;
+    color: $primary;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+}
+
+.info {
+  opacity: 0.5;
+  font-size: 0.7em;
+  margin-bottom: 5px;
+}

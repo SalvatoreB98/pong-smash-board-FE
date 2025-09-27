@@ -1,6 +1,10 @@
 @use '../../../../style/variables.scss' as *;
 
 .manual-points {
+    .group-form {
+        margin-top: 1rem;
+    }
+
     .container-points {
         padding: 5em;
         display: grid;
@@ -84,6 +88,19 @@
         margin: auto;
     }
 
+}
+
+.step-actions {
+    align-items: center;
+
+    .link {
+        background: none;
+        border: none;
+        color: $primary;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 0;
+    }
 }
 
 .microphone-container {

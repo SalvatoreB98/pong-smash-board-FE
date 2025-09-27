@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MatchesComponent } from './matches/matches.component';
 import { CompetitionMode, IMatch } from '../interfaces/matchesInterfaces';
 import { DataService } from '../../services/data.service';
 import { AddMatchModalComponent } from './add-match-modal/add-match-modal.component';
@@ -10,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { MODALS, MSG_TYPE } from '../utils/enum';
 import { TranslatePipe } from '../utils/translate.pipe';
 import { BottomNavbarComponent } from '../common/bottom-navbar/bottom-navbar.component';
-import { StatsComponent } from '../common/stats/stats.component';
 import { inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { CompetitionService } from '../../services/competitions.service';
@@ -24,6 +22,8 @@ import { ICompetition } from '../../api/competition.api';
 import { Router } from '@angular/router';
 import { GroupKnockoutComponent } from './group-knockout/group-knockout.component';
 import { Group, KnockoutStageData, mapGroupPlayerToIPlayer } from '../interfaces/group.interface';
+import { LeagueBoardComponent } from './home/league-board/league-board.component';
+import { AddGroupMatchModalComponent } from './add-match-modal/add-group-match-modal/add-group-match-modal.component';
 
 type MatchWithContext = IMatch & {
   competitionType?: CompetitionMode;
@@ -34,7 +34,7 @@ type MatchWithContext = IMatch & {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, BottomNavbarComponent, MatchesComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, StatsComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent],
+  imports: [CommonModule, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, TranslatePipe, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
