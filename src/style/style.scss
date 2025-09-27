@@ -338,7 +338,7 @@ section {
             left: 100%;
             transition: all 0.1s ease-in-out;
             filter: drop-shadow(0em 0em 0.625em #282828);
-            z-index: 9000;
+            z-index: 12;
 
             &:hover {
                 transform: scale(0.95);
@@ -463,7 +463,7 @@ button.secondary-color-button {
     right: 0%;
     transition: all 0.1s ease-in-out;
     filter: drop-shadow(0em 0em 0.625em #282828);
-    z-index: 9000;
+    z-index: 12;
     padding: 0;
 
     &:hover {
@@ -473,4 +473,22 @@ button.secondary-color-button {
 
     margin: 1em;
 
+}
+.menu-trigger {
+    all: unset;
+    margin-left: auto;
+    max-width: 2.75rem;
+    cursor: pointer;
+    font-size: 1.5em!important;
+    padding: 0.5em;
+    border: 0.5px solid rgba(148, 163, 184, 0.25);
+    border-radius: $border-radius;
+    width: 2.75rem;
+    height: 2.75rem;
+    text-align: center;
+    display: grid;
+    place-items: center;
+    &:hover {
+        background: rgba(148, 163, 184, 0.18);
+    }
 }

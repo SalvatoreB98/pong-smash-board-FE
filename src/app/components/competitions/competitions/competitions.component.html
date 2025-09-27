@@ -51,14 +51,7 @@
                                 <p class="no-players">{{ "no_players_small" | translate }}</p>
                             </ng-template>
 
-                            <div class="comp__actions">
-                                <div class="button-container">
-                                    <button type="button" class="button-primary-ping"
-                                        (click)="modalService.openModal(modalService.MODALS['VIEW_COMPETITION']); competitionDetail = c;">
-                                        {{ "visualize" | translate }} <i class="fa-solid fa-eye ms-2"></i>
-                                    </button>
-                                </div>
-
+                            <div class="comp__actions" style="text-align: right;">
                                 <button
                                     #competitionMenuTrigger
                                     type="button"

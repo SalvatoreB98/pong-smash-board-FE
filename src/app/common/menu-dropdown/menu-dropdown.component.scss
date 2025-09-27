@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 2000;
+  z-index: 10;
 }
 
 .menu-dropdown {
@@ -17,8 +17,6 @@
   gap: 0.25rem;
   padding: 0.5rem;
   border-radius: 0.75rem;
-  background: rgba(15, 23, 42, 0.92);
-  border: 1px solid rgba(148, 163, 184, 0.25);
   box-shadow: 0 1.25rem 3rem rgba(15, 23, 42, 0.45);
   min-width: 11rem;
   max-width: min(18rem, calc(100vw - 2rem));
@@ -28,6 +26,8 @@
   transition: opacity 0.15s ease, transform 0.15s ease;
   opacity: 1;
   backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.597);
+  animation: fadeIn 0.2s ease;
 }
 
 .menu-dropdown__item {
@@ -78,7 +78,16 @@
 @media (max-width: 40rem) {
   .menu-dropdown__panel {
     left: 50% !important;
-    transform: translateX(-50%);
     min-width: min(20rem, calc(100vw - 2rem));
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
