@@ -139,7 +139,7 @@ export class AddMatchModalComponent implements OnInit {
     if (this.isGroupKnockout() && selectedGroupId) {
       const group = this.groups.find(g => g.id === selectedGroupId);
       if (group) {
-        const allowedIds = new Set(group.players.map(member => Number(member.playerId)));
+        const allowedIds = new Set(group.players.map(member => Number(member.id)));
         filteredPlayers = filteredPlayers.filter(p => allowedIds.has(Number(p.id)));
       }
     }

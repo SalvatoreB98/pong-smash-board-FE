@@ -1,100 +1,120 @@
 <div class="manual-points" [ngClass]="{ mobile: isMobile, desktop: !isMobile }">
-    <ng-container *ngIf="!selectingPlayer && !isCompleted()">
-        <div class="sets-container">
-            {{player1SetsPoints}} - {{player2SetsPoints}}
-        </div>
-        <div class="microphone-container text-center">
-            <app-voice-score (scoreChanged)="onScoreChanged($event)"></app-voice-score>
-        </div>
-        <div class="container-points">
-            <div #effectLeft class="points box box1">
-                <button class="tap" (click)="changePoint(1)">
-                    <span class="big-point">{{player1Points}}</span>
-                    <div class="player-indicator left">
-                        <img [src]="player1?.image_url || './default-player.jpg'" alt="">
-                        <div> {{ player1?.nickname }}</div>
-                    </div>
-                </button>
-                <button class="minus" (click)="subtractPoint(1)"><i class="fa-solid fa-minus"></i></button>
-            </div>
-            <div #effectRight class="points box box2">
-                <button class="tap" (click)="changePoint(2)">
-                    <span class="big-point">{{player2Points}}</span>
-                    <div class="player-indicator right">
-                        <img [src]="player2?.image_url || './default-player.jpg'" alt="">
-                        <div> {{ player2?.nickname }}</div>
-                    </div>
-                </button>
-                <button class="minus" (click)="subtractPoint(2)"><i class="fa-solid fa-minus"></i></button>
-            </div>
+  <app-step-indicator [activeStep]="step" [totalSteps]="totalSteps"></app-step-indicator>
+
+  <form *ngIf="isGroupSelectionStep && !isCompleted()" class="form-dark group-form" [formGroup]="groupForm">
+    <label for="groupId" class="my-placeholder">{{ 'group_knockout_board_group' | translate }}</label>
+    <select id="groupId" class="my-placeholder" formControlName="groupId" required>
+      <option [ngValue]="null">{{ 'select_group' | translate }}</option>
+      <option *ngFor="let group of availableGroups" [ngValue]="group.id">{{ group.name }}</option>
+    </select>
+    <div class="modal-buttons d-flex justify-content-end mt-4">
+      <button type="button" class="btn btn-primary" (click)="onGroupContinue()" [disabled]="groupForm.invalid">
+        {{ 'continue' | translate }}
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="isPlayerSelectionStep && !isPointsStep && !isCompleted()" class="container my-4">
+    <form class="form-dark" [formGroup]="playersForm">
+      <p class="text-center mb-4">
+        {{ 'manual_points_description' | translate }}
+      </p>
+
+      <div class="row align-items-center justify-content-center">
+        <div class="col-12 col-md-5 mb-3 mb-md-0">
+          <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'" [initialPlayer]="player1"
+            (playerSelected)="setPlayer($event)">
+          </app-select-player>
         </div>
 
-        <div class="actions">
-            <button type="button" *ngIf="!isCompleted()" class="bg-primary" (click)="onSave()"
-                [disabled]="isPointsError(player1Points, player2Points, maxPoints)">
-                {{'save_points' | translate}}
-            </button>
-
-            <button type="button" class="reset" (click)="onReset()">
-                {{'reset_points' | translate}}
-            </button>
+        <div class="col-12 col-md-2 text-center mb-3 mb-md-0 fw-bold">
+          {{ 'vs' | translate }}
         </div>
-    </ng-container>
 
-    <div *ngIf="selectingPlayer && !isCompleted()" class="container my-4">
-        <form class="form-dark" [formGroup]="playersForm">
-            <p class="text-center mb-4">
-                {{ 'manual_points_description' | translate }}
-            </p>
+        <div class="col-12 col-md-5">
+          <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'" [initialPlayer]="player2"
+            (playerSelected)="setPlayer($event)">
+          </app-select-player>
+        </div>
+      </div>
 
-            <div class="row align-items-center justify-content-center">
-                <!-- Player 1 -->
-                <div class="col-12 col-md-5 mb-3 mb-md-0">
-                    <app-select-player [players]="getPlayers(1)" [playerNumber]="'1'" [initialPlayer]="player1"
-                        (playerSelected)="setPlayer($event)">
-                    </app-select-player>
-                </div>
+      <div class="d-flex justify-content-center mt-4">
+        <button type="button" class="btn btn-primary px-4 position-relative" (click)="onPlayersContinue()"
+          [disabled]="playersForm.invalid">
+          {{ 'continue' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
 
-                <!-- VS -->
-                <div class="col-12 col-md-2 text-center mb-3 mb-md-0 fw-bold">
-                    {{ 'vs' | translate }}
-                </div>
-
-                <!-- Player 2 -->
-                <div class="col-12 col-md-5">
-                    <app-select-player [players]="getPlayers(2)" [playerNumber]="'2'" [initialPlayer]="player2"
-                        (playerSelected)="setPlayer($event)">
-                    </app-select-player>
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-center mt-4">
-                <button type="button" class="btn btn-primary px-4 position-relative" (click)="onContinue()"
-                    [disabled]="playersForm.invalid">
-                    {{ 'continue' | translate }}
-                </button>
-            </div>
-        </form>
+  <ng-container *ngIf="isPointsStep && !isCompleted()">
+    <div class="step-actions d-flex justify-content-between mb-3">
+      <div *ngIf="selectedGroup" class="selected-group">
+        <span>{{ 'group_knockout_board_group' | translate }}: <strong>{{ selectedGroup.name }}</strong></span>
+        <button type="button" class="link" *ngIf="showGroupControls" (click)="onGroupBack()">{{ 'edit' | translate }}</button>
+      </div>
+      <button type="button" class="link" (click)="onPlayersBack()">{{ 'edit' | translate }}</button>
     </div>
 
-    <div *ngIf="isCompleted()">
-        <div class="summary mt-5" *ngIf="sets.length > 0">
-            <h3>{{ 'match_summary' | translate }}</h3>
-            <ul>
-                <li *ngFor="let set of sets; let i = index">
-                    <span>Set {{ i + 1 }}</span>
-                    <span>{{ set.player1 }} - {{ set.player2 }}</span>
-                </li>
-                <li class="total">
-                    <span>Total</span>
-                    <span>{{ player1SetsPoints }} - {{ player2SetsPoints }}</span>
-                </li>
-            </ul>
-        </div>
-        <div class="actions mt-5">
-            <button type="button" class="secondary" (click)="saveMatch($event.target)">
-                {{'completed_match_save' | translate}}
-            </button>
-        </div>
+    <div class="sets-container">
+      {{ player1SetsPoints }} - {{ player2SetsPoints }}
     </div>
+    <div class="microphone-container text-center">
+      <app-voice-score (scoreChanged)="onScoreChanged($event)"></app-voice-score>
+    </div>
+    <div class="container-points">
+      <div #effectLeft class="points box box1">
+        <button class="tap" (click)="changePoint(1)">
+          <span class="big-point">{{ player1Points }}</span>
+          <div class="player-indicator left">
+            <img [src]="player1?.image_url || './default-player.jpg'" alt="">
+            <div>{{ player1?.nickname }}</div>
+          </div>
+        </button>
+        <button class="minus" (click)="subtractPoint(1)"><i class="fa-solid fa-minus"></i></button>
+      </div>
+      <div #effectRight class="points box box2">
+        <button class="tap" (click)="changePoint(2)">
+          <span class="big-point">{{ player2Points }}</span>
+          <div class="player-indicator right">
+            <img [src]="player2?.image_url || './default-player.jpg'" alt="">
+            <div>{{ player2?.nickname }}</div>
+          </div>
+        </button>
+        <button class="minus" (click)="subtractPoint(2)"><i class="fa-solid fa-minus"></i></button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="bg-primary" (click)="onSave()"
+        [disabled]="isPointsError(player1Points, player2Points, maxPoints)">
+        {{ 'save_points' | translate }}
+      </button>
+
+      <button type="button" class="reset" (click)="onReset()">
+        {{ 'reset_points' | translate }}
+      </button>
+    </div>
+  </ng-container>
+
+  <div *ngIf="isCompleted()">
+    <div class="summary mt-5" *ngIf="sets.length > 0">
+      <h3>{{ 'match_summary' | translate }}</h3>
+      <ul>
+        <li *ngFor="let set of sets; let i = index">
+          <span>Set {{ i + 1 }}</span>
+          <span>{{ set.player1 }} - {{ set.player2 }}</span>
+        </li>
+        <li class="total">
+          <span>Total</span>
+          <span>{{ player1SetsPoints }} - {{ player2SetsPoints }}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="actions mt-5">
+      <button type="button" class="secondary" (click)="saveMatch($event.target)">
+        {{ 'completed_match_save' | translate }}
+      </button>
+    </div>
+  </div>
 </div>

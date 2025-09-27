@@ -1,66 +1,31 @@
 <div class="wrapper">
-    <ng-container *ngIf="userState$ | async as state">
-        <ng-container [ngSwitch]="activeCompetition?.type">
-            <ng-container *ngSwitchCase="'elimination'">
-                <div class="wrapper" *ngIf="competitionQualifiedPlayers.length >= 2 && activeCompetition">
-                    <app-elimination-bracket (playersSelected)="onClickRound($event)" [competition]="activeCompetition"
-                        [rounds]="eliminationRounds"></app-elimination-bracket>
-                </div>
-            </ng-container>
-            <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition"
-                [groups]="groups" [qualifiedPlayers]="competitionQualifiedPlayers"
-                [rounds]="eliminationRounds" (roundSelected)="onClickRound($event)"></app-group-knockout>
-            <ng-container *ngSwitchDefault>
-                <div class="league-wrapper">
-                    <p *ngIf="matches.length === 0" class="mt-4 text-center">
-                        {{ "matches_not_found" | translate }}
-                    </p>
-                    <section>
-                        <app-matches *ngIf="matches.length > 0" [matches]="matches"
-                            (matchEmitter)="setClickedMatch($event)">
-                        </app-matches>
-                        <div class="buttons-home-matches">
-                            <div class="button-container mt-3">
-                                <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
-                                    class="add-match p-2 text-center">
-                                    {{ "add_match" | translate}}
-                                    <span class="m-1"></span>
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </button>
-                                <p class="small text-center mt-3">
-                                    {{ "add_match_description" | translate }}
-                                </p>
-                            </div>
-                            <div class="button-container">
-                                <div>
-                                    <button type="button" class="bg-secondary position-relative p-2 text-center"
-                                        (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
-                                        {{ "add_manual_set_points" | translate }}
-                                        <div class="circle-live"></div>
-                                    </button>
-                                </div>
-                                <p class="small text-center mt-3">
-                                    {{ "add_manual_set_points_description" | translate }}
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-                    <section>
-                        <app-stats *ngIf="matches.length > 0"></app-stats>
-                    </section>
-                </div>
-            </ng-container>
-        </ng-container>
+  <ng-container *ngIf="userState$ | async">
+    <ng-container [ngSwitch]="activeCompetition?.type">
+      <app-elimination-bracket *ngSwitchCase="'elimination'" (playersSelected)="onClickRound($event)"
+        [competition]="activeCompetition" [rounds]="eliminationRounds"></app-elimination-bracket>
 
-        <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
+      <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition" [groups]="groups"
+        [qualifiedPlayers]="competitionQualifiedPlayers" [rounds]="eliminationRounds"
+        (roundSelected)="onClickRound($event)"></app-group-knockout>
+
+      <app-league-board *ngSwitchDefault [matches]="matches" (matchSelected)="setClickedMatch($event)">
+      </app-league-board>
     </ng-container>
+
+    <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
+  </ng-container>
 </div>
 
 <app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])"
-    [modalName]="modalService.MODALS['ADD_MATCH']">
+  [modalName]="modalService.MODALS['ADD_MATCH']">
+  <ng-container *ngIf="isGroupKnockoutMode; else standardMatchModal">
+    <app-add-group-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected"
+      [player1]="player1Selected" [player2]="player2Selected"></app-add-group-match-modal>
+  </ng-container>
+  <ng-template #standardMatchModal>
     <add-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="modalPlayers"
-        [groups]="groups"
-        [player1]="player1Selected" [player2]="player2Selected"></add-match-modal>
+      [groups]="groups" [player1]="player1Selected" [player2]="player2Selected"></add-match-modal>
+  </ng-template>
 </app-modal>
 
 <app-modal [label]="'match_details'" *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])"
@@ -70,7 +35,8 @@
 
 <app-modal [fullscreen]="true" [label]="'manual_points'"
     *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
-    [modalName]="modalService.MODALS['MANUAL_POINTS']" class="manual-points-modal">
-    <app-manual-points [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="modalPlayers"
-        [player1]="player1Selected" [player2]="player2Selected"></app-manual-points>
+  [modalName]="modalService.MODALS['MANUAL_POINTS']" class="manual-points-modal">
+  <app-manual-points [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="modalPlayers"
+    [player1]="player1Selected" [player2]="player2Selected" [groups]="groups"
+    [isGroupKnockout]="isGroupKnockoutMode"></app-manual-points>
 </app-modal>

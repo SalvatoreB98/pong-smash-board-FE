@@ -1,0 +1,19 @@
+@use '../../../../style/variables.scss' as *;
+
+:host {
+  display: block;
+}
+
+.league-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  padding-top: 1em;
+  padding-bottom: 5em;
+}
+
+.buttons-home-matches {
+  p {
+    color: rgb(141, 142, 142);
+  }
+}

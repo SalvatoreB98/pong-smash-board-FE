@@ -1,28 +1,30 @@
-import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 import { IPlayer } from '../../../../services/players.service';
 import { CompetitionService } from '../../../../services/competitions.service';
 import { ICompetition } from '../../../../api/competition.api';
 import { DataService } from '../../../../services/data.service';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectPlayerComponent } from '../../../utils/components/select-player/select-player.component';
 import { VoiceScoreComponent } from './voice-score/voice-score.component';
 import { ModalService } from '../../../../services/modal.service';
 import { LoaderService } from '../../../../services/loader.service';
 import { Utils } from '../../../utils/Utils';
+import { StepIndicatorComponent } from '../../../common/step-indicator/step-indicator.component';
+import { Group, mapGroupPlayerToIPlayer } from '../../../interfaces/group.interface';
 
 @Component({
   selector: 'app-manual-points',
-  imports: [SHARED_IMPORTS, SelectPlayerComponent, VoiceScoreComponent],
+  imports: [SHARED_IMPORTS, SelectPlayerComponent, VoiceScoreComponent, StepIndicatorComponent],
   templateUrl: './manual-points.component.html',
   styleUrl: './manual-points.component.scss'
 })
-export class ManualPointsComponent {
+export class ManualPointsComponent implements OnChanges, OnInit {
 
   @Output() close = new EventEmitter<any>();
   @ViewChild('effectLeft') effectLeft!: ElementRef;
   @ViewChild('effectRight') effectRight!: ElementRef;
-  @Input() isAlreadySelected: boolean = false;
+  @Input() isAlreadySelected = false;
 
   @Input() maxSets = 5;
   @Input() maxPoints = 21;
@@ -30,7 +32,10 @@ export class ManualPointsComponent {
   @Input() player2: IPlayer | null = null;
   @Input() player1: IPlayer | null = null;
   @Input() players: IPlayer[] = [];
+  @Input() groups: Group[] = [];
+  @Input() isGroupKnockout = false;
 
+  groupForm!: FormGroup;
   playersForm!: FormGroup;
 
   player1Points = 0;
@@ -39,45 +44,61 @@ export class ManualPointsComponent {
   player1SetsPoints = 0;
   player2SetsPoints = 0;
   sets: Array<{ player1: number; player2: number }> = [];
-  competitionService = inject(CompetitionService);
   competition: ICompetition | null = null;
   isMobile = false;
-  selectingPlayer: boolean = true;
 
-  constructor(private dataService: DataService, private fb: FormBuilder, private modalService: ModalService, private loaderService: LoaderService) { }
+  step = 1;
+  totalSteps = 2;
 
-  ngOnChanges() {
-    console.info('player1 value:', this.player1);
-    console.info('player2 value:', this.player2);
-    if (this.playersForm) {
-      this.playersForm.patchValue({
-        player1: this.player1 || null,
-        player2: this.player2 || null
-      });
+  private isGroupMode = false;
+  private groupsFromService: Group[] = [];
+  private skipPlayerReset = false;
+  private selectedGroupId: string | null = null;
+  private groupPlayers: IPlayer[] = [];
+
+  constructor(
+    private dataService: DataService,
+    private fb: FormBuilder,
+    private modalService: ModalService,
+    private loaderService: LoaderService,
+    private competitionService: CompetitionService,
+  ) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['player1'] || changes['player2']) {
+      if (this.playersForm) {
+        this.playersForm.patchValue({
+          player1: this.player1?.id ?? null,
+          player2: this.player2?.id ?? null,
+        }, { emitEvent: false });
+      }
+    }
+
+    if (changes['groups']) {
+      this.trySelectGroup();
     }
   }
 
-
   ngOnInit() {
     this.checkViewport();
+    this.initForms();
+    this.updateMode();
+
     this.competitionService.activeCompetition$.subscribe(comp => {
       this.competition = comp;
       this.maxPoints = this.competition?.['points_type'] || 21;
       this.initialMaxPoints = this.maxPoints;
       this.maxSets = this.competition?.['sets_type'] || 10;
+      this.updateMode();
     });
-    this.playersForm = this.fb.group({
-      player1: [this.player1?.id, Validators.required],
-      player2: [this.player2?.id, Validators.required]
+
+    this.dataService.groupsObs.subscribe(groups => {
+      this.groupsFromService = groups ?? [];
+      this.trySelectGroup();
     });
-    this.playersForm.valueChanges.subscribe((val) => {
-      this.player1 = this.players.find(p => p.id === val.player1) || null;
-      this.player2 = this.players.find(p => p.id === val.player2) || null;
-      console.log(val, this.player1, this.player2);
-    });
-    
+
     if (this.isAlreadySelected && this.player1 && this.player2) {
-      this.selectingPlayer = false;
+      this.step = this.totalSteps;
     }
   }
 
@@ -86,19 +107,235 @@ export class ManualPointsComponent {
     this.checkViewport();
   }
 
+  get isGroupSelectionStep(): boolean {
+    return this.isGroupMode && this.step === 1;
+  }
+
+  get isPlayerSelectionStep(): boolean {
+    return this.isGroupMode ? this.step === 2 : this.step === 1;
+  }
+
+  get isPointsStep(): boolean {
+    return this.step === this.totalSteps;
+  }
+
+  get showGroupControls(): boolean {
+    return this.isGroupMode;
+  }
+
+  get selectedGroup(): Group | null {
+    const groups = this.availableGroups;
+    return groups.find(group => group.id === this.selectedGroupId) ?? null;
+  }
+
+  get availablePlayers(): IPlayer[] {
+    if (this.isGroupMode) {
+      return this.groupPlayers.length ? this.groupPlayers : [];
+    }
+
+    return this.players ?? [];
+  }
+
+  get availableGroups(): Group[] {
+    return this.groups?.length ? this.groups : this.groupsFromService;
+  }
+
+  private initForms() {
+    this.groupForm = this.fb.group({
+      groupId: [null, Validators.required],
+    });
+
+    this.groupForm.get('groupId')?.valueChanges.subscribe(groupId => {
+      this.onGroupChanged(groupId ?? null);
+    });
+
+    this.playersForm = this.fb.group({
+      player1: [this.player1?.id ?? null, Validators.required],
+      player2: [this.player2?.id ?? null, Validators.required],
+    });
+
+    this.playersForm.valueChanges.subscribe(val => {
+      this.player1 = this.findPlayerById(val.player1);
+      this.player2 = this.findPlayerById(val.player2);
+    });
+  }
+
+  private updateMode() {
+    const competitionType = this.competition?.type ?? null;
+    this.isGroupMode = this.isGroupKnockout || competitionType === 'group_knockout';
+    this.totalSteps = this.isGroupMode ? 3 : 2;
+    this.step = Math.min(this.step, this.totalSteps);
+
+    if (!this.isGroupMode) {
+      this.selectedGroupId = null;
+      this.groupPlayers = [];
+    } else {
+      this.trySelectGroup();
+    }
+  }
+
   private checkViewport() {
-    this.isMobile = window.innerWidth <= 768 || window.innerWidth < window.innerHeight; // breakpoint mobile
+    this.isMobile = window.innerWidth <= 768 || window.innerWidth < window.innerHeight;
+  }
+
+  onGroupContinue() {
+    if (this.groupForm.invalid) {
+      this.groupForm.markAllAsTouched();
+      return;
+    }
+
+    this.step = Math.max(this.step, 2);
+  }
+
+  onPlayersContinue() {
+    if (this.playersForm.invalid) {
+      this.playersForm.markAllAsTouched();
+      return;
+    }
+
+    this.player1 = this.findPlayerById(this.playersForm.get('player1')?.value ?? null);
+    this.player2 = this.findPlayerById(this.playersForm.get('player2')?.value ?? null);
+
+    if (!this.player1 || !this.player2) {
+      return;
+    }
+
+    this.step = this.totalSteps;
+  }
+
+  private onGroupChanged(groupId: string | null) {
+    this.selectedGroupId = groupId;
+    this.updateGroupPlayers();
+    this.syncPlayersWithGroup();
+
+    if (this.isGroupMode && !this.skipPlayerReset) {
+      this.step = Math.min(this.step, this.totalSteps - 1);
+    }
+
+    this.skipPlayerReset = false;
+  }
+
+  private updateGroupPlayers() {
+    if (!this.isGroupMode || !this.selectedGroupId) {
+      this.groupPlayers = [];
+      return;
+    }
+
+    const groups = this.availableGroups;
+    const group = groups.find(item => item.id === this.selectedGroupId) ?? null;
+    this.groupPlayers = group ? group.players.map(mapGroupPlayerToIPlayer) : [];
+  }
+
+  private syncPlayersWithGroup() {
+    if (!this.isGroupMode) {
+      return;
+    }
+
+    const allowedIds = new Set(this.groupPlayers.map(player => Number(player.id)));
+
+    if (this.player1 && !allowedIds.has(Number(this.player1.id))) {
+      this.player1 = null;
+    }
+
+    if (this.player2 && !allowedIds.has(Number(this.player2.id))) {
+      this.player2 = null;
+    }
+
+    this.playersForm.patchValue({
+      player1: this.player1?.id ?? null,
+      player2: this.player2?.id ?? null,
+    }, { emitEvent: false });
+  }
+
+  private trySelectGroup() {
+    if (!this.isGroupMode) {
+      return;
+    }
+
+    const groups = this.availableGroups;
+    if (!groups.length) {
+      return;
+    }
+
+    if (this.selectedGroupId) {
+      this.updateGroupPlayers();
+      return;
+    }
+
+    const candidate = this.findGroupForPlayers(groups);
+    if (candidate) {
+      this.skipPlayerReset = true;
+      this.groupForm.patchValue({ groupId: candidate.id }, { emitEvent: true });
+      if (this.isAlreadySelected && this.player1 && this.player2) {
+        this.step = this.totalSteps;
+      }
+      return;
+    }
+
+    if (groups.length === 1) {
+      this.skipPlayerReset = true;
+      this.groupForm.patchValue({ groupId: groups[0].id }, { emitEvent: true });
+      return;
+    }
+  }
+
+  private findGroupForPlayers(groups: Group[]): Group | null {
+    if (!this.player1 && !this.player2) {
+      return null;
+    }
+
+    return groups.find(group => {
+      const members = new Set(group.players.map(member => Number(member.id)));
+      const player1Ok = !this.player1 || members.has(Number(this.player1.id));
+      const player2Ok = !this.player2 || members.has(Number(this.player2.id));
+      return player1Ok && player2Ok;
+    }) ?? null;
+  }
+
+  private findPlayerById(id: number | null): IPlayer | null {
+    if (id == null) {
+      return null;
+    }
+
+    const source = this.isGroupMode ? this.groupPlayers : this.players;
+    return source.find(player => Number(player.id) === Number(id)) ?? null;
+  }
+
+  getPlayers(player?: number): IPlayer[] {
+    const basePlayers = this.availablePlayers;
+    if (!basePlayers.length) {
+      return [];
+    }
+
+    const loggedInPlayerId = this.dataService.getLoggedInPlayerId();
+    let filtered = basePlayers.filter(p => Number(p.id) !== Number(loggedInPlayerId));
+
+    const selectedPlayer1 = this.playersForm.get('player1')?.value;
+    const selectedPlayer2 = this.playersForm.get('player2')?.value;
+
+    if (player === 1 && selectedPlayer2) {
+      filtered = filtered.filter(p => Number(p.id) !== Number(selectedPlayer2));
+    }
+
+    if (player === 2 && selectedPlayer1) {
+      filtered = filtered.filter(p => Number(p.id) !== Number(selectedPlayer1));
+    }
+
+    return filtered;
+  }
+
+  setPlayer(player: { playerNumber: number; id: number }) {
+    this.playersForm.get(`player${player.playerNumber}`)?.setValue(player.id);
   }
 
   onScoreChanged(event: { p1: number; p2: number }) {
-    // Clamp points to maxPoints
-    event.p1 = Math.min(event.p1, this.maxPoints + 1); // +1 per permettere il vantaggio
-    event.p2 = Math.min(event.p2, this.maxPoints + 1); // +1 per permettere il vantaggio
+    event.p1 = Math.min(event.p1, this.maxPoints + 1);
+    event.p2 = Math.min(event.p2, this.maxPoints + 1);
     if (this.effectLeft && this.effectLeft.nativeElement) {
-      if (this.player1Points != event.p1) {
+      if (this.player1Points !== event.p1) {
         this.triggerHighlight(this.effectLeft);
       }
-      if (this.player2Points != event.p2) {
+      if (this.player2Points !== event.p2) {
         this.triggerHighlight(this.effectRight);
       }
     }
@@ -107,9 +344,6 @@ export class ManualPointsComponent {
   }
 
   changePoint(player: number) {
-    console.log('Change point for player', player, this.player1Points, this.player2Points, this.player1, this.player2);
-
-    // Allow increment if under maxPoints, or if both at least maxPoints and difference < 2 (advantage rule)
     if (
       (player === 1 &&
         (this.player1Points < this.maxPoints ||
@@ -129,7 +363,6 @@ export class ManualPointsComponent {
         this.player2Points++;
         this.triggerHighlight(this.effectRight);
       }
-      // If both players reach maxPoints, increase maxPoints by 2 for advantage
       if (this.player1Points >= this.maxPoints && this.player2Points >= this.maxPoints && Math.abs(this.player1Points - this.player2Points) < 2) {
         this.maxPoints += 2;
       }
@@ -144,11 +377,9 @@ export class ManualPointsComponent {
       this.player2Points--;
       this.recalculateMaxPoints();
     }
-    console.log(this.maxPoints)
   }
 
   private recalculateMaxPoints() {
-    // Decrease maxPoints only if both players have at least initialMaxPoints - 1 and the difference is less than 2
     if (
       this.player1Points >= this.initialMaxPoints - 1 &&
       this.player2Points >= this.initialMaxPoints - 1 &&
@@ -159,35 +390,17 @@ export class ManualPointsComponent {
     }
   }
 
-  getPlayers(player?: number): any[] {
-    if (!this.players || this.players.length === 0) return [];
-
-    const loggedInPlayerId = this.dataService.getLoggedInPlayerId();
-    let filteredPlayers = this.players.filter(p => p.id !== loggedInPlayerId);
-
-    const selectedPlayer1 = this.playersForm.get('player1')?.value;
-    const selectedPlayer2 = this.playersForm.get('player2')?.value;
-
-    if (player === 1 && selectedPlayer2) {
-      filteredPlayers = filteredPlayers.filter(p => p.id !== selectedPlayer2);
+  onPlayersBack() {
+    if (this.isGroupMode) {
+      this.step = 2;
+      return;
     }
-
-    if (player === 2 && selectedPlayer1) {
-      filteredPlayers = filteredPlayers.filter(p => p.id !== selectedPlayer1);
-    }
-
-    return filteredPlayers;
+    this.step = 1;
   }
 
-  setPlayer(player: any) {
-    this.playersForm.get(`player${player.playerNumber}`)?.setValue(player.id);
-  }
-
-  onContinue() {
-    if (this.playersForm.valid) {
-      this.player1 = this.players.find(p => p.id === this.playersForm.get('player1')?.value) || null;
-      this.player2 = this.players.find(p => p.id === this.playersForm.get('player2')?.value) || null;
-      this.selectingPlayer = false;
+  onGroupBack() {
+    if (this.isGroupMode) {
+      this.step = 1;
     }
   }
 
@@ -208,7 +421,6 @@ export class ManualPointsComponent {
     this.player2Points = 0;
 
     this.maxPoints = this.initialMaxPoints;
-    // Trigger the highlight animation on reset for both players
     if (this.effectRight && this.effectRight.nativeElement) {
       this.triggerHighlight(this.effectRight);
     }
@@ -217,65 +429,52 @@ export class ManualPointsComponent {
     }
   }
 
-  // Restituisce true se la situazione dei punti NON è valida secondo le regole del vantaggio
   isPointsError(p1: number, p2: number, maxPoints: number): boolean {
-    // Caso iniziale
     if (p1 === 0 && p2 === 0) return true;
 
     const diff = Math.abs(p1 - p2);
     const max = Math.max(p1, p2);
     const min = Math.min(p1, p2);
-    // Entrambi sotto al maxPoints → nessun vincitore
     if (p1 < maxPoints && p2 < maxPoints) return true;
 
-    // Qualcuno ha raggiunto almeno maxPoints
     if (max >= maxPoints) {
-      // Per essere valido: differenza >= 2 e l'altro almeno a maxPoints - 1
       if (diff >= 2) {
-        console.log('isPointsError: diff < 2 or min < maxPoints - 1');
         if (p1 >= this.initialMaxPoints - 1 && p2 > this.initialMaxPoints - 1 && diff > 2) {
-          return true; // punteggio non valido
+          return true;
         }
-        return false; // punteggio valido
-
+        return false;
       }
-      console.log('isPointsError: diff < 2 or min < maxPoints - 1');
-      return true; // ancora non valido
+      return true;
     }
-    console.log('Unexpected case in isPointsError');
     return true;
   }
-  // Trigger highlight animation without flashes
+
   private triggerHighlight(el: ElementRef) {
     if (!el || !el.nativeElement) return;
 
     const element = el.nativeElement;
 
-    // reset animation
     element.style.animation = 'none';
-    element.offsetHeight; // force reflow
-    element.style.animation = ''; // restore
+    element.offsetHeight;
+    element.style.animation = '';
 
-    // reapply the class (keeps CSS control)
     element.classList.add(Utils.isIos() ? 'highlight-once-mobile' : 'highlight-once');
 
-    // quando finisce l’animazione la rimuovo
     element.addEventListener('animationend', () => {
       element.classList.remove(Utils.isIos() ? 'highlight-once-mobile' : 'highlight-once');
     }, { once: true });
   }
+
   isCompleted(): boolean {
     return this.player1SetsPoints >= this.maxSets || this.player2SetsPoints >= this.maxSets;
   }
-  saveMatch(target: EventTarget | null) {
 
-    // 1. Verifica che la partita sia completata
+  saveMatch(target: EventTarget | null) {
     if (!this.isCompleted()) {
       alert('La partita non è ancora conclusa!');
       return;
     }
 
-    // 2. Verifica che i giocatori siano selezionati
     if (!this.player1 || !this.player2) {
       alert('Seleziona entrambi i giocatori!');
       return;
@@ -283,7 +482,7 @@ export class ManualPointsComponent {
     if (target instanceof HTMLElement) {
       this.loaderService.addSpinnerToButton(target);
     }
-    // 3. Prepara data e ora
+
     const today = new Date();
     const formattedDate =
       today.toLocaleDateString('en-GB') +
@@ -294,19 +493,19 @@ export class ManualPointsComponent {
       player2Points: s.player2 ?? s.player2 ?? 0
     }));
 
-    // 4. Prepara l’oggetto da salvare
-    const formData = {
+    const formData: { [key: string]: any; p1Score: number; p2Score: number; groupId?: string | null } = {
       date: formattedDate,
       player1: this.player1.id,
       player2: this.player2.id,
-      p1Score: this.player1SetsPoints,  // set vinti da player1
-      p2Score: this.player2SetsPoints,  // set vinti da player2
-      setsPoints: setsData
+      p1Score: this.player1SetsPoints,
+      p2Score: this.player2SetsPoints,
+      setsPoints: setsData,
     };
 
-    console.log('Saving manual match...', formData);
+    if (this.isGroupMode && this.selectedGroupId) {
+      formData.groupId = this.selectedGroupId;
+    }
 
-    // 5. Chiamata al service
     this.dataService.addMatch(formData).then(() => {
       this.modalService.closeModal();
       if (target instanceof HTMLElement) {
