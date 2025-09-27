@@ -1,0 +1,26 @@
+<div class="menu-dropdown" [class.menu-dropdown--open]="isOpen()">
+  <div
+    *ngIf="isOpen()"
+    class="menu-dropdown__panel"
+    [style.top]="panelStyles().top"
+    [style.left]="panelStyles().left"
+    [style.transform-origin]="panelStyles().transformOrigin"
+    role="menu"
+    aria-label="Action menu"
+  >
+    <button
+      #menuItem
+      *ngFor="let action of actions(); trackBy: trackByValue"
+      type="button"
+      class="menu-dropdown__item"
+      role="menuitem"
+      [class.menu-dropdown__item--danger]="action.danger"
+      (click)="onActionSelected(action.value)"
+    >
+      <span class="menu-dropdown__item-content">
+        <span *ngIf="action.icon" class="menu-dropdown__item-icon" [innerHTML]="action.icon"></span>
+        <span class="menu-dropdown__item-label">{{ action.label }}</span>
+      </span>
+    </button>
+  </div>
+</div>
