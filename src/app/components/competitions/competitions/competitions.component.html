@@ -59,11 +59,18 @@
                                     </button>
                                 </div>
 
-                                <app-dropdown [actions]="[
-                                    { label: 'Set as favorite', value: 'favorite', icon: '<i class=\'fa-solid fa-star\'></i>' },
-                                    { label: 'Details', value: 'details', icon: '<i class=\'fa-solid fa-circle-info\'></i>' },
-                                    { label: 'Delete', value: 'delete', icon: '<i class=\'fa-solid fa-trash\'></i>' }
-                                ]" (actionSelected)="onDropdownAction($event, c)"></app-dropdown>
+                                <button
+                                    #competitionMenuTrigger
+                                    type="button"
+                                    class="menu-trigger"
+                                    aria-haspopup="true"
+                                    [attr.aria-label]="'actions' | translate"
+                                    (click)="dropdownService.open(competitionMenuActions, competitionMenuTrigger)"
+                                    [attr.data-competition-id]="c.id"
+                                    data-dropdown-source="competitions-list"
+                                >
+                                    <span aria-hidden="true">⋮</span>
+                                </button>
                             </div>
                         </div>
                     </ng-container>

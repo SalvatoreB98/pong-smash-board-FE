@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, inject, Input, Output } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 import { CompetitionType, ICompetition } from '../../../../api/competition.api';
 import { ModalService } from '../../../../services/modal.service';
@@ -9,6 +9,8 @@ import { TranslationService } from '../../../../services/translation.service';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
 import { ElementRef, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { DropdownAction, DropdownService } from '../../../../services/dropdown.service';
 
 @Component({
   selector: 'app-competition-detail',
@@ -16,7 +18,7 @@ import { ElementRef, ViewChild } from '@angular/core';
   templateUrl: './competition-detail.component.html',
   styleUrl: './competition-detail.component.scss'
 })
-export class CompetitionDetailComponent {
+export class CompetitionDetailComponent implements OnDestroy {
 
   @Input() competition: ICompetition | null = null;
 
@@ -31,12 +33,20 @@ export class CompetitionDetailComponent {
   @Output() changeCompetitionSelected = new EventEmitter<ICompetition>();
   copied: boolean = false;
   private competitionService = inject(CompetitionService);
+  public dropdownService = inject(DropdownService);
   activeCompetition$ = this.competitionService.activeCompetition$;
 
-  constructor(public modalService: ModalService, private loader: LoaderService, private translateService: TranslationService) { }
+  constructor(public modalService: ModalService, private loader: LoaderService, private translateService: TranslationService) {
+    this.registerDropdownHandlers();
+  }
 
   readonly detailsModalName = 'viewCompetitionModal';
   readonly editModalName = 'editCompetitionModal';
+  readonly detailMenuActions: DropdownAction[] = [
+    { label: 'Set as favorite', value: 'favorite', icon: '<i class="fa-solid fa-star"></i>' },
+    { label: 'Details', value: 'details', icon: '<i class="fa-solid fa-circle-info"></i>' },
+    { label: 'Delete', value: 'delete', icon: '<i class="fa-solid fa-trash"></i>', danger: true }
+  ];
 
   ngOnInit() {
     console.log('CompetitionDetailComponent initialized with competition:', this.competition?.id);
@@ -44,6 +54,10 @@ export class CompetitionDetailComponent {
       console.log('Active competition updated:', comp);
       this.competition = comp;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   isEmpty(array: any): boolean {
@@ -123,5 +137,37 @@ export class CompetitionDetailComponent {
   }
   onDeleteCancelled() {
     this.modalService.closeModal();
+  }
+
+  private subscriptions = new Subscription();
+  private dropdownAnchor?: HTMLElement;
+
+  private registerDropdownHandlers() {
+    this.subscriptions.add(
+      this.dropdownService.state$.subscribe((state) => {
+        if (!state) {
+          this.dropdownAnchor = undefined;
+          return;
+        }
+
+        if (state.anchor.dataset['dropdownSource'] !== 'competition-detail') {
+          this.dropdownAnchor = undefined;
+          return;
+        }
+
+        this.dropdownAnchor = state.anchor;
+      })
+    );
+
+    this.subscriptions.add(
+      this.dropdownService.action$.subscribe((value) => {
+        if (this.dropdownAnchor?.dataset['dropdownSource'] !== 'competition-detail') {
+          return;
+        }
+
+        this.onDropdownAction(value);
+        this.dropdownAnchor = undefined;
+      })
+    );
   }
 }

@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
-import { combineLatest, map } from 'rxjs';
+import { Subscription, combineLatest, map } from 'rxjs';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { BottomNavbarComponent } from '../../../common/bottom-navbar/bottom-navbar.component';
@@ -18,6 +18,7 @@ import { JoinCompetitionModalComponent } from '../../join-competition-modal/join
 import { ViewCompetitionModalComponent } from './view-competition-modal/view-competition-modal.component';
 import { EditCompetitionModalComponent } from './edit-competition-modal/edit-competition-modal.component';
 import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
+import { DropdownAction, DropdownService } from '../../../../services/dropdown.service';
 @Component({
   selector: 'app-competitions',
   standalone: true,
@@ -38,18 +39,25 @@ import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.c
   templateUrl: './competitions.component.html',
   styleUrls: ['./competitions.component.scss']
 })
-export class CompetitionsComponent {
+export class CompetitionsComponent implements OnDestroy {
 
   @ViewChild(CompetitionDetailComponent) competitionDetailComponent!: CompetitionDetailComponent;
   PROGRESS_STATE = UserProgressStateEnum;
   // services
   userService = inject(UserService);
   private competitionService = inject(CompetitionService);
+  public dropdownService = inject(DropdownService);
 
   // streams
   userState$ = this.userService.getState();           // observable dallo user
   competitions$ = this.competitionService.list$;      // observable delle competizioni
   activeCompetition$ = this.competitionService.activeCompetition$;
+
+  readonly competitionMenuActions: DropdownAction[] = [
+    { label: 'Set as favorite', value: 'favorite', icon: '<i class="fa-solid fa-star"></i>' },
+    { label: 'Details', value: 'details', icon: '<i class="fa-solid fa-circle-info"></i>' },
+    { label: 'Delete', value: 'delete', icon: '<i class="fa-solid fa-trash"></i>', danger: true }
+  ];
 
   competitionDetail: ICompetition = {
     id: 0, name: '', description: '', start_date: '', end_date: '',
@@ -67,6 +75,7 @@ export class CompetitionsComponent {
 
   ) {
     this.createForm();
+    this.registerDropdownHandlers();
   }
 
   async ngOnInit() {
@@ -82,6 +91,10 @@ export class CompetitionsComponent {
   }
 
   trackById = (_: number, c: ICompetition) => c.id;
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   normalizeDate(date: string = ''): string {
     return Utils.normalizeDate(date) || '';
@@ -135,5 +148,45 @@ export class CompetitionsComponent {
   updateCompetitionDetail(competition: ICompetition) {
     this.competitionDetail = { ...competition };
     this.cdr.detectChanges();
+  }
+
+  private subscriptions = new Subscription();
+  private dropdownContext: ICompetition | null = null;
+  private dropdownAnchor?: HTMLElement;
+
+  private registerDropdownHandlers() {
+    this.subscriptions.add(
+      this.dropdownService.state$.subscribe((state) => {
+        if (!state) {
+          this.dropdownAnchor = undefined;
+          this.dropdownContext = null;
+          return;
+        }
+
+        if (state.anchor.dataset['dropdownSource'] !== 'competitions-list') {
+          this.dropdownAnchor = undefined;
+          this.dropdownContext = null;
+          return;
+        }
+
+        this.dropdownAnchor = state.anchor;
+        const id = Number(state.anchor.dataset['competitionId']);
+        this.dropdownContext = Number.isFinite(id)
+          ? this.competitionService.snapshotList().find(c => c.id === id) ?? null
+          : null;
+      })
+    );
+
+    this.subscriptions.add(
+      this.dropdownService.action$.subscribe((value) => {
+        if (this.dropdownAnchor?.dataset['dropdownSource'] !== 'competitions-list' || !this.dropdownContext) {
+          return;
+        }
+
+        this.onDropdownAction(value, this.dropdownContext);
+        this.dropdownAnchor = undefined;
+        this.dropdownContext = null;
+      })
+    );
   }
 }

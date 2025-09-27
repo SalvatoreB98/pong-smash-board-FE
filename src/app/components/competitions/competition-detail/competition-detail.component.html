@@ -58,11 +58,18 @@
         <i class="fa-solid fa-plus"></i>
       </button>
 
-      <app-dropdown [actions]="[
-        { label: 'Set as favorite', value: 'favorite', icon: '<i class=\'fa-solid fa-star\'></i>' },
-        { label: 'Details', value: 'details', icon: '<i class=\'fa-solid fa-circle-info\'></i>' },
-        { label: 'Delete', value: 'delete', icon: '<i class=\'fa-solid fa-trash\'></i>' }
-      ]" (actionSelected)="onDropdownAction($event)"></app-dropdown>
+      <button
+        #detailMenuTrigger
+        type="button"
+        class="menu-trigger"
+        aria-haspopup="true"
+        [attr.aria-label]="'actions' | translate"
+        (click)="dropdownService.open(detailMenuActions, detailMenuTrigger)"
+        [attr.data-competition-id]="competition?.id ?? ''"
+        data-dropdown-source="competition-detail"
+      >
+        <span aria-hidden="true">⋮</span>
+      </button>
     </div>
   </div>
 </div>
