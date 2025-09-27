@@ -207,25 +207,44 @@ section {
 }
 
 // Scrollbar Styling
+/* Scrollbar generale */
 ::-webkit-scrollbar {
-    width: 0.4375em;
-    height: 0.4375em;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #0d0d0d;
+    /* dark background */
 }
 
+/* Track (binario) */
 ::-webkit-scrollbar-track {
-    background: none;
+    background: #0d0d0d;
+    /* stesso colore del contenitore */
 }
 
+/* Thumb (maniglia) */
 ::-webkit-scrollbar-thumb {
-    background: #ffffff31;
-    border-radius: 0.3125em;
-
-    &:hover {
-        background: $primary;
-        cursor: s-resize;
-    }
+    background: #444;
+    /* grigio scuro */
+    border-radius: 0.375rem;
+    /* 6px */
+    transition: background 0.3s ease;
 }
 
+/* Hover sul thumb */
+::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6;
+    /* primary (es. blu Tailwind) */
+}
+
+/* Corner (angolo in basso a dx quando ci sono entrambe le scroll) */
+::-webkit-scrollbar-corner {
+    background: #0d0d0d;
+}
+
+/* Resizer */
+::-webkit-resizer {
+    background: #222;
+}
 
 .wrapper-points {
     min-height: 6.375em;
