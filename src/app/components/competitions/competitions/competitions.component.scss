@@ -87,23 +87,27 @@
     border-radius: $border-radius;
     overflow: hidden;
     display: flex;
+    align-items: center;
     justify-content: center;
-    place-items: center;
-    padding: 0.5em;
+    padding: 0.5em 1em;
     margin-top: 1em;
     white-space: nowrap;
-    height: 3.125em;
+    height: 6em;
+    gap: 0.75em;
 
     p {
-        font-size: 0.7em;
-        margin-bottom: 0;
+        font-size: 0.85em;
+        margin: 0;
+        color: white;
     }
 
     img {
-        max-width: 1.875em;
-        max-height: 1.875em;
+        width: 3em;
+        height: 3em;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 0.5em;
     }
-
 }
 
 .no-players {
