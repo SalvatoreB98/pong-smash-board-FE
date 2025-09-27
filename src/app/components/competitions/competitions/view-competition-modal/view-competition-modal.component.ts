@@ -20,6 +20,7 @@ export class ViewCompetitionModalComponent {
 
   ngOnInit() {
     console.log('CompetitionDetailComponent initialized with competition:', this.competition?.id);
+    console.log('competition players', this.competition?.players);
   }
 
   isEmpty(array: any): boolean {

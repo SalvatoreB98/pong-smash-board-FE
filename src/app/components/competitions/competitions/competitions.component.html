@@ -11,7 +11,7 @@
         <!-- Dettaglio competizione attiva -->
         <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
             <section *ngIf="activeCompetition">
-                <app-competition-detail [competition]="activeCompetition"></app-competition-detail>
+                <app-competition-detail [competition]="activeCompetition" (changeCompetitionSelected)="updateCompetitionDetail($event)"></app-competition-detail>
             </section>
         </ng-container>
 
@@ -121,7 +121,7 @@
         <app-edit-competition-modal></app-edit-competition-modal>
     </app-modal>
 
-    <app-modal [transparent]="true" [isSmall]="true" [label]="''"
+    <app-modal [isSmall]="false" [label]="''"
         *ngIf="modalService.isActiveModal(modalService.MODALS['VIEW_COMPETITION'])"
         [modalName]="modalService.MODALS['VIEW_COMPETITION']">
         <app-view-competition-modal [competition]="competitionDetail"></app-view-competition-modal>
