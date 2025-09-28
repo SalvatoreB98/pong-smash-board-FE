@@ -73,6 +73,7 @@ export class CompetitionDetailComponent implements OnDestroy {
     switch (action) {
       case 'favorite':
         this.competitionService.updateActiveCompetition(this.competition.id).subscribe();
+        window.location.reload();
         break;
       case 'delete':
         this.competitionService.remove(this.competition.id).subscribe(() => {
