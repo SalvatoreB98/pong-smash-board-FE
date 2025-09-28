@@ -375,6 +375,10 @@
         "it": "Aggiungi giocatori",
         "en": "Add players"
     },
+    "add": {
+        "it": "Aggiungi",
+        "en": "Add"
+    },
     "partecipants": {
         "it": "Partecipanti",
         "en": "Participants"
@@ -1112,5 +1116,13 @@
     "footer_link": {
         "it": "Pagina di presentazione",
         "en": "Landing page"
+    },
+    "view_or_manage_matches": {
+        "it": "Visualizza o gestisci",
+        "en": "View or manage matches"
+    },
+    "avatar_upload_info": {
+        "it": "Clicca per caricare un'immagine (opzionale)",
+        "en": "Click to upload an image (optional)"
     }
 }

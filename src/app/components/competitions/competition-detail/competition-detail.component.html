@@ -1,75 +1,78 @@
 <div class="competition-detail">
-  <!-- Competizione attiva -->
+  <!-- Info competizione -->
+  <div class="info">
+    <div>{{ "best_of" | translate }}</div>
+    <div class="value">{{ competition?.['sets_type'] }}</div>
+    <div>{{ "points_number" | translate }}</div>
+    <div class="value">{{ competition?.['points_type'] }}</div>
+  </div>
+
+  <!-- Header -->
+  <div class="top">
+    <div>
+      <h1>{{ competition?.name }}</h1>
+    </div>
+    <div class="top__actions" *ngIf="competition?.management !== 'admin'">
+      <button class="invitation-code-container button flex-column" type="button" (click)="copyCode()">
+        <div>{{"invitation_code" | translate}}:</div>
+        <div class="value code">{{ competition?.['code'] }}</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tipologia -->
   <div>
-    <div class="info">
-      <div>
-        {{ "best_of" | translate }}
-      </div>
-      <div class="value">
-        {{ competition?.['sets_type'] }}
-      </div>
-      <div>
-        {{ "points_number" | translate }}
-      </div>
-      <div class="value">
-        {{ competition?.['points_type'] }}
+    <span>{{ "type" | translate }}: </span>
+    <span class="value competition-type">
+      {{ ('competition_type_' + (competition?.type || 'league')) | translate }}
+    </span>
+    <i [ngClass]="['fa-solid', getCompetitionTypeIcon(competition?.type)]"></i>
+  </div>
+
+  <!-- Giocatori -->
+  <div class="players-container d-flex justify-content-between align-items-center">
+    <div class="competition-players-container">
+      <button class="add players" (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
+        <i class="fa fa-circle-plus"></i>
+        <span class="player-name">
+          {{ "add" | translate }}
+        </span>
+      </button>
+      <button class="players" *ngFor="let p of competition?.['players']">
+        <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
+        <img *ngIf="!p.image_url" class="avatar" [src]="'default-player.jpg'" />
+        <span class="player-name">{{ p.nickname }}</span>
+        <button class="delete" (click)="openAreYouSureModal(p.id)">
+          <i class="fa-solid fa-trash-o"></i>
+        </button>
+      </button>
+      <div *ngIf="isEmpty(competition?.['players'])">
+        {{ "no_players" | translate }}
       </div>
     </div>
   </div>
-  <!-- Giocatori -->
-  <div>
-    <div class="top">
-      <div>
-        <h1>{{ competition?.name }}</h1>
-      </div>
-      <div class="top__actions" *ngIf="competition?.management !== 'admin'">
-        <button class="invitation-code-container button flex-column"
-          type="button" (click)="copyCode()">
-          <div>{{"invitation_code" | translate}}: </div>
-          <div class="value code">{{ competition?.['code'] }}</div>
-        </button>
-      </div>
-    </div>
-    <div>
-      <span>{{ "type" | translate }}: </span>
-      <span class="value competition-type">{{ ('competition_type_' + (competition?.type || 'league')) | translate }}</span>
-      <i [ngClass]="['fa-solid', getCompetitionTypeIcon(competition?.type)]"></i>
-    </div>
 
-    <div class="players-container d-flex justify-content-between align-items-center">
-      <div class="competition-players-container">
-        <button class="players" *ngFor="let p of competition?.['players']">
-          <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
-          <img *ngIf="!p.image_url" class="avatar" [src]="'default-player.jpg'" />
-          <span class="player-name">{{ p.nickname }}</span>
-          <button class="delete" (click)="openAreYouSureModal(p.id)"><i class="fa-solid fa-trash-o"></i></button>
-        </button>
-        <div *ngIf="isEmpty(competition?.['players'])">
-          {{ "no_players" | translate }}
-        </div>
-      </div>
-    </div>
-
-    <div class="detail-actions">
-      <button class="button-primary-ping" id="add-players-button"
-        (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
-        {{ "add_players" | translate }}
-        <i class="fa-solid fa-users ms-2"></i>
-        <i class="fa-solid fa-plus"></i>
+  <!-- Azioni -->
+  <div class="detail-actions">
+    <ng-container *ngIf="(competition?.players?.length || 0) >= 2">
+      <button class="button-primary-ping flex-grow-1" id="add-match-button" (click)="goToMatches(competition?.id)">
+        <span>
+           {{ "view_or_manage_matches" | translate }}
+        </span>
+        <i class="fa-solid fa-table-tennis-paddle-ball ms-2"></i>
       </button>
+    </ng-container>
 
-      <button
-        #detailMenuTrigger
-        type="button"
-        class="menu-trigger"
-        aria-haspopup="true"
-        [attr.aria-label]="'actions' | translate"
-        (click)="dropdownService.open(detailMenuActions, detailMenuTrigger)"
-        [attr.data-competition-id]="competition?.id ?? ''"
-        data-dropdown-source="competition-detail"
-      >
-        <span aria-hidden="true">⋮</span>
-      </button>
-    </div>
+    <button type="button" class="button-secondary-ping secondary" id="add-players-button"
+      (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
+      {{ "add_players" | translate }}
+      <i class="fa-solid fa-users ms-2"></i>
+    </button>
+
+    <button #detailMenuTrigger type="button" class="menu-trigger" aria-haspopup="true"
+      [attr.aria-label]="'actions' | translate" (click)="dropdownService.open(detailMenuActions, detailMenuTrigger)"
+      [attr.data-competition-id]="competition?.id ?? ''" data-dropdown-source="competition-detail">
+      <span aria-hidden="true">⋮</span>
+    </button>
   </div>
 </div>

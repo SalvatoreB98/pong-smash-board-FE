@@ -8,19 +8,20 @@
                 [monthlyWinRates]="{ '01': 50, '02': 70, '03': 30 }" [badges]="['gold', 'silver']">
             </app-player-detail>
         </section>
-          <ng-template #noComp>{{ 'no_competition' | translate }}</ng-template>
+        <ng-template #noComp>{{ 'no_competition' | translate }}</ng-template>
         <section>
-            <form [formGroup]="form" class="form-dark">
-                <div class="d-flex justify-content-center align-items-center mt-5" style="gap: 1em;">
+            <form [formGroup]="form" class="form-dark profile-form">
+                <div class="d-flex justify-content-center align-items-center mt-5 flex-column" style="gap: 0.5em;">
                     <div class="upload-container">
                         <label for="file-upload" class="custom-file-upload">
                             <i class="fa fa-upload" aria-hidden="true"></i>
-                              <img [src]="previewUrl || '/default-player.jpg'" alt="{{ 'avatar_alt' | translate }}" />
+                            <img [src]="previewUrl || '/default-player.jpg'" alt="{{ 'avatar_alt' | translate }}" />
                             <input id="file-upload" type="file" accept="image/*" (change)="onFileSelected($event)" />
                         </label>
+                        <p class="description mt-3">{{ 'avatar_upload_info' | translate }}</p>
                     </div>
 
-                    <div class="text-center mt-3">
+                    <div class="d-flex text-center mt-3" style="gap: 1em;">
                         <label class="field">
                             <span class="label">{{ 'nickname_label_edit' | translate }}</span>
                             <input class="input" type="text" [placeholder]="'nickname' | translate"
@@ -29,14 +30,14 @@
                                 {{ 'nickname_error' | translate }}
                             </small>
                         </label>
+                        <div class="button-container">
+                            <button class="primary w-100 p-1" (click)="saveProfile($event)" [disabled]="form.invalid">
+                                {{ 'edit' | translate }}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="button-container">
-                    <button class="primary mt-3 w-100" (click)="saveProfile($event)" [disabled]="form.invalid">
-                        {{ 'edit' | translate }}
-                    </button>
-                </div>
             </form>
         </section>
     </ng-container>

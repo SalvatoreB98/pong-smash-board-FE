@@ -492,3 +492,10 @@ button.secondary-color-button {
         background: rgba(148, 163, 184, 0.18);
     }
 }
+
+.profile-form {
+    display: grid;
+    gap: 0.5em;
+    max-width: 700px;
+    margin: auto;
+}

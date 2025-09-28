@@ -132,6 +132,11 @@ export class CompetitionService {
   }
 
   updateActiveCompetition(competitionId: number | string): Observable<void> {
+    const currentActive = this.snapshotActive();
+    if (currentActive && String(currentActive.id) === String(competitionId)) {
+      // Already active, do nothing
+      return of(void 0);
+    }
     return this.api.updateActiveCompetition(competitionId).pipe(
       tap((res: { userState?: IUserState } | any) => {
         this.store.setActive(competitionId);

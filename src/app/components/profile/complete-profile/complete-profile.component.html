@@ -8,33 +8,32 @@
             <p class="instructions" *ngIf="state?.state ===  PROGRESS_STATE.PROFILE_NOT_COMPLETED">
                 {{ "paragraph_complete" | translate}}
             </p>
-            <form [formGroup]="form" class="form-dark">
-
-                <div class="d-flex justify-content-center align-items-center mt-5" style="gap: 1em;">
+            <form [formGroup]="form" class="form-dark profile-form">
+                <div class="d-flex justify-content-center align-items-center mt-5 flex-column" style="gap: 0.5em;">
                     <div class="upload-container">
                         <label for="file-upload" class="custom-file-upload">
                             <i class="fa fa-upload" aria-hidden="true"></i>
-                              <img [src]="previewUrl || '/default-player.jpg'" alt="{{ 'avatar_alt' | translate }}" />
+                            <img [src]="previewUrl || '/default-player.jpg'" alt="{{ 'avatar_alt' | translate }}" />
                             <input id="file-upload" type="file" accept="image/*" (change)="onFileSelected($event)" />
                         </label>
+                        <p class="description mt-3">{{ 'avatar_upload_info' | translate }}</p>
                     </div>
 
-                    <div class="text-center mt-3">
+                    <div class="d-flex text-center mt-3" style="gap: 1em;">
                         <label class="field">
-                            <span class="label">{{ 'nickname_label' | translate }}</span>
+                            <span class="label">{{ 'nickname_label_edit' | translate }}</span>
                             <input class="input" type="text" [placeholder]="'nickname' | translate"
                                 formControlName="nickname" autocomplete="off" />
                             <small class="error" *ngIf="form.get('nickname')?.invalid">
                                 {{ 'nickname_error' | translate }}
                             </small>
                         </label>
+                        <div class="button-container">
+                            <button class="primary w-100 p-1" (click)="saveProfile($event)" [disabled]="form.invalid">
+                                {{ 'edit' | translate }}
+                            </button>
+                        </div>
                     </div>
-                </div>
-
-                <div class="button-container">
-                    <button class="primary mt-3" (click)="saveProfile($event)" [disabled]="form.invalid">
-                        {{ 'continue' | translate }}
-                    </button>
                 </div>
             </form>
         </section>

@@ -11,6 +11,7 @@ import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.c
 import { ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DropdownAction, DropdownService } from '../../../../services/dropdown.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-competition-detail',
@@ -36,7 +37,7 @@ export class CompetitionDetailComponent implements OnDestroy {
   public dropdownService = inject(DropdownService);
   activeCompetition$ = this.competitionService.activeCompetition$;
 
-  constructor(public modalService: ModalService, private loader: LoaderService, private translateService: TranslationService) {
+  constructor(public modalService: ModalService, private loader: LoaderService, private translateService: TranslationService, private router: Router) {
     this.registerDropdownHandlers();
   }
 
@@ -63,7 +64,7 @@ export class CompetitionDetailComponent implements OnDestroy {
   isEmpty(array: any): boolean {
     return !array || (Array.isArray(array) && array.length === 0);
   }
-  
+
   onDropdownAction(action: string) {
     if (!this.competition?.id) {
       return;
@@ -169,5 +170,10 @@ export class CompetitionDetailComponent implements OnDestroy {
         this.dropdownAnchor = undefined;
       })
     );
+  }
+  goToMatches(compId: number | string = '') {
+    this.competitionService.updateActiveCompetition(compId).subscribe(() => {
+      this.router.navigate(['/home']);
+    });
   }
 }

@@ -132,6 +132,37 @@
 
 }
 
+.add {
+  opacity: 0.9;
+  border-radius: $border-radius;
+  transition: all 0.2s ease-in-out;
+
+  i {
+    margin-top: 0.25em;
+    font-size: 3em;
+  }
+
+  .player-name {
+    font-size: 0.8em;
+    margin-top: 0.5em;
+  }
+
+  &:hover {
+    opacity: 1;
+    filter: drop-shadow(0px 0px 1px $primary);
+    filter: drop-shadow(0px 0px 0.625em $primary);
+  }
+}
+
+#add-match-button {
+  span {
+    font-size: 0.9em;
+
+  }
+
+  white-space: nowrap;
+}
+
 .detail-actions {
   margin-top: 1.5em;
   display: flex;
