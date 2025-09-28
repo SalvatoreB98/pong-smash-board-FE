@@ -1,5 +1,5 @@
 <div class="league-wrapper">
-  <ng-container *ngIf="isLoading; else leagueContent">
+  <div class="skeleton-wrapper" *ngIf="isLoading; else leagueContent">
     <section class="skeleton-section">
       <div class="skeleton-title placeholder"></div>
       <div class="matches-placeholder">
@@ -24,7 +24,7 @@
         <div *ngFor="let _ of placeholderStatsRows" class="stats-placeholder__row placeholder"></div>
       </div>
     </section>
-  </ng-container>
+  </div>
 
   <ng-template #leagueContent>
     <p *ngIf="showEmptyState" class="mt-4 text-center">
