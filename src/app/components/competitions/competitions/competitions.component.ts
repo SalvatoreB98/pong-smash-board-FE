@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { Subscription, combineLatest, map } from 'rxjs';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
@@ -39,7 +39,14 @@ import { DropdownAction, DropdownService } from '../../../../services/dropdown.s
   templateUrl: './competitions.component.html',
   styleUrls: ['./competitions.component.scss']
 })
-export class CompetitionsComponent implements OnDestroy {
+export class CompetitionsComponent implements OnDestroy, OnInit {
+
+  isLoading = true;
+  readonly placeholderInfoChips = Array.from({ length: 4 });
+  readonly placeholderPlayers = Array.from({ length: 4 });
+  readonly placeholderActionButtons = Array.from({ length: 2 });
+  readonly placeholderOtherCompetitions = Array.from({ length: 3 });
+  readonly placeholderSmallAvatars = Array.from({ length: 4 });
 
   @ViewChild(CompetitionDetailComponent) competitionDetailComponent!: CompetitionDetailComponent;
   PROGRESS_STATE = UserProgressStateEnum;
@@ -79,9 +86,16 @@ export class CompetitionsComponent implements OnDestroy {
   }
 
   async ngOnInit() {
-    const data = await this.competitionService.getCompetitions();
-    this.competitionDetail = { ...data[0] };
-    this.cdr.detectChanges();
+    this.isLoading = true;
+    try {
+      const data = await this.competitionService.getCompetitions();
+      if (data?.length) {
+        this.competitionDetail = { ...data[0] };
+      }
+    } finally {
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    }
   }
 
   createForm() {

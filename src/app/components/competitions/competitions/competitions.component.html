@@ -1,99 +1,143 @@
 <ng-container *ngIf="userState$ | async as state">
     <div class="wrapper">
+        <ng-container *ngIf="isLoading; else competitionsContent">
+            <div class="competitions-skeleton">
+                <section class="skeleton-heading">
+                    <div class="skeleton-title placeholder"></div>
+                </section>
 
-        <!-- Titolo -->
-        <section>
-            <h2 class="text-center" style="text-transform: capitalize;">
-                {{ 'competitions' | translate }}
-            </h2>
-        </section>
+                <section class="skeleton-section skeleton-active">
+                    <div class="skeleton-info-row">
+                        <div *ngFor="let _ of placeholderInfoChips" class="info-chip placeholder"></div>
+                    </div>
+                    <div class="skeleton-active__body">
+                        <div class="title placeholder"></div>
+                        <div class="meta placeholder"></div>
+                        <div class="meta short placeholder"></div>
+                        <div class="players">
+                            <div *ngFor="let _ of placeholderPlayers" class="avatar placeholder"></div>
+                        </div>
+                        <div class="actions">
+                            <div class="button placeholder"></div>
+                            <div class="icon placeholder"></div>
+                        </div>
+                    </div>
+                </section>
 
-        <!-- Dettaglio competizione attiva -->
-        <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
-            <section *ngIf="activeCompetition">
-                <app-competition-detail [competition]="activeCompetition" (changeCompetitionSelected)="updateCompetitionDetail($event)"></app-competition-detail>
-            </section>
-        </ng-container>
+                <section class="skeleton-section skeleton-buttons">
+                    <div *ngFor="let _ of placeholderActionButtons" class="button placeholder"></div>
+                </section>
 
-        <!-- Altre competizioni -->
-        <ng-container *ngIf="competitions$ | async as competitions">
-            <section class="others" *ngIf="competitions.length > 0">
-                <h3>{{ "other_competitions" | translate }}</h3>
-                <div class="other-competitions-container">
-                    <ng-container *ngFor="let c of competitionsWithoutActive$ | async; trackBy: trackById">
-                        <div class="comp text-center">
-                            <strong>{{ c.name }}</strong>
-
-                            <small *ngIf="c.start_date">
-                                ({{ "from" | translate }} {{ c.start_date }}
-                                <span *ngIf="c.end_date">
-                                    {{ "to" | translate }} {{ c.end_date }}
-                                </span>)
-                            </small>
-
-                            <!-- Players -->
-                            <div class="players-section">
-                                <div *ngIf="hasPlayers(c?.players); else noPlayers">
-                                    <div class="players-list">
-                                        <img class="avatar" *ngFor="let player of c?.players"
-                                            [src]="player.image_url || '/default-player.jpg'"
-                                            [alt]="player.name || 'player'">
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <ng-template #noPlayers>
-                                <p class="no-players">{{ "no_players_small" | translate }}</p>
-                            </ng-template>
-
-                            <div class="comp__actions" style="text-align: right;">
-                                <button
-                                    #competitionMenuTrigger
-                                    type="button"
-                                    class="menu-trigger"
-                                    aria-haspopup="true"
-                                    [attr.aria-label]="'actions' | translate"
-                                    (click)="dropdownService.open(competitionMenuActions, competitionMenuTrigger)"
-                                    [attr.data-competition-id]="c.id"
-                                    data-dropdown-source="competitions-list"
-                                >
-                                    <span aria-hidden="true">⋮</span>
-                                </button>
+                <section class="skeleton-section skeleton-others">
+                    <div class="skeleton-subtitle placeholder"></div>
+                    <div class="other-cards">
+                        <div *ngFor="let _ of placeholderOtherCompetitions" class="other-card">
+                            <div class="title placeholder"></div>
+                            <div class="meta placeholder"></div>
+                            <div class="avatars">
+                                <div *ngFor="let __ of placeholderSmallAvatars" class="avatar placeholder"></div>
                             </div>
                         </div>
-                    </ng-container>
+                    </div>
+                </section>
+            </div>
+        </ng-container>
+
+        <ng-template #competitionsContent>
+            <!-- Titolo -->
+            <section>
+                <h2 class="text-center" style="text-transform: capitalize;">
+                    {{ 'competitions' | translate }}
+                </h2>
+            </section>
+
+            <!-- Dettaglio competizione attiva -->
+            <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
+                <section *ngIf="activeCompetition">
+                    <app-competition-detail [competition]="activeCompetition" (changeCompetitionSelected)="updateCompetitionDetail($event)"></app-competition-detail>
+                </section>
+            </ng-container>
+
+            <!-- Altre competizioni -->
+            <ng-container *ngIf="competitions$ | async as competitions">
+                <section class="others" *ngIf="competitions.length > 0">
+                    <h3>{{ "other_competitions" | translate }}</h3>
+                    <div class="other-competitions-container">
+                        <ng-container *ngFor="let c of competitionsWithoutActive$ | async; trackBy: trackById">
+                            <div class="comp text-center">
+                                <strong>{{ c.name }}</strong>
+
+                                <small *ngIf="c.start_date">
+                                    ({{ "from" | translate }} {{ c.start_date }}
+                                    <span *ngIf="c.end_date">
+                                        {{ "to" | translate }} {{ c.end_date }}
+                                    </span>)
+                                </small>
+
+                                <!-- Players -->
+                                <div class="players-section">
+                                    <div *ngIf="hasPlayers(c?.players); else noPlayers">
+                                        <div class="players-list">
+                                            <img class="avatar" *ngFor="let player of c?.players"
+                                                [src]="player.image_url || '/default-player.jpg'"
+                                                [alt]="player.name || 'player'">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <ng-template #noPlayers>
+                                    <p class="no-players">{{ "no_players_small" | translate }}</p>
+                                </ng-template>
+
+                                <div class="comp__actions" style="text-align: right;">
+                                    <button
+                                        #competitionMenuTrigger
+                                        type="button"
+                                        class="menu-trigger"
+                                        aria-haspopup="true"
+                                        [attr.aria-label]="'actions' | translate"
+                                        (click)="dropdownService.open(competitionMenuActions, competitionMenuTrigger)"
+                                        [attr.data-competition-id]="c.id"
+                                        data-dropdown-source="competitions-list"
+                                    >
+                                        <span aria-hidden="true">⋮</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- Bottoni -->
+            <section>
+                <div class="buttons-add">
+                    <div class="button-container" style="max-width: 37.5em;">
+                        <button class="button-primary-ping secondary-color-button"
+                            (click)="modalService.openModal(modalService.MODALS['JOIN_COMPETITION'])">
+                            <div class="m-1">{{ "join_cta" | translate }}</div>
+                            <i class="fa-solid fa-share"></i>
+                        </button>
+                    </div>
+                    <div class="button-container" style="max-width: 37.5em;">
+                        <button class="button-primary-ping"
+                            (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
+                            <div class="m-1">{{ "create_cta" | translate }}</div>
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
                 </div>
             </section>
-        </ng-container>
 
-        <!-- Bottoni -->
-        <section>
-            <div class="buttons-add">
-                <div class="button-container" style="max-width: 37.5em;">
-                    <button class="button-primary-ping secondary-color-button"
-                        (click)="modalService.openModal(modalService.MODALS['JOIN_COMPETITION'])">
-                        <div class="m-1">{{ "join_cta" | translate }}</div>
-                        <i class="fa-solid fa-share"></i>
-                    </button>
+            <!-- Start competition se non ce n’è una attiva -->
+            <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
+                <div *ngIf="!activeCompetition?.id">
+                    <app-competition-start (create)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
+                    </app-competition-start>
                 </div>
-                <div class="button-container" style="max-width: 37.5em;">
-                    <button class="button-primary-ping"
-                        (click)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
-                        <div class="m-1">{{ "create_cta" | translate }}</div>
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Start competition se non ce n’è una attiva -->
-        <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
-            <div *ngIf="!activeCompetition?.id">
-                <app-competition-start (create)="modalService.openModal(modalService.MODALS['ADD_COMPETITION'])">
-                </app-competition-start>
-            </div>
-        </ng-container>
+            </ng-container>
+        </ng-template>
     </div>
 
     <!-- Modali -->
