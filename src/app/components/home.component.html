@@ -8,7 +8,8 @@
         [qualifiedPlayers]="competitionQualifiedPlayers" [rounds]="eliminationRounds"
         (roundSelected)="onClickRound($event)"></app-group-knockout>
 
-      <app-league-board *ngSwitchDefault [matches]="matches" (matchSelected)="setClickedMatch($event)">
+      <app-league-board *ngSwitchDefault [matches]="matches" [isLoading]="isLoadingMatches"
+        (matchSelected)="setClickedMatch($event)">
       </app-league-board>
     </ng-container>
 
