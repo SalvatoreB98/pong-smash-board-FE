@@ -20,7 +20,7 @@ export class LeagueBoardComponent {
 
   modalService = inject(ModalService);
 
-  readonly placeholderMatchCards = Array.from({ length: 3 });
+  readonly placeholderMatchCards = Array.from({ length: 1 });
   readonly placeholderStatsRows = Array.from({ length: 5 });
 
   onMatchSelected(match: IMatch) {
