@@ -61,6 +61,7 @@ export class HomeComponent {
   isGroupKnockoutMode = false;
   eliminationRounds: EliminationRound[] = [];
   modalPlayers: IPlayer[] = [];
+  isLoadingMatches = true;
 
   player1Selected: IPlayer | null = null;
   player2Selected: IPlayer | null = null;
@@ -105,6 +106,7 @@ export class HomeComponent {
       this.handleKnockoutUpdate(knockout);
     });
 
+    this.isLoadingMatches = true;
     this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 })
       .then(res => {
         this.matches = res.matches;
@@ -112,6 +114,9 @@ export class HomeComponent {
         if (this.isEliminationMode || this.isGroupKnockoutMode) {
           this.requestKnockoutData();
         }
+      })
+      .finally(() => {
+        this.isLoadingMatches = false;
       });
   }
 

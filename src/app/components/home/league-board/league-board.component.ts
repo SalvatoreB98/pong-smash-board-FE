@@ -15,9 +15,13 @@ import { IMatch } from '../../../interfaces/matchesInterfaces';
 })
 export class LeagueBoardComponent {
   @Input() matches: IMatch[] = [];
+  @Input() isLoading = false;
   @Output() matchSelected = new EventEmitter<IMatch>();
 
   modalService = inject(ModalService);
+
+  readonly placeholderMatchCards = Array.from({ length: 3 });
+  readonly placeholderStatsRows = Array.from({ length: 5 });
 
   onMatchSelected(match: IMatch) {
     this.matchSelected.emit(match);
@@ -25,5 +29,9 @@ export class LeagueBoardComponent {
 
   get hasMatches(): boolean {
     return this.matches.length > 0;
+  }
+
+  get showEmptyState(): boolean {
+    return !this.isLoading && !this.hasMatches;
   }
 }
