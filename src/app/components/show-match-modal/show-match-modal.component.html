@@ -30,7 +30,7 @@
             <div class="score" [ngClass]="{'won': match?.player2_score > match?.player1_score}">{{ match?.player2_score }}</div>
         </div>
     </div>
-    <div class="other" *ngIf="match?.match_sets?.length > 1">
+    <div class="other" *ngIf="match?.match_sets?.length > 0">
         <h5 class="text-center">{{ 'sets' | translate }}</h5>
         <div class="sets-points">
             <div class="set" *ngFor="let set of match.match_sets; let i = index">

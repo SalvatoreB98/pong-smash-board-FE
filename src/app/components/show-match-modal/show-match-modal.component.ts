@@ -13,11 +13,13 @@ import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
   styleUrl: './show-match-modal.component.scss'
 })
 export class ShowMatchModalComponent extends ModalComponent {
+  
+  @Input() match: any;
+
   constructor(public override modalService: ModalService) {
     super(modalService);
   }
 
-  @Input() match: any;
 
   showModal(match: any): void {
   }
