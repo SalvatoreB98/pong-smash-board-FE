@@ -596,7 +596,7 @@
         "en": "Added players"
     },
     "no_players_added": {
-        "it": "Nessun giocatore aggiunto, inserisci un nickname e clicca su '+' per aggiungerlo. (Tip: puoi aggiungere più giocatori)",
+        "it": "Nessun giocatore aggiunto, inserisci un nickname e clicca su '+' per aggiungerlo. (Tip: puoi aggiungere più giocatori alla volta)",
         "en": "No players added, enter a nickname and click '+' to add it. (Tip: you can add multiple players at once)"
     },
     "sets": {
