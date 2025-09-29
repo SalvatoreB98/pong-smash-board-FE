@@ -54,6 +54,12 @@ input[type="file"] {
 }
 
 .upload-container {
-  display: grid;
+  display: flex;
   place-items: center;
+  flex-wrap: wrap;
+  gap: 1em;
+
+  .description {
+    max-width: 12em;
+  }
 }
