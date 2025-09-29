@@ -18,7 +18,9 @@
                             <img [src]="previewUrl || '/default-player.jpg'" alt="{{ 'avatar_alt' | translate }}" />
                             <input id="file-upload" type="file" accept="image/*" (change)="onFileSelected($event)" />
                         </label>
-                        <p class="description mt-3">{{ 'avatar_upload_info' | translate }}</p>
+                        <label for="file-upload">
+                            <p class="description mt-3">{{ 'avatar_upload_info' | translate }}</p>
+                        </label>
                     </div>
 
                     <div class="d-flex text-center mt-3" style="gap: 1em;">
