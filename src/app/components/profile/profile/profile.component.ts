@@ -83,11 +83,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       const { data: files, error } = await this.sb.storage
         .from('players-images')
-        .list(userId, { limit: 1, sortBy: { column: 'updated_at', order: 'desc' } });
+        .list(userId, { limit: 50, sortBy: { column: 'updated_at', order: 'desc' } });
 
       if (error || !files || files.length === 0) return;
 
-      const objectPath = `${userId}/${files[0].name}`;
+      const avatarFiles = files
+        .filter((file) => file.name?.startsWith('avatar-'))
+        .sort((a, b) => {
+          const bTime = b.updated_at ? new Date(b.updated_at).getTime() : 0;
+          const aTime = a.updated_at ? new Date(a.updated_at).getTime() : 0;
+          return bTime - aTime;
+        });
+
+      if (avatarFiles.length === 0) return;
+
+      const objectPath = `${userId}/${avatarFiles[0].name}`;
       const { data: pub } = this.sb.storage.from('players-images').getPublicUrl(objectPath);
       const url = pub?.publicUrl ?? null;
 
