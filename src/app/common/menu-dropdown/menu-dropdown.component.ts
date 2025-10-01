@@ -7,6 +7,7 @@ interface PanelStyles {
   top: string;
   left: string;
   transformOrigin: string;
+  visibility: 'hidden' | 'visible';
 }
 
 @Component({
@@ -19,7 +20,12 @@ interface PanelStyles {
 export class MenuDropdownComponent implements OnDestroy {
   actions = signal<DropdownAction[]>([]);
   isOpen = signal(false);
-  panelStyles = signal<PanelStyles>({ top: '0px', left: '0px', transformOrigin: 'top right' });
+  panelStyles = signal<PanelStyles>({
+    top: '0px',
+    left: '0px',
+    transformOrigin: 'top right',
+    visibility: 'hidden'
+  });
 
   @ViewChildren('menuItem') menuItems!: QueryList<ElementRef<HTMLButtonElement>>;
 
@@ -33,7 +39,11 @@ export class MenuDropdownComponent implements OnDestroy {
           this.actions.set(state.actions);
           this.anchor = state.anchor;
           this.isOpen.set(true);
-          setTimeout(() => {
+          this.panelStyles.update((styles) => ({ ...styles, visibility: 'hidden' }));
+
+          const schedule = window.requestAnimationFrame?.bind(window)
+            ?? ((cb: FrameRequestCallback) => window.setTimeout(() => cb(performance.now())));
+          schedule(() => {
             this.updatePosition();
             this.focusFirstItem();
           });
@@ -41,6 +51,7 @@ export class MenuDropdownComponent implements OnDestroy {
           this.isOpen.set(false);
           this.actions.set([]);
           this.anchor = undefined;
+          this.panelStyles.update((styles) => ({ ...styles, visibility: 'hidden' }));
         }
       })
     );
@@ -84,7 +95,12 @@ export class MenuDropdownComponent implements OnDestroy {
       this.moveFocus(event.key === 'ArrowDown' ? 1 : -1);
     }
   }
-
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(event: Event) {
+    if (this.isOpen()) {
+      this.dropdownService.close();
+    }
+  }
   onActionSelected(value: string) {
     this.dropdownService.emit(value);
   }
@@ -151,7 +167,8 @@ export class MenuDropdownComponent implements OnDestroy {
     this.panelStyles.set({
       top: `${top}px`,
       left: `${left}px`,
-      transformOrigin
+      transformOrigin,
+      visibility: 'visible'
     });
   }
 }
