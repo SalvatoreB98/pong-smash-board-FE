@@ -42,7 +42,7 @@
         <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
         <img *ngIf="!p.image_url" class="avatar" [src]="'default-player.jpg'" />
         <span class="player-name">{{ p.nickname }}</span>
-        <button class="delete" (click)="openAreYouSureModal(p.id)">
+        <button class="delete" (click)="requestPlayerDeletion(p.id)">
           <i class="fa-solid fa-trash-o"></i>
         </button>
       </button>

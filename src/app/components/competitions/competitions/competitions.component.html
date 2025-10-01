@@ -54,7 +54,9 @@
             <!-- Dettaglio competizione attiva -->
             <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
                 <section *ngIf="activeCompetition">
-                    <app-competition-detail [competition]="activeCompetition" (changeCompetitionSelected)="updateCompetitionDetail($event)"></app-competition-detail>
+                    <app-competition-detail [competition]="activeCompetition" (changeCompetitionSelected)="updateCompetitionDetail($event)"
+                        (deletePlayerRequested)="onDeletePlayerRequested($event)"
+                        (deleteCompetitionRequested)="onDeleteCompetitionRequested($event)"></app-competition-detail>
                 </section>
             </ng-container>
 
@@ -171,7 +173,7 @@
 
     <app-modal [label]="'are_you_sure'" *ngIf="modalService.isActiveModal(modalService.MODALS['ARE_YOU_SURE'])"
         [modalName]="modalService.MODALS['ARE_YOU_SURE']" (closeModalEvent)="modalService.closeModal()">
-        <are-you-sure [body]="'are-you-sure-deleting' | translate" (confirmed)="onDeleteConfirmed()"
+        <are-you-sure [body]="confirmationBodyKey | translate" (confirmed)="onDeleteConfirmed()"
             (cancelled)="onDeleteCancelled()"></are-you-sure>
     </app-modal>
 </ng-container>

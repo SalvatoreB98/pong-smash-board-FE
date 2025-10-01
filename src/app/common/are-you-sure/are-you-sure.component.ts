@@ -16,5 +16,5 @@ export class AreYouSureComponent extends ModalComponent {
   }
   @Output() confirmed = new EventEmitter<boolean>();
   @Output() cancelled = new EventEmitter<boolean>();
-  @Input() body: string = 'Are you sure you want to delete the player?';
+  @Input() body: string = 'Are you sure you want to proceed?';
 }
