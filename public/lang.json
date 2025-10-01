@@ -859,9 +859,13 @@
         "it": "Sei sicuro?",
         "en": "Are you sure?"
     },
-    "are-you-sure-deleting": {
+    "are-you-sure-delete-player": {
         "it": "Sei sicuro di voler eliminare il giocatore?",
         "en": "Are you sure you want to delete the player?"
+    },
+    "are-you-sure-delete-competition": {
+        "it": "Sei sicuro di voler eliminare la competizione?",
+        "en": "Are you sure you want to delete the competition?"
     },
     "delete_player": {
         "it": "Elimina giocatore",

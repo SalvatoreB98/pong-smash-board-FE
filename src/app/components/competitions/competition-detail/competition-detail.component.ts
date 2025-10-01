@@ -23,8 +23,6 @@ export class CompetitionDetailComponent implements OnDestroy {
 
   @Input() competition: ICompetition | null = null;
 
-  playerIdToDelete: number = -1;
-
   @ViewChild('competitionDetail', { static: true }) competitionDetailRef!: ElementRef<HTMLElement>;
 
   ngOnChanges() {
@@ -32,6 +30,8 @@ export class CompetitionDetailComponent implements OnDestroy {
   }
   @Output() actionSelected = new EventEmitter<{ action: string, competition: ICompetition | null }>();
   @Output() changeCompetitionSelected = new EventEmitter<ICompetition>();
+  @Output() deletePlayerRequested = new EventEmitter<number>();
+  @Output() deleteCompetitionRequested = new EventEmitter<ICompetition | null>();
   copied: boolean = false;
   private competitionService = inject(CompetitionService);
   public dropdownService = inject(DropdownService);
@@ -76,9 +76,7 @@ export class CompetitionDetailComponent implements OnDestroy {
         window.location.reload();
         break;
       case 'delete':
-        this.competitionService.remove(this.competition.id).subscribe(() => {
-          this.competitionService.getCompetitions(true);
-        });
+        this.deleteCompetitionRequested.emit(this.competition);
         break;
       case 'details':
         this.changeCompetitionSelected.emit(this.competition);
@@ -129,16 +127,9 @@ export class CompetitionDetailComponent implements OnDestroy {
       this.loader.showToast(this.translateService.translate('player_removed'), MSG_TYPE.SUCCESS);
     });
   }
-  openAreYouSureModal(playerId: number) {
-    this.playerIdToDelete = playerId;
-    this.modalService.openModal(this.modalService.MODALS['ARE_YOU_SURE']);
-  }
-  onDeleteConfirmed() {
-    this.modalService.closeModal();
-    this.deletePlayer(this.playerIdToDelete);
-  }
-  onDeleteCancelled() {
-    this.modalService.closeModal();
+
+  requestPlayerDeletion(playerId: number) {
+    this.deletePlayerRequested.emit(playerId);
   }
 
   private subscriptions = new Subscription();

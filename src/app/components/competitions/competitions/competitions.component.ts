@@ -54,6 +54,8 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
   userService = inject(UserService);
   private competitionService = inject(CompetitionService);
   public dropdownService = inject(DropdownService);
+  private confirmHandler: (() => void) | null = null;
+  confirmationBodyKey: string = 'are-you-sure-delete-player';
 
   // streams
   userState$ = this.userService.getState();           // observable dallo user
@@ -133,9 +135,11 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
         this.competitionService.updateActiveCompetition(competition.id).subscribe();
         break;
       case 'delete':
-        this.competitionService.remove(competition.id).subscribe(() => {
-          this.competitionService.getCompetitions(true);
-        });
+        this.openConfirmation(() => {
+          this.competitionService.remove(competition.id).subscribe(() => {
+            this.competitionService.getCompetitions(true);
+          });
+        }, 'are-you-sure-delete-competition');
         break;
       case 'details':
         this.competitionDetail = { ...competition };
@@ -153,11 +157,33 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
     )
   );
   onDeleteConfirmed() {
+    const handler = this.confirmHandler;
+    this.confirmHandler = null;
+    handler?.();
     this.modalService.closeModal();
-    this.competitionDetailComponent.onDeleteConfirmed();
   }
   onDeleteCancelled() {
+    this.confirmHandler = null;
     this.modalService.closeModal();
+  }
+  onDeletePlayerRequested(playerId: number) {
+    this.openConfirmation(() => this.competitionDetailComponent.deletePlayer(playerId), 'are-you-sure-delete-player');
+  }
+  onDeleteCompetitionRequested(competition: ICompetition | null) {
+    if (!competition?.id) {
+      return;
+    }
+    this.openConfirmation(() => {
+      this.competitionService.remove(competition.id).subscribe(() => {
+        this.competitionService.getCompetitions(true);
+      });
+    }, 'are-you-sure-delete-competition');
+  }
+
+  private openConfirmation(handler: () => void, bodyKey: string) {
+    this.confirmHandler = handler;
+    this.confirmationBodyKey = bodyKey;
+    this.modalService.openModal(this.modalService.MODALS['ARE_YOU_SURE']);
   }
   updateCompetitionDetail(competition: ICompetition) {
     this.competitionDetail = { ...competition };
