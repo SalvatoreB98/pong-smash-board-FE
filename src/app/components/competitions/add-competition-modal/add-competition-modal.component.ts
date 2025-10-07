@@ -13,37 +13,13 @@ import { LoaderService } from '../../../../services/loader.service';
 import { StepIndicatorComponent } from '../../../common/step-indicator/step-indicator.component';
 import { UserService } from '../../../../services/user.service';
 import { CompetitionType } from '../../../../api/competition.api';
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-} from '@angular/animations';
+
 @Component({
   selector: 'app-add-competition-modal',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, TranslatePipe, StepIndicatorComponent],
   templateUrl: './add-competition-modal.component.html',
   styleUrl: './add-competition-modal.component.scss',
-  animations: [
-    trigger('buttonShift', [
-      state('center', style({
-        justifyContent: 'center',
-        gap: '0'
-      })),
-      state('side', style({
-        justifyContent: 'space-between',
-        gap: '1rem'
-      })),
-      transition('center => side', [
-        animate('300ms ease-in-out')
-      ]),
-      transition('side => center', [
-        animate('300ms ease-in-out')
-      ])
-    ])
-  ]
 })
 export class AddCompetitionModalComponent {
   competitionForm: FormGroup;
@@ -188,8 +164,5 @@ export class AddCompetitionModalComponent {
       default:
         return false;
     }
-  }
-  get buttonState() {
-    return this.step === 1 ? 'center' : 'side';
   }
 }

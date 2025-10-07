@@ -22,11 +22,6 @@
     left: 1em;
     margin-top: 2em;
     gap: 1em;
-    transition: all .15s ease-in-out;
-    button[hidden] {
-        display: none !important;
-        transition: all .15s ease-in-out;
-    }
 }
 
 .steps-wrapper {
