@@ -21,6 +21,12 @@
     right: 1em;
     left: 1em;
     margin-top: 2em;
+    gap: 1em;
+    transition: all .15s ease-in-out;
+    button[hidden] {
+        display: none !important;
+        transition: all .15s ease-in-out;
+    }
 }
 
 .steps-wrapper {
@@ -67,7 +73,7 @@ h2 {
     grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 }
 
-.segmented > .seg-item > span {
+.segmented>.seg-item>span {
     height: 100%;
     min-height: 4.375em;
     display: flex;
@@ -183,6 +189,7 @@ h2 {
     position: relative;
     font-size: 0.8em;
     overflow: hidden;
+
     .label-text {
         position: absolute;
         bottom: 0;
@@ -211,15 +218,17 @@ h2 {
         margin-top: auto;
         font-size: 0.8em;
         text-align: center;
-        color: rgba(255,255,255,0.7);
+        color: rgba(255, 255, 255, 0.7);
         padding: 0.5em;
     }
 
-    img, svg {
+    img,
+    svg {
         width: 100%;
         max-height: 6em;
         object-fit: cover;
     }
+
     img {
         width: 150px;
         height: 150px;
@@ -281,6 +290,7 @@ h2 {
         font-weight: 700;
         margin-bottom: 0.6em;
     }
+
     width: 100%;
 
     input {
@@ -295,6 +305,17 @@ h2 {
 
     .container-choose {
         grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-height: 800px) {
+    .actions {
+        position: sticky;
+        bottom: -4em;
+        padding: 1em;
+        filter: drop-shadow(0 -0.25em 0.625em #000000);
+        background-color: #000000;
+        border-radius: $border-radius;
     }
 }
 

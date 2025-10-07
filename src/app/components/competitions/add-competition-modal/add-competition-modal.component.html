@@ -15,7 +15,7 @@
                                 <i class="fa fa-user fa-3x" aria-hidden="true"></i>
                                 <i class="fa fa-lock ms-1" aria-hidden="true"></i>
                             </div>
-                            <p class="mt-3">{{ "management_type_admin" | translate }}</p>
+                            <p class="mt-3">{{ 'management_type_admin' | translate }}</p>
                         </span>
                     </label>
                     <label class="seg-item">
@@ -26,11 +26,12 @@
                                 <i class="fa fa-users fa-3x" aria-hidden="true"></i>
                                 <i class="fa fa-unlock" aria-hidden="true"></i>
                             </div>
-                            <p class="mt-3">{{ "management_type_self" | translate }}</p>
+                            <p class="mt-3">{{ 'management_type_self' | translate }}</p>
                         </span>
                     </label>
                 </div>
             </div>
+
             <span class="label mt-5">{{ 'is_part_of_competition' | translate }}</span>
             <div class="segmented" role="radiogroup" [attr.aria-label]="'is_part_of_competition' | translate">
                 <label class="seg-item">
@@ -44,14 +45,6 @@
             </div>
         </div>
     </form>
-    <div class="actions d-flex justify-content-end">
-        <div>
-
-        </div>
-        <button class="primary mt-3" (click)="nextStep()" [disabled]="managementForm.invalid">
-            {{ 'next_step' | translate }}
-        </button>
-    </div>
 </div>
 
 <!-- STEP 2 – NOME -->
@@ -66,12 +59,6 @@
             </small>
         </label>
     </form>
-    <div class="actions d-flex justify-content-between">
-        <button class="primary bg-secondary mt-3" (click)="back()">{{ 'back' | translate }}</button>
-        <button class="primary mt-3" (click)="nextStep()" [disabled]="competitionForm.get('nameCtrl')?.invalid">
-            {{ 'next_step' | translate }}
-        </button>
-    </div>
 </div>
 
 <!-- STEP 3 – TIPOLOGIA -->
@@ -80,13 +67,12 @@
         <div class="field">
             <span class="label">{{ 'competition_type_label' | translate }}</span>
             <div class="segmented" role="radiogroup" [attr.aria-label]="'competition_type_label' | translate">
-                <label class="seg-item" *ngFor="let type of getCompetitionTypes()"
-                    [class.disabled]="type.disabled">
+                <label class="seg-item" *ngFor="let type of getCompetitionTypes()" [class.disabled]="type.disabled">
                     <ng-container *ngIf="!type.disabled; else disabledType">
                         <input type="radio" [value]="type.value" formControlName="typeCtrl" />
                         <span class="large-img-select">
                             <span class="label-text">{{ type.labelKey | translate }}</span>
-                            <img [src]="type.icon" [attr.alt]="type.labelKey | translate">
+                            <img [src]="type.icon" [attr.alt]="type.labelKey | translate" />
                             <span class="badge" *ngIf="type.badgeKey">{{ type.badgeKey | translate }}</span>
                             <p class="description" *ngIf="type.descriptionKey">{{ type.descriptionKey | translate }}</p>
                         </span>
@@ -105,12 +91,6 @@
             </div>
         </div>
     </form>
-    <div class="actions d-flex justify-content-between" (keydown.enter)="nextStep()">
-        <button class="primary bg-secondary mt-3" (click)="back()">{{ 'back' | translate }}</button>
-        <button class="primary mt-3" (click)="nextStep()" [disabled]="competitionForm.get('typeCtrl')?.invalid">
-            {{ 'next_step' | translate }}
-        </button>
-    </div>
 </div>
 
 <!-- STEP 4 – SET -->
@@ -138,12 +118,6 @@
             </div>
         </div>
     </form>
-    <div class="actions d-flex justify-content-between">
-        <button class="primary bg-secondary mt-3" (click)="back()">{{ 'back' | translate }}</button>
-        <button class="primary mt-3" (click)="nextStep()" [disabled]="competitionForm.get('setsCtrl')?.invalid">
-            {{ 'next_step' | translate }}
-        </button>
-    </div>
 </div>
 
 <!-- STEP 5 – PUNTI -->
@@ -152,32 +126,35 @@
         <div class="field">
             <span class="label">{{ 'competition_points_label' | translate }}</span>
             <div class="segmented" role="radiogroup" [attr.aria-label]="'competition_points_label' | translate">
-                <label class="seg-item"><input type="radio" formControlName="pointsCtrl"
-                        [value]="11" /><span class="p-4">11</span></label>
-                <label class="seg-item"><input type="radio" formControlName="pointsCtrl"
-                        [value]="21" /><span class="p-4">21</span></label>
+                <label class="seg-item">
+                    <input type="radio" formControlName="pointsCtrl" [value]="11" />
+                    <span class="p-4">11</span>
+                </label>
+                <label class="seg-item">
+                    <input type="radio" formControlName="pointsCtrl" [value]="21" />
+                    <span class="p-4">21</span>
+                </label>
             </div>
         </div>
     </form>
-    <div class="actions d-flex justify-content-between">
-        <button class="primary bg-secondary mt-3" (click)="back()">{{ 'back' | translate }}</button>
-        <button class="primary mt-3" (click)="nextStep()" [disabled]="competitionForm.get('pointsCtrl')?.invalid">
-            {{ 'next_step' | translate }}
-        </button>
-    </div>
 </div>
 
 <!-- STEP 6 – RIEPILOGO -->
 <div class="steps-wrapper" *ngIf="step == 6">
     <div class="summary form-card mt-3">
         <ul class="list-group list-group-flush">
-            <li *ngIf="managementForm.value.isPartOfCompetitionCtrl" class="list-group-itemtext-light d-flex align-items-center">
+            <li *ngIf="managementForm.value.isPartOfCompetitionCtrl"
+                class="list-group-item text-light d-flex align-items-center">
                 <i class="fa fa-user-plus me-2 text-primary"></i>
                 <span class="fw-bold me-2">{{ 'is_part_of_competition' | translate }}:</span>
                 <span class="ms-auto">{{ 'yes' | translate }}</span>
             </li>
             <li class="list-group-item text-light d-flex align-items-center">
-                <i [class]="managementForm.value.managementCtrl == 'admin' ? 'fa fa-lock me-2 text-warning' : 'fa fa-lock-open me-2 text-success'"></i>
+                <i [class]="
+            managementForm.value.managementCtrl == 'admin'
+              ? 'fa fa-lock me-2 text-warning'
+              : 'fa fa-lock-open me-2 text-success'
+          "></i>
                 <span class="fw-bold me-2">{{ 'management' | translate }}:</span>
                 <span class="ms-auto">{{ managementForm.value.managementCtrl | titlecase }}</span>
             </li>
@@ -189,7 +166,9 @@
             <li class="list-group-item text-light d-flex align-items-center">
                 <i class="fa fa-list me-2 text-info"></i>
                 <span class="fw-bold me-2">{{ 'competition_type_label' | translate }}:</span>
-                <span class="ms-auto">{{ ('competition_type_' + (competitionForm.value.typeCtrl || 'league')) | translate }}</span>
+                <span class="ms-auto">
+                    {{ ('competition_type_' + (competitionForm.value.typeCtrl || 'league')) | translate }}
+                </span>
             </li>
             <li class="list-group-item text-light d-flex align-items-center">
                 <i class="fa fa-th me-2 text-secondary"></i>
@@ -203,10 +182,20 @@
             </li>
         </ul>
     </div>
-    <div class="actions d-flex justify-content-between">
-        <button class="primary bg-secondary mt-3" (click)="back()">{{ 'back' | translate }}</button>
-        <button class="primary mt-3 flex-grow-1 ms-3" (click)="submit()" [disabled]="competitionForm.invalid">
-            {{ 'competition_action_create' | translate }}
-        </button>
-    </div>
+</div>
+
+<!-- ✅ ACTIONS GLOBALI -->
+<div class="actions d-flex justify-content-center mt-4" [@buttonShift]="buttonState">
+    <button class="primary bg-secondary" (click)="back()" [hidden]="step <= 1">
+        {{ 'back' | translate }}
+    </button>
+
+    <button class="primary" (click)="nextStep()" [hidden]="step >= 6" [disabled]="isNextDisabled()">
+        {{ 'next_step' | translate }}
+    </button>
+
+    <button class="primary flex-grow-1 ms-auto" (click)="submit()" [hidden]="step < 6"
+        [disabled]="competitionForm.invalid">
+        {{ 'competition_action_create' | translate }}
+    </button>
 </div>
