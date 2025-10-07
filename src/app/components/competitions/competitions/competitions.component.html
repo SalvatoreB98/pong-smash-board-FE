@@ -66,7 +66,7 @@
                     <h3>{{ "other_competitions" | translate }}</h3>
                     <div class="other-competitions-container">
                         <ng-container *ngFor="let c of competitionsWithoutActive$ | async; trackBy: trackById">
-                            <div class="comp text-center" (click)="dropdownService.open(competitionMenuActions, $event)">
+                            <div class="comp text-center">
                                 <strong>{{ c.name }}</strong>
 
                                 <small *ngIf="c.start_date">
