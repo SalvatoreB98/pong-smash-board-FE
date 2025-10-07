@@ -91,6 +91,12 @@ export class MenuDropdownComponent implements OnDestroy {
       this.moveFocus(event.key === 'ArrowDown' ? 1 : -1);
     }
   }
+  @HostListener('document:scroll', ['$event'])
+  onDocumentScroll(_event: Event) {
+    if (this.isOpen()) {
+      this.dropdownService.close();
+    }
+  }
   onActionSelected(value: string) {
     this.dropdownService.emit(value);
   }
