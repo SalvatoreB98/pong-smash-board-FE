@@ -99,7 +99,7 @@
                                         class="menu-trigger"
                                         aria-haspopup="true"
                                         [attr.aria-label]="'actions' | translate"
-                                        (click)="dropdownService.open(competitionMenuActions, competitionMenuTrigger)"
+                                        (click)="dropdownService.open(competitionMenuActions, $event)"
                                         [attr.data-competition-id]="c.id"
                                         data-dropdown-source="competitions-list"
                                     >
