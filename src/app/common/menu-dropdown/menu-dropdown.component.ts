@@ -109,7 +109,15 @@ export class MenuDropdownComponent implements OnDestroy {
 
   private focusFirstItem() {
     const first = this.menuItems?.first?.nativeElement;
-    first?.focus();
+    if (!first) {
+      return;
+    }
+
+    if (typeof first.focus === 'function') {
+      first.focus({ preventScroll: true });
+    } else {
+      first.focus();
+    }
   }
 
   private moveFocus(direction: 1 | -1) {
