@@ -145,7 +145,7 @@
     <!-- Modali -->
     <app-modal [label]="' '" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])"
         [modalName]="modalService.MODALS['ADD_COMPETITION']" 
-        [fullscreen]="true">
+        [fullscreen]="Utils.isMobile() ? true : false">
         <app-add-competition-modal></app-add-competition-modal>
     </app-modal>
 

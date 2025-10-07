@@ -13,12 +13,13 @@ import { UserService } from '../../../../services/user.service';
 import { ModalService } from '../../../../services/modal.service';
 import { CompetitionDetailComponent } from '../competition-detail/competition-detail.component';
 import { AddPlayersModalComponent } from '../../add-players-modal/add-players-modal.component';
-import { Utils } from '../../../utils/Utils';
 import { JoinCompetitionModalComponent } from '../../join-competition-modal/join-competition-modal.component';
 import { ViewCompetitionModalComponent } from './view-competition-modal/view-competition-modal.component';
 import { EditCompetitionModalComponent } from './edit-competition-modal/edit-competition-modal.component';
 import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
 import { DropdownAction, DropdownService } from '../../../../services/dropdown.service';
+import { Utils } from '../../../utils/Utils';
+
 @Component({
   selector: 'app-competitions',
   standalone: true,
@@ -47,6 +48,7 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
   readonly placeholderActionButtons = Array.from({ length: 2 });
   readonly placeholderOtherCompetitions = Array.from({ length: 3 });
   readonly placeholderSmallAvatars = Array.from({ length: 4 });
+  Utils = Utils;
 
   @ViewChild(CompetitionDetailComponent) competitionDetailComponent!: CompetitionDetailComponent;
   PROGRESS_STATE = UserProgressStateEnum;

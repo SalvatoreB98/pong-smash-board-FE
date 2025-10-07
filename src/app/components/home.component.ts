@@ -62,7 +62,6 @@ export class HomeComponent {
   eliminationRounds: EliminationRound[] = [];
   modalPlayers: IPlayer[] = [];
   isLoadingMatches = true;
-
   player1Selected: IPlayer | null = null;
   player2Selected: IPlayer | null = null;
 
