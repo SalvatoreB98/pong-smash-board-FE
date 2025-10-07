@@ -10,7 +10,8 @@ export interface DropdownAction {
 
 interface DropdownState {
   actions: DropdownAction[];
-  anchor: HTMLElement;
+  event: MouseEvent;
+  trigger: HTMLElement;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -21,21 +22,23 @@ export class DropdownService {
   private actionSubject = new Subject<string>();
   readonly action$ = this.actionSubject.asObservable();
 
-  open(actions: DropdownAction[], anchor: HTMLElement) {
+  open(actions: DropdownAction[], event: MouseEvent) {
+    const trigger = event.currentTarget as HTMLElement | null;
+    if (!trigger) {
+      return;
+    }
     const currentState = this.stateSubject.getValue();
     if (DropdownService.isOpen) {
-      // Se l'anchor è diverso, apri semplicemente il nuovo menu senza chiudere prima
-      if (currentState && currentState.anchor !== anchor) {
-        this.stateSubject.next({ actions, anchor });
+      const previousTrigger = currentState?.trigger;
+      if (previousTrigger && previousTrigger !== trigger) {
+        this.stateSubject.next({ actions, event, trigger });
+        DropdownService.isOpen = true;
         return;
       }
       this.close();
       return;
     }
-    if (!anchor) {
-      return;
-    }
-    this.stateSubject.next({ actions, anchor });
+    this.stateSubject.next({ actions, event, trigger });
     DropdownService.isOpen = true;
   }
 

@@ -11,7 +11,7 @@
 
             <ng-container *ngIf="state.state != PROGRESS_STATE.PROFILE_NOT_COMPLETED">
                 <a *ngIf=" !isMobile && (auth.isLoggedIn$ | async)" routerLink="/home-page" class="button-navbar" routerLinkActive="active">
-                    <span>{{"home" | translate}}</span>
+                    <span>{{ activeCompetition?.name }}</span>
                 </a>
 
                 <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/competitions" class="button-navbar" routerLinkActive="active">

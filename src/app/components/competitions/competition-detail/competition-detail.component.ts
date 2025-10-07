@@ -133,33 +133,34 @@ export class CompetitionDetailComponent implements OnDestroy {
   }
 
   private subscriptions = new Subscription();
-  private dropdownAnchor?: HTMLElement;
+  private dropdownTrigger: HTMLElement | null = null;
 
   private registerDropdownHandlers() {
     this.subscriptions.add(
       this.dropdownService.state$.subscribe((state) => {
         if (!state) {
-          this.dropdownAnchor = undefined;
+          this.dropdownTrigger = null;
           return;
         }
 
-        if (state.anchor.dataset['dropdownSource'] !== 'competition-detail') {
-          this.dropdownAnchor = undefined;
+        const trigger = state.trigger;
+        if (!trigger || trigger.dataset['dropdownSource'] !== 'competition-detail') {
+          this.dropdownTrigger = null;
           return;
         }
 
-        this.dropdownAnchor = state.anchor;
+        this.dropdownTrigger = trigger;
       })
     );
 
     this.subscriptions.add(
       this.dropdownService.action$.subscribe((value) => {
-        if (this.dropdownAnchor?.dataset['dropdownSource'] !== 'competition-detail') {
+        if (this.dropdownTrigger?.dataset['dropdownSource'] !== 'competition-detail') {
           return;
         }
 
         this.onDropdownAction(value);
-        this.dropdownAnchor = undefined;
+        this.dropdownTrigger = null;
       })
     );
   }

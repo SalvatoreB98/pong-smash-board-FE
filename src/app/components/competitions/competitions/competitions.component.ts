@@ -13,12 +13,13 @@ import { UserService } from '../../../../services/user.service';
 import { ModalService } from '../../../../services/modal.service';
 import { CompetitionDetailComponent } from '../competition-detail/competition-detail.component';
 import { AddPlayersModalComponent } from '../../add-players-modal/add-players-modal.component';
-import { Utils } from '../../../utils/Utils';
 import { JoinCompetitionModalComponent } from '../../join-competition-modal/join-competition-modal.component';
 import { ViewCompetitionModalComponent } from './view-competition-modal/view-competition-modal.component';
 import { EditCompetitionModalComponent } from './edit-competition-modal/edit-competition-modal.component';
 import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
 import { DropdownAction, DropdownService } from '../../../../services/dropdown.service';
+import { Utils } from '../../../utils/Utils';
+
 @Component({
   selector: 'app-competitions',
   standalone: true,
@@ -47,6 +48,7 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
   readonly placeholderActionButtons = Array.from({ length: 2 });
   readonly placeholderOtherCompetitions = Array.from({ length: 3 });
   readonly placeholderSmallAvatars = Array.from({ length: 4 });
+  Utils = Utils;
 
   @ViewChild(CompetitionDetailComponent) competitionDetailComponent!: CompetitionDetailComponent;
   PROGRESS_STATE = UserProgressStateEnum;
@@ -192,25 +194,26 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
 
   private subscriptions = new Subscription();
   private dropdownContext: ICompetition | null = null;
-  private dropdownAnchor?: HTMLElement;
+  private dropdownTrigger: HTMLElement | null = null;
 
   private registerDropdownHandlers() {
     this.subscriptions.add(
       this.dropdownService.state$.subscribe((state) => {
         if (!state) {
-          this.dropdownAnchor = undefined;
+          this.dropdownTrigger = null;
           this.dropdownContext = null;
           return;
         }
 
-        if (state.anchor.dataset['dropdownSource'] !== 'competitions-list') {
-          this.dropdownAnchor = undefined;
+        const trigger = state.trigger;
+        if (!trigger || trigger.dataset['dropdownSource'] !== 'competitions-list') {
+          this.dropdownTrigger = null;
           this.dropdownContext = null;
           return;
         }
 
-        this.dropdownAnchor = state.anchor;
-        const id = Number(state.anchor.dataset['competitionId']);
+        this.dropdownTrigger = trigger;
+        const id = Number(trigger.dataset['competitionId']);
         this.dropdownContext = Number.isFinite(id)
           ? this.competitionService.snapshotList().find(c => c.id === id) ?? null
           : null;
@@ -219,12 +222,12 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
 
     this.subscriptions.add(
       this.dropdownService.action$.subscribe((value) => {
-        if (this.dropdownAnchor?.dataset['dropdownSource'] !== 'competitions-list' || !this.dropdownContext) {
+        if (this.dropdownTrigger?.dataset['dropdownSource'] !== 'competitions-list' || !this.dropdownContext) {
           return;
         }
 
         this.onDropdownAction(value, this.dropdownContext);
-        this.dropdownAnchor = undefined;
+        this.dropdownTrigger = null;
         this.dropdownContext = null;
       })
     );

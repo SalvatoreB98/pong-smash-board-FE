@@ -70,7 +70,7 @@
     </button>
 
     <button #detailMenuTrigger type="button" class="menu-trigger" aria-haspopup="true"
-      [attr.aria-label]="'actions' | translate" (click)="dropdownService.open(detailMenuActions, detailMenuTrigger)"
+      [attr.aria-label]="'actions' | translate" (click)="dropdownService.open(detailMenuActions, $event)"
       [attr.data-competition-id]="competition?.id ?? ''" data-dropdown-source="competition-detail">
       <span aria-hidden="true">⋮</span>
     </button>

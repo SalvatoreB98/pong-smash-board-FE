@@ -8,6 +8,8 @@ import { UserProgressStateEnum } from '../../utils/enum';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserService } from '../../../services/user.service';
 import { SHARED_IMPORTS } from '../imports/shared.imports';
+import { ICompetition } from '../../../api/competition.api';
+import { CompetitionService } from '../../../services/competitions.service';
 
 @Component({
   selector: 'app-navbar',
@@ -24,8 +26,9 @@ export class NavbarComponent {
   isMenuOpen: boolean = false;
   isMobile: boolean = window.innerWidth <= 768;
   PROGRESS_STATE = UserProgressStateEnum;
+  activeCompetition: ICompetition | null = null;
 
-  constructor(public translateService: TranslationService, public auth: AuthService, public router: Router) {
+  constructor(public translateService: TranslationService, public auth: AuthService, public router: Router, public competitionService: CompetitionService) {
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth <= 768;
     });
@@ -41,6 +44,11 @@ export class NavbarComponent {
     this.isMenuOpen = false;
   }
 
+  ngOnInit() {
+    this.competitionService.activeCompetition$.subscribe((activeCompetition: any) => {
+      this.activeCompetition = activeCompetition;
+    });
+  }
   ngOnChanges() {
     this.auth.checkAuth()
   }
