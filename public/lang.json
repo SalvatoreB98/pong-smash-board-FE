@@ -592,12 +592,12 @@
         "en": "Image"
     },
     "added_users": {
-        "it": "Giocatori aggiunti",
-        "en": "Added players"
+        "it": "Giocatori da aggiungere",
+        "en": "Players to be added"
     },
     "no_players_added": {
-        "it": "Nessun giocatore aggiunto, inserisci un nickname e clicca su '+' per aggiungerlo. (Tip: puoi aggiungere più giocatori alla volta)",
-        "en": "No players added, enter a nickname and click '+' to add it. (Tip: you can add multiple players at once)"
+        "it": "Qui puoi aggiungere più giocatori alla volta, inserisci un nickname e clicca su 'Aggiungi giocatore' per aggiungerlo.",
+        "en": "Here you can add multiple players at once, enter a nickname (and an optional photo) and click 'Add player' to add him."
     },
     "sets": {
         "it": "SET",
