@@ -1,9 +1,14 @@
 <div class="group-knockout-wrapper pt-5">
+  <section>
+    <app-matches *ngIf="hasMatches" [matches]="matches" (matchEmitter)="onMatchSelected($event)">
+    </app-matches>
+  </section>
   <section class="board-section mt-5">
     <app-group-knockout-board [groups]="groups"></app-group-knockout-board>
     <div class="buttons-home-matches" aria-label="group-knockout-actions">
       <div class="button-container mt-3">
-        <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])" class="add-match p-2 text-center">
+        <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
+          class="add-match p-2 text-center">
           {{ 'add_match' | translate }}
           <span class="m-1"></span>
           <i class="fa fa-file-text-o" aria-hidden="true"></i>

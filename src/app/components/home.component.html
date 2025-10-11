@@ -6,7 +6,7 @@
 
       <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition" [groups]="groups"
         [qualifiedPlayers]="competitionQualifiedPlayers" [rounds]="eliminationRounds"
-        (roundSelected)="onClickRound($event)"></app-group-knockout>
+        (roundSelected)="onClickRound($event)" [matches]="matches"></app-group-knockout>
 
       <app-league-board *ngSwitchDefault [matches]="matches" [isLoading]="isLoadingMatches"
         (matchSelected)="setClickedMatch($event)">

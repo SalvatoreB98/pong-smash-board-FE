@@ -60,6 +60,7 @@ export class AddPlayersModalComponent extends ModalComponent {
 
       this.playersToAdd.push({ name, surname, nickname, file, previewUrl });
       this.addPlayerForm.reset();
+      this.resetFile();
     }
   }
 
@@ -74,6 +75,14 @@ export class AddPlayersModalComponent extends ModalComponent {
     const file = input.files?.[0] ?? null;
     if (!file) return;
     this.addPlayerForm.patchValue({ file });
+  }
+
+  resetFile() {
+    this.addPlayerForm.patchValue({ file: null });
+    const fileInput = document.querySelector('[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
 
   async addPlayers() {
