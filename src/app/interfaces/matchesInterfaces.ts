@@ -8,6 +8,7 @@ export interface IMatchSet {
 export type CompetitionMode = 'league' | 'elimination' | 'group_knockout';
 
 export interface IMatch {
+  date: string | number | Date;
   id: string;
   data: string;
   player1_name: string;

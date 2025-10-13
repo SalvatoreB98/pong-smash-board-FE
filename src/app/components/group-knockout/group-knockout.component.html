@@ -3,6 +3,9 @@
     <app-matches *ngIf="hasMatches" [matches]="matches" (matchEmitter)="onMatchSelected($event)">
     </app-matches>
   </section>
+  <section>
+    <app-next-matches *ngIf="hasMatches" [matches]="matches"></app-next-matches>
+  </section>
   <section class="board-section mt-5">
     <app-group-knockout-board [groups]="groups"></app-group-knockout-board>
     <div class="buttons-home-matches" aria-label="group-knockout-actions">

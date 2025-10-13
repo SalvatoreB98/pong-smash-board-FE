@@ -1,0 +1,84 @@
+.title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+#slider {
+    display: flex;
+    align-items: center;
+}
+
+.arrow-container {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    .arrow {
+        font-size: 1.5rem;
+        color: #555;
+        transition: color 0.2s;
+
+        &:hover {
+            color: #000;
+        }
+    }
+}
+
+.matches-slider {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    flex: 1;
+    padding: 10px;
+}
+
+.match {
+    background: #f6f6f6;
+    border-radius: 10px;
+    padding: 1rem;
+    min-width: 220px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    &.upcoming {
+        background: #f0faff;
+    }
+
+    .data {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .giocatore-container img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .name {
+        display: block;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-top: 0.3rem;
+    }
+
+    .vs-container {
+        padding: 0 10px;
+
+        .vs {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+    }
+}

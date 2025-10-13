@@ -10,6 +10,7 @@ import { GroupKnockoutBoardComponent } from './group-knockout-board.component';
 import { Group } from '../../interfaces/group.interface';
 import { MatchesComponent } from '../matches/matches.component';
 import { IMatch } from '../../interfaces/matchesInterfaces';
+import { NextMatchesComponent } from '../next-matches/next-matches.component';
 
 @Component({
   selector: 'app-group-knockout',
@@ -19,7 +20,8 @@ import { IMatch } from '../../interfaces/matchesInterfaces';
     EliminationBracketComponent,
     GroupKnockoutBoardComponent,
     TranslatePipe,
-    MatchesComponent
+    MatchesComponent,
+    NextMatchesComponent
   ],
   templateUrl: './group-knockout.component.html',
   styleUrl: './group-knockout.component.scss'
@@ -29,11 +31,31 @@ export class GroupKnockoutComponent {
   @Input() groups: Group[] = [];
   @Input() qualifiedPlayers: IPlayer[] = [];
   @Input() competition: ICompetition | null = null;
-  @Input() matches: IMatch[] = [];
   @Output() roundSelected = new EventEmitter<EliminationModalEvent>();
   @Output() matchSelected = new EventEmitter<IMatch>();
+  private _matches: IMatch[] = [];
+  @Input()
+  set matches(value: IMatch[]) {
+    this._matches = value;
+    const now = new Date().getTime();
+    this.nextMatches = value?.filter(m => {
+      console.log("DEBUG match", m);
+      console.log("DEBUG match date", new Date(m.date).getTime(), now);
+      return new Date(m.date).getTime() < now;
+    }) ?? [];
+    console.log("DEBUG next matches", this.nextMatches, value);
+
+  }
+  get matches(): IMatch[] {
+    return this._matches;
+  }
+  nextMatches: IMatch[] = [];
 
   modalService = inject(ModalService);
+
+  ngOnChanges() {
+    this.nextMatches = this.matches;
+  }
 
   onRoundSelected(event: EliminationModalEvent) {
     this.roundSelected.emit(event);
