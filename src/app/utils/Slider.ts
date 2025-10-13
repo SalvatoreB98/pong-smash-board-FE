@@ -1,22 +1,38 @@
+export interface SliderOptions {
+  itemSelector?: string;
+  arrowLeftSelector?: string;
+  arrowRightSelector?: string;
+  enableMouseDrag?: boolean;
+  enableTouchDrag?: boolean;
+}
+
+const defaultOptions: Required<SliderOptions> = {
+  itemSelector: '.match',
+  arrowLeftSelector: '.arrow-left',
+  arrowRightSelector: '.arrow-right',
+  enableMouseDrag: true,
+  enableTouchDrag: true,
+};
+
 export class Slider {
   private slider: HTMLElement | null;
-  private matchesSlider: HTMLElement  = document.querySelector(".matches-slider") as HTMLElement;
-  matches: NodeListOf<HTMLElement> | undefined;
-  arrowLeft: any;
-  arrowRight: any;
+  private matchesSlider: HTMLElement;
+  private matches: HTMLElement[] = [];
+  private arrowLeft: HTMLElement | null = null;
+  private arrowRight: HTMLElement | null = null;
+  private options: Required<SliderOptions>;
   index: number = 0;
   newPosition: number = 0;
   startX: number = 0;
   dragging: boolean = false;
   justDragged: boolean = false;
 
-  constructor(containerId: string, matchesSlider: HTMLElement) {
-    this.slider = document.getElementById(containerId);
-    if (!this.slider) return;
+  constructor(container: HTMLElement, matchesSlider: HTMLElement, options: SliderOptions = {}) {
+    this.slider = container;
     this.matchesSlider = matchesSlider;
-    this.matches = this.slider.querySelectorAll(".match");
-    this.arrowLeft = this.slider.querySelector(".arrow-left");
-    this.arrowRight = this.slider.querySelector(".arrow-right");
+    this.options = { ...defaultOptions, ...options };
+    if (!this.slider) return;
+    this.refreshElements();
     this.index = 0;
     this.newPosition = 0;
     this.startX = 0;
@@ -26,9 +42,15 @@ export class Slider {
   }
 
   private init(): void {
-    if (!this.matchesSlider || !this.matches?.length) return;
+    if (!this.matchesSlider || !this.matches.length) return;
     this.updateUI();
     this.addEventListeners();
+  }
+
+  private refreshElements(): void {
+    this.matches = Array.from(this.matchesSlider.querySelectorAll(this.options.itemSelector));
+    this.arrowLeft = this.slider?.querySelector(this.options.arrowLeftSelector) ?? null;
+    this.arrowRight = this.slider?.querySelector(this.options.arrowRightSelector) ?? null;
   }
 
   private pxToEm(value: number): string {
@@ -36,6 +58,7 @@ export class Slider {
   }
 
   public updateUI(): void {
+    this.refreshElements();
     this.updateSliderPosition();
     this.updateArrowState();
   }
@@ -48,7 +71,7 @@ export class Slider {
     if (this.arrowRight) {
       this.arrowRight.style.opacity =
         this.index === (this.matches?.length ?? 0) - 1 ||
-          this.matchesSlider.scrollWidth < window.visualViewport!.width
+          (typeof window !== 'undefined' && window.visualViewport && this.matchesSlider.scrollWidth < window.visualViewport.width)
           ? "0.2"
           : "1";
       this.arrowRight.style.pointerEvents = this.index === (this.matches?.length ?? 0) - 1 ? "none" : "auto";
@@ -56,6 +79,7 @@ export class Slider {
   }
 
   private touchInit(): void {
+    if (!this.options.enableTouchDrag) return;
     let startX: number, moving = false;
 
     this.matchesSlider.addEventListener("touchstart", (e: TouchEvent) => {
@@ -70,7 +94,7 @@ export class Slider {
       const currentX = e.touches[0].pageX;
       const translateX = this.newPosition + currentX - startX;
       this.matchesSlider.style.transform = `translateX(${this.pxToEm(translateX)})`;
-    });
+    }, { passive: false });
 
     this.matchesSlider.addEventListener("touchend", (e: TouchEvent) => {
       moving = false;
@@ -80,6 +104,7 @@ export class Slider {
   }
 
   private desktopGrabInit(): void {
+    if (!this.options.enableMouseDrag) return;
     this.matchesSlider.querySelectorAll("img").forEach((img) => {
       img.addEventListener("dragstart", (e) => e.preventDefault());
     });
@@ -121,10 +146,10 @@ export class Slider {
     const matchWidth = firstMatch.offsetWidth;
     const matchMargin = parseInt(firstMatchStyles.marginLeft, 10) + parseInt(firstMatchStyles.marginRight, 10);
     const matchTotalWidth = matchWidth + matchMargin;
-    const scrolledMatches = Math.round(Math.abs(deltaX) / matchTotalWidth);
+    const scrolledMatches = matchTotalWidth === 0 ? 0 : Math.round(Math.abs(deltaX) / matchTotalWidth);
 
     if (deltaX < 0) {
-      this.index = Math.min(this.index + scrolledMatches, this.matches!.length - 1);
+      this.index = Math.min(this.index + scrolledMatches, this.matches.length - 1);
     } else if (deltaX > 0) {
       this.index = Math.max(this.index - scrolledMatches, 0);
     }

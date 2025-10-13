@@ -1,0 +1,207 @@
+@use '../../../style/variables.scss' as *;
+
+.next-match-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: #fff;
+}
+
+.next-match-modal__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.next-match-modal__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.next-match-modal__status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.next-match-modal__players {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, auto));
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.next-match-modal__vs {
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.player-card__avatar {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.player-card__name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.next-match-modal__meta {
+  display: grid;
+  gap: 1rem;
+}
+
+.meta-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: $border-radius;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.meta-item__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+}
+
+.meta-item__value {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.scheduler-toggle {
+  align-self: stretch;
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.26);
+    transform: translateY(-0.0625rem);
+  }
+}
+
+.scheduler-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: $border-radius;
+  padding: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+
+  span {
+    font-weight: 600;
+    opacity: 0.85;
+  }
+
+  input,
+  textarea {
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    outline: none;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+.form-field--wide {
+  grid-column: 1 / -1;
+}
+
+.scheduler-form__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.scheduler-form__actions .primary {
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .next-match-modal__players {
+    gap: 1rem;
+  }
+
+  .player-card__avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .scheduler-form__actions {
+    justify-content: center;
+  }
+}

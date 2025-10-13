@@ -2,10 +2,18 @@
 .match {
     max-width: 15.625em;
     border-radius: $border-radius;
-    background: $gradient;    
+    background: $gradient;
     color: white;
     padding: 1.25em;
     margin: 0 0.5em;
+    flex: 0 0 auto;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &--selected {
+        box-shadow: 0 0 0 0.1875em rgba(255, 255, 255, 0.35);
+        transform: translateY(-0.3125em);
+    }
 
     img {
         width: 3.125em;
@@ -43,4 +51,11 @@
     opacity: 0.7;
     position: relative;
     bottom: 0.625em;
+}
+
+@media (max-width: 768px) {
+    .match {
+        min-width: 12.5em;
+        margin: 0;
+    }
 }
