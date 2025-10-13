@@ -85,10 +85,15 @@ export class AddPlayersModalComponent extends ModalComponent {
     }
   }
 
-  async addPlayers() {
+  async addPlayers(event?: Event) {
     if (this.isAdding) {
       console.warn("⚠️ addPlayers già in corso, chiamata bloccata.");
       return;
+    }
+    const button = this.resolveButton(event);
+    if (button) {
+      button.disabled = true;
+      this.loader.addSpinnerToButton(button);
     }
     this.isAdding = true;
     this.loader.startLittleLoader();
@@ -160,9 +165,23 @@ export class AddPlayersModalComponent extends ModalComponent {
       console.error(err);
       this.loader.showToast('Failed to add players.', MSG_TYPE.ERROR);
     } finally {
+      if (button) {
+        button.disabled = false;
+        this.loader.removeSpinnerFromButton(button);
+      }
       this.isAdding = false;
       this.loader.stopLittleLoader();
     }
+  }
+
+  private resolveButton(event?: Event): HTMLButtonElement | null {
+    if (!event) return null;
+    const submitter = (event as SubmitEvent).submitter as HTMLButtonElement | undefined;
+    if (submitter) return submitter;
+
+    const target = event.target as HTMLElement | null;
+    if (target instanceof HTMLButtonElement) return target;
+    return target?.closest('button') as HTMLButtonElement | null;
   }
 
   copyCode() {

@@ -105,7 +105,7 @@
                     </ul>
 
                     <div *ngIf="playersToAdd.length > 0" class="button-container mt-3">
-                        <button type="button" class="secondary w-100 text-center" (click)="addPlayers()">
+                        <button type="button" class="secondary w-100 text-center" (click)="addPlayers($event)">
                             {{ 'add_players' | translate }}
                             <i class="fa fa-floppy-o" aria-hidden="true"></i>
                         </button>
