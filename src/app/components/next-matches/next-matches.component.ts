@@ -1,99 +1,111 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, HostListener, Output, EventEmitter } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { DataService } from '../../../services/data.service';
-import { Utils } from '../../utils/Utils';
-import { ModalService } from '../../../services/modal.service';
-import { Slider } from '../../utils/Slider';
 import { IMatch } from '../../interfaces/matchesInterfaces';
-import { environment } from '../../../environments/environment';
+
+type NextMatch = IMatch & {
+  group_name?: string | null;
+  groupName?: string | null;
+  player1?: { id?: number; name?: string | null; img?: string | null } | null;
+  player2?: { id?: number; name?: string | null; img?: string | null } | null;
+  player1_img?: string | null;
+  player2_img?: string | null;
+  player1_name?: string | null;
+  player2_name?: string | null;
+};
 
 @Component({
   selector: 'app-next-matches',
   standalone: true,
-  imports: [CommonModule, DatePipe, ...SHARED_IMPORTS],
+  imports: [CommonModule, ...SHARED_IMPORTS],
   templateUrl: './next-matches.component.html',
   styleUrls: ['./next-matches.component.scss']
 })
-export class NextMatchesComponent implements AfterViewInit {
-  nextMatches: any[] = []; // Array di prossime partite
-  @ViewChild('matchesSlider') matchesSlider!: ElementRef<HTMLDivElement>;
-  isOverflowing = false;
-  slider: Slider | undefined;
-  clickedMatch: any;
-  @Output() matchEmitter: EventEmitter<IMatch> = new EventEmitter<IMatch>();
-  constructor(private dataService: DataService, public modalService: ModalService) { }
-  private sliderInitialized = false;
-  
-  ngOnInit() {
-    this.dataService.fetchNextMatches().then(matches => {
-      this.nextMatches = matches;
-    });
-    if (this.matchesSlider)
-      this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
+export class NextMatchesComponent implements OnInit, AfterViewInit {
+  nextMatches: NextMatch[] = [];
+
+  @ViewChild('matchesSlider')
+  matchesSlider?: ElementRef<HTMLDivElement>;
+
+  showNavButtons = false;
+  canScrollLeft = false;
+  canScrollRight = false;
+
+  constructor(private readonly dataService: DataService) {}
+
+  ngOnInit(): void {
+    this.loadMatches();
   }
 
-  ngAfterViewInit() {
-    this.checkOverflow();
-    console.log(environment.production)
-    if (this.matchesSlider) {
-      this.slider = new Slider('slider', this.matchesSlider.nativeElement);
-    }
-    this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50
-  }
-  
-
-  ngAfterViewChecked() {
-    if (!this.sliderInitialized && this.matchesSlider?.nativeElement.querySelectorAll('.match').length) {
-      this.slider = new Slider('slider', this.matchesSlider.nativeElement);
-      this.sliderInitialized = true;
-    }
+  async loadMatches(): Promise<void> {
+    const matches = await this.dataService.fetchNextMatches();
+    this.nextMatches = Array.isArray(matches) ? (matches as NextMatch[]) : [];
+    queueMicrotask(() => this.updateOverflowState());
   }
 
+  ngAfterViewInit(): void {
+    this.updateOverflowState();
+  }
 
   @HostListener('window:resize')
-  onResize() {
-    this.checkOverflow();
+  onWindowResize(): void {
+    this.updateOverflowState();
   }
 
-  checkOverflow(): void {
-    if (!this.matchesSlider) return;
-    const el = this.matchesSlider.nativeElement;
-    this.isOverflowing = el.scrollWidth > el.clientWidth;
+  onScroll(): void {
+    this.updateOverflowState();
   }
 
   scrollLeft(): void {
-    this.matchesSlider.nativeElement.scrollBy({ left: -250, behavior: 'smooth' });
+    const slider = this.matchesSlider?.nativeElement;
+    if (!slider) {
+      return;
+    }
+
+    slider.scrollBy({ left: -slider.clientWidth * 0.8, behavior: 'smooth' });
+    setTimeout(() => this.updateOverflowState(), 300);
   }
 
   scrollRight(): void {
-    this.matchesSlider.nativeElement.scrollBy({ left: 250, behavior: 'smooth' });
+    const slider = this.matchesSlider?.nativeElement;
+    if (!slider) {
+      return;
+    }
+
+    slider.scrollBy({ left: slider.clientWidth * 0.8, behavior: 'smooth' });
+    setTimeout(() => this.updateOverflowState(), 300);
   }
 
   onImageError(event: Event): void {
     (event.target as HTMLImageElement).src = '/default-player.jpg';
   }
 
-  trackByIndex(index: number) {
-    return index;
+  trackByMatch(index: number, match: NextMatch): string | number {
+    return match?.id ?? index;
   }
 
-  getUpcomingMatches() {
-    const now = new Date().getTime();
-    return this.nextMatches;
-  }
-  onMatchClick(matchId: string): void {
-    if (!Utils.isMobile() && this.slider?.justDragged) {
+  private updateOverflowState(): void {
+    const slider = this.matchesSlider?.nativeElement;
+    if (!slider) {
+      this.showNavButtons = false;
+      this.canScrollLeft = false;
+      this.canScrollRight = false;
       return;
     }
-    const matchData = this.nextMatches.find((m: { id: string; }) => m.id === matchId);
-    if (matchData) {
-      this.clickedMatch = matchData;
-      this.matchEmitter.emit(matchData);
-      this.modalService.openModal(this.modalService.MODALS['SHOW_MATCH']);
-    } else {
-      console.error('Match not found with id: ' + matchId);
-      //show error message
+
+    const hasOverflow = slider.scrollWidth > slider.clientWidth + 1;
+    this.showNavButtons = hasOverflow;
+
+    if (!hasOverflow) {
+      this.canScrollLeft = false;
+      this.canScrollRight = false;
+      slider.scrollLeft = 0;
+      return;
     }
+
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+    this.canScrollLeft = slider.scrollLeft > 0;
+    this.canScrollRight = slider.scrollLeft < maxScrollLeft;
   }
 }
