@@ -39,8 +39,20 @@
                     </div>
                     <footer class="match-card__footer text-center">
                         <span class="match-card__time">
-                            <i class="fa fa-clock-o" aria-hidden="true"></i>
-                            {{ match?.date | date: 'short' }}
+                            <div *ngIf="match.date; else noDate">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                {{ match.date | date: 'shortDate' }} -
+                                {{ match.date | date: 'shortTime' }}
+                            </div>
+                            <ng-template #noDate>
+                                <div style="opacity: 0.5; font-size: 0.75em;">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                    {{ 'no_date' | translate }}
+                                </div>
+                                <div>
+                                    <button style="font-size: 0.75em;" type="button">{{ 'define_date' | translate }}</button>
+                                </div>
+                            </ng-template>
                         </span>
                     </footer>
                 </article>

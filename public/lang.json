@@ -1134,5 +1134,13 @@
     "no_next_matches": {
         "it": "Nessuna partita in programma.",
         "en": "No matches scheduled."
+    },
+    "no_date": {
+        "it": "Da definire",
+        "en": "To be defined"
+    },
+    "define_date": {
+        "it": "Definisci data e ora",
+        "en": "Define date and time"
     }
 }
