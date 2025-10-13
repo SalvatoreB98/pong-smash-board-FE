@@ -37,7 +37,7 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
   nextMatches: NextMatch[] = [];
   @ViewChild('swiperEl2') swiperEl?: ElementRef<HTMLElement>;
   swiperInstance?: Swiper;
-
+  isLoading: boolean = true;
   swiperConfig: SwiperOptions = {
     ...BASE_SLIDER_CONFIG,
     modules: [Navigation],
@@ -64,6 +64,7 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async loadMatches(): Promise<void> {
     const matches = await this.dataService.fetchNextMatches();
+    this.isLoading = false;
     this.nextMatches = Array.isArray(matches) ? (matches as NextMatch[]) : [];
 
     // 👇 Questo garantisce che Swiper parta solo dopo che le slide esistono nel DOM
