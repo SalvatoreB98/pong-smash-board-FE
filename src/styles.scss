@@ -4,6 +4,8 @@
 @use "style/utility.scss";
 @use "style/forms.scss";
 @use "style/landing.scss";
+@import 'swiper/css';
+@import 'swiper/css/navigation';
 
 * {
     box-sizing: border-box;

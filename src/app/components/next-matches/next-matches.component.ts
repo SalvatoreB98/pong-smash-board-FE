@@ -1,9 +1,12 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import Swiper from 'swiper';
+import { Navigation } from 'swiper/modules';
+import { SwiperOptions } from 'swiper/types';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { DataService } from '../../../services/data.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
-import { Utils } from '../../utils/Utils';
+import { BASE_SLIDER_CONFIG } from '../../config/slider.config';
 
 type NextMatch = IMatch & {
   group_name?: string | null;
@@ -23,15 +26,15 @@ type NextMatch = IMatch & {
   templateUrl: './next-matches.component.html',
   styleUrls: ['./next-matches.component.scss']
 })
-export class NextMatchesComponent implements OnInit, AfterViewInit {
+export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
   nextMatches: NextMatch[] = [];
-
-  @ViewChild('matchesSlider')
-  matchesSlider?: ElementRef<HTMLDivElement>;
-
-  showNavButtons = false;
-  canScrollLeft = false;
-  canScrollRight = false;
+  swiperConfig: SwiperOptions = {
+    ...BASE_SLIDER_CONFIG,
+    modules: [Navigation],
+    navigation: true
+  };
+  @ViewChild('swiperEl') swiperEl?: ElementRef<HTMLElement>;
+  private swiperInstance?: Swiper;
 
   constructor(private readonly dataService: DataService) { }
 
@@ -39,43 +42,19 @@ export class NextMatchesComponent implements OnInit, AfterViewInit {
     this.loadMatches();
   }
 
+  ngAfterViewInit(): void {
+    this.initSwiper();
+  }
+
+  ngOnDestroy(): void {
+    this.swiperInstance?.destroy(true, true);
+    this.swiperInstance = undefined;
+  }
+
   async loadMatches(): Promise<void> {
     const matches = await this.dataService.fetchNextMatches();
     this.nextMatches = Array.isArray(matches) ? (matches as NextMatch[]) : [];
-    queueMicrotask(() => this.updateOverflowState());
-  }
-
-  ngAfterViewInit(): void {
-    this.updateOverflowState();
-  }
-
-  @HostListener('window:resize')
-  onWindowResize(): void {
-    this.updateOverflowState();
-  }
-
-  onScroll(): void {
-    this.updateOverflowState();
-  }
-
-  scrollLeft(): void {
-    const slider = this.matchesSlider?.nativeElement;
-    if (!slider) {
-      return;
-    }
-
-    slider.scrollBy({ left: -slider.clientWidth * 0.8, behavior: 'smooth' });
-    setTimeout(() => this.updateOverflowState(), 300);
-  }
-
-  scrollRight(): void {
-    const slider = this.matchesSlider?.nativeElement;
-    if (!slider) {
-      return;
-    }
-
-    slider.scrollBy({ left: slider.clientWidth * 0.8, behavior: 'smooth' });
-    setTimeout(() => this.updateOverflowState(), 300);
+    this.queueSwiperUpdate();
   }
 
   onImageError(event: Event): void {
@@ -86,27 +65,21 @@ export class NextMatchesComponent implements OnInit, AfterViewInit {
     return match?.id ?? index;
   }
 
-  private updateOverflowState(): void {
-    const slider = this.matchesSlider?.nativeElement;
-    if (!slider) {
-      this.showNavButtons = false;
-      this.canScrollLeft = false;
-      this.canScrollRight = false;
+  private initSwiper(): void {
+    if (this.swiperInstance || !this.swiperEl) {
       return;
     }
 
-    const hasOverflow = slider.scrollWidth > slider.clientWidth + 1;
-    this.showNavButtons = hasOverflow;
+    this.swiperInstance = new Swiper(this.swiperEl.nativeElement, this.swiperConfig);
+  }
 
-    if (!hasOverflow) {
-      this.canScrollLeft = false;
-      this.canScrollRight = false;
-      slider.scrollLeft = 0;
-      return;
-    }
-
-    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-    this.canScrollLeft = slider.scrollLeft > 0;
-    this.canScrollRight = slider.scrollLeft < maxScrollLeft;
+  private queueSwiperUpdate(): void {
+    queueMicrotask(() => {
+      if (!this.swiperInstance) {
+        this.initSwiper();
+      } else {
+        this.swiperInstance.update();
+      }
+    });
   }
 }
