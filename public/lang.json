@@ -1055,7 +1055,6 @@
         "it": "Crea account gratuito",
         "en": "Create free account"
     },
-
     "faq_stat2": {
         "it": "engagement sponsor",
         "en": "sponsor engagement"
@@ -1064,7 +1063,6 @@
         "it": "supporto dedicato",
         "en": "dedicated support"
     },
-
     "faq_a1": {
         "it": "Certo, puoi impostare palette, loghi...",
         "en": "Of course, you can set palettes, logos..."
@@ -1132,5 +1130,9 @@
     "next_matches": {
         "it": "Prossime partite",
         "en": "Next matches"
+    },
+    "no_next_matches": {
+        "it": "Nessuna partita in programma.",
+        "en": "No matches scheduled."
     }
 }

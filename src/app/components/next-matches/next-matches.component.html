@@ -1,46 +1,52 @@
-<h1 class="text-center title">
-    {{ 'next_matches' | translate }}
-</h1>
+<section class="next-matches" *ngIf="nextMatches.length; else noMatches">
+    <h2 class="title text-center">{{ 'next_matches' | translate }}</h2>
 
-<div class="slider-container">
-    <div id="slider">
-        <div class="arrow-container arrow-left">
-            <div *ngIf="isOverflowing" class="arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
-        </div>
-        <div class="matches-slider" #matchesSlider
-            [ngStyle]="{ 'justify-content': !isOverflowing ? 'center' : 'flex-start' }">
-            <div *ngFor="let match of nextMatches; trackBy: trackByIndex" class="match" [id]="match.id"
-                (click)="onMatchClick(match.id)">
-                <div>
-                    <div class="data">{{ match?.created | date: 'dd/MM/yyyy HH:mm' }}</div>
-                </div>
-                <div class="d-flex">
-                    <div class="giocatore-container">
-                        <div class="text-center">
-                            <div><img [src]="match.player1_img" (error)="onImageError($event)" alt=""></div>
-                            <div><span class="name">{{ match.player1_name }}</span></div>
-                        </div>
+    <div class="slider" [class.slider--with-nav]="showNavButtons">
+        <button type="button" class="slider__nav slider__nav--left" aria-label="Scroll previous matches"
+            (click)="scrollLeft()" *ngIf="showNavButtons" [disabled]="!canScrollLeft">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
+
+        <div class="slider__track" #matchesSlider (scroll)="onScroll()">
+            <article class="match-card" *ngFor="let match of nextMatches; trackBy: trackByMatch">
+                <header class="match-card__header text-center" *ngIf="match?.group_name || match?.groupName">
+                    {{ match?.group_name || match?.groupName }}
+                </header>
+
+                <div class="match-card__players">
+                    <div class="match-card__player">
+                        <img class="match-card__avatar"
+                            [src]="match?.player1?.img || match?.player1_img || '/default-player.jpg'"
+                            (error)="onImageError($event)" alt="" />
+                        <span class="match-card__name">{{ match?.player1?.name || match?.player1_name }}</span>
                     </div>
-                    <div class="punteggio-container">
-                        <div class="punteggio" [class.win]="match.player1_score > match.player2_score">{{
-                            match.player1_score }}
-                        </div>
-                        <div class="punteggio"> <span>:</span> </div>
-                        <div class="punteggio" [class.win]="match.player2_score > match.player1_score">{{
-                            match.player2_score }}
-                        </div>
-                    </div>
-                    <div class="giocatore-container">
-                        <div class="text-center">
-                            <div><img [src]="match.player2_img" (error)="onImageError($event)" alt=""></div>
-                            <div><span class="name">{{ match.player2_name }}</span></div>
-                        </div>
+
+                    <span class="match-card__vs">vs</span>
+
+                    <div class="match-card__player">
+                        <img class="match-card__avatar"
+                            [src]="match?.player2?.img || match?.player2_img || '/default-player.jpg'"
+                            (error)="onImageError($event)" alt="" />
+                        <span class="match-card__name">{{ match?.player2?.name || match?.player2_name }}</span>
                     </div>
                 </div>
-            </div>
+                <footer class="match-card__footer text-center">
+                    <span class="match-card__time">
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                        {{ match?.date | date: 'short' }}
+                    </span>
+                </footer>
+            </article>
         </div>
-        <div *ngIf="isOverflowing" class="arrow-container arrow-right">
-            <div class="arrow"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
-        </div>
+
+        <button type="button" class="slider__nav slider__nav--right" aria-label="Scroll next matches"
+            (click)="scrollRight()" *ngIf="showNavButtons" [disabled]="!canScrollRight">
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </button>
     </div>
-</div>
+</section>
+
+<ng-template #noMatches>
+    <h2 class="title text-center">{{ 'next_matches' | translate }}</h2>
+    <p class="no-matches">{{ 'no_next_matches' | translate }}</p>
+</ng-template>
