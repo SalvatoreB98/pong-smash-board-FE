@@ -1,11 +1,12 @@
-@use "style/variables.scss";
-@use "style/style.scss";
-@use "style/fonts.scss";
-@use "style/utility.scss";
-@use "style/forms.scss";
-@use "style/landing.scss";
+@use "style/variables";
+@use "style/style";
+@use "style/fonts";
+@use "style/utility";
+@use "style/forms";
+@use "style/landing";
 @import 'swiper/css';
 @import 'swiper/css/navigation';
+@import 'style/skeleton';
 
 * {
     box-sizing: border-box;

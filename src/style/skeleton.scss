@@ -1,0 +1,262 @@
+@use '../style/variables' as *;
+
+:host {
+    display: block;
+}
+
+.wrapper {
+    padding: 2rem 1.25rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.wrapper > section,
+.wrapper > .others,
+.competitions-skeleton > section,
+.competitions-skeleton > .skeleton-heading {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 37.5em;
+}
+
+.competitions-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.skeleton-heading {
+    display: flex;
+    justify-content: center;
+}
+
+.skeleton-title {
+    width: 12rem;
+    height: 1.5rem;
+    border-radius: 999px;
+}
+
+.skeleton-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.75rem;
+    border-radius: 1.75rem;
+    background: rgba(7, 15, 25, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 1.5rem 3rem -2rem rgba(0, 0, 0, 0.6);
+}
+
+.skeleton-info-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    justify-content: center;
+}
+
+.info-chip {
+    width: 6rem;
+    height: 0.9rem;
+    border-radius: 999px;
+}
+
+.skeleton-active__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.skeleton-active__body .title {
+    height: 2rem;
+    border-radius: 1rem;
+    max-width: 20rem;
+}
+
+.skeleton-active__body .meta {
+    height: 0.9rem;
+    border-radius: 999px;
+    max-width: 16rem;
+}
+
+.skeleton-active__body .meta.short {
+    max-width: 8rem;
+}
+
+.skeleton-active__body .players {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.skeleton-active__body .players .avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+
+.skeleton-active__body .actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.skeleton-active__body .actions .button {
+    flex: 1 1 auto;
+    height: 2.75rem;
+    border-radius: 1rem;
+}
+
+.skeleton-active__body .actions .icon {
+    width: 3rem;
+    height: 2.75rem;
+    border-radius: 1rem;
+}
+
+.skeleton-section.skeleton-buttons {
+    gap: 1rem;
+}
+
+.skeleton-section.skeleton-buttons .button {
+    height: 3.25rem;
+    border-radius: 1.25rem;
+}
+
+.skeleton-section.skeleton-others {
+    gap: 1.5rem;
+}
+
+.skeleton-subtitle {
+    width: 14rem;
+    height: 1.1rem;
+    border-radius: 999px;
+}
+
+.other-cards {
+    display: grid;
+    gap: 1rem;
+}
+
+.other-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    background: rgba(9, 20, 32, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.other-card .title {
+    height: 1.1rem;
+    border-radius: 999px;
+    max-width: 70%;
+}
+
+.other-card .meta {
+    height: 0.85rem;
+    border-radius: 999px;
+    max-width: 55%;
+}
+
+.other-card .avatars {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.other-card .avatars .avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+}
+
+.placeholder {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(110deg, rgba(255, 255, 255, 0.08) 20%, rgba(255, 255, 255, 0.22) 40%, rgba(255, 255, 255, 0.08) 60%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.other-competitions-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    width: 100%;
+}
+
+.others {
+    margin-top: 1.5rem;
+    max-width: 37.5em;
+    margin: auto;
+    padding: 0;
+
+    h3 {
+        font-size: 1rem;
+        opacity: 0.8;
+        margin-bottom: .75rem;
+    }
+
+    .comp {
+        background: $dark2;
+        border-radius: $border-radius;
+        padding: .75rem;
+        color: $primary-ultra-light;
+        font-size: .9rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1em;
+
+        &:hover {
+            background: $dark;
+        }
+
+        .players-list {
+            margin-top: .5rem;
+            display: flex;
+            gap: 0;
+            background-color: black;
+            padding: 0.25em;
+            margin: 0.25em;
+            border-radius: $border-radius;
+            overflow-x: auto;
+            max-width: 10rem;
+
+            .avatar {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin: -3px;
+                padding: 0;
+            }
+        }
+
+        .menu-trigger {
+            background: none;
+            border: 0;
+            color: $primary-light;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+    }
+}
+
+@media (min-width: 40rem) {
+    .other-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
