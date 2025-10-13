@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Swiper from 'swiper';
 import { Navigation } from 'swiper/modules';
@@ -28,13 +35,18 @@ type NextMatch = IMatch & {
 })
 export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
   nextMatches: NextMatch[] = [];
+  @ViewChild('swiperEl2') swiperEl?: ElementRef<HTMLElement>;
+  swiperInstance?: Swiper;
+
   swiperConfig: SwiperOptions = {
     ...BASE_SLIDER_CONFIG,
     modules: [Navigation],
-    navigation: true
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev'
+    }
   };
-  @ViewChild('swiperEl') swiperEl?: ElementRef<HTMLElement>;
-  private swiperInstance?: Swiper;
+  isOverflowing: boolean = false;
 
   constructor(private readonly dataService: DataService) { }
 
@@ -43,18 +55,19 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.initSwiper();
+    this.queueSwiperUpdate();
   }
 
   ngOnDestroy(): void {
-    this.swiperInstance?.destroy(true, true);
-    this.swiperInstance = undefined;
+    this.destroySwiper();
   }
 
   async loadMatches(): Promise<void> {
     const matches = await this.dataService.fetchNextMatches();
     this.nextMatches = Array.isArray(matches) ? (matches as NextMatch[]) : [];
-    this.queueSwiperUpdate();
+
+    // 👇 Questo garantisce che Swiper parta solo dopo che le slide esistono nel DOM
+    setTimeout(() => this.queueSwiperUpdate(), 0);
   }
 
   onImageError(event: Event): void {
@@ -71,6 +84,7 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.swiperInstance = new Swiper(this.swiperEl.nativeElement, this.swiperConfig);
+    this.queueSwiperUpdate();
   }
 
   private queueSwiperUpdate(): void {
@@ -81,5 +95,12 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.swiperInstance.update();
       }
     });
+  }
+
+  private destroySwiper(): void {
+    if (this.swiperInstance) {
+      this.swiperInstance.destroy(true, true);
+      this.swiperInstance = undefined;
+    }
   }
 }

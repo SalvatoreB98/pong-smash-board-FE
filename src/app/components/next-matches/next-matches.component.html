@@ -1,9 +1,9 @@
 <section class="next-matches" *ngIf="nextMatches.length; else noMatches">
     <h2 class="title text-center">{{ 'next_matches' | translate }}</h2>
 
-    <div class="slider swiper next-matches__slider" #swiperEl>
+    <div class="slider swiper next-matches__slider" #swiperEl2>
         <div class="swiper-wrapper">
-            <div class="swiper-slide" *ngFor="let match of nextMatches; trackBy: trackByMatch">
+            <div class="swiper-slide" style="margin-right: 16px;" *ngFor="let match of nextMatches; trackBy: trackByMatch">
                 <article class="match-card">
                     <header class="match-card__header text-center" *ngIf="match?.group_name || match?.groupName">
                         {{ match?.group_name || match?.groupName }}

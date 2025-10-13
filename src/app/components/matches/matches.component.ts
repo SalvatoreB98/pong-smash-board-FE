@@ -17,6 +17,7 @@ export class MatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() matches: any;
   @Output() matchEmitter: EventEmitter<IMatch> = new EventEmitter<IMatch>();
   maxMatchesToShow = 25;
+  isOverflowing: boolean = false;
   clickedMatch: IMatch | null = null;
   swiperConfig: SwiperOptions = {
     ...BASE_SLIDER_CONFIG,
@@ -24,9 +25,9 @@ export class MatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
     navigation: true
   };
   @ViewChild('swiperEl') swiperEl?: ElementRef<HTMLElement>;
-  private swiperInstance?: Swiper;
+  swiperInstance?: Swiper;
 
-  constructor(public modalService: ModalService) {}
+  constructor(public modalService: ModalService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['matches']) {
