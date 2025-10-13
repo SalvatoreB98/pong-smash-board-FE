@@ -1,15 +1,15 @@
 <h1 class="text-center title">
   {{ 'matches' | translate }}
 </h1>
-<div class="slider-container">
-  <div id="slider">
-    <div class="arrow-container arrow-left">
-      <div *ngIf="isOverflowing" class="arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+<div class="slider-container" [class.slider-container--mobile]="!isDesktop">
+  <div class="slider-shell" #sliderContainer [class.slider-shell--mobile]="!isDesktop">
+    <div class="arrow-container arrow-left" *ngIf="isDesktop && isOverflowing">
+      <div class="arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
     </div>
-    <div class="matches-slider" #matchesSlider
-      [ngStyle]="{ 'justify-content': !isOverflowing ? 'center' : 'flex-start' }">
-      <div *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex" class="match" [id]="match.id"
-        (click)="onMatchClick(match.id)">
+    <div class="matches-slider" #matchesSlider [class.matches-slider--mobile]="!isDesktop"
+      [ngStyle]="{ 'justify-content': !isOverflowing && isDesktop ? 'center' : 'flex-start' }">
+      <div *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex" class="match"
+        [class.match--selected]="clickedMatch?.id === match.id" [id]="match.id" (click)="onMatchClick(match.id)">
         <div>
           <div class="data">{{ match?.created | date: 'dd/MM/yyyy HH:mm' }}</div>
         </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="isOverflowing" class="arrow-container arrow-right">
+    <div *ngIf="isDesktop && isOverflowing" class="arrow-container arrow-right">
       <div class="arrow"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
     </div>
   </div>

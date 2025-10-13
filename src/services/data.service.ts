@@ -13,6 +13,7 @@ import { API_PATHS } from '../api/api.config';
 import { UserService } from './user.service';
 import { RankingService } from './ranking.service';
 import { INextMatchesResponse } from './interfaces/Interfaces';
+import { INextMatch } from '../app/interfaces/next-match.interface';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
@@ -174,7 +175,7 @@ export class DataService {
     }
   }
 
-  async fetchNextMatches(): Promise<IMatch[]> {
+  async fetchNextMatches(): Promise<INextMatch[]> {
     const competitionId = this.userService.snapshot()?.active_competition_id ?? null;
     if (!competitionId) {
       return [];
@@ -189,6 +190,35 @@ export class DataService {
     } catch (error) {
       console.error('Error fetching next matches:', error);
       return [];
+    }
+  }
+
+  async scheduleNextMatch(matchId: string, payload: { scheduledAt: string; note?: string }): Promise<INextMatch | null> {
+    const competitionId = this.userService.snapshot()?.active_competition_id ?? null;
+    if (!competitionId) {
+      throw new Error('Nessuna competizione attiva');
+    }
+
+    try {
+      const response = await firstValueFrom(
+        this.http.post<{ match: INextMatch }>(API_PATHS.scheduleNextMatch, {
+          matchId,
+          competitionId,
+          ...payload,
+        })
+      );
+      const match = response.match ?? null;
+      if (match) {
+        match.scheduled_at = payload.scheduledAt;
+        match.scheduledAt = payload.scheduledAt;
+        if (!match.date) {
+          match.date = payload.scheduledAt;
+        }
+      }
+      return match;
+    } catch (error) {
+      console.error('Error scheduling next match:', error);
+      throw error;
     }
   }
 

@@ -1,0 +1,72 @@
+<div class="next-match-modal" *ngIf="match; else emptyState">
+  <header class="next-match-modal__header">
+    <h3 class="next-match-modal__title">
+      {{ match?.group_name || match?.groupName || match?.stage || ('next_match' | translate) }}
+    </h3>
+    <span class="next-match-modal__status" *ngIf="match?.status">{{ match?.status }}</span>
+  </header>
+
+  <div class="next-match-modal__players">
+    <div class="player-card">
+      <img class="player-card__avatar" [src]="match?.player1?.img || match?.player1_img || '/default-player.jpg'"
+        (error)="onImageError($event)" alt="" />
+      <span class="player-card__name">{{ match?.player1?.name || match?.player1_name }}</span>
+    </div>
+
+    <span class="next-match-modal__vs">vs</span>
+
+    <div class="player-card">
+      <img class="player-card__avatar" [src]="match?.player2?.img || match?.player2_img || '/default-player.jpg'"
+        (error)="onImageError($event)" alt="" />
+      <span class="player-card__name">{{ match?.player2?.name || match?.player2_name }}</span>
+    </div>
+  </div>
+
+  <section class="next-match-modal__meta">
+    <div class="meta-item">
+      <span class="meta-item__label">Fase torneo</span>
+      <span class="meta-item__value">{{ match?.roundLabel || match?.phase || '-' }}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-item__label">Data programmata</span>
+      <span class="meta-item__value">{{ scheduledDateLabel }}</span>
+    </div>
+    <div class="meta-item" *ngIf="match?.note">
+      <span class="meta-item__label">Note</span>
+      <span class="meta-item__value">{{ match?.note }}</span>
+    </div>
+  </section>
+
+  <button type="button" class="scheduler-toggle" (click)="toggleScheduler()">
+    <i class="fa" [ngClass]="showScheduler ? 'fa-chevron-up' : 'fa-calendar'" aria-hidden="true"></i>
+    {{ showScheduler ? 'Nascondi pianificazione' : (hasScheduledDate ? 'Modifica data' : 'Programma data') }}
+  </button>
+
+  <form *ngIf="showScheduler" [formGroup]="scheduleForm" (ngSubmit)="submitSchedule()" class="scheduler-form">
+    <div class="form-grid">
+      <label class="form-field">
+        <span>Data</span>
+        <input type="date" formControlName="date" />
+      </label>
+      <label class="form-field">
+        <span>Ora</span>
+        <input type="time" formControlName="time" />
+      </label>
+    </div>
+    <label class="form-field form-field--wide">
+      <span>Note</span>
+      <textarea rows="3" formControlName="note" placeholder="Dettagli aggiuntivi, logistica, ecc."></textarea>
+    </label>
+
+    <div class="scheduler-form__actions">
+      <button type="submit" class="primary" [disabled]="scheduleForm.invalid || isSaving">
+        <i class="fa" [ngClass]="isSaving ? 'fa-spinner fa-spin' : 'fa-save'" aria-hidden="true"></i>
+        {{ isSaving ? 'Salvataggio...' : 'Salva pianificazione' }}
+      </button>
+    </div>
+  </form>
+</div>
+
+<ng-template #emptyState>
+  <p class="empty-state">Nessun match selezionato.</p>
+</ng-template>

@@ -1,52 +1,70 @@
 <section class="next-matches" *ngIf="nextMatches.length; else noMatches">
-    <h2 class="title text-center">{{ 'next_matches' | translate }}</h2>
+  <h2 class="title text-center">{{ 'next_matches' | translate }}</h2>
 
-    <div class="slider" [class.slider--with-nav]="showNavButtons">
-        <button type="button" class="slider__nav slider__nav--left" aria-label="Scroll previous matches"
-            (click)="scrollLeft()" *ngIf="showNavButtons" [disabled]="!canScrollLeft">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        </button>
+  <div class="slider-container" [class.slider-container--mobile]="!isDesktop">
+    <div class="slider-shell" #sliderContainer [class.slider-shell--mobile]="!isDesktop">
+      <div class="arrow-container arrow-left" *ngIf="isDesktop && showNavButtons">
+        <div class="arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+      </div>
 
-        <div class="slider__track" #matchesSlider (scroll)="onScroll()">
-            <article class="match-card" *ngFor="let match of nextMatches; trackBy: trackByMatch">
-                <header class="match-card__header text-center" *ngIf="match?.group_name || match?.groupName">
-                    {{ match?.group_name || match?.groupName }}
-                </header>
+      <div class="matches-slider next-matches__slider" #matchesSlider [class.matches-slider--mobile]="!isDesktop">
+        <article class="match-card" *ngFor="let match of nextMatches; trackBy: trackByMatch"
+          [class.match-card--selected]="selectedMatch?.id === match.id" (click)="onMatchClick(match)">
+          <header class="match-card__header text-center" *ngIf="match?.group_name || match?.groupName || match?.stage">
+            {{ match?.group_name || match?.groupName || match?.stage }}
+          </header>
 
-                <div class="match-card__players">
-                    <div class="match-card__player">
-                        <img class="match-card__avatar"
-                            [src]="match?.player1?.img || match?.player1_img || '/default-player.jpg'"
-                            (error)="onImageError($event)" alt="" />
-                        <span class="match-card__name">{{ match?.player1?.name || match?.player1_name }}</span>
-                    </div>
+          <div class="match-card__players">
+            <div class="match-card__player">
+              <img class="match-card__avatar"
+                [src]="match?.player1?.img || match?.player1_img || '/default-player.jpg'"
+                (error)="onImageError($event)" alt="" />
+              <span class="match-card__name">{{ match?.player1?.name || match?.player1_name }}</span>
+            </div>
 
-                    <span class="match-card__vs">vs</span>
+            <span class="match-card__vs">vs</span>
 
-                    <div class="match-card__player">
-                        <img class="match-card__avatar"
-                            [src]="match?.player2?.img || match?.player2_img || '/default-player.jpg'"
-                            (error)="onImageError($event)" alt="" />
-                        <span class="match-card__name">{{ match?.player2?.name || match?.player2_name }}</span>
-                    </div>
-                </div>
-                <footer class="match-card__footer text-center">
-                    <span class="match-card__time">
-                        <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        {{ match?.date | date: 'short' }}
-                    </span>
-                </footer>
-            </article>
-        </div>
+            <div class="match-card__player">
+              <img class="match-card__avatar"
+                [src]="match?.player2?.img || match?.player2_img || '/default-player.jpg'"
+                (error)="onImageError($event)" alt="" />
+              <span class="match-card__name">{{ match?.player2?.name || match?.player2_name }}</span>
+            </div>
+          </div>
 
-        <button type="button" class="slider__nav slider__nav--right" aria-label="Scroll next matches"
-            (click)="scrollRight()" *ngIf="showNavButtons" [disabled]="!canScrollRight">
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        </button>
+          <footer class="match-card__footer">
+            <div class="match-card__time" *ngIf="match?.date; else unscheduled">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              {{ match?.date | date: 'dd/MM/yyyy HH:mm' }}
+            </div>
+            <ng-template #unscheduled>
+              <div class="match-card__time match-card__time--pending">
+                <i class="fa fa-bell-o" aria-hidden="true"></i>
+                {{ 'Da programmare' }}
+              </div>
+            </ng-template>
+            <button type="button" class="match-card__cta" (click)="onScheduleButtonClick(match, $event)">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              {{ match?.date ? ('Modifica data' ) : ('Programma data') }}
+            </button>
+          </footer>
+        </article>
+      </div>
+
+      <div class="arrow-container arrow-right" *ngIf="isDesktop && showNavButtons">
+        <div class="arrow"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+      </div>
     </div>
+  </div>
 </section>
 
 <ng-template #noMatches>
-    <h2 class="title text-center">{{ 'next_matches' | translate }}</h2>
-    <p class="no-matches">{{ 'no_next_matches' | translate }}</p>
+  <h2 class="title text-center">{{ 'next_matches' | translate }}</h2>
+  <p class="no-matches">{{ 'no_next_matches' | translate }}</p>
 </ng-template>
+
+<app-modal [label]="'next_match_details'" *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_NEXT_MATCH'])"
+  [modalName]="modalService.MODALS['SHOW_NEXT_MATCH']" (closeModalEvent)="onModalClosed()">
+  <app-show-next-match-modal [match]="selectedMatch" [autoOpenScheduler]="autoOpenScheduler"
+    (scheduleUpdated)="onScheduleUpdated($event)"></app-show-next-match-modal>
+</app-modal>

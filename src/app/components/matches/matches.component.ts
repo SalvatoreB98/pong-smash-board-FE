@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { ShowMatchModalComponent } from '../show-match-modal/show-match-modal.component';
 import { ModalService } from '../../../services/modal.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
-import { environment } from '../../../environments/environment';
 import { TranslatePipe } from '../../utils/translate.pipe';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 
@@ -18,7 +17,8 @@ import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 })
 export class MatchesComponent {
   @Input() matches: any;
-  @ViewChild('matchesSlider') matchesSlider!: ElementRef;
+  @ViewChild('matchesSlider') matchesSlider!: ElementRef<HTMLElement>;
+  @ViewChild('sliderContainer') sliderContainer!: ElementRef<HTMLElement>;
 
   slider: Slider | undefined;
   clickedMatch: any;
@@ -27,41 +27,35 @@ export class MatchesComponent {
   maxMatchesToShow: number = 25;
 
   isOverflowing: boolean = true;
-  width = 0;
+  isDesktop = this.checkIsDesktop();
   @HostListener('window:resize')
   onWinResize() {
-    this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
-
-    console.log(this.matchesSlider.nativeElement.scrollWidth, window.innerWidth);
+    this.isDesktop = this.checkIsDesktop();
+    this.updateOverflowState();
+    this.ensureSlider();
   }
 
   constructor(public modalService: ModalService) {
 
   }
   ngOnInit() {
-    console.log("DEBYG", this.matches);
-    if (this.matchesSlider)
-      this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
   }
 
   ngAfterViewInit() {
-    console.log(environment.production)
-    if (this.matchesSlider) {
-      this.slider = new Slider('slider', this.matchesSlider.nativeElement);
-    }
-    this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50
+    this.ensureSlider();
+    this.updateOverflowState();
   }
   private sliderInitialized = false;
 
   ngAfterViewChecked() {
-    if (!this.sliderInitialized && this.matchesSlider?.nativeElement.querySelectorAll('.match').length) {
-      this.slider = new Slider('slider', this.matchesSlider.nativeElement);
+    if (!this.sliderInitialized && this.matchesSlider?.nativeElement.querySelectorAll('.match').length && this.isDesktop) {
+      this.ensureSlider();
       this.sliderInitialized = true;
     }
   }
 
   onMatchClick(matchId: string): void {
-    if (!Utils.isMobile() && this.slider?.justDragged) {
+    if (this.isDesktop && this.slider?.justDragged) {
       return;
     }
     const matchData = this.matches.find((m: { id: string; }) => m.id === matchId);
@@ -88,5 +82,52 @@ export class MatchesComponent {
       matches.reverse();
     }
     return matches.slice(0, this.maxMatchesToShow);
+  }
+
+  private ensureSlider(): void {
+    const container = this.sliderContainer?.nativeElement;
+    const sliderEl = this.matchesSlider?.nativeElement;
+    if (!sliderEl || !container) {
+      return;
+    }
+
+    if (this.isDesktop) {
+      if (!this.slider) {
+        this.slider = new Slider(container, sliderEl, {
+          itemSelector: '.match',
+          enableMouseDrag: true,
+          enableTouchDrag: false,
+        });
+        this.sliderInitialized = true;
+      } else {
+        this.slider.updateUI();
+      }
+    } else {
+      this.slider = undefined;
+      sliderEl.style.transition = '';
+      sliderEl.style.transform = '';
+      this.sliderInitialized = false;
+    }
+  }
+
+  private updateOverflowState(): void {
+    const sliderEl = this.matchesSlider?.nativeElement;
+    if (!sliderEl) {
+      this.isOverflowing = false;
+      return;
+    }
+    if (!this.isDesktop) {
+      this.isOverflowing = sliderEl.scrollWidth > sliderEl.clientWidth + 1;
+      return;
+    }
+    this.isOverflowing = sliderEl.scrollWidth > window.innerWidth - 50;
+  }
+
+  private checkIsDesktop(): boolean {
+    if (typeof window === 'undefined') {
+      return true;
+    }
+    const isMobileDevice = Utils.isMobile();
+    return !isMobileDevice && window.innerWidth >= 768;
   }
 }
