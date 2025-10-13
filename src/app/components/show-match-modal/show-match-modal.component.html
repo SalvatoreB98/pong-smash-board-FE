@@ -1,6 +1,6 @@
 <div class="modal-content dettagli-partita">
     <p>{{ match?.desc || '' }}</p>
-    <div class="data">{{ match.created | date: 'dd/MM/yyyy HH:mm' }}</div>
+    <div class="data">{{ match?.created | date: 'dd/MM/yyyy HH:mm' }}</div>
     <div class="general-info" *ngIf="match?.competitionType || match?.competitionName || match?.roundLabel">
         <h5 class="text-center">{{ match.roundLabel }}</h5>
         <ul>

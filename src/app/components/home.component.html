@@ -6,7 +6,8 @@
 
       <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition" [groups]="groups"
         [qualifiedPlayers]="competitionQualifiedPlayers" [rounds]="eliminationRounds"
-        (roundSelected)="onClickRound($event)" [matches]="matches"></app-group-knockout>
+        (roundSelected)="onClickRound($event)" [matches]="matches"
+        (matchSelected)="setClickedMatch($event)"></app-group-knockout>
 
       <app-league-board *ngSwitchDefault [matches]="matches" [isLoading]="isLoadingMatches"
         (matchSelected)="setClickedMatch($event)">
@@ -20,8 +21,8 @@
 <app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])"
   [modalName]="modalService.MODALS['ADD_MATCH']">
   <ng-container *ngIf="isGroupKnockoutMode; else standardMatchModal">
-    <app-add-group-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected"
-      [player1]="player1Selected" [player2]="player2Selected"></app-add-group-match-modal>
+    <app-add-group-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected" [player1]="player1Selected"
+      [player2]="player2Selected"></app-add-group-match-modal>
   </ng-container>
   <ng-template #standardMatchModal>
     <add-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="modalPlayers"
@@ -30,12 +31,12 @@
 </app-modal>
 
 <app-modal [label]="'match_details'" *ngIf="modalService.isActiveModal(modalService.MODALS['SHOW_MATCH'])"
-    [modalName]="modalService.MODALS['SHOW_MATCH']">
-    <app-show-match-modal [match]="clickedMatch"></app-show-match-modal>
+  [modalName]="modalService.MODALS['SHOW_MATCH']">
+  <app-show-match-modal [match]="clickedMatch"></app-show-match-modal>
 </app-modal>
 
 <app-modal [fullscreen]="true" [label]="'manual_points'"
-    *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
+  *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
   [modalName]="modalService.MODALS['MANUAL_POINTS']" class="manual-points-modal">
   <app-manual-points [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="modalPlayers"
     [player1]="player1Selected" [player2]="player2Selected" [groups]="groups"

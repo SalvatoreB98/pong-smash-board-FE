@@ -11,7 +11,7 @@
       <div *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex" class="match" [id]="match.id"
         (click)="onMatchClick(match.id)">
         <div>
-          <div class="data">{{ match.created | date: 'dd/MM/yyyy HH:mm' }}</div>
+          <div class="data">{{ match?.created | date: 'dd/MM/yyyy HH:mm' }}</div>
         </div>
         <div class="d-flex">
           <div class="giocatore-container">
