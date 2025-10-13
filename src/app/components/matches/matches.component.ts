@@ -1,13 +1,11 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Utils } from '../../utils/Utils';
-import { IMatchResponse } from '../../interfaces/responsesInterfaces';
-import { CommonModule } from '@angular/common';
-import { ShowMatchModalComponent } from '../show-match-modal/show-match-modal.component';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
+import Swiper from 'swiper';
+import { Navigation } from 'swiper/modules';
+import { SwiperOptions } from 'swiper/types';
 import { ModalService } from '../../../services/modal.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
-import { environment } from '../../../environments/environment';
-import { TranslatePipe } from '../../utils/translate.pipe';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
+import { BASE_SLIDER_CONFIG } from '../../config/slider.config';
 
 @Component({
   selector: 'app-matches',
@@ -15,49 +13,35 @@ import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.scss'
 })
-export class MatchesComponent {
+export class MatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() matches: any;
-  @ViewChild('matchesSlider') matchesSlider!: ElementRef;
-
-  clickedMatch: any;
-
   @Output() matchEmitter: EventEmitter<IMatch> = new EventEmitter<IMatch>();
-  maxMatchesToShow: number = 25;
-  canScrollLeft: boolean = false;
-  canScrollRight: boolean = false;
-  isOverflowing: boolean = true;
-  width = 0;
-  showNavButtons = false;
-  private sliderInitialized = false;
+  maxMatchesToShow = 25;
+  isOverflowing: boolean = false;
+  clickedMatch: IMatch | null = null;
+  swiperConfig: SwiperOptions = {
+    ...BASE_SLIDER_CONFIG,
+    modules: [Navigation],
+    navigation: true
+  };
+  @ViewChild('swiperEl') swiperEl?: ElementRef<HTMLElement>;
+  swiperInstance?: Swiper;
 
-  @HostListener('window:resize')
-  onWinResize() {
-    this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
+  constructor(public modalService: ModalService) { }
 
-    console.log(this.matchesSlider.nativeElement.scrollWidth, window.innerWidth);
-  }
-
-  constructor(public modalService: ModalService) {
-
-  }
-  ngOnInit() {
-    console.log("DEBYG", this.matches);
-    this.updateOverflowState();
-    if (this.matchesSlider)
-      this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
-  }
-
-  ngAfterViewInit() {
-    this.updateOverflowState();
-    console.log(environment.production)
-    this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50
-  }
-
-  ngAfterViewChecked() {
-    this.updateOverflowState();
-    if (!this.sliderInitialized && this.matchesSlider?.nativeElement.querySelectorAll('.match').length) {
-      this.sliderInitialized = true;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['matches']) {
+      this.queueSwiperUpdate();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.initSwiper();
+  }
+
+  ngOnDestroy(): void {
+    this.swiperInstance?.destroy(true, true);
+    this.swiperInstance = undefined;
   }
 
   onMatchClick(matchId: string): void {
@@ -87,45 +71,22 @@ export class MatchesComponent {
     return matches.slice(0, this.maxMatchesToShow);
   }
 
-  scrollLeft(): void {
-    const slider = this.matchesSlider?.nativeElement;
-    if (!slider) {
+  private initSwiper(): void {
+    if (this.swiperInstance || !this.swiperEl) {
       return;
     }
-    slider.scrollLeft -= slider.clientWidth;
-    this.updateOverflowState();
+
+    this.swiperInstance = new Swiper(this.swiperEl.nativeElement, this.swiperConfig);
+    this.queueSwiperUpdate();
   }
 
-  scrollRight(): void {
-    const slider = this.matchesSlider?.nativeElement;
-    if (!slider) {
-      return;
-    }
-    slider.scrollLeft += slider.clientWidth;
-    this.updateOverflowState();
-  }
-
-  private updateOverflowState(): void {
-    const slider = this.matchesSlider?.nativeElement;
-    if (!slider) {
-      this.showNavButtons = false;
-      this.canScrollLeft = false;
-      this.canScrollRight = false;
-      return;
-    }
-
-    const hasOverflow = slider.scrollWidth > slider.clientWidth + 1;
-    this.showNavButtons = hasOverflow;
-
-    if (!hasOverflow) {
-      this.canScrollLeft = false;
-      this.canScrollRight = false;
-      slider.scrollLeft = 0;
-      return;
-    }
-
-    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-    this.canScrollLeft = slider.scrollLeft > 0;
-    this.canScrollRight = slider.scrollLeft < maxScrollLeft;
+  private queueSwiperUpdate(): void {
+    queueMicrotask(() => {
+      if (!this.swiperInstance) {
+        this.initSwiper();
+      } else {
+        this.swiperInstance.update();
+      }
+    });
   }
 }

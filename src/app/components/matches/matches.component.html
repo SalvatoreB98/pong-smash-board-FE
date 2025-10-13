@@ -1,56 +1,44 @@
 <section class="matches" *ngIf="getMatchesToRender().length; else noMatches">
   <h2 class="title text-center">{{ 'matches' | translate }}</h2>
 
-  <div class="slider" [class.slider--with-nav]="isOverflowing">
-    <!-- Freccia sinistra -->
-    <button type="button" class="slider__nav slider__nav--left" aria-label="Scroll previous matches"
-      (click)="scrollLeft()" *ngIf="isOverflowing" [disabled]="canScrollLeft">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </button>
+  <div class="slider swiper matches__slider" #swiperEl>
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex">
+        <article class="match-card" [id]="match.id" (click)="onMatchClick(match.id)">
 
-    <!-- Contenitore slider -->
-    <div class="slider__track" #matchesSlider
-      [ngStyle]="{ 'justify-content': !isOverflowing ? 'center' : 'flex-start' }">
-
-      <article class="match-card" *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex" [id]="match.id"
-        (click)="onMatchClick(match.id)">
-
-        <header class="match-card__header text-center">
-          <span class="match-card__date">
-            <i class="fa fa-calendar" aria-hidden="true"></i>
-            {{ match?.created | date: 'dd/MM/yyyy HH:mm' }}
-          </span>
-        </header>
-
-        <div class="match-card__players">
-          <div class="match-card__player">
-            <img class="match-card__avatar" [src]="match.player1_img" (error)="onImageError($event)" alt="">
-            <span class="match-card__name">{{ match.player1_name }}</span>
-          </div>
-
-          <div class="match-card__score">
-            <span class="score-value" [class.win]="match.player1_score > match.player2_score">
-              {{ match.player1_score }}
+          <header class="match-card__header text-center">
+            <span class="match-card__date">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              {{ match?.created | date: 'dd/MM/yyyy HH:mm' }}
             </span>
-            <span class="score-separator">:</span>
-            <span class="score-value" [class.win]="match.player2_score > match.player1_score">
-              {{ match.player2_score }}
-            </span>
-          </div>
+          </header>
 
-          <div class="match-card__player">
-            <img class="match-card__avatar" [src]="match.player2_img" (error)="onImageError($event)" alt="">
-            <span class="match-card__name">{{ match.player2_name }}</span>
+          <div class="match-card__players">
+            <div class="match-card__player">
+              <img class="match-card__avatar" [src]="match.player1_img" (error)="onImageError($event)" alt="">
+              <span class="match-card__name">{{ match.player1_name }}</span>
+            </div>
+
+            <div class="match-card__score">
+              <span class="score-value" [class.win]="match.player1_score > match.player2_score">
+                {{ match.player1_score }}
+              </span>
+              <span class="score-separator">:</span>
+              <span class="score-value" [class.win]="match.player2_score > match.player1_score">
+                {{ match.player2_score }}
+              </span>
+            </div>
+
+            <div class="match-card__player">
+              <img class="match-card__avatar" [src]="match.player2_img" (error)="onImageError($event)" alt="">
+              <span class="match-card__name">{{ match.player2_name }}</span>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
+      </div>
     </div>
-
-    <!-- Freccia destra -->
-    <button type="button" class="slider__nav slider__nav--right" aria-label="Scroll next matches"
-      (click)="scrollRight()" *ngIf="isOverflowing" [disabled]="!canScrollRight">
-      <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </button>
+    <button *ngIf="!swiperInstance?.isLocked" type="button" class="swiper-button-prev" aria-label="Scroll previous matches"></button>
+    <button *ngIf="!swiperInstance?.isLocked" type="button" class="swiper-button-next" aria-label="Scroll next matches"></button>
   </div>
 </section>
 

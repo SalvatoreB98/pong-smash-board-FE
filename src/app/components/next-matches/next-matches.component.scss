@@ -11,63 +11,44 @@
 }
 
 .slider {
-  justify-content: center;
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  width: 100%;
+  padding: 0.5rem;
 
-  &__track {
+  .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .swiper-slide {
+    width: auto;
     display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding: 0.5rem;
-    scroll-snap-type: x mandatory;
   }
 
-  &__track::-webkit-scrollbar {
-    height: 0.5rem;
-  }
-
-  &__track::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 999px;
-  }
-
-  &__nav {
+  .swiper-button-prev,
+  .swiper-button-next {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    border: none;
     background: rgba(0, 0, 0, 0.35);
     color: #fff;
+    border: none;
     cursor: pointer;
     transition: background 0.2s ease;
 
-    &:disabled {
-      cursor: not-allowed;
-      opacity: 0.4;
+    &::after {
+      font-size: 1rem;
     }
 
-    &:not(:disabled):hover {
+    &:hover:not(.swiper-button-disabled) {
       background: rgba(0, 0, 0, 0.55);
     }
 
-    &--left {
-      order: 0;
+    &.swiper-button-disabled {
+      opacity: 0.4;
     }
-
-    &--right {
-      order: 2;
-    }
-  }
-
-  &--with-nav .slider__track {
-    flex: 1;
   }
 }
 
@@ -137,9 +118,10 @@
 
 @media (max-width: 768px) {
   .slider {
-    gap: 0.5rem;
+    padding: 0.5rem 0;
 
-    &__nav {
+    .swiper-button-prev,
+    .swiper-button-next {
       display: none;
     }
   }
