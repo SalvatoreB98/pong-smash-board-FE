@@ -12,6 +12,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_PATHS } from '../api/api.config';
 import { UserService } from './user.service';
 import { RankingService } from './ranking.service';
+import { INextMatchesResponse } from './interfaces/Interfaces';
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
@@ -170,6 +171,24 @@ export class DataService {
       // fallback mock
       this.assignData(mockData);
       return this.generateReturnObject();
+    }
+  }
+
+  async fetchNextMatches(): Promise<IMatch[]> {
+    const competitionId = this.userService.snapshot()?.active_competition_id ?? null;
+    if (!competitionId) {
+      return [];
+    }
+    try {
+      const data = await firstValueFrom(
+        this.http.get<INextMatchesResponse>(API_PATHS.getNextMatches, {
+          params: { competitionId: String(competitionId) }
+        })
+      );
+      return data.nextMatches ?? [];
+    } catch (error) {
+      console.error('Error fetching next matches:', error);
+      return [];
     }
   }
 

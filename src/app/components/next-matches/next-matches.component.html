@@ -4,27 +4,32 @@
 
 <div class="slider-container">
     <div id="slider">
-        <div class="arrow-container arrow-left" *ngIf="isOverflowing" (click)="scrollLeft()">
-            <div class="arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+        <div class="arrow-container arrow-left">
+            <div *ngIf="isOverflowing" class="arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
         </div>
-
         <div class="matches-slider" #matchesSlider
             [ngStyle]="{ 'justify-content': !isOverflowing ? 'center' : 'flex-start' }">
-
-            <div *ngFor="let match of getUpcomingMatches(); trackBy: trackByIndex" class="match upcoming">
-                <div class="data">{{ match.date | date: 'dd/MM/yyyy HH:mm' }}</div>
-                <div class="d-flex align-items-center">
+            <div *ngFor="let match of nextMatches; trackBy: trackByIndex" class="match" [id]="match.id"
+                (click)="onMatchClick(match.id)">
+                <div>
+                    <div class="data">{{ match?.created | date: 'dd/MM/yyyy HH:mm' }}</div>
+                </div>
+                <div class="d-flex">
                     <div class="giocatore-container">
                         <div class="text-center">
                             <div><img [src]="match.player1_img" (error)="onImageError($event)" alt=""></div>
                             <div><span class="name">{{ match.player1_name }}</span></div>
                         </div>
                     </div>
-
-                    <div class="vs-container text-center">
-                        <span class="vs">VS</span>
+                    <div class="punteggio-container">
+                        <div class="punteggio" [class.win]="match.player1_score > match.player2_score">{{
+                            match.player1_score }}
+                        </div>
+                        <div class="punteggio"> <span>:</span> </div>
+                        <div class="punteggio" [class.win]="match.player2_score > match.player1_score">{{
+                            match.player2_score }}
+                        </div>
                     </div>
-
                     <div class="giocatore-container">
                         <div class="text-center">
                             <div><img [src]="match.player2_img" (error)="onImageError($event)" alt=""></div>
@@ -33,10 +38,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-        <div class="arrow-container arrow-right" *ngIf="isOverflowing" (click)="scrollRight()">
+        <div *ngIf="isOverflowing" class="arrow-container arrow-right">
             <div class="arrow"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
         </div>
     </div>

@@ -1,4 +1,5 @@
 import { ICompetition } from "../../api/competition.api";
+import { IMatch } from "../../app/interfaces/matchesInterfaces";
 
 // src/app/types/ranking.ts
 export interface IRankingItem {
@@ -14,6 +15,12 @@ export interface IRankingItem {
 export interface IRankingResponse {
   ranking: IRankingItem[];
   generatedAt: string;
+}
+
+export interface INextMatchesResponse {
+  competitionId: number;
+  generated?: string | null;
+  nextMatches: IMatch[];
 }
 export interface RankingData {
   ranking: IRankingItem[];
