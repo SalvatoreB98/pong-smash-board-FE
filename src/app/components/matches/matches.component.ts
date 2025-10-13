@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Slider } from '../../utils/Slider';
 import { Utils } from '../../utils/Utils';
 import { IMatchResponse } from '../../interfaces/responsesInterfaces';
 import { CommonModule } from '@angular/common';
@@ -20,14 +19,17 @@ export class MatchesComponent {
   @Input() matches: any;
   @ViewChild('matchesSlider') matchesSlider!: ElementRef;
 
-  slider: Slider | undefined;
   clickedMatch: any;
 
   @Output() matchEmitter: EventEmitter<IMatch> = new EventEmitter<IMatch>();
   maxMatchesToShow: number = 25;
-
+  canScrollLeft: boolean = false;
+  canScrollRight: boolean = false;
   isOverflowing: boolean = true;
   width = 0;
+  showNavButtons = false;
+  private sliderInitialized = false;
+
   @HostListener('window:resize')
   onWinResize() {
     this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
@@ -40,30 +42,25 @@ export class MatchesComponent {
   }
   ngOnInit() {
     console.log("DEBYG", this.matches);
+    this.updateOverflowState();
     if (this.matchesSlider)
       this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50;
   }
 
   ngAfterViewInit() {
+    this.updateOverflowState();
     console.log(environment.production)
-    if (this.matchesSlider) {
-      this.slider = new Slider('slider', this.matchesSlider.nativeElement);
-    }
     this.isOverflowing = this.matchesSlider.nativeElement.scrollWidth > window.innerWidth - 50
   }
-  private sliderInitialized = false;
 
   ngAfterViewChecked() {
+    this.updateOverflowState();
     if (!this.sliderInitialized && this.matchesSlider?.nativeElement.querySelectorAll('.match').length) {
-      this.slider = new Slider('slider', this.matchesSlider.nativeElement);
       this.sliderInitialized = true;
     }
   }
 
   onMatchClick(matchId: string): void {
-    if (!Utils.isMobile() && this.slider?.justDragged) {
-      return;
-    }
     const matchData = this.matches.find((m: { id: string; }) => m.id === matchId);
     if (matchData) {
       this.clickedMatch = matchData;
@@ -88,5 +85,47 @@ export class MatchesComponent {
       matches.reverse();
     }
     return matches.slice(0, this.maxMatchesToShow);
+  }
+
+  scrollLeft(): void {
+    const slider = this.matchesSlider?.nativeElement;
+    if (!slider) {
+      return;
+    }
+    slider.scrollLeft -= slider.clientWidth;
+    this.updateOverflowState();
+  }
+
+  scrollRight(): void {
+    const slider = this.matchesSlider?.nativeElement;
+    if (!slider) {
+      return;
+    }
+    slider.scrollLeft += slider.clientWidth;
+    this.updateOverflowState();
+  }
+
+  private updateOverflowState(): void {
+    const slider = this.matchesSlider?.nativeElement;
+    if (!slider) {
+      this.showNavButtons = false;
+      this.canScrollLeft = false;
+      this.canScrollRight = false;
+      return;
+    }
+
+    const hasOverflow = slider.scrollWidth > slider.clientWidth + 1;
+    this.showNavButtons = hasOverflow;
+
+    if (!hasOverflow) {
+      this.canScrollLeft = false;
+      this.canScrollRight = false;
+      slider.scrollLeft = 0;
+      return;
+    }
+
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+    this.canScrollLeft = slider.scrollLeft > 0;
+    this.canScrollRight = slider.scrollLeft < maxScrollLeft;
   }
 }

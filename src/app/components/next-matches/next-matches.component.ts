@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { DataService } from '../../../services/data.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
+import { Utils } from '../../utils/Utils';
 
 type NextMatch = IMatch & {
   group_name?: string | null;
@@ -32,7 +33,7 @@ export class NextMatchesComponent implements OnInit, AfterViewInit {
   canScrollLeft = false;
   canScrollRight = false;
 
-  constructor(private readonly dataService: DataService) {}
+  constructor(private readonly dataService: DataService) { }
 
   ngOnInit(): void {
     this.loadMatches();
