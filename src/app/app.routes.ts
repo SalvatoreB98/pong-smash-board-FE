@@ -9,6 +9,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { CompetitionsComponent } from './components/competitions/competitions/competitions.component';
 import { ProfileComponent } from './components/profile/profile/profile.component';
 import { CompleteProfileComponent } from './components/profile/complete-profile/complete-profile.component';
+import { CompetitionViewComponent } from './components/competition-view/competition-view.component';
 
 export const routes: Routes = [
   { path: 'landing', component: LandingComponent },
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard, FlowGuard] },
   { path: 'complete-profile', component: CompleteProfileComponent, canActivate: [AuthGuard] },
   { path: 'competitions', component: CompetitionsComponent, canActivate: [AuthGuard] },
+  { path: 'competition/:id', component: CompetitionViewComponent },
   { path: '**', redirectTo: 'home-page', pathMatch: 'full' }
 ];

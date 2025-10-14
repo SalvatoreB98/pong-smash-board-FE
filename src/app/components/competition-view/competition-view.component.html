@@ -1,0 +1,130 @@
+<div class="view-wrapper">
+  <ng-container *ngIf="isLoading(); else loadedContent">
+    <section class="skeleton placeholder-card">
+      <div class="skeleton-title placeholder"></div>
+      <div class="skeleton-meta placeholder"></div>
+      <div class="skeleton-meta short placeholder"></div>
+      <div class="skeleton-players">
+        <div class="avatar placeholder" *ngFor="let _ of [1,2,3,4]"></div>
+      </div>
+    </section>
+    <section class="skeleton placeholder-card">
+      <div class="skeleton-subtitle placeholder"></div>
+      <div class="skeleton-line placeholder" *ngFor="let _ of [1,2,3]"></div>
+    </section>
+    <section class="skeleton placeholder-card">
+      <div class="skeleton-subtitle placeholder"></div>
+      <div class="skeleton-line placeholder" *ngFor="let _ of [1,2,3]"></div>
+    </section>
+  </ng-container>
+
+  <ng-template #loadedContent>
+    <div class="error" *ngIf="errorMessage() as error">
+      {{ error }}
+    </div>
+
+    <ng-container *ngIf="competition() as competitionData; else emptyState">
+      <section class="card overview">
+        <header>
+          <h1>{{ competitionData.name }}</h1>
+          <p class="type" *ngIf="competitionData.type">
+            {{ competitionData.type | titlecase }}
+          </p>
+        </header>
+
+        <div class="meta">
+          <div class="meta-item" *ngIf="competitionData.date as date">
+            <span class="label">Data</span>
+            <span class="value">{{ date | date: 'mediumDate' }}</span>
+          </div>
+          <div class="meta-item" *ngIf="!competitionData.date && (competitionData.startDate || competitionData.endDate)">
+            <span class="label">Periodo</span>
+            <span class="value">
+              <ng-container *ngIf="competitionData.startDate as start">
+                {{ start | date: 'mediumDate' }}
+              </ng-container>
+              <ng-container *ngIf="competitionData.startDate && competitionData.endDate"> - </ng-container>
+              <ng-container *ngIf="competitionData.endDate as end">
+                {{ end | date: 'mediumDate' }}
+              </ng-container>
+            </span>
+          </div>
+          <div class="meta-item" *ngIf="competitionData.location">
+            <span class="label">Luogo</span>
+            <span class="value">{{ competitionData.location }}</span>
+          </div>
+          <div class="meta-item" *ngIf="participantsCount() as count">
+            <span class="label">Partecipanti</span>
+            <span class="value">{{ count }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card players" *ngIf="competitionData.players?.length">
+        <h2>Giocatori</h2>
+        <ul class="players-grid">
+          <li *ngFor="let player of competitionData.players; trackBy: trackPlayer" class="player-card">
+            <div class="avatar" [class.placeholder-img]="!player.image_url">
+              <img *ngIf="player.image_url; else initials" [src]="player.image_url" [alt]="player.name" loading="lazy" />
+              <ng-template #initials>
+                <span>{{ player.name?.charAt(0) || '?' }}</span>
+              </ng-template>
+            </div>
+            <div class="player-info">
+              <span class="name">{{ player.name }}</span>
+              <span class="nickname" *ngIf="player.nickname">{{ player.nickname }}</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card stats" *ngIf="competitionData.stats?.length">
+        <h2>Statistiche</h2>
+        <div class="stats-grid">
+          <div class="stat-item" *ngFor="let stat of competitionData.stats">
+            <span class="label">{{ stat.label }}</span>
+            <span class="value">{{ stat.value }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card matches" *ngIf="competitionData.lastMatches?.length">
+        <h2>Ultime partite</h2>
+        <ul class="match-list">
+          <li *ngFor="let match of competitionData.lastMatches; trackBy: trackMatch">
+            <div class="players-row">
+              <span class="player">{{ match.player1_name }}</span>
+              <span class="score" *ngIf="formatMatchScore(match) as score">{{ score }}</span>
+              <span class="player">{{ match.player2_name }}</span>
+            </div>
+            <div class="match-meta">
+              <span *ngIf="match.date">{{ match.date | date: 'short' }}</span>
+              <span *ngIf="match['desc'] as description">{{ description }}</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card matches" *ngIf="shouldShowNextMatches()">
+        <h2>Prossime partite</h2>
+        <ul class="match-list">
+          <li *ngFor="let match of competitionData.nextMatches; trackBy: trackMatch">
+            <div class="players-row">
+              <span class="player">{{ match.player1_name || 'TBD' }}</span>
+              <span class="vs">vs</span>
+              <span class="player">{{ match.player2_name || 'TBD' }}</span>
+            </div>
+            <div class="match-meta">
+              <span *ngIf="match.date">{{ match.date | date: 'short' }}</span>
+              <span *ngIf="match['desc'] as description">{{ description }}</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <p class="empty-message">Competizione non trovata.</p>
+    </ng-template>
+  </ng-template>
+</div>
