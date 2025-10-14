@@ -1,5 +1,5 @@
 <section class="next-matches">
-    <h2 class="title text-center">{{ 'next_matches' | translate }}</h2>
+    <h4 class="title text-center">{{ 'next_matches' | translate }}</h4>
     <div *ngIf="isLoading" class="skeleton next-matches__skeleton">
         <div class="skeleton-card placeholder" *ngFor="let _ of [1,2,3]">
             <div class="skeleton-card__header placeholder"></div>
@@ -49,8 +49,11 @@
                                     <i class="fa fa-clock-o" aria-hidden="true"></i>
                                     {{ 'no_date' | translate }}
                                 </div>
-                                <div>
-                                    <button style="font-size: 0.75em;" type="button">{{ 'define_date' | translate }}</button>
+                                <div class="d-flex justify-content-center">
+                                    <button class="mt-1 tertiary" style="font-size: 0.75em;" type="button">
+                                        {{ 'define_date' | translate }} 
+                                        <i class="fa fa-calendar ms-2" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </ng-template>
                         </span>

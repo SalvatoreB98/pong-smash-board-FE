@@ -1,5 +1,5 @@
 <section class="matches" *ngIf="getMatchesToRender().length; else noMatches">
-  <h2 class="title text-center">{{ 'matches' | translate }}</h2>
+  <h4 class="title text-center">{{ 'matches' | translate }}</h4>
 
   <div class="slider swiper matches__slider" #swiperEl>
     <div class="swiper-wrapper">
@@ -37,12 +37,10 @@
         </article>
       </div>
     </div>
-    <button *ngIf="!swiperInstance?.isLocked" type="button" class="swiper-button-prev" aria-label="Scroll previous matches"></button>
-    <button *ngIf="!swiperInstance?.isLocked" type="button" class="swiper-button-next" aria-label="Scroll next matches"></button>
   </div>
 </section>
 
 <ng-template #noMatches>
-  <h2 class="title text-center">{{ 'matches' | translate }}</h2>
+  <h4 class="title text-center">{{ 'matches' | translate }}</h4>
   <p class="no-matches">{{ 'no_matches' | translate }}</p>
 </ng-template>

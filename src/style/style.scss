@@ -254,6 +254,10 @@ section {
     cursor: cell;
 }
 
+section.matches, section.next-matches {
+    padding: 0;
+}
+
 @media screen and (min-width: 1000px) {
     nav {
         height: auto;
@@ -404,7 +408,10 @@ button.secondary-color-button {
 .secondary {
     background-color: $secondary !important;
 }
-
+.tertiary {
+    background-color: $tertiary !important;
+    border: 1px solid #ffffff7a;
+}
 .bg-secondary {
     background-color: $secondary !important;
 }
@@ -474,12 +481,13 @@ button.secondary-color-button {
     margin: 1em;
 
 }
+
 .menu-trigger {
     all: unset;
     margin-left: auto;
     max-width: 2.75rem;
     cursor: pointer;
-    font-size: 1.5em!important;
+    font-size: 1.5em !important;
     padding: 0.5em;
     border: 0.5px solid rgba(148, 163, 184, 0.25);
     border-radius: $border-radius;
@@ -488,6 +496,7 @@ button.secondary-color-button {
     text-align: center;
     display: grid;
     place-items: center;
+
     &:hover {
         background: rgba(148, 163, 184, 0.18);
     }

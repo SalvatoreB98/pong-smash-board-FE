@@ -1136,11 +1136,15 @@
         "en": "No matches scheduled."
     },
     "no_date": {
-        "it": "Da definire",
-        "en": "To be defined"
+        "it": "Nessuna data",
+        "en": "No date"
     },
     "define_date": {
-        "it": "Definisci data e ora",
-        "en": "Define date and time"
+        "it": "Imposta",
+        "en": "Set a date"
+    },
+    "go_to_competition": {
+        "it": "Vai alla competizione",
+        "en": "Go to competition"
     }
 }

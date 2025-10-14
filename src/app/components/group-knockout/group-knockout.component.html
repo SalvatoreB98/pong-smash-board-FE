@@ -1,11 +1,11 @@
 <div class="group-knockout-wrapper pt-5">
-  <section>
+  <div>
     <app-matches *ngIf="hasMatches" [matches]="matches" (matchEmitter)="onMatchSelected($event)">
     </app-matches>
-  </section>
-  <section>
+  </div>
+  <div>
     <app-next-matches></app-next-matches>
-  </section>
+  </div>
   <section class="board-section mt-5">
     <app-group-knockout-board [groups]="groups"></app-group-knockout-board>
     <div class="buttons-home-matches" aria-label="group-knockout-actions">

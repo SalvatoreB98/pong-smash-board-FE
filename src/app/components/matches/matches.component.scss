@@ -5,7 +5,9 @@
     flex-direction: column;
     gap: 1.5rem;
 }
-
+.matches__slider {
+    cursor: grab;
+}
 .title {
     margin: 0;
 }
