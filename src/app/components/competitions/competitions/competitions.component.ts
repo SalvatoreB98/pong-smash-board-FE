@@ -19,6 +19,7 @@ import { EditCompetitionModalComponent } from './edit-competition-modal/edit-com
 import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
 import { DropdownAction, DropdownService } from '../../../../services/dropdown.service';
 import { Utils } from '../../../utils/Utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-competitions',
@@ -82,7 +83,8 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
   constructor(
     public modalService: ModalService,
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
 
   ) {
     this.createForm();
@@ -231,5 +233,8 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
         this.dropdownContext = null;
       })
     );
+  }
+  goToCompetition(id: string | number) {
+    this.router.navigate(['/competition', id]);
   }
 }

@@ -11,10 +11,10 @@
     gap: 2rem;
 }
 
-.wrapper > section,
-.wrapper > .others,
-.competitions-skeleton > section,
-.competitions-skeleton > .skeleton-heading {
+.wrapper>section,
+.wrapper>.others,
+.competitions-skeleton>section,
+.competitions-skeleton>.skeleton-heading {
     margin: 0 auto;
     width: 100%;
     max-width: 37.5em;
@@ -215,10 +215,10 @@
         color: $primary-ultra-light;
         font-size: .9rem;
         cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr;
         margin: 1em;
+        margin: auto;
 
         &:hover {
             background: $dark;
@@ -246,11 +246,19 @@
         }
 
         .menu-trigger {
-            background: none;
-            border: 0;
-            color: $primary-light;
-            font-size: 1.1rem;
+            margin-left: auto;
+            max-width: 2.75rem;
             cursor: pointer;
+            font-size: 1.5em !important;
+            padding: 0.5em;
+            border: 0.5px solid rgba(148, 163, 184, 0.25);
+            border-radius: 0.75em;
+            width: 1rem;
+            height: 2rem;
+            text-align: center;
+            display: grid;
+            place-items: center;
+
         }
     }
 }

@@ -54,7 +54,8 @@
             <!-- Dettaglio competizione attiva -->
             <ng-container *ngIf="activeCompetition$ | async as activeCompetition">
                 <section *ngIf="activeCompetition">
-                    <app-competition-detail [competition]="activeCompetition" (changeCompetitionSelected)="updateCompetitionDetail($event)"
+                    <app-competition-detail [competition]="activeCompetition"
+                        (changeCompetitionSelected)="updateCompetitionDetail($event)"
                         (deletePlayerRequested)="onDeletePlayerRequested($event)"
                         (deleteCompetitionRequested)="onDeleteCompetitionRequested($event)"></app-competition-detail>
                 </section>
@@ -78,7 +79,8 @@
 
                                 <!-- Players -->
                                 <div class="players-section">
-                                    <div *ngIf="hasPlayers(c?.players); else noPlayers">
+                                    <div *ngIf="hasPlayers(c?.players); else noPlayers"
+                                        class="d-flex justify-content-center">
                                         <div class="players-list">
                                             <img class="avatar" *ngFor="let player of c?.players"
                                                 [src]="player.image_url || '/default-player.jpg'"
@@ -87,28 +89,27 @@
                                     </div>
 
                                 </div>
-                                <div>
-                                    <button class="mt-2 p-1" style="font-size: 0.75em;" type="button">{{ 'go_to_competition' | translate }}</button>
-                                </div>
                                 <ng-template #noPlayers>
                                     <p class="no-players">{{ "no_players_small" | translate }}</p>
                                 </ng-template>
 
-                                <div class="comp__actions" style="text-align: right;">
-                                    <button
-                                        #competitionMenuTrigger
-                                        type="button"
-                                        class="menu-trigger"
-                                        aria-haspopup="true"
-                                        [attr.aria-label]="'actions' | translate"
-                                        (click)="dropdownService.open(competitionMenuActions, $event)"
-                                        [attr.data-competition-id]="c.id"
-                                        data-dropdown-source="competitions-list"
-                                    >
-                                        <span aria-hidden="true">⋮</span>
+                                <div class="d-flex mt-3" style="gap: 0.5em;">
+                                    <button class="p-1" style="font-size: 0.75em;" type="button" (click)="goToCompetition(c.id)">
+                                        {{'go_to_competition' | translate }}
                                     </button>
+
+                                    <div class="comp__actions" style="text-align: right;">
+                                        <button #competitionMenuTrigger type="button" class="menu-trigger"
+                                            aria-haspopup="true" [attr.aria-label]="'actions' | translate"
+                                            (click)="dropdownService.open(competitionMenuActions, $event)"
+                                            [attr.data-competition-id]="c.id" data-dropdown-source="competitions-list">
+                                            <span aria-hidden="true">⋮</span>
+                                        </button>
+                                    </div>
                                 </div>
+
                             </div>
+
                         </ng-container>
                     </div>
                 </section>
@@ -146,8 +147,7 @@
 
     <!-- Modali -->
     <app-modal [label]="' '" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_COMPETITION'])"
-        [modalName]="modalService.MODALS['ADD_COMPETITION']" 
-        [fullscreen]="Utils.isMobile() ? true : false">
+        [modalName]="modalService.MODALS['ADD_COMPETITION']" [fullscreen]="Utils.isMobile() ? true : false">
         <app-add-competition-modal></app-add-competition-modal>
     </app-modal>
 
