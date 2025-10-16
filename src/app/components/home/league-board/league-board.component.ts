@@ -15,7 +15,10 @@ import { IMatch } from '../../../interfaces/matchesInterfaces';
 })
 export class LeagueBoardComponent {
   @Input() matches: IMatch[] = [];
+
+
   @Input() isLoading = false;
+  @Input() readonly = false;
   @Output() matchSelected = new EventEmitter<IMatch>();
 
   modalService = inject(ModalService);
@@ -23,7 +26,14 @@ export class LeagueBoardComponent {
   readonly placeholderMatchCards = Array.from({ length: 1 });
   readonly placeholderStatsRows = Array.from({ length: 5 });
 
+  ngOnChanges() {
+    console.log('matches:', this.matches);
+  }
+  
   onMatchSelected(match: IMatch) {
+    if (this.readonly) {
+      return;
+    }
     this.matchSelected.emit(match);
   }
 

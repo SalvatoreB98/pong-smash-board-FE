@@ -66,9 +66,15 @@ export class CompetitionApi {
       .pipe(
         map(res => ({
           ...res,
-          id: (res.id ?? res.competition_id) || res.competition['id'] 
+          id: (res.id ?? res.competition_id) || res.competition['id']
         }))
       );
+  }
+
+  getView(id: number | string): Observable<any> {
+    return this.http.get<any>(API_PATHS.getCompetitionView, {
+      params: { competitionId: String(id) },
+    });
   }
 
   /** Crea competizione */

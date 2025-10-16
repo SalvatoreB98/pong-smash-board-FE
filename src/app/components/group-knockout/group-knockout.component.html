@@ -1,14 +1,15 @@
 <div class="group-knockout-wrapper pt-5">
   <div>
-    <app-matches *ngIf="hasMatches" [matches]="matches" (matchEmitter)="onMatchSelected($event)">
+    <app-matches *ngIf="hasMatches" [matches]="matches" [readonly]="readonly"
+      (matchEmitter)="onMatchSelected($event)">
     </app-matches>
   </div>
   <div>
-    <app-next-matches></app-next-matches>
+    <app-next-matches *ngIf="!readonly"></app-next-matches>
   </div>
   <section class="board-section mt-5">
     <app-group-knockout-board [groups]="groups"></app-group-knockout-board>
-    <div class="buttons-home-matches" aria-label="group-knockout-actions">
+    <div class="buttons-home-matches" aria-label="group-knockout-actions" *ngIf="!readonly">
       <div class="button-container mt-3">
         <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
           class="add-match p-2 text-center">
@@ -39,6 +40,7 @@
     <h2 class="finals-section__title">{{ 'group_knockout_finals_title' | translate }}</h2>
     <ng-container *ngIf="qualifiedPlayers.length >= 2 && rounds.length > 0; else eliminationEmpty">
       <app-elimination-bracket [competition]="competition" [rounds]="rounds"
+        [readonly]="readonly"
         (playersSelected)="onRoundSelected($event)"></app-elimination-bracket>
     </ng-container>
   </section>

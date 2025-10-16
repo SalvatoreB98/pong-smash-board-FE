@@ -32,9 +32,10 @@
     </p>
 
     <section>
-      <app-matches *ngIf="hasMatches" [matches]="matches" (matchEmitter)="onMatchSelected($event)">
+      <app-matches *ngIf="hasMatches" [matches]="matches" [readonly]="readonly"
+        (matchEmitter)="onMatchSelected($event)">
       </app-matches>
-      <div class="buttons-home-matches">
+      <div class="buttons-home-matches" *ngIf="!readonly">
         <div class="button-container mt-3">
           <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
             class="add-match p-2 text-center">
@@ -62,7 +63,7 @@
     </section>
 
     <section>
-      <app-stats *ngIf="hasMatches"></app-stats>
+      <app-stats *ngIf="hasMatches && !readonly"></app-stats>
     </section>
   </ng-template>
 </div>

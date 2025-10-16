@@ -15,6 +15,7 @@ import { BASE_SLIDER_CONFIG } from '../../config/slider.config';
 })
 export class MatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() matches: any;
+  @Input() readonly = false;
   @Output() matchEmitter: EventEmitter<IMatch> = new EventEmitter<IMatch>();
   maxMatchesToShow = 25;
   isOverflowing: boolean = false;
@@ -45,6 +46,9 @@ export class MatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
   }
 
   onMatchClick(matchId: string): void {
+    if (this.readonly) {
+      return;
+    }
     const matchData = this.matches.find((m: { id: string; }) => m.id === matchId);
     if (matchData) {
       this.clickedMatch = matchData;

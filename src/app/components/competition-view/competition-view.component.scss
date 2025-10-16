@@ -4,7 +4,7 @@
   display: block;
 }
 
-.view-wrapper {
+.wrapper {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
@@ -195,6 +195,12 @@
   background: rgba(255, 77, 109, 0.1);
   border: 1px solid rgba(255, 77, 109, 0.3);
   color: #ff4d6d;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem 0;
+  font-weight: 600;
 }
 
 .empty-message {
