@@ -31,6 +31,7 @@ export class GroupKnockoutComponent {
   @Input() groups: Group[] = [];
   @Input() qualifiedPlayers: IPlayer[] = [];
   @Input() competition: ICompetition | null = null;
+  @Input() readonly = false;
   @Output() roundSelected = new EventEmitter<EliminationModalEvent>();
   @Output() matchSelected = new EventEmitter<IMatch>();
   private _matches: IMatch[] = [];
@@ -58,12 +59,18 @@ export class GroupKnockoutComponent {
   }
 
   onRoundSelected(event: EliminationModalEvent) {
+    if (this.readonly) {
+      return;
+    }
     this.roundSelected.emit(event);
   }
   get hasMatches(): boolean {
     return this.matches?.length > 0;
   }
   onMatchSelected(match: IMatch) {
+    if (this.readonly) {
+      return;
+    }
     this.matchSelected.emit(match);
   }
 }

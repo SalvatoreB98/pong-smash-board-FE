@@ -23,6 +23,7 @@ export interface IMatch {
   created?: string;
   desc?: string;
   tournament_id?: number;
+  competition_id?: number | string | null;
   player1_img?: string | null;
   player2_img?: string | null;
   match_sets?: IMatchSet[];

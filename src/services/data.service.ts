@@ -413,12 +413,6 @@ export class DataService {
   }
 
 
-  getCompetitionView(id: number): Observable<ICompetitionViewResponse> {
-    return this.http.get<ICompetitionViewResponse>(API_PATHS.getCompetitionView, {
-      params: { competitionId: String(id) },
-    });
-  }
-
   private normalizeMatch(raw: any): IMatch {
     return {
       ...(raw as IMatch),
