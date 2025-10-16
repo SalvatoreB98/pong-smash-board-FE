@@ -1,98 +1,74 @@
-import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, distinctUntilChanged, filter, map, of, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  DataService,
-  ICompetitionViewMatchSummary,
-  ICompetitionViewPlayer,
-  ICompetitionViewResponse,
-} from '../../../services/data.service';
+import { CompetitionService } from '../../../services/competitions.service';
+import { ICompetition } from '../../../api/competition.api';
+import { IMatch } from '../../interfaces/matchesInterfaces';
+import { Group, GroupPlayer, mapGroupPlayerToIPlayer } from '../../interfaces/group.interface';
+import { EliminationRound } from '../../interfaces/elimination-bracket.interface';
+import { IPlayer } from '../../../services/players.service';
+import { EliminationBracketComponent } from '../elimination-bracket/elimination-bracket.component';
+import { GroupKnockoutComponent } from '../group-knockout/group-knockout.component';
+import { LeagueBoardComponent } from '../home/league-board/league-board.component';
+
+interface KnockoutPayload {
+  rounds?: EliminationRound[] | null;
+  qualifiedPlayers?: Array<GroupPlayer | IPlayer | null> | null;
+}
+
+interface CompetitionViewPayload {
+  competition?: ICompetition | null;
+  matches?: IMatch[] | null;
+  matchesLeague?: IMatch[] | null;
+  matchesElimination?: IMatch[] | null;
+  groups?: Group[] | null;
+  groupStage?: { groups?: Group[] | null } | null;
+  rounds?: EliminationRound[] | null;
+  eliminationRounds?: EliminationRound[] | null;
+  knockout?: KnockoutPayload | null;
+  knockoutStage?: KnockoutPayload | null;
+  qualifiedPlayers?: Array<GroupPlayer | IPlayer | null> | null;
+}
 
 @Component({
   selector: 'app-competition-view',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor, DatePipe],
+  imports: [CommonModule, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent],
   templateUrl: './competition-view.component.html',
   styleUrl: './competition-view.component.scss',
 })
 export class CompetitionViewComponent {
   private readonly route = inject(ActivatedRoute);
-  private readonly dataService = inject(DataService);
+  private readonly competitionService = inject(CompetitionService);
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
-  readonly competition = signal<ICompetitionViewResponse | null>(null);
 
-  readonly competitionInfo = computed(() => this.competition()?.competition ?? null);
+  readonly competition = signal<ICompetition | null>(null);
+  readonly matches = signal<IMatch[]>([]);
+  readonly rounds = signal<EliminationRound[]>([]);
+  readonly groups = signal<Group[]>([]);
+  readonly qualifiedPlayers = signal<IPlayer[]>([]);
 
-  readonly participantsCount = computed(() => {
-    const stats = this.competition()?.stats;
-    if (stats?.totalPlayers != null) {
-      return stats.totalPlayers;
-    }
-    return this.competition()?.players?.length ?? null;
-  });
-
-  readonly statsEntries = computed(() => {
-    const stats = this.competition()?.stats;
-    if (!stats) {
-      return [] as {
-        key: string;
-        label: string;
-        value: number | string;
-        isDate: boolean;
-      }[];
-    }
-
-    const entries: { key: keyof typeof stats; label: string }[] = [
-      { key: 'totalPlayers', label: 'Giocatori totali' },
-      { key: 'totalMatches', label: 'Partite totali' },
-      { key: 'completedMatches', label: 'Partite concluse' },
-      { key: 'upcomingMatches', label: 'Partite in arrivo' },
-      { key: 'totalPoints', label: 'Punti complessivi' },
-      { key: 'totalSets', label: 'Set giocati' },
-      { key: 'lastPlayedAt', label: 'Ultima partita' },
-    ];
-
-    return entries
-      .map(({ key, label }) => {
-        const value = stats[key];
-        if (value == null || value === '') {
-          return null;
-        }
-        return {
-          key: key as string,
-          label,
-          value: value as number | string,
-          isDate: key === 'lastPlayedAt',
-        };
-      })
-      .filter(
-        (entry): entry is {
-          key: string;
-          label: string;
-          value: number | string;
-          isDate: boolean;
-        } => entry !== null
-      );
-  });
+  readonly isLoadingMatches = computed(() => this.isLoading());
 
   constructor() {
     this.route.paramMap
       .pipe(
         map((params) => Number(params.get('id'))),
-        filter((id) => !Number.isNaN(id) && id > 0),
+        filter((id) => Number.isFinite(id) && id > 0),
         distinctUntilChanged(),
         tap(() => {
           this.isLoading.set(true);
           this.errorMessage.set(null);
+          this.resetView();
         }),
         switchMap((competitionId) =>
-          this.dataService.getCompetitionView(competitionId).pipe(
+          this.competitionService.getCompetitionView(competitionId).pipe(
             catchError((error) => {
-              console.error('Unable to load competition view', error);
+              console.error('[CompetitionView] Unable to load competition view', error);
               this.errorMessage.set('Impossibile caricare la competizione.');
               return of(null);
             })
@@ -100,43 +76,160 @@ export class CompetitionViewComponent {
         ),
         takeUntilDestroyed()
       )
-      .subscribe((data) => {
-        this.competition.set(data);
+      .subscribe((payload) => {
+        if (!payload) {
+          this.isLoading.set(false);
+          return;
+        }
+
+        this.hydrateView(payload as CompetitionViewPayload);
         this.isLoading.set(false);
       });
   }
 
-  trackPlayer(_: number, player: ICompetitionViewPlayer) {
-    return player.playerId ?? player.player.id;
+  private resetView(): void {
+    this.competition.set(null);
+    this.matches.set([]);
+    this.rounds.set([]);
+    this.groups.set([]);
+    this.qualifiedPlayers.set([]);
   }
 
-  trackMatch(_: number, match: ICompetitionViewMatchSummary) {
-    return match.id;
+  private hydrateView(payload: CompetitionViewPayload): void {
+    this.competition.set(payload.competition ?? null);
+    this.matches.set(this.resolveMatches(payload));
+    this.groups.set(this.resolveGroups(payload));
+    this.rounds.set(this.resolveRounds(payload));
+    this.qualifiedPlayers.set(this.resolveQualifiedPlayers(payload));
   }
 
-  formatMatchScore(match: ICompetitionViewMatchSummary): string | null {
-    const score = match.score;
-    if (!score) {
-      return null;
+  private resolveMatches(payload: CompetitionViewPayload): IMatch[] {
+    const source =
+      payload.matches ??
+      payload.matchesLeague ??
+      payload.matchesElimination ??
+      [];
+
+    if (!Array.isArray(source)) {
+      return [];
     }
-    const { player1, player2 } = score;
-    if (
-      player1 == null ||
-      player2 == null ||
-      Number.isNaN(player1) ||
-      Number.isNaN(player2)
-    ) {
-      return null;
-    }
-    return `${player1} - ${player2}`;
+
+    return source.map((match, index) => {
+      const normalized = match as IMatch;
+      const id = (normalized as any)?.id ?? index;
+      return {
+        ...normalized,
+        id: String(id),
+      };
+    });
   }
 
-  formatMatchSets(match: ICompetitionViewMatchSummary): string | null {
-    if (!match.matchSets?.length) {
+  private resolveGroups(payload: CompetitionViewPayload): Group[] {
+    const source = payload.groups ?? payload.groupStage?.groups ?? [];
+    if (!Array.isArray(source)) {
+      return [];
+    }
+
+    return source.map((group) => {
+      const normalized = group as Group;
+      const players = Array.isArray(normalized.players)
+        ? normalized.players.map((player) => ({
+            ...player,
+            id: String((player as any)?.id ?? player.id ?? ''),
+          }))
+        : [];
+
+      return {
+        ...normalized,
+        id: String((normalized as any)?.id ?? normalized.id ?? ''),
+        players,
+      };
+    });
+  }
+
+  private resolveRounds(payload: CompetitionViewPayload): EliminationRound[] {
+    const source =
+      payload.rounds ??
+      payload.eliminationRounds ??
+      payload.knockout?.rounds ??
+      payload.knockoutStage?.rounds ??
+      [];
+    if (!Array.isArray(source)) {
+      return [];
+    }
+
+    return source.map((round, roundIndex) => {
+      const normalized = round as EliminationRound;
+      const matches = Array.isArray((normalized as any)?.matches)
+        ? (normalized as any).matches.map((match: any, matchIndex: number) => ({
+            ...match,
+            id: String(match?.id ?? `${roundIndex}-${matchIndex}`),
+          }))
+        : [];
+
+      return {
+        ...normalized,
+        matches,
+      };
+    });
+  }
+
+  private resolveQualifiedPlayers(payload: CompetitionViewPayload): IPlayer[] {
+    const sources = [
+      payload.qualifiedPlayers,
+      payload.knockout?.qualifiedPlayers,
+      payload.knockoutStage?.qualifiedPlayers,
+    ];
+
+    for (const candidate of sources) {
+      const normalized = this.normalizeQualifiedPlayers(candidate);
+      if (normalized.length) {
+        return normalized;
+      }
+    }
+
+    return [];
+  }
+
+  private normalizeQualifiedPlayers(
+    source: Array<GroupPlayer | IPlayer | null | undefined> | null | undefined,
+  ): IPlayer[] {
+    if (!Array.isArray(source)) {
+      return [];
+    }
+
+    return source
+      .map((player) => this.normalizePlayer(player))
+      .filter((player): player is IPlayer => player !== null);
+  }
+
+  private normalizePlayer(player: GroupPlayer | IPlayer | null | undefined): IPlayer | null {
+    if (!player) {
       return null;
     }
-    return match.matchSets
-      .map((set) => `${set.player1Score}-${set.player2Score}`)
-      .join(', ');
+
+    if ('points' in player || 'matchesPlayed' in player) {
+      const groupPlayer: GroupPlayer = {
+        id: String((player as any).id ?? (player as any).playerId ?? ''),
+        name: (player as any).name ?? '',
+        surname: (player as any).surname ?? (player as any).lastname ?? undefined,
+        nickname: (player as any).nickname ?? undefined,
+        imageUrl: (player as any).imageUrl ?? (player as any).image_url ?? undefined,
+        points: Number((player as any).points ?? 0),
+        wins: Number((player as any).wins ?? 0),
+        losses: Number((player as any).losses ?? 0),
+        matchesPlayed: Number((player as any).matchesPlayed ?? 0),
+        scoreDifference: Number((player as any).scoreDifference ?? 0),
+      };
+      return mapGroupPlayerToIPlayer(groupPlayer);
+    }
+
+    return {
+      id: Number((player as any).id ?? (player as any).playerId ?? 0),
+      name: (player as any).name ?? '',
+      lastname: (player as any).lastname ?? (player as any).surname ?? undefined,
+      nickname: (player as any).nickname ?? undefined,
+      image_url: (player as any).image_url ?? (player as any).imageUrl ?? undefined,
+    };
   }
 }

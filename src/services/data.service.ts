@@ -14,76 +14,42 @@ import { UserService } from './user.service';
 import { RankingService } from './ranking.service';
 import { INextMatchesResponse } from './interfaces/Interfaces';
 
-export interface ICompetitionViewPlayerDetails {
-  id: number;
-  nickname: string | null;
-  name: string | null;
-  email?: string | null;
-  imageUrl?: string | null;
-}
-
 export interface ICompetitionViewPlayer {
-  playerId: number;
-  player: ICompetitionViewPlayerDetails;
-}
-
-export interface ICompetitionViewStats {
-  totalPlayers?: number;
-  totalMatches?: number;
-  completedMatches?: number;
-  upcomingMatches?: number;
-  totalPoints?: number;
-  totalSets?: number;
-  lastPlayedAt?: string | null;
-  [key: string]: number | string | null | undefined;
-}
-
-export interface ICompetitionViewMatchPlayer {
-  id: number;
-  nickname: string | null;
-  name: string | null;
-  imageUrl?: string | null;
-}
-
-export interface ICompetitionViewMatchSet {
-  id: number;
-  player1Score: number;
-  player2Score: number;
-}
-
-export interface ICompetitionViewMatchScore {
-  player1: number | null;
-  player2: number | null;
-}
-
-export interface ICompetitionViewMatchSummary {
-  id: number;
-  date: string | null;
-  created: string | null;
-  stage: string | null;
-  round: string | null;
-  status: string | null;
-  player1: ICompetitionViewMatchPlayer;
-  player2: ICompetitionViewMatchPlayer;
-  score: ICompetitionViewMatchScore | null;
-  matchSets: ICompetitionViewMatchSet[];
-}
-
-export interface ICompetitionViewCompetition {
-  id: number;
+  id?: number | string;
   name: string;
-  type?: CompetitionMode | string | null;
-  start_date?: string | null;
-  end_date?: string | null;
-  updated_at?: string | null;
-  created_by?: string | null;
+  image_url?: string | null;
+  nickname?: string | null;
+}
+
+export interface ICompetitionStatItem {
+  label: string;
+  value: string | number;
+}
+
+export interface ICompetitionMatchSummary {
+  id: number | string;
+  date?: string | Date | number;
+  player1_name?: string;
+  player2_name?: string;
+  player1_score?: number;
+  player2_score?: number;
+  [key: string]: any;
 }
 
 export interface ICompetitionViewResponse {
-  competition: ICompetitionViewCompetition;
-  players: ICompetitionViewPlayer[];
-  stats: ICompetitionViewStats | null;
-  latestMatches: ICompetitionViewMatchSummary[];
+  id: number;
+  name: string;
+  type?: CompetitionMode;
+  date?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  location?: string | null;
+  participantsCount?: number;
+  players?: ICompetitionViewPlayer[];
+  stats?: ICompetitionStatItem[];
+  lastMatches?: ICompetitionMatchSummary[];
+  nextMatches?: ICompetitionMatchSummary[];
+  [key: string]: any;
 }
 
 interface MatchData extends IMatchResponse {
@@ -446,12 +412,6 @@ export class DataService {
     return { groups: [...this.groups] };
   }
 
-
-  getCompetitionView(id: number): Observable<ICompetitionViewResponse> {
-    return this.http.get<ICompetitionViewResponse>(API_PATHS.getCompetitionView, {
-      params: { competitionId: String(id) },
-    });
-  }
 
   private normalizeMatch(raw: any): IMatch {
     return {

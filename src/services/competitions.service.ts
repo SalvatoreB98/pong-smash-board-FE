@@ -60,6 +60,10 @@ export class CompetitionService {
     }
   }
 
+  getCompetitionView(id: number | string): Observable<any> {
+    return this.api.getView(id);
+  }
+
   clearCompetitionsCache() {
     this.competitionsFetcher.clear();
   }

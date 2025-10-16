@@ -1,121 +1,36 @@
-<div class="wrapper view-wrapper">
-  <ng-container *ngIf="isLoading(); else loadedContent">
-    <section class="skeleton placeholder-card">
-      <div class="skeleton-title placeholder"></div>
-      <div class="skeleton-meta placeholder"></div>
-      <div class="skeleton-meta short placeholder"></div>
-      <div class="skeleton-players">
-        <div class="avatar placeholder" *ngFor="let _ of [1,2,3,4]"></div>
-      </div>
-    </section>
-    <section class="skeleton placeholder-card">
-      <div class="skeleton-subtitle placeholder"></div>
-      <div class="skeleton-line placeholder" *ngFor="let _ of [1,2,3]"></div>
-    </section>
-    <section class="skeleton placeholder-card">
-      <div class="skeleton-subtitle placeholder"></div>
-      <div class="skeleton-line placeholder" *ngFor="let _ of [1,2,3]"></div>
-    </section>
+<div class="wrapper">
+  <ng-container *ngIf="isLoading(); else loaded">
+    <div class="loading">Caricamento in corso…</div>
   </ng-container>
 
-  <ng-template #loadedContent>
+  <ng-template #loaded>
     <div class="error" *ngIf="errorMessage() as error">
       {{ error }}
     </div>
 
-    <ng-container *ngIf="competition() as competitionData; else emptyState">
-      <section class="card overview" *ngIf="competitionInfo() as competitionInfo">
-        <header>
-          <h1>{{ competitionInfo.name }}</h1>
-          <p class="type" *ngIf="competitionInfo.type">
-            {{ competitionInfo.type | titlecase }}
-          </p>
-        </header>
+    <ng-container *ngIf="competition() as activeCompetition; else emptyState">
+      <ng-container [ngSwitch]="activeCompetition.type">
+        <app-elimination-bracket *ngSwitchCase="'elimination'"
+          [competition]="activeCompetition"
+          [rounds]="rounds()"
+          [readonly]="true">
+        </app-elimination-bracket>
 
-        <div class="meta">
-          <div class="meta-item" *ngIf="competitionInfo.start_date || competitionInfo.end_date">
-            <span class="label">Periodo</span>
-            <span class="value">
-              <ng-container *ngIf="competitionInfo.start_date as start">
-                {{ start | date: 'mediumDate' }}
-              </ng-container>
-              <ng-container *ngIf="competitionInfo.start_date && competitionInfo.end_date"> - </ng-container>
-              <ng-container *ngIf="competitionInfo.end_date as end">
-                {{ end | date: 'mediumDate' }}
-              </ng-container>
-            </span>
-          </div>
-          <div class="meta-item" *ngIf="competitionInfo.updated_at as updatedAt">
-            <span class="label">Ultimo aggiornamento</span>
-            <span class="value">{{ updatedAt | date: 'short' }}</span>
-          </div>
-          <div class="meta-item" *ngIf="participantsCount() as count">
-            <span class="label">Partecipanti</span>
-            <span class="value">{{ count }}</span>
-          </div>
-        </div>
-      </section>
+        <app-group-knockout *ngSwitchCase="'group_knockout'"
+          [competition]="activeCompetition"
+          [groups]="groups()"
+          [qualifiedPlayers]="qualifiedPlayers()"
+          [rounds]="rounds()"
+          [matches]="matches()"
+          [readonly]="true">
+        </app-group-knockout>
 
-      <section class="card players" *ngIf="competitionData.players?.length">
-        <h2>Giocatori</h2>
-        <ul class="players-grid">
-          <li *ngFor="let playerItem of competitionData.players; trackBy: trackPlayer" class="player-card">
-            <div class="avatar" [class.placeholder-img]="!playerItem.player.imageUrl">
-              <img
-                *ngIf="playerItem.player.imageUrl; else initials"
-                [src]="playerItem.player.imageUrl"
-                [alt]="playerItem.player.nickname || playerItem.player.name || 'Avatar giocatore'"
-                loading="lazy"
-              />
-              <ng-template #initials>
-                <span>{{ playerItem.player.nickname?.charAt(0) || playerItem.player.name?.charAt(0) || '?' }}</span>
-              </ng-template>
-            </div>
-            <div class="player-info">
-              <span class="name">{{ playerItem.player.name || '—' }}</span>
-              <span class="nickname" *ngIf="playerItem.player.nickname">{{ playerItem.player.nickname }}</span>
-            </div>
-          </li>
-        </ul>
-      </section>
-
-      <section class="card stats" *ngIf="statsEntries() as stats">
-        <ng-container *ngIf="stats.length; else noStats">
-          <h2>Statistiche</h2>
-          <div class="stats-grid">
-            <div class="stat-item" *ngFor="let stat of stats">
-              <span class="label">{{ stat.label }}</span>
-              <span class="value">{{ stat.isDate ? (stat.value | date: 'short') : stat.value }}</span>
-            </div>
-          </div>
-        </ng-container>
-        <ng-template #noStats>
-          <h2>Statistiche</h2>
-          <p class="empty-message">Statistiche non disponibili.</p>
-        </ng-template>
-      </section>
-
-      <section class="card matches" *ngIf="competitionData.latestMatches?.length">
-        <h2>Ultime partite</h2>
-        <ul class="match-list">
-          <li *ngFor="let match of competitionData.latestMatches; trackBy: trackMatch">
-            <div class="players-row">
-              <span class="player">{{ match.player1.nickname || match.player1.name || 'Giocatore 1' }}</span>
-              <span class="score" *ngIf="formatMatchScore(match) as score">{{ score }}</span>
-              <span class="player">{{ match.player2.nickname || match.player2.name || 'Giocatore 2' }}</span>
-            </div>
-            <div class="match-meta">
-              <span *ngIf="match.date">{{ match.date | date: 'short' }}</span>
-              <span *ngIf="match.stage">{{ match.stage }}</span>
-              <span *ngIf="match.round">Round {{ match.round }}</span>
-            </div>
-            <div class="match-sets" *ngIf="formatMatchSets(match) as sets">
-              <span class="sets-label">Set:</span>
-              <span class="sets-value">{{ sets }}</span>
-            </div>
-          </li>
-        </ul>
-      </section>
+        <app-league-board *ngSwitchDefault
+          [matches]="matches()"
+          [isLoading]="isLoadingMatches()"
+          [readonly]="true">
+        </app-league-board>
+      </ng-container>
     </ng-container>
 
     <ng-template #emptyState>

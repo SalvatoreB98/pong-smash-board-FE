@@ -37,7 +37,7 @@
             </ng-template>
           </div>
 
-          <div class="bracket-match-actions">
+          <div class="bracket-match-actions" *ngIf="!readonly">
             <button type="button" *ngIf="match.winnerId === null"
               (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player })">
               {{ 'add_match' | translate }}
