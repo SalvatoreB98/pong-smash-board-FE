@@ -218,7 +218,16 @@
         display: grid;
         grid-template-columns: 1fr;
         margin: 1em;
-        margin: auto;
+        max-width: 300px;
+
+        .container-action {
+            display: flex;
+            align-items: center;
+            button {
+                margin: 0.5em;
+                max-height: 1em;
+            }
+        }
 
         &:hover {
             background: $dark;

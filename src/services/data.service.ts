@@ -2,17 +2,55 @@ import { inject, Injectable } from '@angular/core';
 import { MSG_TYPE } from "../app/utils/enum";
 import mockData from '../app/utils/mock.json';
 import { environment } from '../environments/environment';
-import { IMatch } from '../app/interfaces/matchesInterfaces';
+import { CompetitionMode, IMatch } from '../app/interfaces/matchesInterfaces';
 import { Group, GroupStageResponse, KnockoutStageData } from '../app/interfaces/group.interface';
 import { IMatchResponse } from '../app/interfaces/responsesInterfaces';
 import { LoaderComponent } from '../app/utils/components/loader/loader.component';
 import { LoaderService } from './loader.service';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { API_PATHS } from '../api/api.config';
 import { UserService } from './user.service';
 import { RankingService } from './ranking.service';
 import { INextMatchesResponse } from './interfaces/Interfaces';
+
+export interface ICompetitionViewPlayer {
+  id?: number | string;
+  name: string;
+  image_url?: string | null;
+  nickname?: string | null;
+}
+
+export interface ICompetitionStatItem {
+  label: string;
+  value: string | number;
+}
+
+export interface ICompetitionMatchSummary {
+  id: number | string;
+  date?: string | Date | number;
+  player1_name?: string;
+  player2_name?: string;
+  player1_score?: number;
+  player2_score?: number;
+  [key: string]: any;
+}
+
+export interface ICompetitionViewResponse {
+  id: number;
+  name: string;
+  type?: CompetitionMode;
+  date?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  location?: string | null;
+  participantsCount?: number;
+  players?: ICompetitionViewPlayer[];
+  stats?: ICompetitionStatItem[];
+  lastMatches?: ICompetitionMatchSummary[];
+  nextMatches?: ICompetitionMatchSummary[];
+  [key: string]: any;
+}
 
 interface MatchData extends IMatchResponse {
   matches: IMatch[];
@@ -374,6 +412,12 @@ export class DataService {
     return { groups: [...this.groups] };
   }
 
+
+  getCompetitionView(id: number): Observable<ICompetitionViewResponse> {
+    return this.http.get<ICompetitionViewResponse>(API_PATHS.getCompetitionView, {
+      params: { competitionId: String(id) },
+    });
+  }
 
   private normalizeMatch(raw: any): IMatch {
     return {
