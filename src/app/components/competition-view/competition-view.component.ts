@@ -5,7 +5,7 @@ import { catchError, distinctUntilChanged, filter, map, of, switchMap, tap } fro
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   DataService,
-  ICompetitionMatchSummary,
+  ICompetitionViewMatchSummary,
   ICompetitionViewPlayer,
   ICompetitionViewResponse,
 } from '../../../services/data.service';
@@ -25,24 +25,58 @@ export class CompetitionViewComponent {
   readonly errorMessage = signal<string | null>(null);
   readonly competition = signal<ICompetitionViewResponse | null>(null);
 
+  readonly competitionInfo = computed(() => this.competition()?.competition ?? null);
+
   readonly participantsCount = computed(() => {
-    const competition = this.competition();
-    if (!competition) {
-      return null;
+    const stats = this.competition()?.stats;
+    if (stats?.totalPlayers != null) {
+      return stats.totalPlayers;
     }
-    return (
-      competition.participantsCount ?? competition.players?.length ?? null
-    );
+    return this.competition()?.players?.length ?? null;
   });
 
-  readonly shouldShowNextMatches = computed(() => {
-    const competition = this.competition();
-    if (!competition) {
-      return false;
+  readonly statsEntries = computed(() => {
+    const stats = this.competition()?.stats;
+    if (!stats) {
+      return [] as {
+        key: string;
+        label: string;
+        value: number | string;
+        isDate: boolean;
+      }[];
     }
-    const hasMatches = (competition.nextMatches?.length ?? 0) > 0;
-    const type = competition.type;
-    return hasMatches && (type === 'elimination' || type === 'group_knockout');
+
+    const entries: { key: keyof typeof stats; label: string }[] = [
+      { key: 'totalPlayers', label: 'Giocatori totali' },
+      { key: 'totalMatches', label: 'Partite totali' },
+      { key: 'completedMatches', label: 'Partite concluse' },
+      { key: 'upcomingMatches', label: 'Partite in arrivo' },
+      { key: 'totalPoints', label: 'Punti complessivi' },
+      { key: 'totalSets', label: 'Set giocati' },
+      { key: 'lastPlayedAt', label: 'Ultima partita' },
+    ];
+
+    return entries
+      .map(({ key, label }) => {
+        const value = stats[key];
+        if (value == null || value === '') {
+          return null;
+        }
+        return {
+          key: key as string,
+          label,
+          value: value as number | string,
+          isDate: key === 'lastPlayedAt',
+        };
+      })
+      .filter(
+        (entry): entry is {
+          key: string;
+          label: string;
+          value: number | string;
+          isDate: boolean;
+        } => entry !== null
+      );
   });
 
   constructor() {
@@ -73,22 +107,36 @@ export class CompetitionViewComponent {
   }
 
   trackPlayer(_: number, player: ICompetitionViewPlayer) {
-    return player.id ?? player.nickname ?? player.name;
+    return player.playerId ?? player.player.id;
   }
 
-  trackMatch(_: number, match: ICompetitionMatchSummary) {
+  trackMatch(_: number, match: ICompetitionViewMatchSummary) {
     return match.id;
   }
 
-  formatMatchScore(match: ICompetitionMatchSummary): string | null {
+  formatMatchScore(match: ICompetitionViewMatchSummary): string | null {
+    const score = match.score;
+    if (!score) {
+      return null;
+    }
+    const { player1, player2 } = score;
     if (
-      match.player1_score == null ||
-      match.player2_score == null ||
-      Number.isNaN(match.player1_score) ||
-      Number.isNaN(match.player2_score)
+      player1 == null ||
+      player2 == null ||
+      Number.isNaN(player1) ||
+      Number.isNaN(player2)
     ) {
       return null;
     }
-    return `${match.player1_score} - ${match.player2_score}`;
+    return `${player1} - ${player2}`;
+  }
+
+  formatMatchSets(match: ICompetitionViewMatchSummary): string | null {
+    if (!match.matchSets?.length) {
+      return null;
+    }
+    return match.matchSets
+      .map((set) => `${set.player1Score}-${set.player2Score}`)
+      .join(', ');
   }
 }
