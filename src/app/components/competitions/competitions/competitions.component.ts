@@ -237,4 +237,13 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
   goToCompetition(id: string | number) {
     this.router.navigate(['/competition', id]);
   }
+  editCompetition(id: string | number) {
+    const competition = this.competitionService.snapshotList().find(c => c.id === Number(id)) ?? null;
+    if (!competition) {
+      return;
+    }
+    this.competitionDetail = { ...competition };
+    this.userService.setActiveCompetitionId(id);
+    this.router.navigate(['/home-page']);
+  }
 }

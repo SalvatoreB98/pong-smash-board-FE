@@ -1146,5 +1146,9 @@
     "go_to_competition": {
         "it": "Visualizza",
         "en": "Go to competition"
+    },
+    "manage": {
+        "it": "Gestisci",
+        "en": "Manage"
     }
 }

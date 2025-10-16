@@ -222,10 +222,13 @@
 
         .container-action {
             display: flex;
-            align-items: center;
+            place-items: center;
             button {
                 margin: 0.5em;
-                max-height: 1em;
+            }
+            .comp__actions {
+                align-self: flex-end;
+                text-align: center;
             }
         }
 
