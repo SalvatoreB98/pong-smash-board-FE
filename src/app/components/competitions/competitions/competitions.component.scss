@@ -222,8 +222,10 @@
 
         .container-action {
             display: flex;
+            align-items: center;
             button {
                 margin: 0.5em;
+                max-height: 1em;
             }
         }
 
