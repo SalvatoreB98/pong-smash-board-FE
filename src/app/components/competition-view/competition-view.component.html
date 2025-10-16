@@ -8,16 +8,16 @@
       {{ error }}
     </div>
 
-    <ng-container *ngIf="competition() as activeCompetition; else emptyState">
-      <ng-container [ngSwitch]="activeCompetition.type">
+    <ng-container *ngIf="competition() as competition; else emptyState">
+      <ng-container [ngSwitch]="competition.type">
         <app-elimination-bracket *ngSwitchCase="'elimination'"
-          [competition]="activeCompetition"
+          [competition]="competition"
           [rounds]="rounds()"
           [readonly]="true">
         </app-elimination-bracket>
 
         <app-group-knockout *ngSwitchCase="'group_knockout'"
-          [competition]="activeCompetition"
+          [competition]="competition"
           [groups]="groups()"
           [qualifiedPlayers]="qualifiedPlayers()"
           [rounds]="rounds()"
