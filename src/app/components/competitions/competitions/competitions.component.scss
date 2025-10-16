@@ -209,7 +209,7 @@
     }
 
     .comp {
-        background: $dark2;
+        background: $dark;
         border-radius: $border-radius;
         padding: .75rem;
         color: $primary-ultra-light;
@@ -224,7 +224,7 @@
             display: flex;
             place-items: center;
             button {
-                margin: 0.5em;
+                margin: 2.5px;
             }
             .comp__actions {
                 align-self: flex-end;

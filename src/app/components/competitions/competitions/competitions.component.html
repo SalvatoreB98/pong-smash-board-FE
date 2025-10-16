@@ -94,13 +94,15 @@
                                 </ng-template>
 
                                 <div class="container-action mt-3">
-                                    <button class="p-1 secondary" style="font-size: 0.75em;" type="button"
-                                        (click)="editCompetition(c.id)">
-                                        {{'manage' | translate }}
-                                    </button>
+                                    
                                     <button class="p-1" style="font-size: 0.75em;" type="button"
                                         (click)="goToCompetition(c.id)">
                                         {{'go_to_competition' | translate }}
+                                    </button>
+
+                                    <button class="p-1 secondary" style="font-size: 0.75em;" type="button"
+                                        (click)="editCompetition(c.id)">
+                                        {{'manage' | translate }}
                                     </button>
 
                                     <div class="comp__actions" style="text-align: right;">
