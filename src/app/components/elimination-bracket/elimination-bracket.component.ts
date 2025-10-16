@@ -26,6 +26,7 @@ export interface EliminationModalEvent {
 export class EliminationBracketComponent {
   @Input() competition: ICompetition | null = null;
   @Input() rounds: EliminationRound[] = [];
+  @Input() readonly = false;
   modalService = inject(ModalService);
   @Output() playersSelected = new EventEmitter<EliminationModalEvent>();
 
@@ -49,6 +50,9 @@ export class EliminationBracketComponent {
     roundName?: string | null;
     roundLabel?: string;
   } = {}) {
+    if (this.readonly) {
+      return;
+    }
     console.log('openModal called with:', modalName, options);
     this.playersSelected.emit({
       modalName,
