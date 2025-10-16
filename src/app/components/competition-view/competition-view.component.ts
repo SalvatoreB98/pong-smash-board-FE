@@ -19,6 +19,7 @@ interface KnockoutPayload {
 }
 
 interface CompetitionViewPayload {
+  latestMatches: IMatch[] | null | undefined;
   competition?: ICompetition | null;
   matches?: IMatch[] | null;
   matchesLeague?: IMatch[] | null;
@@ -105,7 +106,7 @@ export class CompetitionViewComponent {
 
   private resolveMatches(payload: CompetitionViewPayload): IMatch[] {
     const source =
-      payload.matches ??
+      payload.latestMatches ??
       payload.matchesLeague ??
       payload.matchesElimination ??
       [];
