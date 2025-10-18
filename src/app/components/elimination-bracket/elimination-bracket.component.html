@@ -17,7 +17,7 @@
   </header>
 
   <div class="bracket" *ngIf="rounds.length; else emptyBracket">
-    <div class="bracket-round" *ngFor="let round of rounds; trackBy: trackByRound">
+    <div class="bracket-round" *ngFor="let round of rounds; let i = index; trackBy: trackByRound">
       <h3>{{ round.name | translate }}</h3>
       <div class="bracket-matches">
         <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
@@ -33,7 +33,12 @@
               {{ slotIndex === 0 ? match.player1Score : match.player2Score }}
             </span>
             <ng-template #waiting>
-              <span class="player waiting">{{ 'elimination_waiting_player' | translate }}</span>
+              <span class="player waiting" *ngIf="i !== 0; else add">{{ 'elimination_waiting_player' | translate }}</span>
+            </ng-template>
+            <ng-template #add>
+              <button type="button" class="add-player-btn tertiary" style="width: 5em;" *ngIf="!readonly">
+                <i class="fa fa-plus ms-2" aria-hidden="true"></i>
+              </button>
             </ng-template>
           </div>
 
@@ -46,14 +51,14 @@
             </button>
             <button type="button" class="bg-secondary position-relative" *ngIf="match.winnerId === null"
               (click)="openModal('MANUAL_POINTS', { player1: match.slots[0].player, player2: match.slots[1].player })">
-              {{ 'add_manual_set_points' | translate }}
+              {{ 'live' | translate }}
               <div class="circle-live"></div>
             </button>
             <div class="d-flex justify-content-center">
-              <button type="button" class="other ps-2 pe-2"
+              <button type="button" class="other ps-2 pe-2 tertiary"
                 *ngIf="match.matchData"
                 (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: match.roundKey ?? round.name, roundLabel: match.roundLabel })">
-                {{ 'view_details' | translate }}
+                {{ 'details' | translate }}
                 <i class="fa fa-info-circle ms-2" aria-hidden="true"></i>
               </button>
             </div>

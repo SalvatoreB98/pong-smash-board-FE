@@ -731,6 +731,14 @@
         "it": "Segna punti in diretta",
         "en": "Add points live"
     },
+    "live": {
+        "it": "Live",
+        "en": "Live"
+    },
+    "details": {
+        "it": "Dettagli",
+        "en": "Details"
+    },
     "otherwise": {
         "it": "Oppure",
         "en": "Or"
