@@ -78,8 +78,8 @@ export class CompetitionApi {
     });
   }
 
-  getKnockout(id: number | string): Observable<KnockoutResponse> {
-    return this.http.get<KnockoutResponse>(API_PATHS.getKnockout, {
+  getKnockouts(id: number | string): Observable<KnockoutResponse> {
+    return this.http.get<KnockoutResponse>(API_PATHS.getKnockouts, {
       params: { competitionId: String(id) },
     });
   }

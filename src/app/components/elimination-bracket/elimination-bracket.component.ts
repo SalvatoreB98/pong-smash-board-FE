@@ -6,6 +6,8 @@ import { EliminationMatchSlot, EliminationRound } from '../../interfaces/elimina
 import { ModalService } from '../../../services/modal.service';
 import { IPlayer } from '../../../services/players.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
+import { DataService } from '../../../services/data.service';
+import { mapKnockoutResponse } from '../../interfaces/knockout.interface';
 
 export interface EliminationModalEvent {
   modalName: string;
@@ -28,12 +30,23 @@ export class EliminationBracketComponent {
   @Input() rounds: EliminationRound[] = [];
   @Input() readonly = false;
   modalService = inject(ModalService);
+  dataService = inject(DataService);
   @Output() playersSelected = new EventEmitter<EliminationModalEvent>();
 
   ngOnInit() {
     console.log('EliminationBracketComponent initialized');
     console.log('Competition:', this.competition);
     console.log('Rounds:', this.rounds);
+    this.dataService.getKnockouts(this.competition?.id).then(data => {
+      console.log('Knockout data fetched:', data);
+      if (data) {
+        this.rounds = mapKnockoutResponse({
+          competitionId: this.competition?.id ?? 0,
+          ...data
+        } as any);
+      }
+    });
+
   }
 
   trackByRound(index: number, round: EliminationRound) {

@@ -1,6 +1,10 @@
 import { EliminationMatchSlot, EliminationRound } from './elimination-bracket.interface';
 import { IPlayer } from '../../services/players.service';
 
+/* ===========================
+   Interfacce API knockout
+=========================== */
+
 export interface KnockoutPlayer {
   id: number | string;
   nickname: string;
@@ -36,12 +40,15 @@ export interface KnockoutRound {
 export interface KnockoutResponse {
   competitionId: number | string;
   rounds?: (KnockoutRound | null | undefined)[];
+  qualifiedPlayers?: (KnockoutPlayer | null | undefined)[];
 }
 
+/* ===========================
+   Helper functions
+=========================== */
+
 function mapKnockoutPlayer(player?: KnockoutPlayer | null): IPlayer | null {
-  if (!player) {
-    return null;
-  }
+  if (!player) return null;
 
   return {
     id: Number(player.id),
@@ -52,13 +59,18 @@ function mapKnockoutPlayer(player?: KnockoutPlayer | null): IPlayer | null {
 }
 
 function toRoundOrder(order: KnockoutRound['order'], fallback: number): number {
-  if (order == null) {
-    return fallback;
-  }
-
-  const numericOrder = typeof order === 'number' ? order : Number(order);
-  return Number.isFinite(numericOrder) ? Number(numericOrder) : fallback;
+  const numericOrder =
+    typeof order === 'number'
+      ? order
+      : order != null
+        ? Number(order)
+        : fallback;
+  return Number.isFinite(numericOrder) ? numericOrder : fallback;
 }
+
+/* ===========================
+   Main mapper
+=========================== */
 
 export function mapKnockoutResponse(response: KnockoutResponse): EliminationRound[] {
   const rounds = Array.isArray(response?.rounds) ? [...response.rounds] : [];
@@ -78,19 +90,20 @@ export function mapKnockoutResponse(response: KnockoutResponse): EliminationRoun
           .map((match, matchIndex) => {
             const player1 = mapKnockoutPlayer(match.player1 ?? null);
             const player2 = mapKnockoutPlayer(match.player2 ?? null);
+
             const slots: [EliminationMatchSlot, EliminationMatchSlot] = [
               { seed: 1, player: player1 },
               { seed: 2, player: player2 },
             ];
 
-            const player1Score = match.score?.player1;
-            const player2Score = match.score?.player2;
+            const player1Score = match.score?.player1 ?? null;
+            const player2Score = match.score?.player2 ?? null;
 
             return {
               id: String(match.id ?? `round-${roundOrder}-match-${matchIndex}`),
               slots,
-              ...(player1Score !== undefined && player1Score !== null ? { player1Score } : {}),
-              ...(player2Score !== undefined && player2Score !== null ? { player2Score } : {}),
+              ...(player1Score != null ? { player1Score } : {}),
+              ...(player2Score != null ? { player2Score } : {}),
               winnerId: match.winner?.id ?? null,
               matchData: mapToIMatch(match),
             };
@@ -98,19 +111,24 @@ export function mapKnockoutResponse(response: KnockoutResponse): EliminationRoun
       };
     });
 }
+
+/* ===========================
+   Mapping KnockoutMatch → IMatch
+=========================== */
+
 function mapToIMatch(match: KnockoutMatch): any {
   return {
     id: match.id != null ? String(match.id) : '',
     date: '',
-    data: "",
-    player1_id: match.player1?.id != null ? Number(match.player1.id) : undefined,
-    player2_id: match.player2?.id != null ? Number(match.player2.id) : undefined,
+    data: '',
+    player1_id: match.player1?.id ? Number(match.player1.id) : null,
+    player2_id: match.player2?.id ? Number(match.player2.id) : null,
     player1_name: match.player1?.nickname ?? '',
     player2_name: match.player2?.nickname ?? '',
-    player1_score: match.score?.player1 ?? 0,
-    player2_score: match.score?.player2 ?? 0,
-    winner_id: match.winner?.id != null ? Number(match.winner.id) : undefined,
-    groupId: "",
+    player1_score: match.score?.player1 ?? null,
+    player2_score: match.score?.player2 ?? null,
+    winner_id: match.winner?.id ? Number(match.winner.id) : null,
+    group_id: null,
+    next_match_id: match.nextMatchId ?? null,
   };
 }
-

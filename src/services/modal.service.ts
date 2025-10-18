@@ -4,6 +4,7 @@ import { MODALS } from '../app/utils/enum';
 
 @Injectable({ providedIn: 'root' })
 export class ModalService {
+  [x: string]: any;
 
   private activeModalSubject = new BehaviorSubject<string | null>(null);
 

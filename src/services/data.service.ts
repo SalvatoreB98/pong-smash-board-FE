@@ -420,4 +420,20 @@ export class DataService {
       groupId: raw?.groupId ?? raw?.group_id ?? undefined,
     };
   }
+  async getKnockouts(competitionId: string | number | undefined): Promise<KnockoutStageData | null> {
+    if (!competitionId) {
+      return null;
+    }
+    try {
+      const data = await firstValueFrom(
+        this.http.get<KnockoutStageData>(API_PATHS.getKnockouts, {
+          params: { competitionId: String(competitionId) }
+        })
+      );
+      return data;
+    } catch (error) {
+      console.error('Error fetching knockout:', error);
+      return null;
+    }
+  }
 }
