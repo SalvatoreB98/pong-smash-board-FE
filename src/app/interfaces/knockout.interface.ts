@@ -92,9 +92,25 @@ export function mapKnockoutResponse(response: KnockoutResponse): EliminationRoun
               ...(player1Score !== undefined && player1Score !== null ? { player1Score } : {}),
               ...(player2Score !== undefined && player2Score !== null ? { player2Score } : {}),
               winnerId: match.winner?.id ?? null,
-              matchData: match ?? null,
+              matchData: mapToIMatch(match),
             };
           }),
       };
     });
 }
+function mapToIMatch(match: KnockoutMatch): any {
+  return {
+    id: match.id != null ? String(match.id) : '',
+    date: '',
+    data: "",
+    player1_id: match.player1?.id != null ? Number(match.player1.id) : undefined,
+    player2_id: match.player2?.id != null ? Number(match.player2.id) : undefined,
+    player1_name: match.player1?.nickname ?? '',
+    player2_name: match.player2?.nickname ?? '',
+    player1_score: match.score?.player1 ?? 0,
+    player2_score: match.score?.player2 ?? 0,
+    winner_id: match.winner?.id != null ? Number(match.winner.id) : undefined,
+    groupId: "",
+  };
+}
+
