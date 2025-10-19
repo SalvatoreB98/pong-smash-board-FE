@@ -33,16 +33,23 @@
               {{ slotIndex === 0 ? match.player1Score : match.player2Score }}
             </span>
             <ng-template #waiting>
-              <span class="player waiting" *ngIf="i !== 0; else add">{{ 'elimination_waiting_player' | translate }}</span>
+              <span class="player waiting" *ngIf="i !== 0; else add">{{ 'elimination_waiting_player' | translate
+                }}</span>
             </ng-template>
             <ng-template #add>
-              <button type="button" class="add-player-btn tertiary" style="width: 5em;" *ngIf="!readonly">
+              <button type="button" class="add-player-btn tertiary" style="width: 2em; height: 2em;" *ngIf="!readonly">
                 <i class="fa fa-plus ms-2" aria-hidden="true"></i>
               </button>
             </ng-template>
           </div>
 
           <div class="bracket-match-actions" *ngIf="!readonly">
+            <div class="d-flex justify-content-center">
+              <button type="button" class="other ps-2 pe-2 tertiary"
+                (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: match.roundKey ?? round.name, roundLabel: match.roundLabel })">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </button>
+            </div>
             <button type="button" *ngIf="match.winnerId === null"
               (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player })">
               {{ 'add_match' | translate }}
@@ -54,14 +61,6 @@
               {{ 'live' | translate }}
               <div class="circle-live"></div>
             </button>
-            <div class="d-flex justify-content-center">
-              <button type="button" class="other ps-2 pe-2 tertiary"
-                *ngIf="match.matchData"
-                (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: match.roundKey ?? round.name, roundLabel: match.roundLabel })">
-                {{ 'details' | translate }}
-                <i class="fa fa-info-circle ms-2" aria-hidden="true"></i>
-              </button>
-            </div>
           </div>
         </article>
       </div>
