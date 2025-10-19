@@ -1,7 +1,7 @@
 <div class="wrapper">
   <ng-container *ngIf="userState$ | async">
     <ng-container [ngSwitch]="activeCompetition?.type">
-      <app-elimination-bracket *ngSwitchCase="'elimination'" (playersSelected)="onClickRound($event)"
+      <app-elimination-bracket *ngSwitchCase="'elimination'" (roundButtonClicked)="onClickRound($event)"
         [competition]="activeCompetition" [rounds]="eliminationRounds"></app-elimination-bracket>
 
       <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition" [groups]="groups"

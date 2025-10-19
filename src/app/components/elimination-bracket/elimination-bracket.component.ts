@@ -31,7 +31,7 @@ export class EliminationBracketComponent {
   @Input() readonly = false;
   modalService = inject(ModalService);
   dataService = inject(DataService);
-  @Output() playersSelected = new EventEmitter<EliminationModalEvent>();
+  @Output() roundButtonClicked = new EventEmitter<EliminationModalEvent>();
 
   ngOnInit() {
     console.log('EliminationBracketComponent initialized');
@@ -67,7 +67,7 @@ export class EliminationBracketComponent {
       return;
     }
     console.log('openModal called with:', modalName, options);
-    this.playersSelected.emit({
+    this.roundButtonClicked.emit({
       modalName,
       player1: options.player1 ?? null,
       player2: options.player2 ?? null,

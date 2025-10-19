@@ -69,3 +69,11 @@ export enum UserProgressStateEnum {
   PROFILE_COMPLETED = 'profile_completed',
   WITHOUT_COMPETITION = 'without_competition',
 }
+
+export enum KnockoutStage {
+  ONE_SIXTEENTH_FINALS = "one_sixteenth_finals",
+  ONE_EIGHTH_FINALS = "one_eighth_finals",
+  QUARTERFINALS = "quarterfinals",
+  SEMIFINALS = "semifinals",
+  FINAL = "final"
+}

@@ -51,7 +51,7 @@
               </button>
             </div>
             <button type="button" *ngIf="match.winnerId === null"
-              (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player })">
+              (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player, roundName: round.name, roundLabel: match.roundLabel })">
               {{ 'add_match' | translate }}
               <span class="m-1"></span>
               <i class="fa fa-file-text-o" aria-hidden="true"></i>

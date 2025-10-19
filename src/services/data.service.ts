@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { MSG_TYPE } from "../app/utils/enum";
+import { KnockoutStage, MSG_TYPE } from "../app/utils/enum";
 import mockData from '../app/utils/mock.json';
 import { environment } from '../environments/environment';
 import { CompetitionMode, IMatch } from '../app/interfaces/matchesInterfaces';
@@ -297,7 +297,7 @@ export class DataService {
     };
   }
 
-  async addMatch(data: { p1Score: number; p2Score: number; groupId?: string | null;[key: string]: any }): Promise<void> {
+  async addMatch(data: { p1Score: number; p2Score: number; groupId?: string | null;[key: string]: any }, stage?: KnockoutStage): Promise<void> {
     console.log(data);
 
     if (data?.p1Score == null || data?.p2Score == null) {
@@ -317,6 +317,7 @@ export class DataService {
         this.http.post<IMatchResponse>(url, {
           ...data,
           competitionId: userState.active_competition_id,
+          stage
         })
       );
 
