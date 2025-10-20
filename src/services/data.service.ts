@@ -7,7 +7,7 @@ import { Group, GroupStageResponse, KnockoutStageData } from '../app/interfaces/
 import { IMatchResponse } from '../app/interfaces/responsesInterfaces';
 import { LoaderComponent } from '../app/utils/components/loader/loader.component';
 import { LoaderService } from './loader.service';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, Subscription, firstValueFrom, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { API_PATHS } from '../api/api.config';
 import { UserService } from './user.service';
@@ -106,6 +106,7 @@ export class DataService {
   private groupsSubject = new BehaviorSubject<Group[]>([]);
   private knockoutSubject = new BehaviorSubject<KnockoutStageData | null>(null);
   private playersSubject = new BehaviorSubject<string[]>([]);
+  private userStateSub?: Subscription;
 
   public winsObs = this.winsSubject.asObservable();
   public totPlayedObs = this.totPlayedSubject.asObservable();
@@ -123,12 +124,27 @@ export class DataService {
   private _id = Math.random().toString(36).slice(2);
   private _activeCompetitionId: number | null = null;
   private _groupsLoaded = false;
+  private _knockoutLoaded = false;
+  private _knockoutLoadingPromise?: Promise<KnockoutStageData | null>;
+  private _knockoutCompetitionId: number | null = null;
 
   private userService = inject(UserService);
   private rankingService = inject(RankingService);
 
   constructor(private loaderService: LoaderService, private http: HttpClient) {
     console.log('[DataService] ctor', this._id);
+    this.userStateSub = this.userService.userState$().subscribe(state => {
+      const competitionId = state?.active_competition_id ?? null;
+      if (competitionId == null) {
+        this.resetKnockoutCache();
+        return;
+      }
+
+      const numericId = Number(competitionId);
+      if (Number.isFinite(numericId) && this._knockoutCompetitionId !== null && this._knockoutCompetitionId !== numericId) {
+        this.resetKnockoutCache();
+      }
+    });
   }
 
   /**
@@ -255,7 +271,6 @@ export class DataService {
     this.matches = [];
     this.matchesElimination = [];
     this.groups = [];
-    this.knockoutStage = null;
     this.wins = {};
     this.totPlayed = {};
     this.points = {};
@@ -268,11 +283,11 @@ export class DataService {
     this.matchesSubject.next([]);
     this.matchesEliminationSubject.next([]);
     this.groupsSubject.next([]);
-    this.knockoutSubject.next(null);
     this.winsSubject.next({});
     this.totPlayedSubject.next({});
     this.pointsSubject.next({});
     this.playersSubject.next([]);
+    this.resetKnockoutCache();
   }
 
   private generateReturnObject(): MatchData {
@@ -323,6 +338,17 @@ export class DataService {
 
       // aggiorna lo store locale con i dati restituiti
       this.assignData(responseData);
+
+      const competitionId = Number(userState.active_competition_id ?? null);
+      if (Number.isFinite(competitionId)) {
+        try {
+          await this.fetchKnockouts({ competitionId, force: true });
+        } catch (err) {
+          console.error('Failed to refresh knockouts after match:', err);
+        }
+      } else {
+        this.resetKnockoutCache();
+      }
       this.loaderService?.showToast('Salvato con successo!', MSG_TYPE.SUCCESS, 5000);
       this.matches = responseData.matches || [];
       this.matchesSubject.next(this.matches);
@@ -426,20 +452,70 @@ export class DataService {
       ...(roundLabelSource != null ? { roundLabel: roundLabelSource } : {}),
     };
   }
-  async getKnockouts(competitionId: string | number | undefined): Promise<KnockoutStageData | null> {
-    if (!competitionId) {
+  async fetchKnockouts(options?: { competitionId: number; force?: boolean }): Promise<KnockoutStageData | null> {
+    const fallbackId = this.userService.snapshot()?.active_competition_id ?? null;
+    const competitionId = options?.competitionId ?? (fallbackId != null ? Number(fallbackId) : null);
+
+    if (competitionId == null || !Number.isFinite(competitionId)) {
+      this.resetKnockoutCache();
       return null;
     }
-    try {
-      const data = await firstValueFrom(
-        this.http.get<KnockoutStageData>(API_PATHS.getKnockouts, {
-          params: { competitionId: String(competitionId) }
-        })
-      );
-      return data;
-    } catch (error) {
-      console.error('Error fetching knockout:', error);
-      return null;
+
+    const numericId = Number(competitionId);
+
+    if (this._knockoutCompetitionId !== null && this._knockoutCompetitionId !== numericId) {
+      this.resetKnockoutCache();
     }
+
+    if (this.knockoutStage && !options?.force && this._knockoutLoaded && this._knockoutCompetitionId === numericId) {
+      return this.knockoutStage;
+    }
+
+    if (this._knockoutLoadingPromise && !options?.force) {
+      return this._knockoutLoadingPromise;
+    }
+
+    const fetchPromise = (async (): Promise<KnockoutStageData | null> => {
+      try {
+        const response = await firstValueFrom(
+          this.http.get<KnockoutStageData>(API_PATHS.getKnockouts, {
+            params: { competitionId: String(numericId) }
+          })
+        );
+
+        const normalized = response
+          ? { ...response, competitionId: response.competitionId ?? numericId }
+          : null;
+        this.knockoutStage = normalized;
+        this._knockoutCompetitionId = numericId;
+        this._knockoutLoaded = true;
+        this.knockoutSubject.next(this.knockoutStage);
+        return this.knockoutStage;
+      } catch (error) {
+        console.error('Error fetching knockouts:', error);
+        if (options?.force) {
+          this.knockoutStage = null;
+          this.knockoutSubject.next(null);
+        }
+        this._knockoutLoaded = false;
+        throw error;
+      }
+    })();
+
+    this._knockoutLoadingPromise = fetchPromise;
+    fetchPromise.finally(() => {
+      if (this._knockoutLoadingPromise === fetchPromise) {
+        this._knockoutLoadingPromise = undefined;
+      }
+    });
+    return fetchPromise;
+  }
+
+  private resetKnockoutCache(): void {
+    this.knockoutStage = null;
+    this._knockoutLoaded = false;
+    this._knockoutLoadingPromise = undefined;
+    this._knockoutCompetitionId = null;
+    this.knockoutSubject.next(null);
   }
 }

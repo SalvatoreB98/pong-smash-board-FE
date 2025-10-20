@@ -75,7 +75,7 @@ function toRoundOrder(order: KnockoutRound['order'], fallback: number): number {
    Main mapper
 =========================== */
 
-export function mapKnockoutResponse(response: KnockoutResponse): EliminationRound[] {
+export function mapKnockoutResponse(response: Pick<KnockoutResponse, 'rounds'>): EliminationRound[] {
   const rounds = Array.isArray(response?.rounds) ? [...response.rounds] : [];
 
   return rounds
