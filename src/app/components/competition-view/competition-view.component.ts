@@ -12,6 +12,7 @@ import { IPlayer } from '../../../services/players.service';
 import { EliminationBracketComponent } from '../elimination-bracket/elimination-bracket.component';
 import { GroupKnockoutComponent } from '../group-knockout/group-knockout.component';
 import { LeagueBoardComponent } from '../home/league-board/league-board.component';
+import { toKnockoutStage } from '../../utils/enum';
 
 interface KnockoutPayload {
   rounds?: EliminationRound[] | null;
@@ -307,12 +308,12 @@ export class CompetitionViewComponent {
       player2?.imageUrl ?? player2?.image_url ?? match['player2_img'] ?? null;
 
     const roundNameValue = match['roundName'] ?? match['round'] ?? null;
-    const roundName =
-      roundNameValue === null || roundNameValue === undefined
-        ? null
-        : String(roundNameValue);
-    const roundLabelValue = match['roundLabel'] ?? match['stageLabel'];
-    const roundLabel = roundLabelValue === undefined ? undefined : String(roundLabelValue);
+    const roundName = toKnockoutStage(roundNameValue);
+    const roundLabelRaw = match['roundLabel'] ?? match['stageLabel'] ?? roundName ?? undefined;
+    const roundLabel =
+      roundLabelRaw === undefined || roundLabelRaw === null
+        ? undefined
+        : String(roundLabelRaw);
 
     const winnerId = this.toOptionalNumber(match['winner_id'] ?? match['winnerId']);
     const tournamentId = this.toOptionalNumber(match['tournament_id'] ?? match['tournamentId']);

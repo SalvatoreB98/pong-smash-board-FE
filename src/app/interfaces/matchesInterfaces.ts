@@ -7,6 +7,8 @@ export interface IMatchSet {
 
 export type CompetitionMode = 'league' | 'elimination' | 'group_knockout';
 
+import { KnockoutStage } from '../utils/enum';
+
 export interface IMatch {
   date: string | number | Date;
   id: string;
@@ -29,8 +31,8 @@ export interface IMatch {
   match_sets?: IMatchSet[];
   competitionType?: CompetitionMode;
   competitionName?: string;
-  roundName?: string | null;
-  roundLabel?: string;
+  roundName?: KnockoutStage | null;
+  roundLabel?: KnockoutStage | string | null;
 }
 
 export interface IWins {
