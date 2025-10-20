@@ -365,8 +365,8 @@ export class DataService {
   async fetchGroups(options?: { force?: boolean }): Promise<GroupStageResponse> {
     const competitionId = this.userService.snapshot()?.active_competition_id ?? null;
     if (!competitionId) {
-      this.assignGroups([]);
-      return { groups: [] };
+      this.assignGroupStage({ groups: [], knockout: null });
+      return this.generateGroupsReturnObject();
     }
 
     if (!options?.force && this._groupsLoaded) {
@@ -390,26 +390,63 @@ export class DataService {
   private async _fetchAndAssignGroups(competitionId: string): Promise<GroupStageResponse> {
     try {
       const data = await firstValueFrom(
-        this.http.get<Group[]>(API_PATHS.getGroups, {
+        this.http.get<GroupStageResponse | Group[]>(API_PATHS.getGroups, {
           params: { competitionId },
         })
       );
-      this.assignGroups(data);
+      this.assignGroupStage(data);
       return this.generateGroupsReturnObject();
     } catch (error) {
       console.error('Error fetching groups:', error);
-      this.assignGroups([]);
+      this.assignGroupStage({ groups: [], knockout: null });
       return this.generateGroupsReturnObject();
     }
   }
 
-  private assignGroups(data: Group[]): void {
-    this.groups = data ?? [];
-    this.groupsSubject.next(this.groups);
+  private assignGroupStage(data: GroupStageResponse | Group[] | null | undefined): void {
+    let groups: Group[] = [];
+    let knockout: KnockoutStageData | null = null;
+
+    if (Array.isArray(data)) {
+      groups = data;
+    } else if (data) {
+      groups = data.groups ?? [];
+      knockout = data.knockout ?? null;
+    }
+
+    this.groups = groups ?? [];
+    this.knockoutStage = knockout
+      ? {
+          rounds: knockout.rounds ? [...knockout.rounds] : undefined,
+          qualifiedPlayers: knockout.qualifiedPlayers ? [...knockout.qualifiedPlayers] : undefined,
+        }
+      : null;
+
+    this.groupsSubject.next([...this.groups]);
+    this.knockoutSubject.next(
+      this.knockoutStage
+        ? {
+            rounds: this.knockoutStage.rounds ? [...this.knockoutStage.rounds] : undefined,
+            qualifiedPlayers: this.knockoutStage.qualifiedPlayers
+              ? [...this.knockoutStage.qualifiedPlayers]
+              : undefined,
+          }
+        : null
+    );
   }
 
   private generateGroupsReturnObject(): GroupStageResponse {
-    return { groups: [...this.groups] };
+    return {
+      groups: [...this.groups],
+      knockout: this.knockoutStage
+        ? {
+            rounds: this.knockoutStage.rounds ? [...this.knockoutStage.rounds] : undefined,
+            qualifiedPlayers: this.knockoutStage.qualifiedPlayers
+              ? [...this.knockoutStage.qualifiedPlayers]
+              : undefined,
+          }
+        : undefined,
+    };
   }
 
 
