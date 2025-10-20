@@ -915,86 +915,6 @@
         "it": "Giocatore rimosso con successo.",
         "en": "Player removed successfully."
     },
-    "hero_badge": {
-        "it": "La dashboard dei tornei di ping pong",
-        "en": "The ping pong tournaments dashboard"
-    },
-    "hero_title": {
-        "it": "Organizza, segui e fai crescere ogni sfida con",
-        "en": "Organize, track and grow every challenge with"
-    },
-    "hero_subtitle": {
-        "it": "Gestisci tornei di ping pong, registra incontri, aggiorna classifiche e condividi statistiche live con il tuo club.",
-        "en": "Manage ping pong tournaments, record matches, update standings and share live stats with your club."
-    },
-    "cta_start": {
-        "it": "Inizia ora",
-        "en": "Start now"
-    },
-    "cta_login": {
-        "it": "Accedi",
-        "en": "Login"
-    },
-    "cta_more": {
-        "it": "Scopri di più",
-        "en": "Learn more"
-    },
-    "hero_socialproof": {
-        "it": "Oltre 120 club hanno già digitalizzato i loro tornei con noi.",
-        "en": "Over 120 clubs have already digitized their tournaments with us."
-    },
-    "preview_header": {
-        "it": "Competizione Elite - Round Finale",
-        "en": "Elite Competition - Final Round"
-    },
-    "preview_live": {
-        "it": "Live",
-        "en": "Live"
-    },
-    "preview_team1": {
-        "it": "Team Smash",
-        "en": "Team Smash"
-    },
-    "preview_team1_rank": {
-        "it": "Ranking #1",
-        "en": "Ranking #1"
-    },
-    "preview_team2": {
-        "it": "Spin Masters",
-        "en": "Spin Masters"
-    },
-    "preview_team2_rank": {
-        "it": "Ranking #2",
-        "en": "Ranking #2"
-    },
-    "preview_progress": {
-        "it": "Set 4 - Analisi in corso",
-        "en": "Set 4 - Analysis in progress"
-    },
-    "preview_footer_auto": {
-        "it": "Aggiornamento automatico",
-        "en": "Automatic update"
-    },
-    "preview_footer_stats": {
-        "it": "Statistiche sincronizzate",
-        "en": "Synchronized statistics"
-    },
-    "preview_footer_cta": {
-        "it": "Entra nella dashboard",
-        "en": "Enter the dashboard"
-    },
-    "features_title": {
-        "it": "Il quartier generale della tua community pongistica",
-        "en": "The headquarters of your pong community"
-    },
-    "features_subtitle": {
-        "it": "Calendari automatici, tabelloni dinamici e ranking aggiornati per una gestione completa di club, leghe e tornei.",
-        "en": "Automatic schedules, dynamic brackets and up-to-date rankings for end-to-end club, league and tournament management."
-    },
-    "features_cta": {
-        "it": "Attiva subito",
-        "en": "Activate now"
-    },
     "how_title": {
         "it": "Dalla registrazione al torneo completo in 3 step",
         "en": "From registration to full tournament in 3 steps"
@@ -1158,5 +1078,121 @@
     "manage": {
         "it": "Gestisci",
         "en": "Manage"
+    },
+    "hero_badge": {
+        "it": "Piattaforma sportiva universale",
+        "en": "Universal sports platform"
+    },
+    "hero_title": {
+        "it": "Organizza, gestisci e condividi i tuoi tornei con",
+        "en": "Organize, manage and share your tournaments with"
+    },
+    "hero_subtitle": {
+        "it": "Dimentica i gruppi WhatsApp e i fogli Excel. Crea in pochi secondi tornei belli, automatici e professionali.",
+        "en": "Forget WhatsApp groups and messy spreadsheets. Create stunning, automatic, professional tournaments in seconds."
+    },
+    "cta_start": {
+        "it": "Crea il tuo torneo",
+        "en": "Create your tournament"
+    },
+    "cta_login": {
+        "it": "Accedi",
+        "en": "Log in"
+    },
+    "cta_more": {
+        "it": "Scopri di più",
+        "en": "Learn more"
+    },
+    "hero_socialproof": {
+        "it": "Più di 200 tornei gestiti senza stress",
+        "en": "Over 200 tournaments managed effortlessly"
+    },
+    "preview_header": {
+        "it": "Finale in corso",
+        "en": "Final in progress"
+    },
+    "preview_live": {
+        "it": "LIVE",
+        "en": "LIVE"
+    },
+    "preview_team1": {
+        "it": "FC Birra Moretti",
+        "en": "FC Birra Moretti"
+    },
+    "preview_team1_rank": {
+        "it": "1° in classifica",
+        "en": "1st in ranking"
+    },
+    "preview_team2": {
+        "it": "Real Spritz",
+        "en": "Real Spritz"
+    },
+    "preview_team2_rank": {
+        "it": "2° in classifica",
+        "en": "2nd in ranking"
+    },
+    "preview_progress": {
+        "it": "Torneo al 68%",
+        "en": "Tournament 68% complete"
+    },
+    "preview_footer_auto": {
+        "it": "Aggiornamento automatico",
+        "en": "Auto-updating"
+    },
+    "preview_footer_stats": {
+        "it": "Statistiche e punteggi live",
+        "en": "Live stats and scores"
+    },
+    "preview_footer_cta": {
+        "it": "Prova ora",
+        "en": "Try now"
+    },
+    "features_title": {
+        "it": "Tutto ciò che serve per un torneo perfetto",
+        "en": "Everything you need for a perfect tournament"
+    },
+    "features_subtitle": {
+        "it": "Gestione smart, statistiche automatiche, notifiche push e un design che conquista.",
+        "en": "Smart management, auto stats, push notifications and a beautiful design."
+    },
+    "features_cta": {
+        "it": "Crea il tuo torneo",
+        "en": "Create your tournament"
+    },
+    "why_title": {
+        "it": "Perché non basta più WhatsApp o Facebook",
+        "en": "Why WhatsApp and Facebook aren't enough"
+    },
+    "why_subtitle": {
+        "it": "Sport Board automatizza tutto ciò che gli altri ti fanno fare a mano. E ti fa fare un figurone.",
+        "en": "Sport Board automates everything others make you do manually — and makes you look good doing it."
+    },
+    "why_point1": {
+        "it": "Classifiche e calendari generati automaticamente",
+        "en": "Automatic rankings and schedules"
+    },
+    "why_point2": {
+        "it": "Aggiornamenti e notifiche in tempo reale",
+        "en": "Real-time updates and notifications"
+    },
+    "why_point3": {
+        "it": "Design professionale, zero confusione",
+        "en": "Professional design, zero confusion"
+    },
+    "why_mockup_caption": {
+        "it": "Più organizzato. Più bello. Più facile.",
+        "en": "More organized. More beautiful. Easier."
+    },
+    "cta_panel_title": {
+        "it": "Pronto a trasformare la tua prossima competizione?",
+        "en": "Ready to transform your next competition?"
+    },
+    "cta_panel_subtitle": {
+        "it": "Crea un account gratuito e scopri quanto è semplice gestire tornei senza stress.",
+        "en": "Create your free account and discover how easy tournament management can be."
+    },
+    "cta_panel_cta": {
+        "it": "Inizia gratis",
+        "en": "Start for free"
     }
 }
