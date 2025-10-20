@@ -21,9 +21,15 @@
       <h3>{{ (round.stage ?? round.name) | translate }}</h3>
       <div class="bracket-matches">
         <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
+          <h5>
+            {{ (match.slots && match.slots[0] && (match.slots[0].player?.name || match.slots[0].player?.nickname)) ||
+            'TBD' }}
+            <img src="/vs.svg" width="50px" height="50px" alt="">
+            {{ (match.slots && match.slots[1] && (match.slots[1].player?.name || match.slots[1].player?.nickname)) ||
+            'TBD' }}
+          </h5>
           <div class="slot" *ngFor="let slot of match.slots; let slotIndex = index"
             [class.winner]="isSlotWinner(slot, match.winnerId)">
-            <span class="seed">#{{ slot.seed }}</span>
             <img class="avatar" src="{{ slot.player?.image_url || 'default-player.jpg' }}" alt="">
             <span class="player" *ngIf="slot.player; else waiting">
               {{ slot.player.nickname || slot.player.name }}
