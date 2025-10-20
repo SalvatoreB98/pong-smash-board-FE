@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { API_PATHS } from '../api/api.config';
+import { KnockoutResponse } from '../app/interfaces/knockout.interface';
 import { IJoinCompetitionResponse, IUserState } from '../services/interfaces/Interfaces'; // adatta il path
 
 // --- Modelli ---
@@ -73,6 +74,12 @@ export class CompetitionApi {
 
   getView(id: number | string): Observable<any> {
     return this.http.get<any>(API_PATHS.getCompetitionView, {
+      params: { competitionId: String(id) },
+    });
+  }
+
+  getKnockouts(id: number | string): Observable<KnockoutResponse> {
+    return this.http.get<KnockoutResponse>(API_PATHS.getKnockouts, {
       params: { competitionId: String(id) },
     });
   }

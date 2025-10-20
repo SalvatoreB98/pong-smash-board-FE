@@ -41,7 +41,7 @@
     <ng-container *ngIf="qualifiedPlayers.length >= 2 && rounds.length > 0; else eliminationEmpty">
       <app-elimination-bracket [competition]="competition" [rounds]="rounds"
         [readonly]="readonly"
-        (playersSelected)="onRoundSelected($event)"></app-elimination-bracket>
+        (matchRoundClicked)="onRoundSelected($event)"></app-elimination-bracket>
     </ng-container>
   </section>
 </div>

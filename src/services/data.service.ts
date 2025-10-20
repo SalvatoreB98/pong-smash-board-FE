@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { MSG_TYPE } from "../app/utils/enum";
+import { KnockoutStage, MSG_TYPE, toKnockoutStage } from "../app/utils/enum";
 import mockData from '../app/utils/mock.json';
 import { environment } from '../environments/environment';
 import { CompetitionMode, IMatch } from '../app/interfaces/matchesInterfaces';
@@ -297,7 +297,7 @@ export class DataService {
     };
   }
 
-  async addMatch(data: { p1Score: number; p2Score: number; groupId?: string | null;[key: string]: any }): Promise<void> {
+  async addMatch(data: { p1Score: number; p2Score: number; groupId?: string | null;[key: string]: any }, stage: KnockoutStage | null = null): Promise<void> {
     console.log(data);
 
     if (data?.p1Score == null || data?.p2Score == null) {
@@ -317,6 +317,7 @@ export class DataService {
         this.http.post<IMatchResponse>(url, {
           ...data,
           competitionId: userState.active_competition_id,
+          stage
         })
       );
 
@@ -414,10 +415,31 @@ export class DataService {
 
 
   private normalizeMatch(raw: any): IMatch {
+    const roundName = toKnockoutStage(raw?.roundName ?? raw?.round ?? null);
+    const roundLabelSource = raw?.roundLabel ?? raw?.stageLabel ?? roundName ?? null;
+
     return {
       ...(raw as IMatch),
       setsPoints: raw?.setsPoints ?? raw?.sets_points ?? [],
       groupId: raw?.groupId ?? raw?.group_id ?? undefined,
+      roundName,
+      ...(roundLabelSource != null ? { roundLabel: roundLabelSource } : {}),
     };
+  }
+  async getKnockouts(competitionId: string | number | undefined): Promise<KnockoutStageData | null> {
+    if (!competitionId) {
+      return null;
+    }
+    try {
+      const data = await firstValueFrom(
+        this.http.get<KnockoutStageData>(API_PATHS.getKnockouts, {
+          params: { competitionId: String(competitionId) }
+        })
+      );
+      return data;
+    } catch (error) {
+      console.error('Error fetching knockout:', error);
+      return null;
+    }
   }
 }

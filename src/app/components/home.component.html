@@ -1,12 +1,12 @@
 <div class="wrapper">
   <ng-container *ngIf="userState$ | async">
     <ng-container [ngSwitch]="activeCompetition?.type">
-      <app-elimination-bracket *ngSwitchCase="'elimination'" (playersSelected)="onClickRound($event)"
+      <app-elimination-bracket *ngSwitchCase="'elimination'" (matchRoundClicked)="onClickMatchRound($event)"
         [competition]="activeCompetition" [rounds]="eliminationRounds"></app-elimination-bracket>
 
       <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition" [groups]="groups"
         [qualifiedPlayers]="competitionQualifiedPlayers" [rounds]="eliminationRounds"
-        (roundSelected)="onClickRound($event)" [matches]="matches"
+        (roundSelected)="onClickMatchRound($event)" [matches]="matches"
         (matchSelected)="setClickedMatch($event)"></app-group-knockout>
 
       <app-league-board *ngSwitchDefault [matches]="matches" [isLoading]="isLoadingMatches"
@@ -26,7 +26,7 @@
   </ng-container>
   <ng-template #standardMatchModal>
     <add-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="modalPlayers"
-      [groups]="groups" [player1]="player1Selected" [player2]="player2Selected"></add-match-modal>
+      [groups]="groups" [player1]="player1Selected" [player2]="player2Selected" [roundOfMatch]="roundTypeOfMatch"></add-match-modal>
   </ng-template>
 </app-modal>
 

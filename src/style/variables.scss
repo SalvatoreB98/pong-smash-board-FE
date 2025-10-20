@@ -15,7 +15,7 @@ $contrast: #c76360; // Rosso di contrasto, ora leggermente più saturo per risal
 $secondary: #403787; // Viola/blu scuro, un buon colore complementare al blu primario
 $light: #f2e0fe; // Giallo/Arancio, ora più vivace e specifico per elementi di rilievo
 $yellow: #f2c373e7; // Giallo chiaro per avvisi e notifiche
-$tertiary: black; // Arancione per un terzo livello di accento
+$tertiary: rgba(0, 0, 0, 0.352); // Arancione per un terzo livello di accento
 // Colori Semantici (rimasti invariati in quanto già ben definiti)
 $green: #568566;
 $orange: #ffa10b; // Ho allineato $orange a $light per coerenza, se sono intesi come lo stesso colore.

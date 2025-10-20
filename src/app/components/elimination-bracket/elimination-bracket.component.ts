@@ -6,14 +6,17 @@ import { EliminationMatchSlot, EliminationRound } from '../../interfaces/elimina
 import { ModalService } from '../../../services/modal.service';
 import { IPlayer } from '../../../services/players.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
+import { DataService } from '../../../services/data.service';
+import { mapKnockoutResponse } from '../../interfaces/knockout.interface';
+import { KnockoutStage, toKnockoutStage } from '../../utils/enum';
 
 export interface EliminationModalEvent {
   modalName: string;
   player1: IPlayer | null;
   player2: IPlayer | null;
   match?: IMatch | null;
-  roundName?: string | null;
-  roundLabel?: string;
+  roundName?: KnockoutStage | null;
+  roundLabel?: KnockoutStage | string | null;
 }
 
 @Component({
@@ -28,12 +31,23 @@ export class EliminationBracketComponent {
   @Input() rounds: EliminationRound[] = [];
   @Input() readonly = false;
   modalService = inject(ModalService);
-  @Output() playersSelected = new EventEmitter<EliminationModalEvent>();
+  dataService = inject(DataService);
+  @Output() matchRoundClicked = new EventEmitter<EliminationModalEvent>();
 
   ngOnInit() {
     console.log('EliminationBracketComponent initialized');
     console.log('Competition:', this.competition);
     console.log('Rounds:', this.rounds);
+    this.dataService.getKnockouts(this.competition?.id).then(data => {
+      console.log('Knockout data fetched:', data);
+      if (data) {
+        this.rounds = mapKnockoutResponse({
+          competitionId: this.competition?.id ?? 0,
+          ...data
+        } as any);
+      }
+    });
+
   }
 
   trackByRound(index: number, round: EliminationRound) {
@@ -47,20 +61,22 @@ export class EliminationBracketComponent {
     player1?: IPlayer | null;
     player2?: IPlayer | null;
     match?: IMatch | null;
-    roundName?: string | null;
-    roundLabel?: string;
+    roundName?: KnockoutStage | string | null;
+    roundLabel?: KnockoutStage | string | null;
   } = {}) {
     if (this.readonly) {
       return;
     }
     console.log('openModal called with:', modalName, options);
-    this.playersSelected.emit({
+    const stage = toKnockoutStage(options.roundName ?? options.roundLabel ?? null);
+    const roundLabel = options.roundLabel ?? stage ?? null;
+    this.matchRoundClicked.emit({
       modalName,
       player1: options.player1 ?? null,
       player2: options.player2 ?? null,
       match: options.match ?? null,
-      roundName: options.roundName ?? null,
-      roundLabel: options.roundLabel,
+      roundName: stage ?? undefined,
+      roundLabel: roundLabel ?? undefined,
     });
   }
 

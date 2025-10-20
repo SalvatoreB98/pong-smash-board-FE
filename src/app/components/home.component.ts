@@ -6,7 +6,7 @@ import { ModalComponent } from '../common/modal/modal.component';
 import { ShowMatchModalComponent } from './show-match-modal/show-match-modal.component';
 import { ModalService } from '../../services/modal.service';
 import { CommonModule } from '@angular/common';
-import { MODALS, MSG_TYPE } from '../utils/enum';
+import { KnockoutStage, MODALS, MSG_TYPE, toKnockoutStage } from '../utils/enum';
 import { TranslatePipe } from '../utils/translate.pipe';
 import { BottomNavbarComponent } from '../common/bottom-navbar/bottom-navbar.component';
 import { inject } from '@angular/core';
@@ -28,8 +28,8 @@ import { AddGroupMatchModalComponent } from './add-match-modal/add-group-match-m
 type MatchWithContext = IMatch & {
   competitionType?: CompetitionMode;
   competitionName?: string;
-  roundName?: string | null;
-  roundLabel?: string;
+  roundName?: KnockoutStage | null;
+  roundLabel?: KnockoutStage | string | null;
 };
 
 @Component({
@@ -64,6 +64,7 @@ export class HomeComponent {
   isLoadingMatches = true;
   player1Selected: IPlayer | null = null;
   player2Selected: IPlayer | null = null;
+  roundTypeOfMatch: KnockoutStage | null = null;
 
   constructor(public modalService: ModalService, private loaderService: LoaderService, private translateService: TranslationService, private router: Router) { }
 
@@ -121,12 +122,20 @@ export class HomeComponent {
 
   setClickedMatch(match: IMatch) {
     const competitionType = (this.activeCompetition?.type ?? 'league') as CompetitionMode;
+    const roundLabel = match.roundLabel
+      ? typeof match.roundLabel === 'string'
+        ? match.roundLabel
+        : this.translateService.translate(match.roundLabel)
+      : match.roundName
+        ? this.translateService.translate(match.roundName)
+        : undefined;
+
     this.clickedMatch = {
       ...match,
       competitionType,
       competitionName: this.activeCompetition?.name ?? undefined,
       roundName: match.roundName ?? null,
-      roundLabel: match.roundLabel ?? undefined,
+      roundLabel,
     };
   }
 
@@ -211,10 +220,11 @@ export class HomeComponent {
     return Array.from(unique.values());
   }
 
-  onClickRound(event: EliminationModalEvent) {
+  onClickMatchRound(event: EliminationModalEvent) {
     console.log(event);
     this.player1Selected = event.player1 ?? null;
     this.player2Selected = event.player2 ?? null;
+    const stage = toKnockoutStage(event.roundName ?? event.roundLabel ?? null);
 
     if (event.modalName === 'SHOW_MATCH') {
       if (!event.match) {
@@ -222,20 +232,26 @@ export class HomeComponent {
       }
 
       const roundLabel = event.roundLabel
-        ?? (event.roundName ? this.translateService.translate(event.roundName) : undefined);
+        ? typeof event.roundLabel === 'string'
+          ? event.roundLabel
+          : this.translateService.translate(event.roundLabel)
+        : stage
+          ? this.translateService.translate(stage)
+          : undefined;
 
       this.clickedMatch = {
         ...event.match,
         competitionType: 'elimination',
         competitionName: this.activeCompetition?.name ?? undefined,
-        roundName: event.roundName ?? null,
+        roundName: stage,
         roundLabel,
       };
-
+      this.roundTypeOfMatch = stage;
       this.modalService.openModal(this.modalService.MODALS['SHOW_MATCH']);
       return;
     }
 
+    this.roundTypeOfMatch = stage;
     this.modalService.openModal(this.modalService.MODALS[event.modalName]);
   }
 

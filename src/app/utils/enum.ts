@@ -69,3 +69,53 @@ export enum UserProgressStateEnum {
   PROFILE_COMPLETED = 'profile_completed',
   WITHOUT_COMPETITION = 'without_competition',
 }
+
+export enum KnockoutStage {
+  ONE_SIXTEENTH_FINALS = "one_sixteenth_finals",
+  ONE_EIGHTH_FINALS = "one_eighth_finals",
+  QUARTERFINALS = "quarterfinals",
+  SEMIFINALS = "semifinals",
+  FINAL = "final"
+}
+
+export const KNOCKOUT_STAGE_FLOW: KnockoutStage[] = [
+  KnockoutStage.ONE_SIXTEENTH_FINALS,
+  KnockoutStage.ONE_EIGHTH_FINALS,
+  KnockoutStage.QUARTERFINALS,
+  KnockoutStage.SEMIFINALS,
+  KnockoutStage.FINAL,
+];
+
+export function toKnockoutStage(value: unknown): KnockoutStage | null {
+  if (value == null) {
+    return null;
+  }
+
+  const raw = String(value).trim();
+  if (!raw) {
+    return null;
+  }
+
+  const normalized = raw
+    .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+    .replace(/[\s-]+/g, '_')
+    .toLowerCase();
+
+  const byValue = (Object.values(KnockoutStage) as string[]).find(stage => stage === normalized);
+  if (byValue) {
+    return byValue as KnockoutStage;
+  }
+
+  const upper = normalized.toUpperCase();
+  const byKey = (Object.keys(KnockoutStage) as (keyof typeof KnockoutStage)[])
+    .find(key => key === upper);
+  return byKey ? KnockoutStage[byKey] : null;
+}
+
+export function knockoutStageOrder(stage: KnockoutStage | null): number {
+  if (!stage) {
+    return Number.POSITIVE_INFINITY;
+  }
+  const index = KNOCKOUT_STAGE_FLOW.indexOf(stage);
+  return index === -1 ? Number.POSITIVE_INFINITY : index + 1;
+}

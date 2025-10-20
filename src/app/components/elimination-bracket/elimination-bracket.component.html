@@ -17,8 +17,8 @@
   </header>
 
   <div class="bracket" *ngIf="rounds.length; else emptyBracket">
-    <div class="bracket-round" *ngFor="let round of rounds; trackBy: trackByRound">
-      <h3>{{ round.name | translate }}</h3>
+    <div class="bracket-round" *ngFor="let round of rounds; let i = index; trackBy: trackByRound">
+      <h3>{{ (round.stage ?? round.name) | translate }}</h3>
       <div class="bracket-matches">
         <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
           <div class="slot" *ngFor="let slot of match.slots; let slotIndex = index"
@@ -33,30 +33,34 @@
               {{ slotIndex === 0 ? match.player1Score : match.player2Score }}
             </span>
             <ng-template #waiting>
-              <span class="player waiting">{{ 'elimination_waiting_player' | translate }}</span>
+              <span class="player waiting" *ngIf="i !== 0; else add">{{ 'elimination_waiting_player' | translate
+                }}</span>
+            </ng-template>
+            <ng-template #add>
+              <button type="button" class="add-player-btn tertiary" style="width: 2em; height: 2em;" *ngIf="!readonly">
+                <i class="fa fa-plus ms-2" aria-hidden="true"></i>
+              </button>
             </ng-template>
           </div>
 
           <div class="bracket-match-actions" *ngIf="!readonly">
+            <div class="d-flex justify-content-center">
+              <button type="button" class="other ps-2 pe-2 tertiary"
+                (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: match.roundKey ?? round.stage ?? round.name, roundLabel: match.roundLabel ?? round.stage ?? round.name })">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </button>
+            </div>
             <button type="button" *ngIf="match.winnerId === null"
-              (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player })">
+              (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player, roundName: round.stage ?? round.name, roundLabel: match.roundLabel ?? round.stage ?? round.name })">
               {{ 'add_match' | translate }}
               <span class="m-1"></span>
               <i class="fa fa-file-text-o" aria-hidden="true"></i>
             </button>
             <button type="button" class="bg-secondary position-relative" *ngIf="match.winnerId === null"
               (click)="openModal('MANUAL_POINTS', { player1: match.slots[0].player, player2: match.slots[1].player })">
-              {{ 'add_manual_set_points' | translate }}
+              {{ 'live' | translate }}
               <div class="circle-live"></div>
             </button>
-            <div class="d-flex justify-content-center">
-              <button type="button" class="other ps-2 pe-2"
-                *ngIf="match.matchData"
-                (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: match.roundKey ?? round.name, roundLabel: match.roundLabel })">
-                {{ 'view_details' | translate }}
-                <i class="fa fa-info-circle ms-2" aria-hidden="true"></i>
-              </button>
-            </div>
           </div>
         </article>
       </div>
