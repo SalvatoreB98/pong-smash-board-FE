@@ -297,7 +297,7 @@ export class DataService {
     };
   }
 
-  async addMatch(data: { p1Score: number; p2Score: number; groupId?: string | null;[key: string]: any }, stage?: KnockoutStage): Promise<void> {
+  async addMatch(data: { p1Score: number; p2Score: number; groupId?: string | null;[key: string]: any }, stage: KnockoutStage | null = null): Promise<void> {
     console.log(data);
 
     if (data?.p1Score == null || data?.p2Score == null) {

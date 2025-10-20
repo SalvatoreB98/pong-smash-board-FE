@@ -8,13 +8,14 @@ import { IPlayer } from '../../../services/players.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
 import { DataService } from '../../../services/data.service';
 import { mapKnockoutResponse } from '../../interfaces/knockout.interface';
+import { KnockoutStage } from '../../utils/enum';
 
 export interface EliminationModalEvent {
   modalName: string;
   player1: IPlayer | null;
   player2: IPlayer | null;
   match?: IMatch | null;
-  roundName?: string | null;
+  roundName?: KnockoutStage
   roundLabel?: string;
 }
 
@@ -31,7 +32,7 @@ export class EliminationBracketComponent {
   @Input() readonly = false;
   modalService = inject(ModalService);
   dataService = inject(DataService);
-  @Output() roundButtonClicked = new EventEmitter<EliminationModalEvent>();
+  @Output() matchRoundClicked = new EventEmitter<EliminationModalEvent>();
 
   ngOnInit() {
     console.log('EliminationBracketComponent initialized');
@@ -60,20 +61,20 @@ export class EliminationBracketComponent {
     player1?: IPlayer | null;
     player2?: IPlayer | null;
     match?: IMatch | null;
-    roundName?: string | null;
-    roundLabel?: string;
+    roundName?: KnockoutStage | null;
+    roundLabel?: KnockoutStage;
   } = {}) {
     if (this.readonly) {
       return;
     }
     console.log('openModal called with:', modalName, options);
-    this.roundButtonClicked.emit({
+    this.matchRoundClicked.emit({
       modalName,
       player1: options.player1 ?? null,
       player2: options.player2 ?? null,
       match: options.match ?? null,
-      roundName: options.roundName ?? null,
-      roundLabel: options.roundLabel,
+      roundName: options.roundName ?? undefined,
+      roundLabel: options.roundLabel ?? undefined,
     });
   }
 

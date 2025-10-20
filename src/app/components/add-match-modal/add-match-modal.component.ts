@@ -8,7 +8,7 @@ import { ModalService } from '../../../services/modal.service';
 import { DataService } from '../../../services/data.service';
 import { SelectPlayerComponent } from '../../utils/components/select-player/select-player.component';
 import { TranslatePipe } from '../../utils/translate.pipe';
-import { MSG_TYPE } from '../../utils/enum';
+import { KnockoutStage, MSG_TYPE } from '../../utils/enum';
 import { LoaderService } from '../../../services/loader.service';
 import { TranslationService } from '../../../services/translation.service';
 import { CompetitionService } from '../../../services/competitions.service';
@@ -33,7 +33,18 @@ export class AddMatchModalComponent implements OnInit {
   @Input() player2: IPlayer | null = null;
   @Input() isAlreadySelected: boolean = false;
   @Input() groups: Group[] = [];
+  @Input() roundOfMatch: KnockoutStage | null = null;
 
+  ngOnChanges(changes: any) {
+    if (changes?.roundOfMatch) {
+      this.roundOfMatch = changes.roundOfMatch.currentValue;
+      // react to the change (e.g. update validators or reset related fields)
+      if (typeof this.updateGroupValidators === 'function') {
+        this.updateGroupValidators();
+      }
+      console.log('roundOfMatch changed:', this.roundOfMatch);
+    }
+  }
   errorsOfSets: string[] = [];
   errorsOfPoints: string[] = [];
 
@@ -44,7 +55,7 @@ export class AddMatchModalComponent implements OnInit {
   isSending = false;
   matchForm!: FormGroup;
   isShowSetsPointsTrue = false;
-
+  
   constructor(
     private fb: FormBuilder,
     private modalService: ModalService,
@@ -207,12 +218,13 @@ export class AddMatchModalComponent implements OnInit {
       p2Score: this.matchForm.value.p2Score,
       setsPoints: this.setsPoints.value,
       groupId: this.matchForm.value.groupId ?? undefined,
+      stage: this.roundOfMatch || undefined,
     };
 
     console.log('Saving match...', formData);
 
     try {
-      await this.dataService.addMatch(formData);
+      await this.dataService.addMatch(formData, this.roundOfMatch);
       this.closeModal();
     } finally {
       this.isSending = false;

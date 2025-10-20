@@ -6,7 +6,7 @@ import { ModalComponent } from '../common/modal/modal.component';
 import { ShowMatchModalComponent } from './show-match-modal/show-match-modal.component';
 import { ModalService } from '../../services/modal.service';
 import { CommonModule } from '@angular/common';
-import { MODALS, MSG_TYPE } from '../utils/enum';
+import { KnockoutStage, MODALS, MSG_TYPE } from '../utils/enum';
 import { TranslatePipe } from '../utils/translate.pipe';
 import { BottomNavbarComponent } from '../common/bottom-navbar/bottom-navbar.component';
 import { inject } from '@angular/core';
@@ -29,7 +29,7 @@ type MatchWithContext = IMatch & {
   competitionType?: CompetitionMode;
   competitionName?: string;
   roundName?: string | null;
-  roundLabel?: string;
+  roundLabel?: KnockoutStage | string | null;
 };
 
 @Component({
@@ -64,6 +64,7 @@ export class HomeComponent {
   isLoadingMatches = true;
   player1Selected: IPlayer | null = null;
   player2Selected: IPlayer | null = null;
+  roundTypeOfMatch: KnockoutStage | null = null;
 
   constructor(public modalService: ModalService, private loaderService: LoaderService, private translateService: TranslationService, private router: Router) { }
 
@@ -211,7 +212,7 @@ export class HomeComponent {
     return Array.from(unique.values());
   }
 
-  onClickRound(event: EliminationModalEvent) {
+  onClickMatchRound(event: EliminationModalEvent) {
     console.log(event);
     this.player1Selected = event.player1 ?? null;
     this.player2Selected = event.player2 ?? null;
@@ -231,7 +232,7 @@ export class HomeComponent {
         roundName: event.roundName ?? null,
         roundLabel,
       };
-
+      this.roundTypeOfMatch = KnockoutStage[event.roundName as unknown as keyof typeof KnockoutStage] || null;
       this.modalService.openModal(this.modalService.MODALS['SHOW_MATCH']);
       return;
     }
