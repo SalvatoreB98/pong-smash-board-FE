@@ -18,7 +18,7 @@
 
   <div class="bracket" *ngIf="rounds.length; else emptyBracket">
     <div class="bracket-round" *ngFor="let round of rounds; let i = index; trackBy: trackByRound">
-      <h3>{{ round.name | translate }}</h3>
+      <h3>{{ (round.stage ?? round.name) | translate }}</h3>
       <div class="bracket-matches">
         <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
           <div class="slot" *ngFor="let slot of match.slots; let slotIndex = index"
@@ -46,12 +46,12 @@
           <div class="bracket-match-actions" *ngIf="!readonly">
             <div class="d-flex justify-content-center">
               <button type="button" class="other ps-2 pe-2 tertiary"
-                (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: match.roundKey ?? round.name, roundLabel: match.roundLabel })">
+                (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: match.roundKey ?? round.stage ?? round.name, roundLabel: match.roundLabel ?? round.stage ?? round.name })">
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
               </button>
             </div>
             <button type="button" *ngIf="match.winnerId === null"
-              (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player, roundName: round.name, roundLabel: match.roundLabel })">
+              (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player, roundName: round.stage ?? round.name, roundLabel: match.roundLabel ?? round.stage ?? round.name })">
               {{ 'add_match' | translate }}
               <span class="m-1"></span>
               <i class="fa fa-file-text-o" aria-hidden="true"></i>

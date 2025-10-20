@@ -8,15 +8,15 @@ import { IPlayer } from '../../../services/players.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
 import { DataService } from '../../../services/data.service';
 import { mapKnockoutResponse } from '../../interfaces/knockout.interface';
-import { KnockoutStage } from '../../utils/enum';
+import { KnockoutStage, toKnockoutStage } from '../../utils/enum';
 
 export interface EliminationModalEvent {
   modalName: string;
   player1: IPlayer | null;
   player2: IPlayer | null;
   match?: IMatch | null;
-  roundName?: KnockoutStage
-  roundLabel?: string;
+  roundName?: KnockoutStage | null;
+  roundLabel?: KnockoutStage | string | null;
 }
 
 @Component({
@@ -61,20 +61,22 @@ export class EliminationBracketComponent {
     player1?: IPlayer | null;
     player2?: IPlayer | null;
     match?: IMatch | null;
-    roundName?: KnockoutStage | null;
-    roundLabel?: KnockoutStage;
+    roundName?: KnockoutStage | string | null;
+    roundLabel?: KnockoutStage | string | null;
   } = {}) {
     if (this.readonly) {
       return;
     }
     console.log('openModal called with:', modalName, options);
+    const stage = toKnockoutStage(options.roundName ?? options.roundLabel ?? null);
+    const roundLabel = options.roundLabel ?? stage ?? null;
     this.matchRoundClicked.emit({
       modalName,
       player1: options.player1 ?? null,
       player2: options.player2 ?? null,
       match: options.match ?? null,
-      roundName: options.roundName ?? undefined,
-      roundLabel: options.roundLabel ?? undefined,
+      roundName: stage ?? undefined,
+      roundLabel: roundLabel ?? undefined,
     });
   }
 

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { KnockoutStage, MSG_TYPE } from "../app/utils/enum";
+import { KnockoutStage, MSG_TYPE, toKnockoutStage } from "../app/utils/enum";
 import mockData from '../app/utils/mock.json';
 import { environment } from '../environments/environment';
 import { CompetitionMode, IMatch } from '../app/interfaces/matchesInterfaces';
@@ -415,10 +415,15 @@ export class DataService {
 
 
   private normalizeMatch(raw: any): IMatch {
+    const roundName = toKnockoutStage(raw?.roundName ?? raw?.round ?? null);
+    const roundLabelSource = raw?.roundLabel ?? raw?.stageLabel ?? roundName ?? null;
+
     return {
       ...(raw as IMatch),
       setsPoints: raw?.setsPoints ?? raw?.sets_points ?? [],
       groupId: raw?.groupId ?? raw?.group_id ?? undefined,
+      roundName,
+      ...(roundLabelSource != null ? { roundLabel: roundLabelSource } : {}),
     };
   }
   async getKnockouts(competitionId: string | number | undefined): Promise<KnockoutStageData | null> {

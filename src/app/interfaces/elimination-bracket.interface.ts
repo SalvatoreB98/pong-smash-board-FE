@@ -1,5 +1,6 @@
 import { IPlayer } from '../../services/players.service';
 import { IMatch } from './matchesInterfaces';
+import { KnockoutStage } from '../utils/enum';
 
 export interface EliminationMatchSlot {
   seed: number;
@@ -13,12 +14,13 @@ export interface EliminationMatch {
   player1Score?: number;
   player2Score?: number;
   matchData?: IMatch | null;
-  roundKey?: string | null;
-  roundLabel?: string;
+  roundKey?: KnockoutStage | null;
+  roundLabel?: KnockoutStage | string | null;
 }
 
 export interface EliminationRound {
   name: string;
   matches: EliminationMatch[];
   roundNumber: number;
+  stage?: KnockoutStage | null;
 }

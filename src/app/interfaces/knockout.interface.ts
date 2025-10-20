@@ -1,5 +1,6 @@
 import { EliminationMatchSlot, EliminationRound } from './elimination-bracket.interface';
 import { IPlayer } from '../../services/players.service';
+import { KnockoutStage, knockoutStageOrder, toKnockoutStage } from '../utils/enum';
 
 /* ===========================
    Interfacce API knockout
@@ -28,6 +29,8 @@ export interface KnockoutMatch {
   score?: KnockoutScore | null;
   winner?: KnockoutWinner | null;
   nextMatchId?: number | string | null;
+  stage?: KnockoutStage | string | null;
+  stageLabel?: string | null;
   [key: string]: unknown;
 }
 
@@ -77,19 +80,37 @@ export function mapKnockoutResponse(response: KnockoutResponse): EliminationRoun
 
   return rounds
     .filter((round): round is KnockoutRound => round != null)
-    .sort((a, b) => toRoundOrder(a.order, 0) - toRoundOrder(b.order, 0))
+    .sort((a, b) => {
+      const stageOrderA = knockoutStageOrder(toKnockoutStage(a.name ?? null));
+      const stageOrderB = knockoutStageOrder(toKnockoutStage(b.name ?? null));
+      if (stageOrderA !== stageOrderB) {
+        return stageOrderA - stageOrderB;
+      }
+      return toRoundOrder(a.order, 0) - toRoundOrder(b.order, 0);
+    })
     .map((round, roundIndex) => {
-      const roundOrder = toRoundOrder(round.order, roundIndex + 1);
+      const stage = toKnockoutStage(round.name);
+      const roundOrderFromStage = knockoutStageOrder(stage);
+      const roundOrder =
+        roundOrderFromStage !== Number.POSITIVE_INFINITY
+          ? roundOrderFromStage
+          : toRoundOrder(round.order, roundIndex + 1);
+      const roundLabel = stage ?? (round.name ? String(round.name) : null);
       const matches = Array.isArray(round.matches) ? round.matches : [];
 
       return {
-        name: round.name ?? `Round ${roundOrder}`,
+        name: roundLabel ?? `Round ${roundOrder}`,
         roundNumber: roundOrder,
+        stage,
         matches: matches
           .filter((match): match is KnockoutMatch => match != null)
           .map((match, matchIndex) => {
             const player1 = mapKnockoutPlayer(match.player1 ?? null);
             const player2 = mapKnockoutPlayer(match.player2 ?? null);
+
+            const matchStage = toKnockoutStage(match.stage ?? stage ?? null);
+            const resolvedStage = matchStage ?? stage ?? null;
+            const labelSource = match.stageLabel ?? roundLabel ?? resolvedStage ?? null;
 
             const slots: [EliminationMatchSlot, EliminationMatchSlot] = [
               { seed: 1, player: player1 },
@@ -105,7 +126,9 @@ export function mapKnockoutResponse(response: KnockoutResponse): EliminationRoun
               ...(player1Score != null ? { player1Score } : {}),
               ...(player2Score != null ? { player2Score } : {}),
               winnerId: match.winner?.id ?? null,
-              matchData: mapToIMatch(match),
+              roundKey: resolvedStage,
+              roundLabel: labelSource,
+              matchData: mapToIMatch(match, resolvedStage, labelSource),
             };
           }),
       };
@@ -116,7 +139,11 @@ export function mapKnockoutResponse(response: KnockoutResponse): EliminationRoun
    Mapping KnockoutMatch → IMatch
 =========================== */
 
-function mapToIMatch(match: KnockoutMatch): any {
+function mapToIMatch(
+  match: KnockoutMatch,
+  stage: KnockoutStage | null,
+  roundLabel: string | KnockoutStage | null,
+): any {
   return {
     id: match.id != null ? String(match.id) : '',
     date: '',
@@ -130,5 +157,7 @@ function mapToIMatch(match: KnockoutMatch): any {
     winner_id: match.winner?.id ? Number(match.winner.id) : null,
     group_id: null,
     next_match_id: match.nextMatchId ?? null,
+    roundName: stage ?? null,
+    roundLabel: roundLabel ?? undefined,
   };
 }
