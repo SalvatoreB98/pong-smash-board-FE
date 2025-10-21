@@ -1,8 +1,8 @@
 <div class="summary competition-modal animate-in">
   <div class="modal-heading">
     <h3>{{ competition?.name }}</h3>
-    <p class="meta-created" *ngIf="competition?.created_at">
-      {{ competition?.created_at | date: 'medium' }}
+    <p class="meta-created" *ngIf="competition?.created">
+      {{ competition?.created | date: 'medium' }}
     </p>
   </div>
 

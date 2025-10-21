@@ -21,7 +21,9 @@ import { EliminationRound } from '../interfaces/elimination-bracket.interface';
 import { ICompetition } from '../../api/competition.api';
 import { Router } from '@angular/router';
 import { GroupKnockoutComponent } from './group-knockout/group-knockout.component';
-import { Group, KnockoutStageData, mapGroupPlayerToIPlayer } from '../interfaces/group.interface';
+import { Group, GroupPlayer, KnockoutStageData, mapGroupPlayerToIPlayer } from '../interfaces/group.interface';
+import { mapKnockoutResponse } from '../interfaces/knockout.interface';
+import type { KnockoutPlayer } from '../interfaces/knockout.interface';
 import { LeagueBoardComponent } from './home/league-board/league-board.component';
 import { AddGroupMatchModalComponent } from './add-match-modal/add-group-match-modal/add-group-match-modal.component';
 
@@ -31,6 +33,7 @@ type MatchWithContext = IMatch & {
   roundName?: KnockoutStage | null;
   roundLabel?: KnockoutStage | string | null;
 };
+
 
 @Component({
   selector: 'app-home',
@@ -174,9 +177,8 @@ export class HomeComponent {
       return;
     }
 
-    const qualifiedPlayers = knockout.qualifiedPlayers ?? [];
-    this.competitionQualifiedPlayers = qualifiedPlayers.map(mapGroupPlayerToIPlayer);
-    this.eliminationRounds = knockout.rounds ?? [];
+    this.competitionQualifiedPlayers = this.mapQualifiedPlayers(knockout.qualifiedPlayers);
+    this.eliminationRounds = mapKnockoutResponse(knockout);
     this.refreshModalPlayers();
   }
 
@@ -185,6 +187,16 @@ export class HomeComponent {
     this.dataService.fetchGroups(options).catch(error => {
       console.error('Failed to load group data:', error);
     });
+    const competitionId = this.activeCompetition?.id;
+    if (competitionId != null) {
+      this.dataService.fetchKnockouts({ competitionId: Number(competitionId), force }).catch(error => {
+        console.error('Failed to load knockout data:', error);
+      });
+    } else {
+      this.dataService.fetchKnockouts().catch(error => {
+        console.error('Failed to load knockout data:', error);
+      });
+    }
   }
 
   private refreshModalPlayers() {
@@ -218,6 +230,42 @@ export class HomeComponent {
       });
     });
     return Array.from(unique.values());
+  }
+
+  private mapQualifiedPlayers(players: KnockoutStageData['qualifiedPlayers']): IPlayer[] {
+    return (players ?? [])
+      .map(player => this.mapQualifiedPlayer(player))
+      .filter((p): p is IPlayer => p != null);
+  }
+
+  private mapQualifiedPlayer(player: GroupPlayer | KnockoutPlayer | null | undefined): IPlayer | null {
+    if (!player) {
+      return null;
+    }
+
+    if (this.isGroupPlayer(player)) {
+      return mapGroupPlayerToIPlayer(player);
+    }
+
+    if ('nickname' in player) {
+      return {
+        id: Number(player.id),
+        name: player.nickname ?? '',
+        nickname: player.nickname ?? undefined,
+        image_url: (player as { imageUrl?: string | null }).imageUrl ?? undefined,
+      };
+    }
+
+    return null;
+  }
+
+  private isGroupPlayer(player: unknown): player is GroupPlayer {
+    if (!player || typeof player !== 'object') {
+      return false;
+    }
+
+    const candidate = player as Partial<GroupPlayer>;
+    return 'points' in candidate || 'wins' in candidate || 'losses' in candidate || 'matchesPlayed' in candidate;
   }
 
   onClickMatchRound(event: EliminationModalEvent) {

@@ -18,7 +18,7 @@ export interface ICompetition {
   points_type?: number; // alias per pointsType
   start_date?: string | null;
   end_date?: string | null;
-  created_at?: string;
+  created?: string;
   players?: { id: number; name: string; image_url: string, nickname: string }[];
   [k: string]: any;
   management: 'admin' | 'self';

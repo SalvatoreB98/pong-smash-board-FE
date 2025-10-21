@@ -32,6 +32,7 @@ export interface KnockoutMatch {
   stage?: KnockoutStage | string | null;
   stageLabel?: string | null;
   [key: string]: unknown;
+  created?: string | null;
 }
 
 export interface KnockoutRound {
@@ -75,7 +76,7 @@ function toRoundOrder(order: KnockoutRound['order'], fallback: number): number {
    Main mapper
 =========================== */
 
-export function mapKnockoutResponse(response: KnockoutResponse): EliminationRound[] {
+export function mapKnockoutResponse(response: Pick<KnockoutResponse, 'rounds'>): EliminationRound[] {
   const rounds = Array.isArray(response?.rounds) ? [...response.rounds] : [];
 
   return rounds
@@ -159,5 +160,6 @@ function mapToIMatch(
     next_match_id: match.nextMatchId ?? null,
     roundName: stage ?? null,
     roundLabel: roundLabel ?? undefined,
+    created: match.created ?? null,
   };
 }

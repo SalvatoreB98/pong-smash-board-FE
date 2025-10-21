@@ -1,4 +1,4 @@
-import { EliminationRound } from './elimination-bracket.interface';
+import type { KnockoutPlayer, KnockoutRound } from './knockout.interface';
 import { IPlayer } from '../../services/players.service';
 
 export interface Group {
@@ -27,8 +27,9 @@ export interface GroupStageResponse {
 }
 
 export interface KnockoutStageData {
-  rounds?: EliminationRound[];
-  qualifiedPlayers?: GroupPlayer[];
+  competitionId?: number | string | null;
+  rounds?: (KnockoutRound | null | undefined)[];
+  qualifiedPlayers?: (GroupPlayer | KnockoutPlayer | null | undefined)[];
 }
 
 export function mapGroupPlayerToIPlayer(player: GroupPlayer): IPlayer {

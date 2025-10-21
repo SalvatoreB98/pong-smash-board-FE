@@ -39,7 +39,7 @@ export interface IUserState {
   user_id: string; // UUID dell'auth user
   state: string;   // es. "profile_completed"
   active_competition_id: number | null;
-  created_at: string; // ISO 8601
+  created: string; // ISO 8601
   updated_at: string; // ISO 8601
   nickname: string;
   player_id: number;

@@ -96,19 +96,49 @@
 
 .bracket-matches {
   display: grid;
-  gap: 1rem;
 }
 
 .bracket-match {
   display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
   padding: 0.75rem;
   background: rgba(15, 23, 42, 0.35);
   border-radius: 0.75rem;
   border: 0.0625rem dashed rgba(255, 255, 255, 0.08);
+  position: relative;
+  h5 {
+    grid-column: span 2;
+    text-align: center;
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .date {
+    grid-column: 1 / -1;
+    text-align: center;
+    opacity: 0.6;
+    font-size: 0.75em;
+  }
+  .free {
+    position: absolute;
+    bottom: 0;
+    right: 0.5em;
+    width: 1em;
+    font-size: 1.2em;
+  }
+  .set {
+    all: unset;
+    cursor: pointer;
+    margin-left: 0.5em;
+    font-size: 1rem;
+  }
 }
 
 .bracket-match-actions {
+  grid-column: span 2;
   display: grid;
   gap: 0.5rem;
   display: flex;
@@ -123,24 +153,22 @@
 
 .slot {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.25rem;
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
   background: rgba(15, 23, 42, 0.25);
 
   &.winner {
-    filter: drop-shadow(0 0 40px $primary);
-    background: rgba($primary, 0.15);
     .score {
       color: $primary-light;
     }
   }
 
   .score {
-    margin-left: auto;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -153,7 +181,6 @@
 .player {
   font-size: 1rem;
   font-weight: 600;
-  text-align: right;
 
   &.waiting {
     font-style: italic;
@@ -201,6 +228,7 @@
   .player {
     text-align: left;
   }
+
   .bracket-match-actions {
     button {
       font-size: 0.75em;
