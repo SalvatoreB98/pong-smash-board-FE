@@ -1183,16 +1183,8 @@
         "it": "Più organizzato. Più bello. Più facile.",
         "en": "More organized. More beautiful. Easier."
     },
-    "cta_panel_title": {
-        "it": "Pronto a trasformare la tua prossima competizione?",
-        "en": "Ready to transform your next competition?"
-    },
-    "cta_panel_subtitle": {
-        "it": "Crea un account gratuito e scopri quanto è semplice gestire tornei senza stress.",
-        "en": "Create your free account and discover how easy tournament management can be."
-    },
-    "cta_panel_cta": {
-        "it": "Inizia gratis",
-        "en": "Start for free"
+    "set_date": {
+        "it": "Programma data della partita",
+        "en": "Schedule match date"
     }
 }
