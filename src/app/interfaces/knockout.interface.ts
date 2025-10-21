@@ -32,6 +32,7 @@ export interface KnockoutMatch {
   stage?: KnockoutStage | string | null;
   stageLabel?: string | null;
   [key: string]: unknown;
+  created?: string | null;
 }
 
 export interface KnockoutRound {
@@ -159,5 +160,6 @@ function mapToIMatch(
     next_match_id: match.nextMatchId ?? null,
     roundName: stage ?? null,
     roundLabel: roundLabel ?? undefined,
+    created: match.created ?? null,
   };
 }

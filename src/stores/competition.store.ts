@@ -16,9 +16,9 @@ function toId(c: ICompetition): string {
 }
 
 function sortIds(a: ICompetition, b: ICompetition): number {
-  // Prova a ordinare per created_at DESC se esiste, altrimenti per id DESC
-  const ca = (a as any).created_at ?? (a as any).createdAt ?? '';
-  const cb = (b as any).created_at ?? (b as any).createdAt ?? '';
+  // Prova a ordinare per created DESC se esiste, altrimenti per id DESC
+  const ca = (a as any).created ?? (a as any).createdAt ?? '';
+  const cb = (b as any).created ?? (b as any).createdAt ?? '';
   if (ca && cb) return ca > cb ? -1 : ca < cb ? 1 : 0;
   return String(b.id).localeCompare(String(a.id));
 }

@@ -16,6 +16,7 @@ export interface EliminationMatch {
   matchData?: IMatch | null;
   roundKey?: KnockoutStage | null;
   roundLabel?: KnockoutStage | string | null;
+  created?: string | null;
 }
 
 export interface EliminationRound {
