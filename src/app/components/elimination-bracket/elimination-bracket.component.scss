@@ -107,6 +107,7 @@
   border-radius: 0.75rem;
   border: 0.0625rem dashed rgba(255, 255, 255, 0.08);
   position: relative;
+
   h5 {
     grid-column: span 2;
     text-align: center;
@@ -116,12 +117,17 @@
     color: rgba(255, 255, 255, 0.8);
   }
 
-  .date {
+  .date,
+  .set-date {
     grid-column: 1 / -1;
     text-align: center;
-    opacity: 0.6;
     font-size: 0.75em;
   }
+
+  .date {
+    opacity: 0.6;
+  }
+
   .free {
     position: absolute;
     bottom: 0;
@@ -129,11 +135,13 @@
     width: 1em;
     font-size: 1.2em;
   }
+
   .set {
     all: unset;
     cursor: pointer;
     margin-left: 0.5em;
     font-size: 1rem;
+    border-radius: $border-radius;
   }
 }
 

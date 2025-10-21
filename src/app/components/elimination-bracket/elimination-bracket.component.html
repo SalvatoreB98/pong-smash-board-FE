@@ -22,16 +22,13 @@
       <div class="bracket-matches">
         <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
           <ng-container *ngIf="!readonly; else noAdmin">
-            <div class="date">
-              <ng-container *ngIf="match?.matchData?.created; else noDate">
-                <span>{{ match?.matchData?.created | date: 'd/M/yyyy' }}</span>
-              </ng-container>
-              <ng-template #noDate>
-                <span>{{ 'set_date' | translate }}</span>
-              </ng-template>
-
-              <button type="button" class="set" title="{{ 'set_date' | translate }}">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
+            <div class="date" *ngIf="match?.matchData?.created">
+              <span>{{ match?.matchData?.created | date: 'd/M/yyyy' }}</span>
+            </div>
+            <div class="set-date" *ngIf="!match?.matchData?.created">
+              <button type="button" class="set tertiary p-2" title="{{ 'set_date' | translate }}">
+              <span>{{ 'set_date' | translate }}</span>
+              <i class="fa fa-calendar-plus-o ms-2" aria-hidden="true"></i>
               </button>
             </div>
           </ng-container>
