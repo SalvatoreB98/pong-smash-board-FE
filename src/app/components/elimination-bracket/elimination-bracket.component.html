@@ -21,7 +21,26 @@
       <h3>{{ (round.stage ?? round.name) | translate }}</h3>
       <div class="bracket-matches">
         <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
-          <div class="date">{{ match?.matchData?.created | date: 'd/M/yyyy' }}</div>
+          <ng-container *ngIf="!readonly; else noAdmin">
+            <div class="date">
+              <ng-container *ngIf="match?.matchData?.created; else noDate">
+                <span>{{ match?.matchData?.created | date: 'd/M/yyyy' }}</span>
+              </ng-container>
+              <ng-template #noDate>
+                <span>{{ 'set_date' | translate }}</span>
+              </ng-template>
+
+              <button type="button" class="set" title="{{ 'set_date' | translate }}">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+            </div>
+          </ng-container>
+
+          <ng-template #noAdmin>
+            <span *ngIf="match?.matchData?.created">
+              {{ match?.matchData?.created | date: 'd/M/yyyy' }}
+            </span>
+          </ng-template>
           <div class="slot" *ngFor="let slot of match.slots; let slotIndex = index"
             [class.winner]="isSlotWinner(slot, match.winnerId)">
             <img class="avatar" src="{{ slot.player?.image_url || 'default-player.jpg' }}" alt="">
@@ -45,8 +64,7 @@
 
           <div class="bracket-match-actions" *ngIf="!readonly">
             <div class="d-flex justify-content-center">
-              <button type="button" class="other ps-2 pe-2 tertiary" 
-                [class.free]="match.winnerId !== null"
+              <button type="button" class="other ps-2 pe-2 tertiary" [class.free]="match.winnerId !== null"
                 (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: match.roundKey ?? round.stage ?? round.name, roundLabel: match.roundLabel ?? round.stage ?? round.name })">
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
               </button>

@@ -129,6 +129,12 @@
     width: 1em;
     font-size: 1.2em;
   }
+  .set {
+    all: unset;
+    cursor: pointer;
+    margin-left: 0.5em;
+    font-size: 1rem;
+  }
 }
 
 .bracket-match-actions {
