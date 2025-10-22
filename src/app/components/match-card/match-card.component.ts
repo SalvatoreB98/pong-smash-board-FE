@@ -130,8 +130,8 @@ export class MatchCardComponent {
     return !!this.schedule?.fallbackLabel || !!this.schedule?.action;
   }
 
-  getPlayer(index: number): MatchCardPlayerSlot | null {
-    return this.players?.[index] ?? null;
+  getPlayer(index: number): MatchCardPlayerSlot {
+    return this.players?.[index] ?? {};
   }
 
   getScoreValue(index: number): string | number {

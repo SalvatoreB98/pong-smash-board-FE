@@ -130,10 +130,19 @@
 
 .match-card__players {
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(2, auto);
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
+  .match-card__score {
+    grid-column: -1 / 1;
+  }
+  &.show-versus {
+    grid-template-columns: 40% 20% 40%;
+    .match-card__vs {
+      grid-column: 2;
+    }
+  }
 }
 
 .match-card__player {
@@ -185,6 +194,7 @@
   font-size: 0.85rem;
   text-transform: uppercase;
   opacity: 0.8;
+  text-align: center;
 }
 
 .match-card__footer {

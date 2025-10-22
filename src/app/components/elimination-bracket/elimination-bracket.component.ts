@@ -12,6 +12,9 @@ import { KnockoutStage, toKnockoutStage } from '../../utils/enum';
 import { Subscription } from 'rxjs';
 import { MatchCardAction, MatchCardComponent, MatchCardPlayerSlot } from '../match-card/match-card.component';
 import { TranslationService } from '../../../services/translation.service';
+import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
+import { ModalComponent } from '../../common/modal/modal.component';
+import { BracketModalComponent } from './bracket-modal/bracket-modal.component';
 
 export interface EliminationModalEvent {
   modalName: string;
@@ -25,7 +28,7 @@ export interface EliminationModalEvent {
 @Component({
   selector: 'app-elimination-bracket',
   standalone: true,
-  imports: [CommonModule, TranslatePipe, MatchCardComponent],
+  imports: [...SHARED_IMPORTS, CommonModule, TranslatePipe, MatchCardComponent, ModalComponent, BracketModalComponent],
   templateUrl: './elimination-bracket.component.html',
   styleUrl: './elimination-bracket.component.scss'
 })
@@ -54,6 +57,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
       }
 
       this.rounds = mapKnockoutResponse(knockout);
+      console.log('Updated rounds from knockout subscription:', this.rounds);
     });
 
     this.ensureKnockoutData();
@@ -89,6 +93,8 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
 
     if (matchesCompetition && !force) {
       this.rounds = mapKnockoutResponse(cached);
+      console.log('Updated rounds from knockout subscription:', this.rounds);
+
       return;
     }
 
@@ -138,7 +144,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
   getScore(match: any, slotIndex: number): number | null {
     return slotIndex === 0 ? match.player1Score ?? '' : match.player2Score ?? '';
   }
-  
+
   getRoundName(round: any, match: any): string {
     // Restituisce il nome tecnico del round (es. "semifinals", "quarterfinals", ecc.)
     return match.roundKey ?? round.stage ?? round.name ?? '';

@@ -82,11 +82,19 @@
         <span class="match-card__subheader" *ngIf="subHeaderLabel">{{ subHeaderLabel }}</span>
       </header>
 
-      <div class="match-card__players">
-        <div class="match-card__player" *ngFor="let slot of players; trackBy: trackByIndex">
-          <img class="match-card__avatar" [src]="slot.avatarUrl || defaultAvatar" alt=""
+      <div class="match-card__players" [ngClass]="{ 'show-versus': showVersus }">
+        <div *ngIf="getPlayer(0)" class="match-card__player" [class.winner]="isWinner(getPlayer(0))">
+          <img class="match-card__avatar" [src]="getPlayer(0)?.avatarUrl || defaultAvatar" alt=""
             (error)="handleImageError($event)" />
-          <span class="match-card__name">{{ resolveDisplayName(slot) }}</span>
+          <span class="match-card__name">{{ resolveDisplayName(getPlayer(0)) }}</span>
+        </div>
+
+        <span class="match-card__vs" *ngIf="!showScore && showVersus">{{ versusLabel }}</span>
+
+        <div *ngIf="getPlayer(1)" class="match-card__player" [class.winner]="isWinner(getPlayer(1))">
+          <img class="match-card__avatar" [src]="getPlayer(1)?.avatarUrl || defaultAvatar" alt=""
+            (error)="handleImageError($event)" />
+          <span class="match-card__name">{{ resolveDisplayName(getPlayer(1)) }}</span>
         </div>
 
         <div class="match-card__score" *ngIf="showScore">
@@ -98,8 +106,6 @@
             {{ getScoreValue(1) }}
           </span>
         </div>
-
-        <span class="match-card__vs" *ngIf="!showScore && showVersus">{{ versusLabel }}</span>
       </div>
 
       <footer class="match-card__footer" *ngIf="schedule || footerLabel">
