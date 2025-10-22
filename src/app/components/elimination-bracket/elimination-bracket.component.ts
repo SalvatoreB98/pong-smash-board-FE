@@ -132,4 +132,17 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
     return String(slot.player.id) === String(winnerId);
   }
 
+  getScore(match: any, slotIndex: number): number | null {
+    return slotIndex === 0 ? match.player1Score ?? '' : match.player2Score ?? '';
+  }
+  
+  getRoundName(round: any, match: any): string {
+    // Restituisce il nome tecnico del round (es. "semifinals", "quarterfinals", ecc.)
+    return match.roundKey ?? round.stage ?? round.name ?? '';
+  }
+
+  getRoundLabel(round: any, match: any): string {
+    // Restituisce l’etichetta visibile del round (può coincidere col nome)
+    return match.roundLabel ?? round.stage ?? round.name ?? '';
+  }
 }

@@ -162,6 +162,7 @@
 .slot {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 0.25rem;
   padding: 0.5rem 0.75rem;
@@ -189,6 +190,7 @@
 .player {
   font-size: 1rem;
   font-weight: 600;
+  text-align: center;
 
   &.waiting {
     font-style: italic;
@@ -231,10 +233,6 @@
 
   .meta {
     justify-content: space-between;
-  }
-
-  .player {
-    text-align: left;
   }
 
   .bracket-match-actions {

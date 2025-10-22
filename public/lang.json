@@ -1186,5 +1186,9 @@
     "set_date": {
         "it": "Programma data",
         "en": "Schedule match"
+    },
+    "date_to_be_determined": {
+        "it": "Data da definire",
+        "en": "Date to be determined"
     }
 }
