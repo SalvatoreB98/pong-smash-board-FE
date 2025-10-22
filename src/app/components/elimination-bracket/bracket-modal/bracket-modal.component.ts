@@ -16,7 +16,22 @@ import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
   styleUrl: './bracket-modal.component.scss',
 })
 export class BracketModalComponent implements AfterViewInit {
-  @Input() rounds: any[] = [];
+  private _rounds: any[] = [];
+
+  @Input()
+  set rounds(value: any[]) {
+    this.updateLine();
+    this._rounds = value ?? [];
+    const firstRound = this._rounds[0];
+    if (firstRound?.matches?.length) {
+      this.totalRows = firstRound.matches.length * 2 - 1;
+    } else {
+      this.totalRows = 1;
+    }
+  }
+  get rounds(): any[] {
+    return this._rounds;
+  }
   @Input() competitionName: string = '';
   @ViewChild('bracketGrid') bracketGrid!: ElementRef<HTMLDivElement>;
   @ViewChild('bracketScale') bracketScale!: ElementRef<HTMLDivElement>;
@@ -51,12 +66,7 @@ export class BracketModalComponent implements AfterViewInit {
     this.centerGrid();
     this.updateLine();
   }
-  
-  ngAfterViewChecked() {
-    if (this.rounds?.length) {
-      this.updateLine();
-    }
-  }
+
   getGridRow(colIndex: number, matchIndex: number): number {
     const spacing = Math.pow(2, colIndex);
     return matchIndex * spacing * 2 + spacing;
