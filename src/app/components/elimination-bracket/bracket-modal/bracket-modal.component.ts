@@ -51,7 +51,12 @@ export class BracketModalComponent implements AfterViewInit {
     this.centerGrid();
     this.updateLine();
   }
-
+  
+  ngAfterViewChecked() {
+    if (this.rounds?.length) {
+      this.updateLine();
+    }
+  }
   getGridRow(colIndex: number, matchIndex: number): number {
     const spacing = Math.pow(2, colIndex);
     return matchIndex * spacing * 2 + spacing;
@@ -187,38 +192,37 @@ export class BracketModalComponent implements AfterViewInit {
 
       // if there is no previous column, fallback to parent's height
       if (colStart <= 1) {
-      ver.style.height = `${parentRect.height}px`;
-      return;
+        ver.style.height = `${parentRect.height}px`;
+        return;
       }
 
       // gather .ver elements from the previous column and compute their centers
       const prevVers = allMatches
-      .filter((m) => {
-        const cs = parseInt(getComputedStyle(m).getPropertyValue('grid-column-start')) || 0;
-        return cs === colStart - 1;
-      })
-      .map((m) => m.querySelector('.ver') as HTMLElement)
-      .filter(Boolean)
-      .map((v) => {
-        const r = v.getBoundingClientRect();
-        return { el: v, top: r.top, center: r.top + r.height / 2, rect: r };
-      })
-      .sort((a, b) => a.center - b.center);
+        .filter((m) => {
+          const cs = parseInt(getComputedStyle(m).getPropertyValue('grid-column-start')) || 0;
+          return cs === colStart - 1;
+        })
+        .map((m) => m.querySelector('.ver') as HTMLElement)
+        .filter(Boolean)
+        .map((v) => {
+          const r = v.getBoundingClientRect();
+          return { el: v, top: r.top, center: r.top + r.height / 2, rect: r };
+        })
+        .sort((a, b) => a.center - b.center);
 
       // find the nearest previous .ver above and below the current match center
       let above: { center: number } | null = null;
       let below: { center: number } | null = null;
       for (const item of prevVers) {
-      if (item.center < parentCenterY) above = item;
-      else if (item.center >= parentCenterY && !below) below = item;
+        if (item.center < parentCenterY) above = item;
+        else if (item.center >= parentCenterY && !below) below = item;
       }
 
       if (above && below) {
-      const distance = Math.max(0, below.center - above.center);
-      ver.style.height = `${distance}px`;
+        const distance = Math.max(0, below.center - above.center);
+        ver.style.height = `${distance}px`;
       } else {
-      // fallback: use parent height if we cannot determine two connectors
-      ver.style.height = `${parentRect.height}px`;
+        // fallback: use parent height if we cannot determine two connectors
       }
     });
   }
