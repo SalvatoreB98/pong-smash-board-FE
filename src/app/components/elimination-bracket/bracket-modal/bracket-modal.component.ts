@@ -49,6 +49,7 @@ export class BracketModalComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.centerGrid();
+    this.updateLine();
   }
 
   getGridRow(colIndex: number, matchIndex: number): number {
@@ -171,5 +172,54 @@ export class BracketModalComponent implements AfterViewInit {
     this.offsetX = (cWidth - gWidth) / 2;
     this.offsetY = (cHeight - gHeight) / 2;
     this.applyTransform();
+  }
+  updateLine() {
+    const allMatches = Array.from(document.querySelectorAll('.match')) as HTMLElement[];
+    document.querySelectorAll('.ver').forEach((verEl) => {
+      const ver = verEl as HTMLElement;
+      const parent = ver.parentElement as HTMLElement;
+      if (!parent) return;
+
+      const parentStyle = getComputedStyle(parent);
+      const colStart = parseInt(parentStyle.getPropertyValue('grid-column-start')) || 0;
+      const parentRect = parent.getBoundingClientRect();
+      const parentCenterY = parentRect.top + parentRect.height / 2;
+
+      // if there is no previous column, fallback to parent's height
+      if (colStart <= 1) {
+      ver.style.height = `${parentRect.height}px`;
+      return;
+      }
+
+      // gather .ver elements from the previous column and compute their centers
+      const prevVers = allMatches
+      .filter((m) => {
+        const cs = parseInt(getComputedStyle(m).getPropertyValue('grid-column-start')) || 0;
+        return cs === colStart - 1;
+      })
+      .map((m) => m.querySelector('.ver') as HTMLElement)
+      .filter(Boolean)
+      .map((v) => {
+        const r = v.getBoundingClientRect();
+        return { el: v, top: r.top, center: r.top + r.height / 2, rect: r };
+      })
+      .sort((a, b) => a.center - b.center);
+
+      // find the nearest previous .ver above and below the current match center
+      let above: { center: number } | null = null;
+      let below: { center: number } | null = null;
+      for (const item of prevVers) {
+      if (item.center < parentCenterY) above = item;
+      else if (item.center >= parentCenterY && !below) below = item;
+      }
+
+      if (above && below) {
+      const distance = Math.max(0, below.center - above.center);
+      ver.style.height = `${distance}px`;
+      } else {
+      // fallback: use parent height if we cannot determine two connectors
+      ver.style.height = `${parentRect.height}px`;
+      }
+    });
   }
 }

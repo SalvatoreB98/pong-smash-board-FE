@@ -2,20 +2,31 @@
     (mouseleave)="onDragEnd()" (mousemove)="onDragMove($event)" (wheel)="onWheel($event)"
     (touchstart)="onDragStart($event)" (touchmove)="onDragMove($event)" (touchend)="onDragEnd()">
 
+    <!-- ZOOM CONTROLS -->
     <div class="bracket-controls">
         <button (click)="zoomOut()">−</button>
         <span>{{ zoomLevel | number: '1.0-1' }}x</span>
         <button (click)="zoomIn()">+</button>
     </div>
+
+    <!-- TITLE -->
     <h2 class="text-center" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%);">
         {{ competitionName }}
     </h2>
+
+    <!-- GRID WRAPPER -->
     <div class="bracket-grid-wrapper">
+
+        <!-- 🔸 CONTENITORE PER LE LINEE (aggiunto) -->
+        <div class="bracket-lines" #bracketLines></div>
+
         <div class="bracket-scale" #bracketScale>
             <div class="bracket-grid" #bracketGrid>
+
                 <ng-container *ngFor="let round of rounds; let col = index">
                     <ng-container *ngFor="let match of round.matches; let i = index">
                         <div class="match" [style.gridColumn]="col + 1" [style.gridRow]="getGridRow(col, i)">
+                            <span *ngIf="col > 0" class="hor"></span>
                             <div class="player">
                                 <img [src]="match.slots[0]?.player?.image_url || 'default-player.jpg'" alt="" />
                                 <span>{{ match.slots[0]?.player?.nickname || 'TBD' }}</span>
@@ -27,9 +38,16 @@
                                 <span>{{ match.slots[1]?.player?.nickname || 'TBD' }}</span>
                                 <strong *ngIf="match.player2Score !== null">{{ match.player2Score }}</strong>
                             </div>
+                            <span *ngIf="col > 0" class="ver">
+                                <div class="container-hor">
+                                    <div class="hor-2"></div>
+                                    <div class="hor-3"></div>
+                                </div>
+                            </span>
                         </div>
                     </ng-container>
                 </ng-container>
+
             </div>
         </div>
     </div>
