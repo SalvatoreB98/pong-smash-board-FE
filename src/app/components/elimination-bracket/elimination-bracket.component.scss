@@ -122,7 +122,10 @@
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
 }
-
+.elimination-back-button {
+  max-width: 300px;
+  margin-left: auto;
+}
 
 @media screen and (max-width: 48rem) {
   .elimination-header {
