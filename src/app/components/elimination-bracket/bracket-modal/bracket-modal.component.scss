@@ -17,7 +17,7 @@
 
 .bracket-controls {
   position: absolute;
-  top: 1em;
+  bottom: 3em;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -26,7 +26,6 @@
   gap: 0.25rem;
 
   button {
-    background: #2e68ff;
     color: white;
     border: none;
     cursor: pointer;
@@ -36,7 +35,7 @@
     border-radius: 0.25rem;
 
     &:hover {
-      background: lighten(#2e68ff, 5%);
+      background-color: black;
     }
   }
 }
