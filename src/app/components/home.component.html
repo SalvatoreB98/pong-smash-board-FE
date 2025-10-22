@@ -1,22 +1,21 @@
-<div class="wrapper">
-  <ng-container *ngIf="userState$ | async">
-    <ng-container [ngSwitch]="activeCompetition?.type">
-      <app-elimination-bracket *ngSwitchCase="'elimination'" (matchRoundClicked)="onClickMatchRound($event)"
-        [competition]="activeCompetition" [rounds]="eliminationRounds"></app-elimination-bracket>
+<ng-container *ngIf="userState$ | async">
+  <ng-container [ngSwitch]="activeCompetition?.type">
+    <app-elimination-bracket *ngSwitchCase="'elimination'" (matchRoundClicked)="onClickMatchRound($event)"
+      [competition]="activeCompetition" [rounds]="eliminationRounds"></app-elimination-bracket>
 
-      <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition" [groups]="groups"
-        [qualifiedPlayers]="competitionQualifiedPlayers" [rounds]="eliminationRounds"
-        (roundSelected)="onClickMatchRound($event)" [matches]="matches"
-        (matchSelected)="setClickedMatch($event)"></app-group-knockout>
+    <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition" [groups]="groups"
+      [qualifiedPlayers]="competitionQualifiedPlayers" [rounds]="eliminationRounds"
+      (roundSelected)="onClickMatchRound($event)" [matches]="matches"
+      (matchSelected)="setClickedMatch($event)"></app-group-knockout>
 
-      <app-league-board *ngSwitchDefault [matches]="matches" [isLoading]="isLoadingMatches"
-        (matchSelected)="setClickedMatch($event)">
-      </app-league-board>
-    </ng-container>
-
-    <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
+    <app-league-board *ngSwitchDefault [matches]="matches" [isLoading]="isLoadingMatches"
+      (matchSelected)="setClickedMatch($event)">
+    </app-league-board>
   </ng-container>
-</div>
+
+  <app-bottom-navbar class="bottom-navbar"></app-bottom-navbar>
+</ng-container>
+
 
 <app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])"
   [modalName]="modalService.MODALS['ADD_MATCH']">
@@ -26,7 +25,8 @@
   </ng-container>
   <ng-template #standardMatchModal>
     <add-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected" [players]="modalPlayers"
-      [groups]="groups" [player1]="player1Selected" [player2]="player2Selected" [roundOfMatch]="roundTypeOfMatch"></add-match-modal>
+      [groups]="groups" [player1]="player1Selected" [player2]="player2Selected"
+      [roundOfMatch]="roundTypeOfMatch"></add-match-modal>
   </ng-template>
 </app-modal>
 

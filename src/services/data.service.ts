@@ -122,11 +122,16 @@ export class DataService {
   private _loadingPromise?: Promise<IMatchResponse>; // dedup calls
   private _groupsLoadingPromise?: Promise<GroupStageResponse>;
   private _id = Math.random().toString(36).slice(2);
-  private _activeCompetitionId: number | null = null;
+  private _activeCompetitionId: number | string | null = null;
   private _groupsLoaded = false;
   private _knockoutLoaded = false;
   private _knockoutLoadingPromise?: Promise<KnockoutStageData | null>;
   private _knockoutCompetitionId: number | null = null;
+  // Request tokens help ignore stale HTTP responses when the active competition changes mid-flight.
+  private _matchesRequestToken: symbol | null = null;
+  private _groupsRequestToken: symbol | null = null;
+  private _nextMatchesRequestToken: symbol | null = null;
+  private _knockoutRequestToken: symbol | null = null;
 
   private userService = inject(UserService);
   private rankingService = inject(RankingService);
@@ -153,13 +158,18 @@ export class DataService {
    * options.ttlMs => time-to-live: se i dati sono più "giovani" di ttlMs, usa cache
    */
   async fetchMatches(
-    options?: { force?: boolean; ttlMs?: number }
+    options?: { force?: boolean; ttlMs?: number; competitionId?: number | string | null }
   ): Promise<IMatchResponse> {
-    const currentCompetitionId = this.userService.snapshot()?.active_competition_id ?? null;
+    const snapshotCompetitionId = this.userService.snapshot()?.active_competition_id ?? null;
+    const providedId = options?.competitionId ?? null;
+    const currentCompetitionId = providedId ?? snapshotCompetitionId;
 
     // Se la competizione attiva è cambiata, resettiamo la cache locale
-    if (this._activeCompetitionId !== currentCompetitionId) {
-      this._activeCompetitionId = currentCompetitionId;
+    const normalizedCurrentId = currentCompetitionId != null ? String(currentCompetitionId) : null;
+    const normalizedStoredId = this._activeCompetitionId != null ? String(this._activeCompetitionId) : null;
+
+    if (normalizedStoredId !== normalizedCurrentId) {
+      this._activeCompetitionId = normalizedCurrentId;
       this._loaded = false;
       this._loadingPromise = undefined;
       this.resetData();
@@ -183,7 +193,9 @@ export class DataService {
     }
 
     // 3) Altrimenti fai il fetch “vero”
-    this._loadingPromise = this._fetchAndAssignInternal();
+    const requestToken = Symbol('matches');
+    this._matchesRequestToken = requestToken;
+    this._loadingPromise = this._fetchAndAssignInternal(normalizedCurrentId, requestToken);
     try {
       const res = await this._loadingPromise;
       this._loaded = true;
@@ -197,10 +209,13 @@ export class DataService {
   /** Forza un refresh (es. dopo addMatch) */
   async refresh(): Promise<IMatchResponse> {
     this._loaded = false;
-    return this.fetchMatches({ force: true });
+    return this.fetchMatches({
+      force: true,
+      competitionId: this._activeCompetitionId ?? this.userService.snapshot()?.active_competition_id ?? null,
+    });
   }
 
-  private async _fetchAndAssignInternal(): Promise<IMatchResponse> {
+  private async _fetchAndAssignInternal(competitionId: string | null, token: symbol): Promise<IMatchResponse> {
     try {
       if (environment.mock) {
         this.assignData(mockData);
@@ -208,10 +223,12 @@ export class DataService {
         try {
           const data = await firstValueFrom(
             this.http.get<IMatchResponse>(API_PATHS.getMatches, {
-              params: { competitionId: String(this.userService.snapshot()?.active_competition_id ?? '') }
+              params: { competitionId: competitionId ?? String(this.userService.snapshot()?.active_competition_id ?? '') }
             })
           );
-          this.assignData(data);
+          if (this._matchesRequestToken === token) {
+            this.assignData(data);
+          }
         } catch (err: any) {
           throw new Error(`Failed to fetch data: ${err?.message ?? 'Unknown error'}`);
         }
@@ -225,6 +242,10 @@ export class DataService {
       // fallback mock
       this.assignData(mockData);
       return this.generateReturnObject();
+    } finally {
+      if (this._matchesRequestToken === token) {
+        this._matchesRequestToken = null;
+      }
     }
   }
 
@@ -233,16 +254,25 @@ export class DataService {
     if (!competitionId) {
       return [];
     }
+    const requestToken = Symbol('nextMatches');
+    this._nextMatchesRequestToken = requestToken;
     try {
       const data = await firstValueFrom(
         this.http.get<INextMatchesResponse>(API_PATHS.getNextMatches, {
           params: { competitionId: String(competitionId) }
         })
       );
+      if (this._nextMatchesRequestToken !== requestToken) {
+        return this.matches;
+      }
       return data.nextMatches ?? [];
     } catch (error) {
       console.error('Error fetching next matches:', error);
       return [];
+    } finally {
+      if (this._nextMatchesRequestToken === requestToken) {
+        this._nextMatchesRequestToken = null;
+      }
     }
   }
 
@@ -404,24 +434,31 @@ export class DataService {
       return this._groupsLoadingPromise;
     }
 
-    this._groupsLoadingPromise = this._fetchAndAssignGroups(String(competitionId));
+    const requestToken = Symbol('groups');
+    this._groupsRequestToken = requestToken;
+    this._groupsLoadingPromise = this._fetchAndAssignGroups(String(competitionId), requestToken);
     try {
       const res = await this._groupsLoadingPromise;
       this._groupsLoaded = true;
       return res;
     } finally {
       this._groupsLoadingPromise = undefined;
+      if (this._groupsRequestToken === requestToken) {
+        this._groupsRequestToken = null;
+      }
     }
   }
 
-  private async _fetchAndAssignGroups(competitionId: string): Promise<GroupStageResponse> {
+  private async _fetchAndAssignGroups(competitionId: string, token: symbol): Promise<GroupStageResponse> {
     try {
       const data = await firstValueFrom(
         this.http.get<Group[]>(API_PATHS.getGroups, {
           params: { competitionId },
         })
       );
-      this.assignGroups(data);
+      if (this._groupsRequestToken === token) {
+        this.assignGroups(data);
+      }
       return this.generateGroupsReturnObject();
     } catch (error) {
       console.error('Error fetching groups:', error);
@@ -475,6 +512,9 @@ export class DataService {
       return this._knockoutLoadingPromise;
     }
 
+    const requestToken = Symbol('knockouts');
+    this._knockoutRequestToken = requestToken;
+
     const fetchPromise = (async (): Promise<KnockoutStageData | null> => {
       try {
         const response = await firstValueFrom(
@@ -486,10 +526,12 @@ export class DataService {
         const normalized = response
           ? { ...response, competitionId: response.competitionId ?? numericId }
           : null;
-        this.knockoutStage = normalized;
-        this._knockoutCompetitionId = numericId;
-        this._knockoutLoaded = true;
-        this.knockoutSubject.next(this.knockoutStage);
+        if (this._knockoutRequestToken === requestToken) {
+          this.knockoutStage = normalized;
+          this._knockoutCompetitionId = numericId;
+          this._knockoutLoaded = true;
+          this.knockoutSubject.next(this.knockoutStage);
+        }
         return this.knockoutStage;
       } catch (error) {
         console.error('Error fetching knockouts:', error);
@@ -506,6 +548,9 @@ export class DataService {
     fetchPromise.finally(() => {
       if (this._knockoutLoadingPromise === fetchPromise) {
         this._knockoutLoadingPromise = undefined;
+      }
+      if (this._knockoutRequestToken === requestToken) {
+        this._knockoutRequestToken = null;
       }
     });
     return fetchPromise;

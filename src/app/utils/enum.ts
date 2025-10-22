@@ -62,6 +62,7 @@ export const MODALS: { [key: string]: string } = {
   EDIT_COMPETITION: 'editCompetitionModal',
   VIEW_COMPETITION: 'viewCompetitionModal',
   ARE_YOU_SURE: 'areYouSureModal',
+  BRACKETS: 'brackets',
 };
 
 export enum UserProgressStateEnum {

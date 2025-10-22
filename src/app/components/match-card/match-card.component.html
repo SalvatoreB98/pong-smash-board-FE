@@ -1,0 +1,141 @@
+<!-- Shared match-card template keeps league, upcoming, and bracket views consistent after the refactor. -->
+<article
+  class="match-card"
+  [ngClass]="{
+    'match-card--clickable': clickable,
+    'match-card--bracket': variant === 'bracket',
+    'match-card--readonly': readonly && variant === 'bracket'
+  }"
+  [attr.id]="cardId ?? null"
+  (click)="onCardClick()"
+>
+  <ng-container [ngSwitch]="variant">
+    <ng-container *ngSwitchCase="'bracket'">
+      <div class="match-card__date" *ngIf="bracketDate; else bracketDatePlaceholder">
+        <span>{{ bracketDate | date: 'd/M/yyyy' }}</span>
+      </div>
+      <ng-template #bracketDatePlaceholder>
+        <div class="match-card__date" *ngIf="readonly && bracketDateFallback">
+          <span>{{ bracketDateFallback }}</span>
+        </div>
+        <div class="match-card__set-date" *ngIf="!readonly && setDateAction as action">
+          <button type="button" class="tertiary p-2" (click)="onAction(action, $event)"
+            [attr.title]="action.tooltip ?? action.label ?? ''">
+            <span>{{ action.label }}</span>
+            <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
+          </button>
+        </div>
+      </ng-template>
+
+      <div class="match-card__players" *ngIf="players?.length; else emptySlots">
+        <div class="match-card__slot" *ngFor="let slot of players; trackBy: trackByIndex"
+          [class.winner]="isWinner(slot)">
+          <img class="match-card__avatar" [src]="slot.avatarUrl || defaultAvatar" alt=""
+            (error)="handleImageError($event)" />
+
+          <ng-container [ngSwitch]="slot.state">
+            <span class="match-card__player" *ngSwitchCase="'player'">{{ resolveDisplayName(slot) }}</span>
+            <span class="match-card__player match-card__player--waiting" *ngSwitchCase="'waiting'">
+              {{ slot.waitingLabel }}
+            </span>
+            <ng-container *ngSwitchDefault>
+              <button type="button" class="match-card__add-player tertiary"
+                *ngIf="slot.action as slotAction"
+                (click)="onAction(slotAction, $event)"
+                [disabled]="slotAction.disabled"
+                [attr.title]="slotAction.tooltip ?? slotAction.label ?? ''"
+                [ngClass]="slotAction.cssClass">
+                <span class="match-card__icon" *ngIf="slotAction.icon" [innerHTML]="slotAction.icon"></span>
+                <span *ngIf="slotAction.label">{{ slotAction.label }}</span>
+              </button>
+            </ng-container>
+          </ng-container>
+
+          <span class="match-card__score" *ngIf="shouldShowScore(slot)">
+            {{ slot.score }}
+          </span>
+        </div>
+      </div>
+      <ng-template #emptySlots>
+        <div class="match-card__players">
+          <div class="match-card__slot" *ngFor="let _ of [1,2]"></div>
+        </div>
+      </ng-template>
+
+      <div class="match-card__actions" *ngIf="hasActions()">
+        <button type="button" *ngFor="let action of actions; trackBy: trackByAction"
+          (click)="onAction(action, $event)"
+          [disabled]="action.disabled"
+          [ngClass]="action.cssClass"
+          class="tertiary"
+          [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
+          [attr.title]="action.tooltip ?? action.label ?? ''">
+          <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
+          <span *ngIf="action.label">{{ action.label }}</span>
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngSwitchDefault>
+      <header class="match-card__header" *ngIf="headerLabel || subHeaderLabel">
+        <span class="match-card__meta" *ngIf="headerLabel">{{ headerLabel }}</span>
+        <span class="match-card__subheader" *ngIf="subHeaderLabel">{{ subHeaderLabel }}</span>
+      </header>
+
+      <div class="match-card__players" [ngClass]="{ 'show-versus': showVersus }">
+        <div *ngIf="getPlayer(0)" class="match-card__player" [class.winner]="isWinner(getPlayer(0))">
+          <img class="match-card__avatar" [src]="getPlayer(0)?.avatarUrl || defaultAvatar" alt=""
+            (error)="handleImageError($event)" />
+          <span class="match-card__name">{{ resolveDisplayName(getPlayer(0)) }}</span>
+        </div>
+
+        <span class="match-card__vs" *ngIf="!showScore && showVersus">{{ versusLabel }}</span>
+
+        <div *ngIf="getPlayer(1)" class="match-card__player" [class.winner]="isWinner(getPlayer(1))">
+          <img class="match-card__avatar" [src]="getPlayer(1)?.avatarUrl || defaultAvatar" alt=""
+            (error)="handleImageError($event)" />
+          <span class="match-card__name">{{ resolveDisplayName(getPlayer(1)) }}</span>
+        </div>
+
+        <div class="match-card__score" *ngIf="showScore">
+          <span class="score-value" [class.win]="isWinner(getPlayer(0))">
+            {{ getScoreValue(0) }}
+          </span>
+          <span class="score-separator">:</span>
+          <span class="score-value" [class.win]="isWinner(getPlayer(1))">
+            {{ getScoreValue(1) }}
+          </span>
+        </div>
+      </div>
+
+      <footer class="match-card__footer" *ngIf="schedule || footerLabel">
+        <span class="match-card__footer-text" *ngIf="footerLabel">{{ footerLabel }}</span>
+        <ng-container *ngIf="schedule">
+          <div class="match-card__time" *ngIf="schedule.date; else scheduleFallback">
+            <i [class]="schedule.iconClass || 'fa fa-clock-o'" aria-hidden="true"></i>
+            {{ schedule.date | date: schedule.dateFormat || 'shortDate' }}
+            <ng-container *ngIf="schedule.showTime !== false">
+              - {{ schedule.date | date: schedule.timeFormat || 'shortTime' }}
+            </ng-container>
+          </div>
+          <ng-template #scheduleFallback>
+            <div class="match-card__time match-card__time--fallback" *ngIf="scheduleHasFallback()">
+              <div class="match-card__time-label" *ngIf="schedule.fallbackLabel">
+                <i [class]="schedule.iconClass || 'fa fa-clock-o'" aria-hidden="true"></i>
+                {{ schedule.fallbackLabel }}
+              </div>
+              <div class="match-card__schedule-action" *ngIf="schedule.action as scheduleAction">
+                <button type="button" class="tertiary"
+                  [ngClass]="scheduleAction.cssClass"
+                  (click)="onAction(scheduleAction, $event)">
+                  <span>{{ scheduleAction.label }}</span>
+                  <span class="match-card__icon" *ngIf="scheduleAction.icon" [innerHTML]="scheduleAction.icon"></span>
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </footer>
+    </ng-container>
+  </ng-container>
+</article>

@@ -43,6 +43,8 @@ export class CompetitionStore {
       return (s.activeId ? s.entities[String(s.activeId)] ?? null : null)
     })
   );
+  // Expose the raw active id to coordinate async flows (e.g. navigation after setActive).
+  activeId$ = this._state$.pipe(map(s => s.activeId));
 
   // ---------- SNAPSHOTS ----------
   snapshotList(): ICompetition[] {

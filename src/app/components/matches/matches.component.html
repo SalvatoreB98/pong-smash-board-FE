@@ -4,36 +4,15 @@
   <div class="slider swiper matches__slider" #swiperEl>
     <div class="swiper-wrapper">
       <div class="swiper-slide" *ngFor="let match of getMatchesToRender(); trackBy: trackByIndex">
-        <article class="match-card" [id]="match.id" (click)="onMatchClick(match.id)">
-
-          <header class="match-card__header text-center">
-            <span class="match-card__date">
-              {{ match?.created | date: 'dd/MM/yyyy HH:mm' }}
-            </span>
-          </header>
-
-          <div class="match-card__players">
-            <div class="match-card__player">
-              <img class="match-card__avatar" [src]="match.player1_img" (error)="onImageError($event)" alt="">
-              <span class="match-card__name">{{ match.player1_name }}</span>
-            </div>
-
-            <div class="match-card__score">
-              <span class="score-value" [class.win]="match.player1_score > match.player2_score">
-                {{ match.player1_score }}
-              </span>
-              <span class="score-separator">:</span>
-              <span class="score-value" [class.win]="match.player2_score > match.player1_score">
-                {{ match.player2_score }}
-              </span>
-            </div>
-
-            <div class="match-card__player">
-              <img class="match-card__avatar" [src]="match.player2_img" (error)="onImageError($event)" alt="">
-              <span class="match-card__name">{{ match.player2_name }}</span>
-            </div>
-          </div>
-        </article>
+        <!-- Shared match-card keeps league cards aligned with bracket variant -->
+        <app-match-card
+          variant="standard"
+          [cardId]="match.id"
+          [clickable]="!readonly"
+          [headerLabel]="match?.created | date: 'dd/MM/yyyy HH:mm'"
+          [players]="mapMatchToPlayers(match)"
+          (cardClick)="onMatchClick(match.id)"
+        ></app-match-card>
       </div>
     </div>
   </div>

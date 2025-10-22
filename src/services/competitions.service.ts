@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { catchError, finalize, map, tap } from 'rxjs/operators';
+import { catchError, finalize, map, tap, filter, switchMap, take } from 'rxjs/operators';
 import { EMPTY, firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { CompetitionStore } from '../stores/competition.store';
 import { LoaderService } from '../services/loader.service';
@@ -160,6 +160,35 @@ export class CompetitionService {
         return EMPTY;
       }),
     );
+  }
+
+  // Helper used by views to run logic only after the active competition store is in sync.
+  async withActiveCompetition(
+    competitionId: number | string | null,
+    afterSet?: (competition: ICompetition | null) => void | Promise<void>,
+  ): Promise<ICompetition | null> {
+    const awaitedId = competitionId != null ? String(competitionId) : null;
+    this.user?.setActiveCompetitionId?.(competitionId);
+
+    let resolved: ICompetition | null = null;
+    try {
+      resolved = await firstValueFrom(
+        this.store.activeId$.pipe(
+          filter(id => (awaitedId === null ? id === null : id === awaitedId)),
+          take(1),
+          switchMap(() => this.activeCompetition$.pipe(take(1)))
+        )
+      ) ?? null;
+    } catch (error) {
+      console.error('[CompetitionService] withActiveCompetition wait error:', error);
+      resolved = this.snapshotActive();
+    }
+
+    if (afterSet) {
+      await afterSet(resolved ?? null);
+    }
+
+    return resolved ?? null;
   }
 
   deletePlayer(competitionId: number | string, userId: number | string): Observable<void> {

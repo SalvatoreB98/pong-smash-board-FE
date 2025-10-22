@@ -10,6 +10,11 @@ import { DataService } from '../../../services/data.service';
 import { mapKnockoutResponse } from '../../interfaces/knockout.interface';
 import { KnockoutStage, toKnockoutStage } from '../../utils/enum';
 import { Subscription } from 'rxjs';
+import { MatchCardAction, MatchCardComponent, MatchCardPlayerSlot } from '../match-card/match-card.component';
+import { TranslationService } from '../../../services/translation.service';
+import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
+import { ModalComponent } from '../../common/modal/modal.component';
+import { BracketModalComponent } from './bracket-modal/bracket-modal.component';
 
 export interface EliminationModalEvent {
   modalName: string;
@@ -23,7 +28,7 @@ export interface EliminationModalEvent {
 @Component({
   selector: 'app-elimination-bracket',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [...SHARED_IMPORTS, CommonModule, TranslatePipe, MatchCardComponent, ModalComponent, BracketModalComponent],
   templateUrl: './elimination-bracket.component.html',
   styleUrl: './elimination-bracket.component.scss'
 })
@@ -33,6 +38,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
   @Input() readonly = false;
   modalService = inject(ModalService);
   dataService = inject(DataService);
+  private translationService = inject(TranslationService);
   @Output() matchRoundClicked = new EventEmitter<EliminationModalEvent>();
   private knockoutSubscription?: Subscription;
 
@@ -51,6 +57,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
       }
 
       this.rounds = mapKnockoutResponse(knockout);
+      console.log('Updated rounds from knockout subscription:', this.rounds);
     });
 
     this.ensureKnockoutData();
@@ -86,6 +93,8 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
 
     if (matchesCompetition && !force) {
       this.rounds = mapKnockoutResponse(cached);
+      console.log('Updated rounds from knockout subscription:', this.rounds);
+
       return;
     }
 
@@ -135,7 +144,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
   getScore(match: any, slotIndex: number): number | null {
     return slotIndex === 0 ? match.player1Score ?? '' : match.player2Score ?? '';
   }
-  
+
   getRoundName(round: any, match: any): string {
     // Restituisce il nome tecnico del round (es. "semifinals", "quarterfinals", ecc.)
     return match.roundKey ?? round.stage ?? round.name ?? '';
@@ -144,5 +153,95 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
   getRoundLabel(round: any, match: any): string {
     // Restituisce l’etichetta visibile del round (può coincidere col nome)
     return match.roundLabel ?? round.stage ?? round.name ?? '';
+  }
+
+  buildBracketPlayers(match: any, roundIndex: number): MatchCardPlayerSlot[] {
+    // Repackages bracket slots so the shared card can render the admin/read-only states.
+    return (match?.slots ?? []).map((slot: EliminationMatchSlot, slotIndex: number) => {
+      if (slot?.player) {
+        return {
+          id: slot.player.id ?? null,
+          displayName: slot.player.nickname || slot.player.name || '',
+          avatarUrl: slot.player.image_url || null,
+          score: this.getScore(match, slotIndex) ?? '',
+          isWinner: this.isSlotWinner(slot, match.winnerId),
+          state: 'player',
+        } satisfies MatchCardPlayerSlot;
+      }
+
+      const waitingLabel = this.translationService.translate('elimination_waiting_player');
+      if (roundIndex === 0 && !this.readonly) {
+        return {
+          state: 'empty',
+          action: {
+            icon: '<i class="fa fa-plus" aria-hidden="true"></i>',
+            cssClass: 'tertiary',
+            handler: null,
+            ariaLabel: this.translationService.translate('add_player'),
+          },
+        } satisfies MatchCardPlayerSlot;
+      }
+
+      return {
+        state: 'waiting',
+        waitingLabel,
+      } satisfies MatchCardPlayerSlot;
+    });
+  }
+
+  buildSetDateAction(match: any): MatchCardAction | null {
+    if (this.readonly || match?.matchData?.created) {
+      return null;
+    }
+
+    return {
+      label: this.translationService.translate('set_date'),
+      icon: '<i class="fa fa-calendar-plus-o ms-2" aria-hidden="true"></i>',
+      handler: null,
+    };
+  }
+
+  buildBracketActions(match: any, round: any): MatchCardAction[] {
+    if (this.readonly) {
+      return [];
+    }
+
+    const actions: MatchCardAction[] = [];
+    actions.push({
+      icon: '<i class="fa fa-info-circle" aria-hidden="true"></i>',
+      cssClass: ['other', 'ps-2', 'pe-2', 'tertiary', match?.winnerId !== null ? 'free' : ''],
+      handler: () => this.openModal('SHOW_MATCH', {
+        match: match.matchData,
+        roundName: this.getRoundName(round, match),
+        roundLabel: this.getRoundLabel(round, match),
+      }),
+      ariaLabel: this.translationService.translate('match_details'),
+      tooltip: this.translationService.translate('match_details'),
+    });
+
+    if (match?.winnerId === null) {
+      actions.push({
+        label: this.translationService.translate('add_match'),
+        icon: '<i class="fa fa-file-text-o ms-1" aria-hidden="true"></i>',
+        handler: () => this.openModal('ADD_MATCH', {
+          player1: match.slots?.[0]?.player ?? null,
+          player2: match.slots?.[1]?.player ?? null,
+          roundName: round.stage ?? round.name,
+          roundLabel: match.roundLabel ?? round.stage ?? round.name,
+        }),
+      });
+
+      actions.push({
+        label: this.translationService.translate('live'),
+        cssClass: ['bg-secondary', 'position-relative'],
+        icon: '<div class="circle-live"></div>',
+        handler: () => this.openModal('MANUAL_POINTS', {
+          player1: match.slots?.[0]?.player ?? null,
+          player2: match.slots?.[1]?.player ?? null,
+        }),
+      });
+    }
+
+    return actions;
   }
 }

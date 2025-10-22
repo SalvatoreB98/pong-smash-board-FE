@@ -1190,5 +1190,13 @@
     "date_to_be_determined": {
         "it": "Data da definire",
         "en": "Date to be determined"
+    },
+    "view_bracket": {
+        "it": "tabellone",
+        "en": "Bracket"
+    },
+    "view_list": {
+        "it": "elenco",
+        "en": "List"
     }
 }

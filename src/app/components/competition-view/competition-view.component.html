@@ -1,40 +1,28 @@
-<div class="wrapper">
-  <ng-container *ngIf="isLoading(); else loaded">
-    <div class="loading">Caricamento in corso…</div>
+<ng-container *ngIf="isLoading(); else loaded">
+  <div class="loading">Caricamento in corso…</div>
+</ng-container>
+
+<ng-template #loaded>
+  <div class="error" *ngIf="errorMessage() as error">
+    {{ error }}
+  </div>
+
+  <ng-container *ngIf="competition() as activeCompetition; else emptyState">
+    <ng-container [ngSwitch]="activeCompetition.type">
+      <app-elimination-bracket *ngSwitchCase="'elimination'" [competition]="activeCompetition" [rounds]="rounds()"
+        [readonly]="true">
+      </app-elimination-bracket>
+
+      <app-group-knockout *ngSwitchCase="'group_knockout'" [competition]="activeCompetition" [groups]="groups()"
+        [qualifiedPlayers]="qualifiedPlayers()" [rounds]="rounds()" [matches]="matches()" [readonly]="true">
+      </app-group-knockout>
+
+      <app-league-board *ngSwitchDefault [matches]="matches()" [isLoading]="isLoadingMatches()" [readonly]="true">
+      </app-league-board>
+    </ng-container>
   </ng-container>
 
-  <ng-template #loaded>
-    <div class="error" *ngIf="errorMessage() as error">
-      {{ error }}
-    </div>
-
-    <ng-container *ngIf="competition() as activeCompetition; else emptyState">
-      <ng-container [ngSwitch]="activeCompetition.type">
-        <app-elimination-bracket *ngSwitchCase="'elimination'"
-          [competition]="activeCompetition"
-          [rounds]="rounds()"
-          [readonly]="true">
-        </app-elimination-bracket>
-
-        <app-group-knockout *ngSwitchCase="'group_knockout'"
-          [competition]="activeCompetition"
-          [groups]="groups()"
-          [qualifiedPlayers]="qualifiedPlayers()"
-          [rounds]="rounds()"
-          [matches]="matches()"
-          [readonly]="true">
-        </app-group-knockout>
-
-        <app-league-board *ngSwitchDefault
-          [matches]="matches()"
-          [isLoading]="isLoadingMatches()"
-          [readonly]="true">
-        </app-league-board>
-      </ng-container>
-    </ng-container>
-
-    <ng-template #emptyState>
-      <p class="empty-message">Competizione non trovata.</p>
-    </ng-template>
+  <ng-template #emptyState>
+    <p class="empty-message">Competizione non trovata.</p>
   </ng-template>
-</div>
+</ng-template>
