@@ -1198,5 +1198,9 @@
     "view_list": {
         "it": "elenco",
         "en": "List"
+    },
+    "bracket": {
+        "it": "Tabellone",
+        "en": "Bracket"
     }
 }
