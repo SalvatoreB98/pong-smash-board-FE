@@ -17,7 +17,7 @@
       </div>
     </header>
     <button type="button" class="elimination-back-button tertiary"
-      (click)="modalService.openModal(modalService.MODALS['BRACKETS'])">
+      (click)="modalService.openModal(modalService.MODALS['BRACKET'])">
       <span>{{ 'visualize' | translate }}</span>
       <img src="bracket.png" class="ms-2 me-2" alt="bracket icon" width="75px" />
       <span>{{ 'view_bracket' | translate }}</span>
@@ -43,8 +43,8 @@
   </section>
 </div>
 
-<app-modal [fullscreen]="true" [label]="'brackets'" *ngIf="modalService.isActiveModal(modalService.MODALS['BRACKETS'])"
-  [modalName]="modalService.MODALS['brackets']" class="manual-points-modal">
+<app-modal [fullscreen]="true" [label]="'bracket'" *ngIf="modalService.isActiveModal(modalService.MODALS['BRACKET'])"
+  [modalName]="modalService.MODALS['bracket']" class="manual-points-modal">
   <app-bracket-modal [rounds]="rounds"></app-bracket-modal>
 </app-modal>
 
