@@ -18,6 +18,7 @@ import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 export class BracketModalComponent implements AfterViewInit {
   @Input() rounds: any[] = [];
   @ViewChild('bracketGrid') bracketGrid!: ElementRef<HTMLDivElement>;
+  @ViewChild('bracketScale') bracketScale!: ElementRef<HTMLDivElement>;
   @ViewChild('bracketContainer') bracketContainer!: ElementRef<HTMLDivElement>;
 
   zoomLevel = 1;
@@ -33,6 +34,8 @@ export class BracketModalComponent implements AfterViewInit {
   private rafId: number | null = null;
   private pendingDX = 0;
   private pendingDY = 0;
+  private dragThreshold = 5;
+  private hasMoved = false;
 
   constructor(private renderer: Renderer2) { }
 
@@ -75,7 +78,10 @@ export class BracketModalComponent implements AfterViewInit {
     if (target.closest('button')) return;
 
     this.isDragging = true;
-    this.bracketGrid.nativeElement.style.transition = 'none'; // disattiva easing
+    this.hasMoved = false;
+
+    this.pendingDX = 0;
+    this.pendingDY = 0; // ✅ reset totale
 
     const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
     const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
@@ -90,21 +96,31 @@ export class BracketModalComponent implements AfterViewInit {
     if (!this.rafId) this.startAnimationLoop();
   }
 
-  /** --- DRAG MOVE --- */
+
   onDragMove(event: MouseEvent | TouchEvent) {
     if (!this.isDragging) return;
 
     const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
     const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
 
-    this.pendingDX = clientX - this.dragStartX;
-    this.pendingDY = clientY - this.dragStartY;
+    const dx = clientX - this.dragStartX;
+    const dy = clientY - this.dragStartY;
+
+    if (!this.hasMoved && Math.hypot(dx, dy) < this.dragThreshold) return;
+    this.hasMoved = true;
+
+    this.pendingDX = dx;
+    this.pendingDY = dy;
   }
 
-  /** --- DRAG END --- */
   onDragEnd() {
+    if (!this.hasMoved) {
+      this.pendingDX = 0;
+      this.pendingDY = 0;
+    }
+
     this.isDragging = false;
-    this.bracketGrid.nativeElement.style.transition = 'transform 0.25s ease-out'; // riattiva easing
+    this.bracketGrid.nativeElement.style.transition = 'transform 0.25s ease-out';
     this.renderer.removeClass(this.bracketContainer.nativeElement, 'dragging');
 
     cancelAnimationFrame(this.rafId!);
@@ -117,9 +133,13 @@ export class BracketModalComponent implements AfterViewInit {
 
     const loop = () => {
       if (this.isDragging) {
-        this.offsetX = this.lastOffsetX + this.pendingDX;
-        this.offsetY = this.lastOffsetY + this.pendingDY;
-        grid.style.transform = `translate3d(${this.offsetX}px, ${this.offsetY}px, 0) scale(${this.zoomLevel})`;
+        // Evita di aggiornare se non c’è stato vero movimento
+        if (this.hasMoved) {
+          this.offsetX = this.lastOffsetX + this.pendingDX;
+          this.offsetY = this.lastOffsetY + this.pendingDY;
+          grid.style.transform = `translate3d(${this.offsetX}px, ${this.offsetY}px, 0)`;
+        }
+
         this.rafId = requestAnimationFrame(loop);
       }
     };
@@ -128,9 +148,14 @@ export class BracketModalComponent implements AfterViewInit {
   }
 
   applyTransform() {
+    // 🔹 Muove solo la griglia
     const grid = this.bracketGrid.nativeElement;
-    grid.style.transform = `translate3d(${this.offsetX}px, ${this.offsetY}px, 0) scale(${this.zoomLevel})`;
-    grid.style.transformOrigin = 'center center';
+    grid.style.transform = `translate3d(${this.offsetX}px, ${this.offsetY}px, 0)`;
+
+    // 🔹 Scala solo il wrapper
+    const scaleLayer = this.bracketScale.nativeElement;
+    scaleLayer.style.transform = `scale(${this.zoomLevel})`;
+    scaleLayer.style.transformOrigin = 'center center';
   }
 
   centerGrid() {
