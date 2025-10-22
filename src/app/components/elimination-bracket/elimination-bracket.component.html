@@ -21,6 +21,15 @@
       <span>{{ 'visualize' | translate }}</span>
       <img src="bracket.png" class="ms-2 me-2" alt="bracket icon" width="75px" />
       <span>{{ 'view_bracket' | translate }}</span>
+      <span class="ms-2" *ngIf="!rounds.length">
+        <svg width="16" height="16" viewBox="0 0 50 50">
+          <circle cx="25" cy="25" r="20" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"
+            stroke-dasharray="31.415, 31.415" transform="rotate(72 25 25)">
+            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s"
+              repeatCount="indefinite" />
+          </circle>
+        </svg>
+      </span>
     </button>
     <div class="bracket" *ngIf="rounds.length; else emptyBracket">
       <div class="bracket-round" *ngFor="let round of rounds; let i = index; trackBy: trackByRound">
