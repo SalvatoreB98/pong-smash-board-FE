@@ -17,6 +17,7 @@ import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 })
 export class BracketModalComponent implements AfterViewInit {
   @Input() rounds: any[] = [];
+  @Input() competitionName: string = '';
   @ViewChild('bracketGrid') bracketGrid!: ElementRef<HTMLDivElement>;
   @ViewChild('bracketScale') bracketScale!: ElementRef<HTMLDivElement>;
   @ViewChild('bracketContainer') bracketContainer!: ElementRef<HTMLDivElement>;

@@ -45,7 +45,7 @@
 
 <app-modal [fullscreen]="true" [label]="'bracket'" *ngIf="modalService.isActiveModal(modalService.MODALS['BRACKET'])"
   [modalName]="modalService.MODALS['bracket']" class="manual-points-modal">
-  <app-bracket-modal [rounds]="rounds"></app-bracket-modal>
+  <app-bracket-modal [rounds]="rounds" [competitionName]="competition?.name ?? ''"></app-bracket-modal>
 </app-modal>
 
 <ng-template #emptyBracket>

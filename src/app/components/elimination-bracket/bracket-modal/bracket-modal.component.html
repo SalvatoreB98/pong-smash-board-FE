@@ -7,7 +7,9 @@
         <span>{{ zoomLevel | number: '1.0-1' }}x</span>
         <button (click)="zoomIn()">+</button>
     </div>
-
+    <h2 class="text-center" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%);">
+        {{ competitionName }}
+    </h2>
     <div class="bracket-grid-wrapper">
         <div class="bracket-scale" #bracketScale>
             <div class="bracket-grid" #bracketGrid>
