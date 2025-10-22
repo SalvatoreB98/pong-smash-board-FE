@@ -87,7 +87,7 @@
     .bracket-matches {
       display: flex;
 
-      .bracket-match {
+      app-match-card {
         flex-grow: 1;
       }
     }
@@ -96,107 +96,6 @@
 
 .bracket-matches {
   display: grid;
-}
-
-.bracket-match {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  background: rgba(15, 23, 42, 0.35);
-  border-radius: 0.75rem;
-  border: 0.0625rem dashed rgba(255, 255, 255, 0.08);
-  position: relative;
-
-  h5 {
-    grid-column: span 2;
-    text-align: center;
-    margin: 0 0 0.5rem 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .date,
-  .set-date {
-    grid-column: 1 / -1;
-    text-align: center;
-    font-size: 0.75em;
-  }
-
-  .date {
-    opacity: 0.6;
-  }
-
-  .free {
-    position: absolute;
-    bottom: 0;
-    right: 0.5em;
-    width: 1em;
-    font-size: 1.2em;
-  }
-
-  .set {
-    all: unset;
-    cursor: pointer;
-    margin-left: 0.5em;
-    font-size: 1rem;
-    border-radius: $border-radius;
-  }
-}
-
-.bracket-match-actions {
-  grid-column: span 2;
-  display: grid;
-  gap: 0.5rem;
-  display: flex;
-  flex-direction: row-reverse;
-
-  button {
-    min-height: 2.75rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-}
-
-.slot {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  background: rgba(15, 23, 42, 0.25);
-
-  &.winner {
-    .score {
-      color: $primary-light;
-    }
-  }
-
-  .score {
-    font-weight: 700;
-    font-size: 1.5rem;
-  }
-}
-
-.seed {
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.player {
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-
-  &.waiting {
-    font-style: italic;
-    font-weight: 400;
-    opacity: 0.65;
-  }
 }
 
 .elimination-footer {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { CompetitionMode, IMatch } from '../interfaces/matchesInterfaces';
 import { DataService } from '../../services/data.service';
 import { AddMatchModalComponent } from './add-match-modal/add-match-modal.component';
@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { KnockoutStage, MODALS, MSG_TYPE, toKnockoutStage } from '../utils/enum';
 import { TranslatePipe } from '../utils/translate.pipe';
 import { BottomNavbarComponent } from '../common/bottom-navbar/bottom-navbar.component';
-import { inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { CompetitionService } from '../../services/competitions.service';
 import { IPlayer, PlayersService } from '../../services/players.service';
@@ -26,6 +25,8 @@ import { mapKnockoutResponse } from '../interfaces/knockout.interface';
 import type { KnockoutPlayer } from '../interfaces/knockout.interface';
 import { LeagueBoardComponent } from './home/league-board/league-board.component';
 import { AddGroupMatchModalComponent } from './add-match-modal/add-group-match-modal/add-group-match-modal.component';
+import { combineLatest } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 type MatchWithContext = IMatch & {
   competitionType?: CompetitionMode;
@@ -68,59 +69,46 @@ export class HomeComponent {
   player1Selected: IPlayer | null = null;
   player2Selected: IPlayer | null = null;
   roundTypeOfMatch: KnockoutStage | null = null;
+  private readonly destroyRef = inject(DestroyRef);
+  // Track the last loaded competition to avoid race conditions during fast navigation.
+  private lastLoadedCompetitionId: string | null = null;
+  private hasShownNoCompetitionToast = false;
 
   constructor(public modalService: ModalService, private loaderService: LoaderService, private translateService: TranslationService, private router: Router) { }
 
   ngOnInit() {
-    this.userState$.subscribe(state => {
-      if (!state) {
-        console.error('User state is null or undefined');
-        return;
-      }
-
-      this.competitionService.activeCompetition$.subscribe(activeCompetition => {
-        if (!activeCompetition) {
-          this.loaderService.showToast(this.translateService.translate('no_active_competition'), MSG_TYPE.WARNING);
-          this.router.navigate(['/competitions']);
+    combineLatest([this.userState$, this.competitionService.activeCompetition$])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(([state, activeCompetition]) => {
+        if (!state) {
+          console.error('User state is null or undefined');
+          return;
         }
-
-        this.handleCompetitionChange(activeCompetition ?? null);
+        this.onActiveCompetitionResolved(activeCompetition ?? null);
       });
-    });
 
-    this.playersService.getPlayers().subscribe(players => {
-      this.handlePlayersUpdate(players);
-    });
+    this.playersService.getPlayers()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(players => this.handlePlayersUpdate(players));
 
-    this.matches$.subscribe(matches => {
-      this.matches = matches ?? [];
-    });
+    this.matches$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(matches => { this.matches = matches ?? []; });
 
-    this.matchesElimination$.subscribe(matches => {
-      this.matchesElimination = matches ?? [];
-    });
+    this.matchesElimination$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(matches => { this.matchesElimination = matches ?? []; });
 
-    this.groups$.subscribe(groups => {
-      this.groups = groups ?? [];
-      this.refreshModalPlayers();
-    });
-
-    this.knockout$.subscribe(knockout => {
-      this.handleKnockoutUpdate(knockout);
-    });
-
-    this.isLoadingMatches = true;
-    this.dataService.fetchMatches({ ttlMs: 5 * 60 * 1000 })
-      .then(res => {
-        this.matches = res.matches;
-        this.matchesElimination = res.matchesElimination ?? [];
-        if (this.isEliminationMode || this.isGroupKnockoutMode) {
-          this.requestKnockoutData();
-        }
-      })
-      .finally(() => {
-        this.isLoadingMatches = false;
+    this.groups$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(groups => {
+        this.groups = groups ?? [];
+        this.refreshModalPlayers();
       });
+
+    this.knockout$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(knockout => this.handleKnockoutUpdate(knockout));
   }
 
   setClickedMatch(match: IMatch) {
@@ -157,6 +145,50 @@ export class HomeComponent {
     }
 
     this.refreshModalPlayers();
+  }
+
+  private async onActiveCompetitionResolved(activeCompetition: ICompetition | null) {
+    if (!activeCompetition) {
+      if (!this.hasShownNoCompetitionToast) {
+        this.loaderService.showToast(this.translateService.translate('no_active_competition'), MSG_TYPE.WARNING);
+        this.hasShownNoCompetitionToast = true;
+      }
+      await this.router.navigate(['/competitions']);
+      return;
+    }
+
+    this.hasShownNoCompetitionToast = false;
+    const nextId = String(activeCompetition.id ?? '');
+    const hasChanged = this.lastLoadedCompetitionId !== nextId;
+    this.handleCompetitionChange(activeCompetition);
+
+    if (hasChanged || !this.matches.length) {
+      await this.loadMatchesForCompetition(activeCompetition.id, { force: hasChanged });
+      this.lastLoadedCompetitionId = nextId;
+    }
+  }
+
+  private async loadMatchesForCompetition(competitionId: number | string | null, options?: { force?: boolean }) {
+    if (competitionId == null) {
+      return;
+    }
+    this.isLoadingMatches = true;
+    try {
+      const response = await this.dataService.fetchMatches({
+        competitionId,
+        ttlMs: 5 * 60 * 1000,
+        force: options?.force,
+      });
+      this.matches = response.matches;
+      this.matchesElimination = response.matchesElimination ?? [];
+      if (this.isEliminationMode || this.isGroupKnockoutMode) {
+        this.requestKnockoutData(options?.force ?? false);
+      }
+    } catch (error) {
+      console.error('Failed to load matches for competition:', error);
+    } finally {
+      this.isLoadingMatches = false;
+    }
   }
 
   private handlePlayersUpdate(players: IPlayer[]) {

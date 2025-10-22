@@ -1,15 +1,16 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
-import Swiper from 'swiper';
 import { Navigation } from 'swiper/modules';
 import { SwiperOptions } from 'swiper/types';
 import { ModalService } from '../../../services/modal.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { BASE_SLIDER_CONFIG } from '../../config/slider.config';
+import { MatchCardComponent, MatchCardPlayerSlot } from '../match-card/match-card.component';
+import { SwiperManager } from '../../utils/helpers/swiper.manager';
 
 @Component({
   selector: 'app-matches',
-  imports: [...SHARED_IMPORTS],
+  imports: [...SHARED_IMPORTS, MatchCardComponent],
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.scss'
 })
@@ -26,23 +27,23 @@ export class MatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
     navigation: true
   };
   @ViewChild('swiperEl') swiperEl?: ElementRef<HTMLElement>;
-  swiperInstance?: Swiper;
+  // Shared Swiper manager keeps slider lifecycle logic consistent after refactor.
+  private swiperManager = new SwiperManager(() => this.swiperEl?.nativeElement ?? null, this.swiperConfig);
 
   constructor(public modalService: ModalService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['matches']) {
-      this.queueSwiperUpdate();
+      this.swiperManager.queueUpdate();
     }
   }
 
   ngAfterViewInit(): void {
-    this.initSwiper();
+    this.swiperManager.init();
   }
 
   ngOnDestroy(): void {
-    this.swiperInstance?.destroy(true, true);
-    this.swiperInstance = undefined;
+    this.swiperManager.destroy();
   }
 
   onMatchClick(matchId: string): void {
@@ -59,10 +60,6 @@ export class MatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
       //show error message
     }
   }
-
-  onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = '/default-player.jpg';
-  }
   trackByIndex(index: number, item: any) {
     return index;
   }
@@ -75,22 +72,23 @@ export class MatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
     return matches.slice(0, this.maxMatchesToShow);
   }
 
-  private initSwiper(): void {
-    if (this.swiperInstance || !this.swiperEl) {
-      return;
-    }
-
-    this.swiperInstance = new Swiper(this.swiperEl.nativeElement, this.swiperConfig);
-    this.queueSwiperUpdate();
-  }
-
-  private queueSwiperUpdate(): void {
-    queueMicrotask(() => {
-      if (!this.swiperInstance) {
-        this.initSwiper();
-      } else {
-        this.swiperInstance.update();
-      }
-    });
+  mapMatchToPlayers(match: IMatch): MatchCardPlayerSlot[] {
+    // Normalizes the match result so the shared match-card can render scores consistently.
+    const player1Score = Number(match.player1_score ?? 0);
+    const player2Score = Number(match.player2_score ?? 0);
+    return [
+      {
+        displayName: match.player1_name ?? '',
+        avatarUrl: match.player1_img ?? null,
+        score: match.player1_score ?? '-',
+        isWinner: player1Score > player2Score,
+      },
+      {
+        displayName: match.player2_name ?? '',
+        avatarUrl: match.player2_img ?? null,
+        score: match.player2_score ?? '-',
+        isWinner: player2Score > player1Score,
+      },
+    ];
   }
 }

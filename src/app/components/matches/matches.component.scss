@@ -1,5 +1,7 @@
 @use '../../../style/variables.scss' as *;
 
+// Match card visuals moved to the shared match-card component to avoid duplication.
+
 .matches {
     display: flex;
     flex-direction: column;
@@ -54,89 +56,6 @@
     }
 }
 
-.match-card {
-    min-width: 12rem;
-    max-width: 15rem;
-    flex: 0 0 auto;
-    border-radius: $border-radius;
-    background: $gradient;
-    color: #fff;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    scroll-snap-align: start;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
-
-    &:hover {
-        transform: translateY(-3px);
-    }
-}
-
-.match-card__header {
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-align: center;
-    letter-spacing: 0.04em;
-    opacity: 0.85;
-
-    .match-card__date {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        font-style: italic;
-        opacity: 0.8;
-        font-size: 0.65rem;
-    }
-}
-
-.match-card__players {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-}
-
-.match-card__player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.match-card__avatar {
-    width: 3.125rem;
-    height: 3.125rem;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
-.match-card__name {
-    font-size: 0.85rem;
-    text-align: center;
-    word-break: break-word;
-}
-
-.match-card__score {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
-    font-weight: 700;
-    font-size: 1.1rem;
-
-    .score-separator {
-        opacity: 0.8;
-    }
-
-    .score-value.win {
-        color: var(--primary-light);
-    }
-}
-
 .no-matches {
     text-align: center;
     opacity: 0.7;
@@ -150,10 +69,5 @@
         .swiper-button-next {
             display: none;
         }
-    }
-
-    .match-card {
-        min-width: 11rem;
-        padding: 1rem;
     }
 }

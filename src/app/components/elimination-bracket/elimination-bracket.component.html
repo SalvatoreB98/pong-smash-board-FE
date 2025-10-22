@@ -21,92 +21,17 @@
       <h3>{{ (round.stage ?? round.name) | translate }}</h3>
 
       <div class="bracket-matches">
-        <article class="bracket-match" *ngFor="let match of round.matches; trackBy: trackByMatch">
-
-          <!-- ✅ ADMIN VIEW -->
-          <ng-container *ngIf="!readonly; else readOnlyView">
-            <div class="date" *ngIf="match?.matchData?.created">
-              <span>{{ match?.matchData?.created | date: 'd/M/yyyy' }}</span>
-            </div>
-
-            <div class="set-date" *ngIf="!match?.matchData?.created">
-              <button type="button" class="set tertiary p-2" title="{{ 'set_date' | translate }}">
-                <span>{{ 'set_date' | translate }}</span>
-                <i class="fa fa-calendar-plus-o ms-2" aria-hidden="true"></i>
-              </button>
-            </div>
-
-            <div class="slot" *ngFor="let slot of match.slots; let slotIndex = index"
-              [class.winner]="isSlotWinner(slot, match.winnerId)">
-
-              <img class="avatar" [src]="slot.player?.image_url || 'default-player.jpg'" alt="" />
-
-              <span class="player" *ngIf="slot.player; else emptySlot">
-                {{ slot.player.nickname || slot.player.name }}
-              </span>
-
-              <span class="score" *ngIf="slot.player && getScore(match, slotIndex) !== null">
-                {{ getScore(match, slotIndex) }}
-              </span>
-
-              <ng-template #emptySlot>
-                <span class="player waiting" *ngIf="i !== 0; else addPlayer">
-                  {{ 'elimination_waiting_player' | translate }}
-                </span>
-              </ng-template>
-
-              <ng-template #addPlayer>
-                <button type="button" class="add-player-btn tertiary" style="width: 2em; height: 2em;">
-                  <i class="fa fa-plus ms-2" aria-hidden="true"></i>
-                </button>
-              </ng-template>
-            </div>
-
-            <!-- Azioni match -->
-            <div class="bracket-match-actions">
-              <div class="d-flex justify-content-center">
-                <button type="button" class="other ps-2 pe-2 tertiary" [class.free]="match.winnerId !== null"
-                  (click)="openModal('SHOW_MATCH', { match: match.matchData, roundName: getRoundName(round, match), roundLabel: getRoundLabel(round, match) })">
-                  <i class="fa fa-info-circle" aria-hidden="true"></i>
-                </button>
-              </div>
-
-              <button type="button" *ngIf="match.winnerId === null"
-                (click)="openModal('ADD_MATCH', { player1: match.slots[0].player, player2: match.slots[1].player, roundName: round.stage ?? round.name, roundLabel: match.roundLabel ?? round.stage ?? round.name })">
-                {{ 'add_match' | translate }}
-                <i class="fa fa-file-text-o ms-1" aria-hidden="true"></i>
-              </button>
-
-              <button type="button" class="bg-secondary position-relative" *ngIf="match.winnerId === null"
-                (click)="openModal('MANUAL_POINTS', { player1: match.slots[0].player, player2: match.slots[1].player })">
-                {{ 'live' | translate }}
-                <div class="circle-live"></div>
-              </button>
-            </div>
-          </ng-container>
-
-          <!-- 🚫 READ-ONLY VIEW -->
-          <ng-template #readOnlyView>
-            <div class="date" *ngIf="match?.matchData?.created else dateToBeDetermined">
-              <span>{{ match?.matchData?.created | date: 'd/M/yyyy' }} </span>
-            </div>
-            <ng-template #dateToBeDetermined>
-              <div class="date">
-                <span>{{ 'date_to_be_determined' | translate }}</span>
-              </div>
-            </ng-template>
-            <div class="slot" *ngFor="let slot of match.slots" [class.winner]="isSlotWinner(slot, match.winnerId)">
-              <img class="avatar" [src]="slot.player?.image_url || 'default-player.jpg'" alt="" />
-              <span class="player">
-                {{ slot.player?.nickname || slot.player?.name || (i !== 0 ? ('elimination_waiting_player' | translate) : '') }}
-              </span>
-              <span class="score" *ngIf="slot.player">
-                {{ getScore(match, match.slots.indexOf(slot)) }}
-              </span>
-            </div>
-          </ng-template>
-
-        </article>
+        <!-- Shared match-card renders both admin and read-only bracket slots -->
+        <app-match-card *ngFor="let match of round.matches; trackBy: trackByMatch"
+          variant="bracket"
+          [cardId]="match.id"
+          [readonly]="readonly"
+          [players]="buildBracketPlayers(match, i)"
+          [bracketDate]="match?.matchData?.created"
+          [bracketDateFallback]="'date_to_be_determined' | translate"
+          [setDateAction]="buildSetDateAction(match)"
+          [actions]="buildBracketActions(match, round)"
+        ></app-match-card>
       </div>
     </div>
   </div>
