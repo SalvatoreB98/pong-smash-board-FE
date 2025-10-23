@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ModalService } from '../../../services/modal.service';
 import { TranslatePipe } from '../../utils/translate.pipe';
 
@@ -18,6 +18,7 @@ export class ModalComponent {
   @Input() fullscreen: boolean = false;
   @Input() transparent = false;
   @Output() closeModalEvent = new EventEmitter<void>();
+  @Output() fullscreenToggle = new EventEmitter<boolean>();
 
   constructor(public modalService: ModalService) { }
 
@@ -31,5 +32,6 @@ export class ModalComponent {
   }
   toggleFullscreen(): void {
     this.fullscreen = !this.fullscreen;
+    this.fullscreenToggle.emit(this.fullscreen);
   }
 }

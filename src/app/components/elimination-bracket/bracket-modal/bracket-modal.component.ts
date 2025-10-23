@@ -6,8 +6,13 @@ import {
   ElementRef,
   Renderer2,
   AfterViewInit,
+  OnDestroy,
+  Optional,
+  Host,
 } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
+import { ModalComponent } from '../../../common/modal/modal.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-bracket-modal',
@@ -15,12 +20,11 @@ import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
   templateUrl: './bracket-modal.component.html',
   styleUrl: './bracket-modal.component.scss',
 })
-export class BracketModalComponent implements AfterViewInit {
+export class BracketModalComponent implements AfterViewInit, OnDestroy {
   private _rounds: any[] = [];
 
   @Input()
   set rounds(value: any[]) {
-    this.updateLine();
     this._rounds = value ?? [];
     const firstRound = this._rounds[0];
     if (firstRound?.matches?.length) {
@@ -28,6 +32,7 @@ export class BracketModalComponent implements AfterViewInit {
     } else {
       this.totalRows = 1;
     }
+    this.scheduleLineUpdate();
   }
   get rounds(): any[] {
     return this._rounds;
@@ -53,7 +58,13 @@ export class BracketModalComponent implements AfterViewInit {
   private dragThreshold = 5;
   private hasMoved = false;
 
-  constructor(private renderer: Renderer2) { }
+  private fullscreenSub?: Subscription;
+  private updateLineTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  constructor(
+    private renderer: Renderer2,
+    @Optional() @Host() private modalComponent?: ModalComponent,
+  ) { }
 
   ngOnInit() {
     const firstRound = this.rounds[0];
@@ -64,12 +75,100 @@ export class BracketModalComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.centerGrid();
-    this.updateLine();
+    this.scheduleLineUpdate();
+
+    if (this.modalComponent) {
+      this.fullscreenSub = this.modalComponent.fullscreenToggle.subscribe(() => {
+        setTimeout(() => {
+          this.centerGrid();
+          this.scheduleLineUpdate();
+        }, 0);
+      });
+    }
   }
 
   getGridRow(colIndex: number, matchIndex: number): number {
     const spacing = Math.pow(2, colIndex);
     return matchIndex * spacing * 2 + spacing;
+  }
+
+  getGridColumn(roundIndex: number, matchIndex: number, matchesInRound: number): number {
+    const totalRounds = this.rounds.length;
+    if (!totalRounds) {
+      return 1;
+    }
+
+    const totalColumns = totalRounds * 2 - 1;
+    const isFinalRound = roundIndex === totalRounds - 1;
+
+    if (isFinalRound) {
+      return totalRounds;
+    }
+
+    const half = Math.ceil(matchesInRound / 2);
+    if (matchIndex < half) {
+      return roundIndex + 1;
+    }
+
+    return totalColumns - roundIndex;
+  }
+
+  getMatchClasses(roundIndex: number, matchIndex: number, matchesInRound: number) {
+    const orientation = this.getMatchOrientation(roundIndex, matchIndex, matchesInRound);
+    return {
+      'match--left': orientation === 'left',
+      'match--right': orientation === 'right',
+      'match--final': orientation === 'final',
+    };
+  }
+
+  shouldShowLeftConnector(roundIndex: number, matchIndex: number, matchesInRound: number): boolean {
+    const orientation = this.getMatchOrientation(roundIndex, matchIndex, matchesInRound);
+    if (orientation === 'left') {
+      return roundIndex > 0;
+    }
+
+    if (orientation === 'final') {
+      return roundIndex > 0;
+    }
+
+    return false;
+  }
+
+  shouldShowRightConnector(roundIndex: number, matchIndex: number, matchesInRound: number): boolean {
+    const orientation = this.getMatchOrientation(roundIndex, matchIndex, matchesInRound);
+
+    if (orientation === 'right') {
+      return roundIndex > 0;
+    }
+
+    if (orientation === 'final') {
+      if (roundIndex === 0) {
+        return false;
+      }
+
+      const previousRound = this.rounds[roundIndex - 1];
+      const matches = previousRound?.matches ?? [];
+      const half = Math.floor(matches.length / 2);
+      return matches.length - half > 0;
+    }
+
+    return false;
+  }
+
+  private getMatchOrientation(roundIndex: number, matchIndex: number, matchesInRound: number): 'left' | 'right' | 'final' {
+    const totalRounds = this.rounds.length;
+    if (!totalRounds) {
+      return 'left';
+    }
+
+    const isFinalRound = roundIndex === totalRounds - 1;
+    if (isFinalRound) {
+      return 'final';
+    }
+
+    const half = Math.ceil(matchesInRound / 2);
+    return matchIndex < half ? 'left' : 'right';
   }
 
   zoomIn(step: number = 0.1, max: number = 2) {
@@ -188,9 +287,40 @@ export class BracketModalComponent implements AfterViewInit {
     this.offsetY = (cHeight - gHeight) / 2;
     this.applyTransform();
   }
+
+  ngOnDestroy(): void {
+    if (this.fullscreenSub) {
+      this.fullscreenSub.unsubscribe();
+    }
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    if (this.updateLineTimeoutId) {
+      clearTimeout(this.updateLineTimeoutId);
+      this.updateLineTimeoutId = null;
+    }
+  }
+
+  private scheduleLineUpdate() {
+    if (this.updateLineTimeoutId) {
+      clearTimeout(this.updateLineTimeoutId);
+    }
+
+    this.updateLineTimeoutId = setTimeout(() => {
+      this.updateLine();
+      this.updateLineTimeoutId = null;
+    }, 0);
+  }
+
   updateLine() {
-    const allMatches = Array.from(document.querySelectorAll('.match')) as HTMLElement[];
-    document.querySelectorAll('.ver').forEach((verEl) => {
+    if (!this.bracketGrid) {
+      return;
+    }
+
+    const gridEl = this.bracketGrid.nativeElement;
+    const allMatches = Array.from(gridEl.querySelectorAll('.match')) as HTMLElement[];
+    gridEl.querySelectorAll('.ver').forEach((verEl) => {
       const ver = verEl as HTMLElement;
       const parent = ver.parentElement as HTMLElement;
       if (!parent) return;
@@ -200,30 +330,28 @@ export class BracketModalComponent implements AfterViewInit {
       const parentRect = parent.getBoundingClientRect();
       const parentCenterY = parentRect.top + parentRect.height / 2;
 
-      // if there is no previous column, fallback to parent's height
-      if (colStart <= 1) {
+      const direction = ver.dataset['direction'] ?? 'left';
+      const targetColumn = direction === 'right' ? colStart + 1 : colStart - 1;
+
+      if (targetColumn <= 0) {
         ver.style.height = `${parentRect.height}px`;
         return;
       }
 
-      // gather .ver elements from the previous column and compute their centers
-      const prevVers = allMatches
+      const adjacentMatches = allMatches
         .filter((m) => {
           const cs = parseInt(getComputedStyle(m).getPropertyValue('grid-column-start')) || 0;
-          return cs === colStart - 1;
+          return cs === targetColumn;
         })
-        .map((m) => m.querySelector('.ver') as HTMLElement)
-        .filter(Boolean)
-        .map((v) => {
-          const r = v.getBoundingClientRect();
-          return { el: v, top: r.top, center: r.top + r.height / 2, rect: r };
+        .map((matchEl) => {
+          const rect = matchEl.getBoundingClientRect();
+          return { top: rect.top, center: rect.top + rect.height / 2 };
         })
         .sort((a, b) => a.center - b.center);
 
-      // find the nearest previous .ver above and below the current match center
       let above: { center: number } | null = null;
       let below: { center: number } | null = null;
-      for (const item of prevVers) {
+      for (const item of adjacentMatches) {
         if (item.center < parentCenterY) above = item;
         else if (item.center >= parentCenterY && !below) below = item;
       }
@@ -232,7 +360,7 @@ export class BracketModalComponent implements AfterViewInit {
         const distance = Math.max(0, below.center - above.center);
         ver.style.height = `${distance}px`;
       } else {
-        // fallback: use parent height if we cannot determine two connectors
+        ver.style.height = `${parentRect.height}px`;
       }
     });
   }
