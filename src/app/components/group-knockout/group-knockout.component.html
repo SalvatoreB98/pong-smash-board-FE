@@ -1,51 +1,52 @@
-<div class="group-knockout-wrapper pt-5">
-  <div>
-    <app-matches *ngIf="hasMatches" [matches]="matches" [readonly]="readonly"
-      (matchEmitter)="onMatchSelected($event)">
-    </app-matches>
-  </div>
-  <div>
-    <app-next-matches *ngIf="!readonly"></app-next-matches>
-  </div>
-  <section class="board-section mt-5">
-    <app-group-knockout-board [groups]="groups"></app-group-knockout-board>
-    <div class="buttons-home-matches" aria-label="group-knockout-actions" *ngIf="!readonly">
-      <div class="button-container mt-3">
-        <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
-          class="add-match p-2 text-center">
-          {{ 'add_match' | translate }}
-          <span class="m-1"></span>
-          <i class="fa fa-file-text-o" aria-hidden="true"></i>
-        </button>
-        <p class="small text-center mt-3">
-          {{ 'add_match_description' | translate }}
-        </p>
-      </div>
-      <div class="button-container">
-        <div>
-          <button type="button" class="bg-secondary position-relative p-2 text-center"
-            (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
-            {{ 'add_manual_set_points' | translate }}
-            <div class="circle-live"></div>
-          </button>
-        </div>
-        <p class="small text-center mt-3">
-          {{ 'add_manual_set_points_description' | translate }}
-        </p>
-      </div>
+<div class="wrapper">
+  <div class="group-knockout-wrapper pt-5">
+    <div>
+      <app-matches *ngIf="hasMatches" [matches]="matches" [readonly]="readonly"
+        (matchEmitter)="onMatchSelected($event)">
+      </app-matches>
     </div>
-  </section>
+    <div>
+      <app-next-matches *ngIf="!readonly"></app-next-matches>
+    </div>
+    <section class="board-section mt-5">
+      <app-group-knockout-board [groups]="groups"></app-group-knockout-board>
+      <div class="buttons-home-matches" aria-label="group-knockout-actions" *ngIf="!readonly">
+        <div class="button-container mt-3">
+          <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
+            class="add-match p-2 text-center">
+            {{ 'add_match' | translate }}
+            <span class="m-1"></span>
+            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+          </button>
+          <p class="small text-center mt-3">
+            {{ 'add_match_description' | translate }}
+          </p>
+        </div>
+        <div class="button-container">
+          <div>
+            <button type="button" class="bg-secondary position-relative p-2 text-center"
+              (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
+              {{ 'add_manual_set_points' | translate }}
+              <div class="circle-live"></div>
+            </button>
+          </div>
+          <p class="small text-center mt-3">
+            {{ 'add_manual_set_points_description' | translate }}
+          </p>
+        </div>
+      </div>
+    </section>
 
-  <section class="finals-section">
-    <h2 class="finals-section__title">{{ 'group_knockout_finals_title' | translate }}</h2>
-    <ng-container *ngIf="qualifiedPlayers.length >= 2 && rounds.length > 0; else eliminationEmpty">
-      <app-elimination-bracket [competition]="competition" [rounds]="rounds"
-        [readonly]="readonly"
-        (matchRoundClicked)="onRoundSelected($event)"></app-elimination-bracket>
-    </ng-container>
-  </section>
+    <section class="finals-section">
+      <h2 class="finals-section__title">{{ 'group_knockout_finals_title' | translate }}</h2>
+      <ng-container *ngIf="qualifiedPlayers.length >= 2 && rounds.length > 0; else eliminationEmpty">
+        <app-elimination-bracket [competition]="competition" [rounds]="rounds" [readonly]="readonly"
+          (matchRoundClicked)="onRoundSelected($event)"></app-elimination-bracket>
+      </ng-container>
+    </section>
+  </div>
+
+  <ng-template #eliminationEmpty>
+    <p class="no-qualified text-center mt-3">{{ 'group_knockout_finals_empty' | translate }}</p>
+  </ng-template>
 </div>
-
-<ng-template #eliminationEmpty>
-  <p class="no-qualified text-center mt-3">{{ 'group_knockout_finals_empty' | translate }}</p>
-</ng-template>
