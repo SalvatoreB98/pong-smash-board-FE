@@ -63,6 +63,7 @@ export const MODALS: { [key: string]: string } = {
   VIEW_COMPETITION: 'viewCompetitionModal',
   ARE_YOU_SURE: 'areYouSureModal',
   BRACKET: 'bracket',
+  SET_DATE: 'setDateModal',
 };
 
 export enum UserProgressStateEnum {

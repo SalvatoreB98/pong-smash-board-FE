@@ -42,3 +42,8 @@
     [player1]="player1Selected" [player2]="player2Selected" [groups]="groups"
     [isGroupKnockout]="isGroupKnockoutMode"></app-manual-points>
 </app-modal>
+
+<app-modal [label]="'set_date'" *ngIf="modalService.isActiveModal(modalService.MODALS['SET_DATE'])"
+  [modalName]="modalService.MODALS['SET_DATE']">
+  <app-set-match-date-modal [match]="clickedMatch"></app-set-match-date-modal>
+</app-modal>

@@ -1191,6 +1191,10 @@
         "it": "Data da definire",
         "en": "Date to be determined"
     },
+    "tbd": {
+        "it": "Da definire",
+        "en": "To be determined"
+    },
     "view_bracket": {
         "it": "tabellone",
         "en": "Bracket"
@@ -1202,5 +1206,9 @@
     "bracket": {
         "it": "Tabellone",
         "en": "Bracket"
+    },
+    "set_match_date_unavailable": {
+        "it": "Ancora non è possibile impostare la data della partita.",
+        "en": "Match date cannot be set yet."
     }
 }

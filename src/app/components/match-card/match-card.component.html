@@ -1,14 +1,9 @@
 <!-- Shared match-card template keeps league, upcoming, and bracket views consistent after the refactor. -->
-<article
-  class="match-card"
-  [ngClass]="{
+<article class="match-card" [ngClass]="{
     'match-card--clickable': clickable,
     'match-card--bracket': variant === 'bracket',
     'match-card--readonly': readonly && variant === 'bracket'
-  }"
-  [attr.id]="cardId ?? null"
-  (click)="onCardClick()"
->
+  }" [attr.id]="cardId ?? null" (click)="onCardClick()">
   <ng-container [ngSwitch]="variant">
     <ng-container *ngSwitchCase="'bracket'">
       <div class="match-card__date" *ngIf="bracketDate; else bracketDatePlaceholder">
@@ -19,11 +14,7 @@
           <span>{{ bracketDateFallback }}</span>
         </div>
         <div class="match-card__set-date" *ngIf="!readonly && setDateAction as action">
-          <button type="button" class="tertiary p-2" (click)="onAction(action, $event)"
-            [attr.title]="action.tooltip ?? action.label ?? ''">
-            <span>{{ action.label }}</span>
-            <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
-          </button>
+          <span>{{ 'date_to_be_determined' | translate }}</span>
         </div>
       </ng-template>
 
@@ -39,21 +30,21 @@
               {{ slot.waitingLabel }}
             </span>
             <ng-container *ngSwitchDefault>
-              <button type="button" class="match-card__add-player tertiary"
-                *ngIf="slot.action as slotAction"
-                (click)="onAction(slotAction, $event)"
-                [disabled]="slotAction.disabled"
-                [attr.title]="slotAction.tooltip ?? slotAction.label ?? ''"
-                [ngClass]="slotAction.cssClass">
+              <button type="button" class="match-card__add-player tertiary" *ngIf="slot.action as slotAction"
+                (click)="onAction(slotAction, $event)" [disabled]="slotAction.disabled"
+                [attr.title]="slotAction.tooltip ?? slotAction.label ?? ''" [ngClass]="slotAction.cssClass">
                 <span class="match-card__icon" *ngIf="slotAction.icon" [innerHTML]="slotAction.icon"></span>
                 <span *ngIf="slotAction.label">{{ slotAction.label }}</span>
               </button>
             </ng-container>
           </ng-container>
 
-          <span class="match-card__score" *ngIf="shouldShowScore(slot)">
+          <span class="match-card__score" *ngIf="shouldShowScore(slot); else noScore">
             {{ slot.score }}
           </span>
+          <ng-template #noScore>
+            <span class="match-card__score match-card__score--null"> - </span>
+          </ng-template>
         </div>
       </div>
       <ng-template #emptySlots>
@@ -63,12 +54,8 @@
       </ng-template>
 
       <div class="match-card__actions" *ngIf="hasActions()">
-        <button type="button" *ngFor="let action of actions; trackBy: trackByAction"
-          (click)="onAction(action, $event)"
-          [disabled]="action.disabled"
-          [ngClass]="action.cssClass"
-          class="tertiary"
-          [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
+        <button type="button" *ngFor="let action of actions; trackBy: trackByAction" (click)="onAction(action, $event)"
+          [disabled]="action.disabled" class="tertiary" [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
           [attr.title]="action.tooltip ?? action.label ?? ''">
           <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
           <span *ngIf="action.label">{{ action.label }}</span>
@@ -97,7 +84,7 @@
           <span class="match-card__name">{{ resolveDisplayName(getPlayer(1)) }}</span>
         </div>
 
-        <div class="match-card__score" *ngIf="showScore">
+        <div class="match-card__score" *ngIf="showScore; else nullScore">
           <span class="score-value" [class.win]="isWinner(getPlayer(0))">
             {{ getScoreValue(0) }}
           </span>
@@ -106,6 +93,11 @@
             {{ getScoreValue(1) }}
           </span>
         </div>
+        <ng-template #nullScore>
+          <div class="match-card__score match-card__score--null">
+            <span class="score-placeholder"> -- </span>
+          </div>
+        </ng-template>
       </div>
 
       <footer class="match-card__footer" *ngIf="schedule || footerLabel">
@@ -125,8 +117,7 @@
                 {{ schedule.fallbackLabel }}
               </div>
               <div class="match-card__schedule-action" *ngIf="schedule.action as scheduleAction">
-                <button type="button" class="tertiary"
-                  [ngClass]="scheduleAction.cssClass"
+                <button type="button" class="tertiary" [ngClass]="scheduleAction.cssClass"
                   (click)="onAction(scheduleAction, $event)">
                   <span>{{ scheduleAction.label }}</span>
                   <span class="match-card__icon" *ngIf="scheduleAction.icon" [innerHTML]="scheduleAction.icon"></span>

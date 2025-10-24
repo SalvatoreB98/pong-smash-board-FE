@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 
 // Centralized match card component shared by league, next matches, and bracket views.
 export type MatchCardVariant = 'standard' | 'bracket';
@@ -45,7 +46,7 @@ export interface MatchCardPlayerSlot {
 @Component({
   selector: 'app-match-card',
   standalone: true,
-  imports: [CommonModule, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault],
+  imports: [CommonModule, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, ...SHARED_IMPORTS],
   templateUrl: './match-card.component.html',
   styleUrl: './match-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

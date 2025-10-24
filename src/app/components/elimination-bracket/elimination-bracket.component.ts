@@ -209,7 +209,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
     const actions: MatchCardAction[] = [];
     actions.push({
       icon: '<i class="fa fa-info-circle" aria-hidden="true"></i>',
-      cssClass: ['other', 'ps-2', 'pe-2', 'tertiary', match?.winnerId !== null ? 'free' : ''],
+      cssClass: ['other', 'ps-2', 'pe-2', 'primary', match?.winnerId !== null ? 'free' : ''],
       handler: () => this.openModal('SHOW_MATCH', {
         match: match.matchData,
         roundName: this.getRoundName(round, match),
@@ -219,9 +219,19 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
       tooltip: this.translationService.translate('match_details'),
     });
 
+    if(!match?.matchData?.date || match?.matchData?.date === '') {
+      actions.push({
+        icon: '<i class="fa fa-calendar ms-1" aria-hidden="true"></i>',
+        handler: () => this.openModal('SET_DATE', {
+          match: match.matchData,
+          roundName: this.getRoundName(round, match),
+          roundLabel: this.getRoundLabel(round, match),
+        }),
+      });
+    }
+
     if (match?.winnerId === null) {
       actions.push({
-        label: this.translationService.translate('add_match'),
         icon: '<i class="fa fa-file-text-o ms-1" aria-hidden="true"></i>',
         handler: () => this.openModal('ADD_MATCH', {
           player1: match.slots?.[0]?.player ?? null,

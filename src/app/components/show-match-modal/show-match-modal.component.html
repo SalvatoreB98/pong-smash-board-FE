@@ -2,7 +2,7 @@
     <p>{{ match?.desc || '' }}</p>
     <div class="data">{{ match?.created | date: 'dd/MM/yyyy HH:mm' }}</div>
     <div class="general-info" *ngIf="match?.competitionType || match?.competitionName || match?.roundLabel">
-        <h5 class="text-center">{{ match.roundLabel }}</h5>
+        <h5 class="text-center">{{ match.roundLabel | translate }}</h5>
         <ul>
             <li *ngIf="match?.competitionType">
                 <span class="label">{{ 'competition_type_label' | translate }}</span>
