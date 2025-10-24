@@ -1,0 +1,67 @@
+<div class="add-player-modal form-dark">
+  <form [formGroup]="addPlayerForm" (ngSubmit)="savePlayer($event)">
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <div class="mb-3">
+          <label for="add-player-name" class="form-label">{{ 'first_name' | translate }}</label>
+          <input type="text" id="add-player-name" class="form-control input-field" formControlName="name"
+            [placeholder]="'insert_name' | translate" />
+        </div>
+
+        <div class="mb-3">
+          <label for="add-player-surname" class="form-label">{{ 'last_name' | translate }}</label>
+          <input type="text" id="add-player-surname" class="form-control input-field" formControlName="surname"
+            [placeholder]="'insert_last_name' | translate" />
+        </div>
+
+        <div class="mb-3">
+          <label for="add-player-nickname" class="form-label">{{ 'nickname' | translate }}</label>
+          <input type="text" id="add-player-nickname" class="form-control input-field" formControlName="nickname"
+            [placeholder]="'insert_nickname' | translate" />
+        </div>
+
+        <div class="mb-3 position-relative">
+          <label for="add-player-email" class="form-label">{{ 'email' | translate }}
+            <div class="info-input" title="{{ 'email_info' | translate }}">
+              <i class="fa fa-info-circle" aria-hidden="true"></i>
+            </div>
+          </label>
+          <input type="text" id="add-player-email" class="form-control input-field" formControlName="email"
+            [placeholder]="'insert_email' | translate" />
+          <div>
+            <small *ngIf="addPlayerForm.get('email')?.errors?.['email']" class="text-danger">
+              {{ 'email_invalid' | translate }}
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="add-player-upload" class="form-label">{{ 'image' | translate }}</label>
+          <input type="file" id="add-player-upload" class="form-control input-field" (change)="onFileSelected($event)" />
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="preview" *ngIf="previewUrl; else placeholderAvatar">
+          <img [src]="previewUrl" class="preview__image" (error)="onImageError($event)" alt="player avatar" />
+          <button type="button" class="tertiary preview__remove" (click)="removeFile()" title="Remove image">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+        <ng-template #placeholderAvatar>
+          <div class="preview preview--empty">
+            <img src="/default-player.jpg" alt="default avatar" />
+            <p>{{ 'image' | translate }} - optional</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="button-container mt-4">
+      <button type="submit" class="secondary w-100 text-center" [disabled]="addPlayerForm.invalid || isSubmitting">
+        {{ 'add_player' | translate }}
+        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      </button>
+    </div>
+  </form>
+</div>

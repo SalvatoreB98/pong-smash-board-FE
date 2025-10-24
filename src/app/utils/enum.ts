@@ -57,6 +57,7 @@ export const MODALS: { [key: string]: string } = {
   SHOW_MATCH: 'showMatchModal',
   ADD_COMPETITION: 'addCompetitionModal',
   ADD_PLAYERS: 'addPlayersModal',
+  ADD_PLAYER: 'addPlayerModal',
   JOIN_COMPETITION: 'joinCompetitionModal',
   MANUAL_POINTS: 'manualPointsModal',
   EDIT_COMPETITION: 'editCompetitionModal',

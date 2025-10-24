@@ -40,7 +40,7 @@
           <app-match-card *ngFor="let match of round.matches; trackBy: trackByMatch" variant="bracket"
             [cardId]="match.id" [readonly]="readonly" [players]="buildBracketPlayers(match, i)"
             [bracketDate]="match?.matchData?.created" [bracketDateFallback]="'date_to_be_determined' | translate"
-            [setDateAction]="buildSetDateAction(match)" [actions]="buildBracketActions(match, round)"></app-match-card>
+            [setDateAction]="buildSetDateAction(match)" [actions]="buildBracketActions(match, round)" [match]="match"></app-match-card>
         </div>
       </div>
     </div>
