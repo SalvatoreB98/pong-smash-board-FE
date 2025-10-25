@@ -12,6 +12,7 @@ import { LoaderService } from '../../../../services/loader.service';
 import { Utils } from '../../../utils/Utils';
 import { StepIndicatorComponent } from '../../../common/step-indicator/step-indicator.component';
 import { Group, mapGroupPlayerToIPlayer } from '../../../interfaces/group.interface';
+import { KnockoutStage } from '../../../utils/enum';
 
 @Component({
   selector: 'app-manual-points',
@@ -34,6 +35,7 @@ export class ManualPointsComponent implements OnChanges, OnInit {
   @Input() players: IPlayer[] = [];
   @Input() groups: Group[] = [];
   @Input() isGroupKnockout = false;
+  @Input() roundOfMatch: KnockoutStage | null = null;
 
   groupForm!: FormGroup;
   playersForm!: FormGroup;
@@ -506,7 +508,7 @@ export class ManualPointsComponent implements OnChanges, OnInit {
       formData.groupId = this.selectedGroupId;
     }
 
-    this.dataService.addMatch(formData).then(() => {
+    this.dataService.addMatch(formData, this.roundOfMatch ?? null).then(() => {
       this.modalService.closeModal();
       if (target instanceof HTMLElement) {
         this.loaderService.removeSpinnerFromButton(target);
