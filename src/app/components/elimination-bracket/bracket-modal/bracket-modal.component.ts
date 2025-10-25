@@ -248,7 +248,7 @@ export class BracketModalComponent implements AfterViewInit {
   updateLine() {
     const verEls = Array.from(document.querySelectorAll('.ver')) as HTMLElement[];
 
-    verEls.forEach((ver) => {
+    verEls.forEach((ver, index) => {
       const matchEl = ver.parentElement as HTMLElement;
       if (!matchEl) return;
 
@@ -296,8 +296,6 @@ export class BracketModalComponent implements AfterViewInit {
       if (above && below) {
         const distance = Math.max(0, below.center - above.center);
         ver.style.height = `${distance}px`;
-      } else {
-        ver.style.height = `${parentRect.height}px`; // fallback sensato
       }
     });
 
