@@ -98,6 +98,10 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
       if (data?.length) {
         this.competitionDetail = { ...data[0] };
       }
+      if (data?.length === 1) {
+        this.competitionService.updateActiveCompetition(data[0].id).subscribe();
+        this.userService.setActiveCompetitionId(data[0].id);
+      }
     } finally {
       this.isLoading = false;
       this.cdr.detectChanges();
