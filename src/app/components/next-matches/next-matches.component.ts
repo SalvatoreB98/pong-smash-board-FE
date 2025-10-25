@@ -37,13 +37,14 @@ type NextMatch = IMatch & {
 export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
   nextMatches: NextMatch[] = [];
   @ViewChild('swiperEl2') swiperEl?: ElementRef<HTMLElement>;
+  @ViewChild('nextButton', { read: ElementRef }) nextButton?: ElementRef<HTMLButtonElement>;
+  @ViewChild('prevButton', { read: ElementRef }) prevButton?: ElementRef<HTMLButtonElement>;
   isLoading: boolean = true;
   swiperConfig: SwiperOptions = {
     ...BASE_SLIDER_CONFIG,
     modules: [Navigation],
     navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev'
+      enabled: true,
     }
   };
   isOverflowing: boolean = false;
@@ -57,6 +58,7 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    this.configureNavigation();
     this.swiperManager.init();
   }
 
@@ -71,6 +73,23 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // 👇 Garantisce che Swiper parta solo dopo aver popolato il DOM condiviso.
     this.swiperManager.queueUpdate();
+  }
+
+  private configureNavigation(): void {
+    const nextEl = this.nextButton?.nativeElement;
+    const prevEl = this.prevButton?.nativeElement;
+
+    if (!nextEl || !prevEl) {
+      return;
+    }
+
+    this.swiperManager.updateConfig({
+      navigation: {
+        enabled: true,
+        nextEl,
+        prevEl,
+      },
+    });
   }
 
   trackByMatch(index: number, match: NextMatch): string | number {
