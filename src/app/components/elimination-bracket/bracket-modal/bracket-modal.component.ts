@@ -80,6 +80,15 @@ export class BracketModalComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.centerGrid();
     this.updateLine();
+    const bracketRight = document.querySelector('.side.right .bracket-grid') as HTMLElement | null;
+    const bracketLeft = document.querySelector('.side.left .bracket-grid') as HTMLElement | null;
+    const matchElement = bracketLeft?.querySelector('.match') as HTMLElement | null;
+    const rowHeight = matchElement ? getComputedStyle(matchElement).getPropertyValue('height') : '90px';
+    if (!bracketLeft) return;
+    const bracketLeftGridRowsNumber = getComputedStyle(bracketLeft).getPropertyValue('grid-template-rows').split(/\s+/).filter(Boolean).length;
+    if (bracketRight) {
+      bracketRight.style.setProperty('grid-template-rows', `repeat(${bracketLeftGridRowsNumber}, ${rowHeight})`);
+    }
   }
 
   /** -----------------------
@@ -256,7 +265,6 @@ export class BracketModalComponent implements AfterViewInit {
       const grid = ver.closest('.bracket-grid') as HTMLElement;
       if (!grid) return;
       const isRightSide = !!grid.closest('.side.right');
-
       const allMatches = Array.from(grid.querySelectorAll('.match')) as HTMLElement[];
 
       const parentStyle = getComputedStyle(matchEl);

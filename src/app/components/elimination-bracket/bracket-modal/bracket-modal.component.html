@@ -62,31 +62,34 @@
           <div class="side right">
             <div class="bracket-grid">
               <ng-container *ngFor="let round of rightRounds; let col = index">
-                <ng-container *ngFor="let match of round.matches; let i = index">
-                  <div class="match" [style.gridColumn]="getRightGridColumn(col)" [style.gridRow]="getGridRow(col, i)">
-                    <!-- connettore orizzontale: solo se esiste una colonna successiva sul lato destro -->
-                    <span *ngIf="col > 0 && col < (rightRounds.length - 1)" class="hor"></span>
+                <ng-container *ngIf="col < rightRounds.length - 1">
+                  <ng-container *ngFor="let match of round.matches; let i = index">
+                    <div class="match" [style.gridColumn]="getRightGridColumn(col)"
+                      [style.gridRow]="getGridRow(col, i)">
+                      <!-- connettore orizzontale: solo se esiste una colonna successiva sul lato destro -->
+                      <span *ngIf="col > 0 && col < (rightRounds.length - 1)" class="hor"></span>
 
-                    <div class="player">
-                      <img [src]="match.slots[0]?.player?.image_url || 'default-player.jpg'" alt="" />
-                      <span>{{ match.slots[0]?.player?.nickname || 'TBD' }}</span>
-                      <strong *ngIf="match.player1Score !== null">{{ match.player1Score }}</strong>
-                    </div>
-
-                    <div class="player">
-                      <img [src]="match.slots[1]?.player?.image_url || 'default-player.jpg'" alt="" />
-                      <span>{{ match.slots[1]?.player?.nickname || 'TBD' }}</span>
-                      <strong *ngIf="match.player2Score !== null">{{ match.player2Score }}</strong>
-                    </div>
-
-                    <!-- spina verticale: solo se esiste una colonna successiva sul lato destro -->
-                    <span *ngIf="col > 0 && col < (rightRounds.length - 1)" class="ver">
-                      <div class="container-hor">
-                        <div class="hor-2"></div>
-                        <div class="hor-3"></div>
+                      <div class="player">
+                        <img [src]="match.slots[0]?.player?.image_url || 'default-player.jpg'" alt="" />
+                        <span>{{ match.slots[0]?.player?.nickname || 'TBD' }}</span>
+                        <strong *ngIf="match.player1Score !== null">{{ match.player1Score }}</strong>
                       </div>
-                    </span>
-                  </div>
+
+                      <div class="player">
+                        <img [src]="match.slots[1]?.player?.image_url || 'default-player.jpg'" alt="" />
+                        <span>{{ match.slots[1]?.player?.nickname || 'TBD' }}</span>
+                        <strong *ngIf="match.player2Score !== null">{{ match.player2Score }}</strong>
+                      </div>
+
+                      <!-- spina verticale: solo se esiste una colonna successiva sul lato destro -->
+                      <span *ngIf="col > 0 && col < (rightRounds.length - 1)" class="ver">
+                        <div class="container-hor">
+                          <div class="hor-2"></div>
+                          <div class="hor-3"></div>
+                        </div>
+                      </span>
+                    </div>
+                  </ng-container>
                 </ng-container>
               </ng-container>
             </div>

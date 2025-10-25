@@ -48,10 +48,14 @@
 
 .two-sides {
   display: flex;
-  gap: 2rem;
 }
 
 .two-sides .side.right {
+  .bracket-grid {
+    padding-left: 0;
+    margin-left: -3rem;
+  }
+
   .match {
     .hor {
       left: auto;
@@ -76,9 +80,10 @@
   }
 }
 
-.side.left .bracket-grid:last-child .match:last-child {
-  margin-right: 4rem;
-  /* sposta un po’ la finale verso il centro */
+.two-sides .side.left {
+  .bracket-grid {
+    padding-right: 0;
+  }
 }
 
 .bracket-scale {
