@@ -1,69 +1,71 @@
-<div class="league-wrapper">
-  <div class="skeleton-wrapper" *ngIf="isLoading; else leagueContent">
-    <section class="skeleton-section">
-      <div class="skeleton-title placeholder"></div>
-      <div class="matches-placeholder">
-        <div *ngFor="let _ of placeholderMatchCards" class="match-card-placeholder ms-5">
-          <div class="match-card-placeholder__date placeholder"></div>
-          <div class="match-card-placeholder__body">
-            <div class="player placeholder"></div>
-            <div class="score placeholder"></div>
-            <div class="player placeholder"></div>
+<div class="wrapper">
+  <div class="league-wrapper">
+    <div class="skeleton-wrapper" *ngIf="isLoading; else leagueContent">
+      <section class="skeleton-section">
+        <div class="skeleton-title placeholder"></div>
+        <div class="matches-placeholder">
+          <div *ngFor="let _ of placeholderMatchCards" class="match-card-placeholder ms-5">
+            <div class="match-card-placeholder__date placeholder"></div>
+            <div class="match-card-placeholder__body">
+              <div class="player placeholder"></div>
+              <div class="score placeholder"></div>
+              <div class="player placeholder"></div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="skeleton-buttons">
-        <div class="button placeholder"></div>
-        <div class="button placeholder mt-5"></div>
-      </div>
-    </section>
-
-    <section class="skeleton-section stats mt-5">
-      <div class="skeleton-title placeholder"></div>
-      <div class="stats-placeholder">
-        <div *ngFor="let _ of placeholderStatsRows" class="stats-placeholder__row placeholder"></div>
-      </div>
-    </section>
-  </div>
-
-  <ng-template #leagueContent>
-    <p *ngIf="showEmptyState" class="mt-4 text-center">
-      {{ 'matches_not_found' | translate }}
-    </p>
-
-    <section>
-      <app-matches *ngIf="hasMatches" [matches]="matches" [readonly]="readonly"
-        (matchEmitter)="onMatchSelected($event)">
-      </app-matches>
-      <div class="buttons-home-matches" *ngIf="!readonly">
-        <div class="button-container mt-3">
-          <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
-            class="add-match p-2 text-center">
-            {{ 'add_match' | translate }}
-            <span class="m-1"></span>
-            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-          </button>
-          <p class="small text-center mt-3">
-            {{ 'add_match_description' | translate }}
-          </p>
+        <div class="skeleton-buttons">
+          <div class="button placeholder"></div>
+          <div class="button placeholder mt-5"></div>
         </div>
-        <div class="button-container">
-          <div>
-            <button type="button" class="bg-secondary position-relative p-2 text-center"
-              (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
-              {{ 'add_manual_set_points' | translate }}
-              <div class="circle-live"></div>
+      </section>
+
+      <section class="skeleton-section stats mt-5">
+        <div class="skeleton-title placeholder"></div>
+        <div class="stats-placeholder">
+          <div *ngFor="let _ of placeholderStatsRows" class="stats-placeholder__row placeholder"></div>
+        </div>
+      </section>
+    </div>
+
+    <ng-template #leagueContent>
+      <p *ngIf="showEmptyState" class="mt-4 text-center">
+        {{ 'matches_not_found' | translate }}
+      </p>
+
+      <section>
+        <app-matches *ngIf="hasMatches" [matches]="matches" [readonly]="readonly"
+          (matchEmitter)="onMatchSelected($event)">
+        </app-matches>
+        <div class="buttons-home-matches" *ngIf="!readonly">
+          <div class="button-container mt-3">
+            <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
+              class="add-match p-2 text-center">
+              {{ 'add_match' | translate }}
+              <span class="m-1"></span>
+              <i class="fa fa-file-text-o" aria-hidden="true"></i>
             </button>
+            <p class="small text-center mt-3">
+              {{ 'add_match_description' | translate }}
+            </p>
           </div>
-          <p class="small text-center mt-3">
-            {{ 'add_manual_set_points_description' | translate }}
-          </p>
+          <div class="button-container">
+            <div>
+              <button type="button" class="bg-secondary position-relative p-2 text-center"
+                (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
+                {{ 'add_manual_set_points' | translate }}
+                <div class="circle-live"></div>
+              </button>
+            </div>
+            <p class="small text-center mt-3">
+              {{ 'add_manual_set_points_description' | translate }}
+            </p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section>
-      <app-stats *ngIf="hasMatches"></app-stats>
-    </section>
-  </ng-template>
+      <section>
+        <app-stats *ngIf="hasMatches"></app-stats>
+      </section>
+    </ng-template>
+  </div>
 </div>
