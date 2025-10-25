@@ -79,6 +79,7 @@
   }
 }
 
+
 .two-sides .side.left {
   .bracket-grid {
     padding-right: 0;
@@ -203,6 +204,21 @@ $connector-thickness: 2px;
 
       .hor-3 {
         bottom: 0;
+      }
+    }
+
+    &.final-left {
+      left: auto;
+      right: -1.5rem;
+
+      .container-hor {
+
+        .hor-2,
+        .hor-3 {
+          left: auto;
+          right: 0;
+          transform: translateX(100%);
+        }
       }
     }
   }
