@@ -80,6 +80,7 @@
 }
 
 
+
 .two-sides .side.left {
   .bracket-grid {
     padding-right: 0;
@@ -169,6 +170,11 @@ $connector-thickness: 2px;
     transform: translateY(-50%);
     pointer-events: none;
     z-index: 200;
+
+    &.final-hor-right {
+      left: auto;
+      right: -1.3rem;
+    }
   }
 
   /* vertical spine that connects two matches */
