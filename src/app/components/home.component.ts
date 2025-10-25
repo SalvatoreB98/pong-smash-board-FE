@@ -25,6 +25,7 @@ import { mapKnockoutResponse } from '../interfaces/knockout.interface';
 import type { KnockoutPlayer } from '../interfaces/knockout.interface';
 import { LeagueBoardComponent } from './home/league-board/league-board.component';
 import { AddGroupMatchModalComponent } from './add-match-modal/add-group-match-modal/add-group-match-modal.component';
+import { AddPlayerModalComponent } from './modals/add-player-modal/add-player-modal.component';
 import { combineLatest } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SetMatchDateModalComponent } from '../common/set-match-date-modal/set-match-date-modal.component';
@@ -39,7 +40,7 @@ type MatchWithContext = IMatch & {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent, SetMatchDateModalComponent],
+  imports: [CommonModule, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent, SetMatchDateModalComponent, AddPlayerModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

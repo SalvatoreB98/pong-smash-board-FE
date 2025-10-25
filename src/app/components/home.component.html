@@ -35,6 +35,11 @@
   <app-show-match-modal [match]="clickedMatch"></app-show-match-modal>
 </app-modal>
 
+<app-modal [label]="'add_player'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_PLAYER'])"
+  [modalName]="modalService.MODALS['ADD_PLAYER']">
+  <app-add-player-modal></app-add-player-modal>
+</app-modal>
+
 <app-modal [fullscreen]="true" [label]="'manual_points'"
   *ngIf="modalService.isActiveModal(modalService.MODALS['MANUAL_POINTS'])"
   [modalName]="modalService.MODALS['MANUAL_POINTS']" class="manual-points-modal">

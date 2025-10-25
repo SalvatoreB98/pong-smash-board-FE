@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
+import { ModalService } from '../../../services/modal.service';
+import { AddPlayerModalComponent } from '../modals/add-player-modal/add-player-modal.component';
 
 // Centralized match card component shared by league, next matches, and bracket views.
 export type MatchCardVariant = 'standard' | 'bracket';
@@ -69,11 +71,13 @@ export class MatchCardComponent {
   @Input() setDateAction?: MatchCardAction | null;
   @Input() actions: MatchCardAction[] = [];
   @Input() schedule?: MatchCardSchedule | null;
+  @Input() match?: unknown;
 
   @Output() cardClick = new EventEmitter<void>();
   @Output() actionTriggered = new EventEmitter<MatchCardAction>();
 
   readonly defaultAvatar = '/default-player.jpg';
+  private readonly modalService = inject(ModalService);
 
   onCardClick(): void {
     if (!this.clickable) {
@@ -110,6 +114,18 @@ export class MatchCardComponent {
 
   trackByAction(index: number, action: MatchCardAction): string {
     return `${action.event ?? action.label ?? 'action'}-${index}`;
+  }
+
+  openAddPlayerModal(match: unknown, slotIndex?: number, event?: Event): void {
+    if (this.readonly) {
+      return;
+    }
+
+    event?.stopPropagation();
+    this.modalService.openModal(AddPlayerModalComponent, {
+      match,
+      slotIndex,
+    });
   }
 
   shouldShowScore(slot?: MatchCardPlayerSlot | null): boolean {

@@ -11,6 +11,7 @@
           [clickable]="!readonly"
           [headerLabel]="match?.created | date: 'dd/MM/yyyy HH:mm'"
           [players]="mapMatchToPlayers(match)"
+          [match]="match"
           (cardClick)="onMatchClick(match.id)"
         ></app-match-card>
       </div>

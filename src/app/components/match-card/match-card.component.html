@@ -19,7 +19,7 @@
       </ng-template>
 
       <div class="match-card__players" *ngIf="players?.length; else emptySlots">
-        <div class="match-card__slot" *ngFor="let slot of players; trackBy: trackByIndex"
+        <div class="match-card__slot" *ngFor="let slot of players; let i = index; trackBy: trackByIndex"
           [class.winner]="isWinner(slot)">
           <img class="match-card__avatar" [src]="slot.avatarUrl || defaultAvatar" alt=""
             (error)="handleImageError($event)" />
@@ -30,12 +30,20 @@
               {{ slot.waitingLabel }}
             </span>
             <ng-container *ngSwitchDefault>
-              <button type="button" class="match-card__add-player tertiary" *ngIf="slot.action as slotAction"
-                (click)="onAction(slotAction, $event)" [disabled]="slotAction.disabled"
-                [attr.title]="slotAction.tooltip ?? slotAction.label ?? ''" [ngClass]="slotAction.cssClass">
-                <span class="match-card__icon" *ngIf="slotAction.icon" [innerHTML]="slotAction.icon"></span>
-                <span *ngIf="slotAction.label">{{ slotAction.label }}</span>
-              </button>
+              <ng-container *ngIf="slot.state === 'empty' && !readonly; else slotActionButton">
+                <button type="button" class="match-card__add-player tertiary"
+                  (click)="openAddPlayerModal(match, i, $event)" [attr.aria-label]="'add_player' | translate">
+                  <i class="fa fa-user-plus" aria-hidden="true"></i>
+                </button>
+              </ng-container>
+              <ng-template #slotActionButton>
+                <button type="button" class="match-card__add-player tertiary" *ngIf="slot.action as slotAction"
+                  (click)="onAction(slotAction, $event)" [disabled]="slotAction.disabled"
+                  [attr.title]="slotAction.tooltip ?? slotAction.label ?? ''" [ngClass]="slotAction.cssClass">
+                  <span class="match-card__icon" *ngIf="slotAction.icon" [innerHTML]="slotAction.icon"></span>
+                  <span *ngIf="slotAction.label">{{ slotAction.label }}</span>
+                </button>
+              </ng-template>
             </ng-container>
           </ng-container>
 

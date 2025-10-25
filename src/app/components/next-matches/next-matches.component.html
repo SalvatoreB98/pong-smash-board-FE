@@ -21,6 +21,7 @@
                     [cardId]="match.id"
                     [headerLabel]="match?.group_name || match?.groupName || null"
                     [players]="mapMatchToPlayers(match)"
+                    [match]="match"
                     [showScore]="false"
                     [showVersus]="true"
                     [schedule]="buildSchedule(match, ('no_date' | translate), ('define_date' | translate))"
