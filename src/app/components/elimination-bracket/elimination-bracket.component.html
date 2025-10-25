@@ -17,6 +17,7 @@
       </div>
     </header>
     <button type="button" class="elimination-back-button tertiary"
+      [disabled]="!rounds.length || modalService.isActiveModal(modalService.MODALS['BRACKET'])"
       (click)="modalService.openModal(modalService.MODALS['BRACKET'])">
       <span>{{ 'visualize' | translate }}</span>
       <img src="bracket.png" class="ms-2 me-2" alt="bracket icon" width="75px" />

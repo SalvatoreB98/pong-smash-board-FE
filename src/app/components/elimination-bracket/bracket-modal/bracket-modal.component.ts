@@ -18,20 +18,34 @@ import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 export class BracketModalComponent implements AfterViewInit {
   private _rounds: any[] = [];
 
+  // ➜ Stato per layout a due lati
+  isTwoSides = false;
+  leftRounds: any[] = [];
+  rightRounds: any[] = [];
+  totalRounds = 0; // numero di colonne (rounds.length)
+  centerRounds: any[] = []; // round centrali (finale/terzo posto, ecc.)
   @Input()
   set rounds(value: any[]) {
-    this.updateLine();
     this._rounds = value ?? [];
+
+    // calcolo righe totali per lo spacing della grid "classica"
     const firstRound = this._rounds[0];
     if (firstRound?.matches?.length) {
       this.totalRows = firstRound.matches.length * 2 - 1;
     } else {
       this.totalRows = 1;
     }
+
+    // calcolo split sinistra/destra
+    this.computeSides();
+
+    // dopo aver aggiornato i dati, aggiorno le linee nella prossima tick
+    queueMicrotask(() => this.updateLine());
   }
   get rounds(): any[] {
     return this._rounds;
   }
+
   @Input() competitionName: string = '';
   @ViewChild('bracketGrid') bracketGrid!: ElementRef<HTMLDivElement>;
   @ViewChild('bracketScale') bracketScale!: ElementRef<HTMLDivElement>;
@@ -60,6 +74,7 @@ export class BracketModalComponent implements AfterViewInit {
     if (firstRound?.matches?.length) {
       this.totalRows = firstRound.matches.length * 2 - 1;
     }
+    this.computeSides();
   }
 
   ngAfterViewInit() {
@@ -67,11 +82,50 @@ export class BracketModalComponent implements AfterViewInit {
     this.updateLine();
   }
 
+  /** -----------------------
+   *  LOGICA LAYOUT DUE LATI
+   *  ---------------------- */
+  private computeSides() {
+    const firstRoundMatches = this._rounds?.[0]?.matches?.length ?? 0;
+    this.isTwoSides = firstRoundMatches >= 8; // ottavi+ (altrimenti single-side)
+    this.totalRounds = this._rounds?.length ?? 0;
+
+    this.leftRounds = [];
+    this.rightRounds = [];
+    this.centerRounds = [];
+
+    if (!this.isTwoSides) return;
+
+    this._rounds.forEach((r) => {
+      const m = r.matches || [];
+      if (m.length === 1) {
+        // ➜ finale (o round centrale): lo mettiamo in centro, non nei lati
+        this.centerRounds.push({ ...r, matches: m.slice(0) });
+      } else {
+        const half = Math.floor(m.length / 2);
+        // ➜ split pulito: sinistra = prima metà, destra = seconda metà
+        this.leftRounds.push({ ...r, matches: m.slice(0, half) });
+        this.rightRounds.push({ ...r, matches: m.slice(half) });
+      }
+    });
+  }
+
+  /** -----------------------
+   *  POSIZIONAMENTO CELLE
+   *  ---------------------- */
   getGridRow(colIndex: number, matchIndex: number): number {
     const spacing = Math.pow(2, colIndex);
     return matchIndex * spacing * 2 + spacing;
   }
 
+  getRightGridColumn(colIndexFromZero: number): number {
+    const splitRoundsCount = this.leftRounds.length; // == rightRounds.length
+    return splitRoundsCount - colIndexFromZero;
+  }
+
+  /** -----------------------
+   *  ZOOM
+   *  ---------------------- */
   zoomIn(step: number = 0.1, max: number = 2) {
     this.zoomLevel = Math.min(max, this.zoomLevel + step);
     this.applyTransform();
@@ -89,7 +143,9 @@ export class BracketModalComponent implements AfterViewInit {
     else this.zoomOut(ZOOM_STEP);
   }
 
-  /** --- DRAG START --- */
+  /** -----------------------
+   *  DRAG
+   *  ---------------------- */
   onDragStart(event: MouseEvent | TouchEvent) {
     const target = event.target as HTMLElement;
     if (target.closest('button')) return;
@@ -98,7 +154,7 @@ export class BracketModalComponent implements AfterViewInit {
     this.hasMoved = false;
 
     this.pendingDX = 0;
-    this.pendingDY = 0; // ✅ reset totale
+    this.pendingDY = 0;
 
     const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
     const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
@@ -112,7 +168,6 @@ export class BracketModalComponent implements AfterViewInit {
 
     if (!this.rafId) this.startAnimationLoop();
   }
-
 
   onDragMove(event: MouseEvent | TouchEvent) {
     if (!this.isDragging) return;
@@ -150,13 +205,11 @@ export class BracketModalComponent implements AfterViewInit {
 
     const loop = () => {
       if (this.isDragging) {
-        // Evita di aggiornare se non c’è stato vero movimento
         if (this.hasMoved) {
           this.offsetX = this.lastOffsetX + this.pendingDX;
           this.offsetY = this.lastOffsetY + this.pendingDY;
           grid.style.transform = `translate3d(${this.offsetX}px, ${this.offsetY}px, 0)`;
         }
-
         this.rafId = requestAnimationFrame(loop);
       }
     };
@@ -165,11 +218,11 @@ export class BracketModalComponent implements AfterViewInit {
   }
 
   applyTransform() {
-    // 🔹 Muove solo la griglia
+    // Muove solo la griglia
     const grid = this.bracketGrid.nativeElement;
     grid.style.transform = `translate3d(${this.offsetX}px, ${this.offsetY}px, 0)`;
 
-    // 🔹 Scala solo il wrapper
+    // Scala solo il wrapper
     const scaleLayer = this.bracketScale.nativeElement;
     scaleLayer.style.transform = `scale(${this.zoomLevel})`;
     scaleLayer.style.transformOrigin = 'center center';
@@ -188,29 +241,42 @@ export class BracketModalComponent implements AfterViewInit {
     this.offsetY = (cHeight - gHeight) / 2;
     this.applyTransform();
   }
-  updateLine() {
-    const allMatches = Array.from(document.querySelectorAll('.match')) as HTMLElement[];
-    document.querySelectorAll('.ver').forEach((verEl) => {
-      const ver = verEl as HTMLElement;
-      const parent = ver.parentElement as HTMLElement;
-      if (!parent) return;
 
-      const parentStyle = getComputedStyle(parent);
+  /** -----------------------
+   *  LINEE VERTICALI
+   *  ---------------------- */
+  updateLine() {
+    const verEls = Array.from(document.querySelectorAll('.ver')) as HTMLElement[];
+
+    verEls.forEach((ver) => {
+      const matchEl = ver.parentElement as HTMLElement;
+      if (!matchEl) return;
+
+      // ✅ limita la ricerca alla griglia corrente
+      const grid = ver.closest('.bracket-grid') as HTMLElement;
+      if (!grid) return;
+      const isRightSide = !!grid.closest('.side.right');
+
+      const allMatches = Array.from(grid.querySelectorAll('.match')) as HTMLElement[];
+
+      const parentStyle = getComputedStyle(matchEl);
       const colStart = parseInt(parentStyle.getPropertyValue('grid-column-start')) || 0;
-      const parentRect = parent.getBoundingClientRect();
+      const parentRect = matchEl.getBoundingClientRect();
       const parentCenterY = parentRect.top + parentRect.height / 2;
 
-      // if there is no previous column, fallback to parent's height
-      if (colStart <= 1) {
+      // calcola la "colonna precedente" in base al lato
+      const prevCol = isRightSide ? colStart + 1 : colStart - 1;
+
+      if ((isRightSide && prevCol > getMaxCol(allMatches)) || (!isRightSide && prevCol < 1)) {
         ver.style.height = `${parentRect.height}px`;
         return;
       }
 
-      // gather .ver elements from the previous column and compute their centers
+      // raccogli .ver della colonna precedente SOLO in questa griglia
       const prevVers = allMatches
         .filter((m) => {
           const cs = parseInt(getComputedStyle(m).getPropertyValue('grid-column-start')) || 0;
-          return cs === colStart - 1;
+          return cs === prevCol;
         })
         .map((m) => m.querySelector('.ver') as HTMLElement)
         .filter(Boolean)
@@ -220,7 +286,6 @@ export class BracketModalComponent implements AfterViewInit {
         })
         .sort((a, b) => a.center - b.center);
 
-      // find the nearest previous .ver above and below the current match center
       let above: { center: number } | null = null;
       let below: { center: number } | null = null;
       for (const item of prevVers) {
@@ -232,8 +297,15 @@ export class BracketModalComponent implements AfterViewInit {
         const distance = Math.max(0, below.center - above.center);
         ver.style.height = `${distance}px`;
       } else {
-        // fallback: use parent height if we cannot determine two connectors
+        ver.style.height = `${parentRect.height}px`; // fallback sensato
       }
     });
+
+    function getMaxCol(matches: HTMLElement[]) {
+      return matches.reduce((max, m) => {
+        const cs = parseInt(getComputedStyle(m).getPropertyValue('grid-column-start')) || 0;
+        return Math.max(max, cs);
+      }, 1);
+    }
   }
 }

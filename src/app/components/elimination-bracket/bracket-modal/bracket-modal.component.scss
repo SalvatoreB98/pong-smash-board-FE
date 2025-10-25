@@ -43,8 +43,42 @@
 .bracket-grid-wrapper {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   position: relative;
+}
+
+.two-sides {
+  display: flex;
+  gap: 2rem;
+}
+
+.two-sides .side.right {
+  .match {
+    .hor {
+      left: auto;
+      right: -1.5rem;
+    }
+
+    /* stesso offset ma a destra */
+    .ver {
+      left: auto;
+      right: -1.5rem;
+
+      .container-hor {
+
+        .hor-2,
+        .hor-3 {
+          left: auto;
+          right: 0;
+          transform: translateX(100%);
+        }
+      }
+    }
+  }
+}
+
+.side.left .bracket-grid:last-child .match:last-child {
+  margin-right: 4rem;
+  /* sposta un po’ la finale verso il centro */
 }
 
 .bracket-scale {
@@ -154,12 +188,18 @@ $connector-thickness: 2px;
         width: $connector-length;
         height: $connector-thickness;
         background: $connector-color;
-        transform: translateX(-100%); /* extend left from the spine */
+        transform: translateX(-100%);
+        /* extend left from the spine */
         pointer-events: none;
       }
 
-      .hor-2 { top: 0; }
-      .hor-3 { bottom: 0; }
+      .hor-2 {
+        top: 0;
+      }
+
+      .hor-3 {
+        bottom: 0;
+      }
     }
   }
 }
