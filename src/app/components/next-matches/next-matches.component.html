@@ -28,9 +28,9 @@
                 ></app-match-card>
             </div>
         </div>
-        <button *ngIf="!swiperManager.value?.isLocked" type="button" class="swiper-button-prev"
+        <button *ngIf="!swiperManager.value?.isLocked" #prevButton type="button" class="swiper-button-prev"
             aria-label="Scroll previous matches"></button>
-        <button *ngIf="!swiperManager.value?.isLocked" type="button" class="swiper-button-next"
+        <button *ngIf="!swiperManager.value?.isLocked" #nextButton type="button" class="swiper-button-next"
             aria-label="Scroll next matches"></button>
     </div>
 </section>
