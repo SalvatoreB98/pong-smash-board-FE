@@ -50,6 +50,11 @@
 
 .two-sides {
   display: flex;
+
+  .center-gap {
+    width: auto;
+    align-self: center;
+  }
 }
 
 .two-sides .side.right {
@@ -151,6 +156,7 @@
       color: var(--primary-light, #2e68ff);
     }
   }
+
   .round-label {
     font-size: 0.85rem;
     font-weight: 600;
@@ -235,6 +241,51 @@ $connector-thickness: 2px;
           transform: translateX(100%);
         }
       }
+    }
+  }
+
+}
+
+.final {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+
+  .match {
+    border: 1px solid $yellow;
+    box-shadow: 0 0 10px $yellow;
+    font-size: 1.2rem;
+
+    .round-label {
+      font-size: 1.2rem;
+
+      color: $yellow;
+      opacity: 1;
+    }
+
+    .player {
+      font-size: 1.2rem;
+    }
+  }
+
+  .final-hor {
+
+    width: $connector-length;
+    height: $connector-thickness;
+    background: $connector-color;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 200;
+
+    &.left {
+      left: -1.3rem;
+      width: 5em;
+    }
+
+    &.right {
+      left: auto;
+      right: -1.3rem;
+      width: 5em;
     }
   }
 }
