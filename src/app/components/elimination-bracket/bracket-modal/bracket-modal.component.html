@@ -53,12 +53,6 @@
                     </span>
 
                     <span *ngIf="col === leftRounds.length - 1" class="hor final-hor-right"></span>
-                    <span *ngIf="col === leftRounds.length - 1" class="ver final-left">
-                      <div class="container-hor right">
-                        <div class="hor-2"></div>
-                        <div class="hor-3"></div>
-                      </div>
-                    </span>
                   </div>
                 </ng-container>
               </ng-container>
@@ -72,7 +66,7 @@
           <div class="side right">
             <div class="bracket-grid">
               <ng-container *ngFor="let round of rightRounds; let col = index">
-                <ng-container *ngIf="col < rightRounds.length - 1">
+                <ng-container>
                   <ng-container *ngFor="let match of round.matches; let i = index">
                     <div class="match" [style.gridColumn]="getRightGridColumn(col)"
                       [style.gridRow]="getGridRow(col, i)">
