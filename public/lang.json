@@ -1212,7 +1212,7 @@
         "en": "Match date cannot be set yet."
     },
     "nickname_required": {
-        "it": "Il nickname è obbligatorio. Min 2 caratteri, max 15",
-        "en": "Nickname is required. Min 2 characters, max 15."
+        "it": "Il nickname è obbligatorio. Min 2 caratteri, max 11",
+        "en": "Nickname is required. Min 2 characters, max 11."
     }
 }
