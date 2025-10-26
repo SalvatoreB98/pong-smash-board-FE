@@ -30,7 +30,9 @@
                 <ng-container *ngFor="let match of round.matches; let i = index">
                   <div class="match" [style.gridColumn]="col + 1" [style.gridRow]="getGridRow(col, i)">
                     <span *ngIf="col > 0" class="hor"></span>
-
+                    <div class="round-label">
+                      {{ match.roundLabel | translate }}
+                    </div>
                     <div class="player">
                       <img [src]="match.slots[0]?.player?.image_url || 'default-player.jpg'" alt="" />
                       <span>{{ match.slots[0]?.player?.nickname || 'TBD' }}</span>
@@ -49,7 +51,7 @@
                         <div class="hor-3"></div>
                       </div>
                     </span>
-                    
+
                     <span *ngIf="col === leftRounds.length - 1" class="hor final-hor-right"></span>
                     <span *ngIf="col === leftRounds.length - 1" class="ver final-left">
                       <div class="container-hor right">
@@ -74,6 +76,9 @@
                   <ng-container *ngFor="let match of round.matches; let i = index">
                     <div class="match" [style.gridColumn]="getRightGridColumn(col)"
                       [style.gridRow]="getGridRow(col, i)">
+                      <div class="round-label">
+                        {{ match.roundLabel | translate }}
+                      </div>
                       <!-- connettore orizzontale: solo se esiste una colonna successiva sul lato destro -->
                       <span *ngIf="col > 0 && col < (rightRounds.length - 1)" class="hor"></span>
 

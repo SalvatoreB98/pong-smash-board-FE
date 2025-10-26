@@ -1,3 +1,5 @@
+@use '../../../../style/variables.scss' as *;
+
 .bracket-container {
   position: relative;
   overflow: hidden;
@@ -148,6 +150,13 @@
       font-weight: 700;
       color: var(--primary-light, #2e68ff);
     }
+  }
+  .round-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+    border-bottom: 1px solid white;
   }
 }
 
