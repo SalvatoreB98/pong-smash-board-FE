@@ -74,7 +74,7 @@
                         {{ match.roundLabel | translate }}
                       </div>
                       <!-- connettore orizzontale: solo se esiste una colonna successiva sul lato destro -->
-                      <span *ngIf="col > 0 && col < (rightRounds.length - 1)" class="hor"></span>
+                      <span *ngIf="col > 0" class="hor"></span>
 
                       <div class="player">
                         <img [src]="match.slots[0]?.player?.image_url || 'default-player.jpg'" alt="" />
@@ -89,7 +89,7 @@
                       </div>
 
                       <!-- spina verticale: solo se esiste una colonna successiva sul lato destro -->
-                      <span *ngIf="col > 0 && col < (rightRounds.length - 1)" class="ver">
+                      <span *ngIf="col > 0" class="ver">
                         <div class="container-hor">
                           <div class="hor-2"></div>
                           <div class="hor-3"></div>
