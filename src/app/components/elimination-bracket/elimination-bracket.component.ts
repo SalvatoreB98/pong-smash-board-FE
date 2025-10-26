@@ -219,7 +219,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
       tooltip: this.translationService.translate('match_details'),
     });
 
-    if(!match?.matchData?.date || match?.matchData?.date === '') {
+    if (!match?.matchData?.date || match?.matchData?.date === '') {
       actions.push({
         icon: '<i class="fa fa-calendar ms-1" aria-hidden="true"></i>',
         handler: () => this.openModal('SET_DATE', {
@@ -248,6 +248,8 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
         handler: () => this.openModal('MANUAL_POINTS', {
           player1: match.slots?.[0]?.player ?? null,
           player2: match.slots?.[1]?.player ?? null,
+          roundName: round.stage ?? round.name,
+          roundLabel: match.roundLabel ?? round.stage ?? round.name,
         }),
       });
     }

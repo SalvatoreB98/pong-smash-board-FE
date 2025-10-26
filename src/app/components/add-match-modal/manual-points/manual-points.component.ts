@@ -12,6 +12,7 @@ import { LoaderService } from '../../../../services/loader.service';
 import { Utils } from '../../../utils/Utils';
 import { StepIndicatorComponent } from '../../../common/step-indicator/step-indicator.component';
 import { Group, mapGroupPlayerToIPlayer } from '../../../interfaces/group.interface';
+import { KnockoutStage } from '../../../utils/enum';
 
 @Component({
   selector: 'app-manual-points',
@@ -34,6 +35,7 @@ export class ManualPointsComponent implements OnChanges, OnInit {
   @Input() players: IPlayer[] = [];
   @Input() groups: Group[] = [];
   @Input() isGroupKnockout = false;
+  @Input() roundOfMatch: KnockoutStage | null = null;
 
   groupForm!: FormGroup;
   playersForm!: FormGroup;
@@ -64,7 +66,7 @@ export class ManualPointsComponent implements OnChanges, OnInit {
     private competitionService: CompetitionService,
   ) { }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: any) {
     if (changes['player1'] || changes['player2']) {
       if (this.playersForm) {
         this.playersForm.patchValue({
@@ -76,6 +78,10 @@ export class ManualPointsComponent implements OnChanges, OnInit {
 
     if (changes['groups']) {
       this.trySelectGroup();
+    }
+    if (changes?.roundOfMatch) {
+      this.roundOfMatch = changes.roundOfMatch.currentValue;
+      console.log('roundOfMatch changed:', this.roundOfMatch);
     }
   }
 
@@ -500,13 +506,15 @@ export class ManualPointsComponent implements OnChanges, OnInit {
       p1Score: this.player1SetsPoints,
       p2Score: this.player2SetsPoints,
       setsPoints: setsData,
+      stage: this.roundOfMatch || undefined,
+
     };
 
     if (this.isGroupMode && this.selectedGroupId) {
       formData.groupId = this.selectedGroupId;
     }
 
-    this.dataService.addMatch(formData).then(() => {
+    this.dataService.addMatch(formData, this.roundOfMatch).then(() => {
       this.modalService.closeModal();
       if (target instanceof HTMLElement) {
         this.loaderService.removeSpinnerFromButton(target);
