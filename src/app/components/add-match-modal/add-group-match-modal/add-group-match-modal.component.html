@@ -15,7 +15,7 @@
     <form *ngSwitchCase="2" class="form-dark" [formGroup]="matchForm" (ngSubmit)="addMatch($event)">
       <div class="selected-group" *ngIf="selectedGroup">
         <span>{{ 'group_knockout_board_group' | translate }}: <strong>{{ selectedGroup.name }}</strong></span>
-        <button type="button" class="link" (click)="onBackToGroupSelection()">
+        <button type="button" class="link edit" (click)="onBackToGroupSelection()">
           {{ 'edit' | translate }}
         </button>
       </div>

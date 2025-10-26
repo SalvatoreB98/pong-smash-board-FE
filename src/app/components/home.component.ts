@@ -114,6 +114,10 @@ export class HomeComponent {
   }
 
   setClickedMatch(match: IMatch) {
+    this.player1Selected = this.extractPlayerFromMatch(match, 1);
+    this.player2Selected = this.extractPlayerFromMatch(match, 2);
+    this.roundTypeOfMatch = match.roundName ?? null;
+
     const competitionType = (this.activeCompetition?.type ?? 'league') as CompetitionMode;
     const roundLabel = match.roundLabel
       ? typeof match.roundLabel === 'string'
@@ -129,6 +133,51 @@ export class HomeComponent {
       competitionName: this.activeCompetition?.name ?? undefined,
       roundName: match.roundName ?? null,
       roundLabel,
+    };
+  }
+
+  private extractPlayerFromMatch(match: IMatch, slot: 1 | 2): IPlayer | null {
+    type PlayerKey = `player${1 | 2}`;
+    const key = (`player${slot}`) as PlayerKey;
+    const matchWithPlayers = match as IMatch & {
+      player1?: { id?: number | string | null; name?: string | null; img?: string | null; image_url?: string | null; nickname?: string | null } | null;
+      player2?: { id?: number | string | null; name?: string | null; img?: string | null; image_url?: string | null; nickname?: string | null } | null;
+    };
+    const matchRecord = match as unknown as Record<string, unknown>;
+
+    const directPlayer = matchWithPlayers[key];
+    const rawId = directPlayer?.id ?? matchRecord[`${key}_id`];
+    const hasId = rawId !== undefined && rawId !== null && rawId !== '';
+    const numericId = hasId ? Number(rawId) : Number.NaN;
+
+    if (!Number.isFinite(numericId)) {
+      return null;
+    }
+
+    const fallbackName = matchRecord[`${key}_name`];
+    const resolvedName = typeof directPlayer?.name === 'string' && directPlayer.name.trim().length
+      ? directPlayer.name
+      : typeof fallbackName === 'string'
+        ? fallbackName
+        : '';
+
+    const nicknameSource = (directPlayer as { nickname?: string | null } | null)?.nickname
+      ?? matchRecord[`${key}_nickname`];
+    const resolvedNickname = typeof nicknameSource === 'string' && nicknameSource.trim().length
+      ? nicknameSource
+      : undefined;
+
+    const imageSource = directPlayer?.img
+      ?? directPlayer?.image_url
+      ?? matchRecord[`${key}_img`]
+      ?? matchRecord[`${key}_image_url`];
+    const resolvedImage = typeof imageSource === 'string' && imageSource.length ? imageSource : undefined;
+
+    return {
+      id: numericId,
+      name: resolvedName,
+      nickname: resolvedNickname,
+      image_url: resolvedImage,
     };
   }
 

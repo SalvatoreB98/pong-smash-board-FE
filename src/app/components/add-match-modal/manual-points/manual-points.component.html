@@ -51,9 +51,15 @@
     <div class="step-actions d-flex justify-content-between mb-3">
       <div *ngIf="selectedGroup" class="selected-group">
         <span>{{ 'group_knockout_board_group' | translate }}: <strong>{{ selectedGroup.name }}</strong></span>
-        <button type="button" class="link" *ngIf="showGroupControls" (click)="onGroupBack()">{{ 'edit' | translate }}</button>
+        <button type="button" class="link edit" *ngIf="showGroupControls" (click)="onGroupBack()">{{ 'edit' | translate
+          }}</button>
       </div>
-      <button type="button" class="link" (click)="onPlayersBack()">{{ 'edit' | translate }}</button>
+      <div>
+        player1: {{ player1?.nickname }} vs player2: {{ player2?.nickname }}
+        <button type="button" class="link edit" *ngIf="showPlayerControls" (click)="onPlayersBack()">
+          {{ 'edit_players' | translate }}
+        </button>
+      </div>
     </div>
 
     <div class="sets-container">

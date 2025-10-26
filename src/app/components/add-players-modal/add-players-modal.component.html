@@ -47,6 +47,11 @@
                             <label for="nickname" class="form-label">{{ 'nickname' | translate }}</label>
                             <input type="text" id="nickname" class="form-control input-field" formControlName="nickname"
                                 [placeholder]="'insert_nickname' | translate" />
+                            <div class="error" *ngIf="addPlayerForm.get('nickname')?.invalid && (addPlayerForm.get('nickname')?.dirty || addPlayerForm.get('nickname')?.touched)">
+                                <small class="text-danger">
+                                    {{ 'nickname_required' | translate }}
+                                </small>
+                            </div>
                         </div>
 
                         <div class="mb-3 position-relative">

@@ -6,7 +6,7 @@
       </app-matches>
     </div>
     <div>
-      <app-next-matches *ngIf="!readonly"></app-next-matches>
+      <app-next-matches *ngIf="!readonly" (matchClick)="onMatchSelected($event)"></app-next-matches>
     </div>
     <section class="board-section mt-5">
       <app-group-knockout-board [groups]="groups"></app-group-knockout-board>

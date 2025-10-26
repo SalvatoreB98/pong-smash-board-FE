@@ -24,6 +24,7 @@ export interface MatchCardSchedule {
   date?: string | Date | null;
   fallbackLabel?: string | null;
   action?: MatchCardAction | null;
+  actions?: MatchCardAction[] | null;
   iconClass?: string | null;
   showTime?: boolean;
   dateFormat?: string;
@@ -144,7 +145,13 @@ export class MatchCardComponent {
   }
 
   scheduleHasFallback(): boolean {
-    return !!this.schedule?.fallbackLabel || !!this.schedule?.action;
+    if (!this.schedule) {
+      return false;
+    }
+
+    const hasVisibleActions = this.getScheduleActions().length > 0;
+
+    return !!this.schedule.fallbackLabel || !!this.schedule.action || hasVisibleActions;
   }
 
   getPlayer(index: number): MatchCardPlayerSlot {
@@ -154,5 +161,11 @@ export class MatchCardComponent {
   getScoreValue(index: number): string | number {
     const slot = this.getPlayer(index);
     return slot?.score ?? '-';
+  }
+
+  getScheduleActions(): MatchCardAction[] {
+    return (this.schedule?.actions ?? []).filter(
+      action => !!action && action.visible !== false
+    ) as MatchCardAction[];
   }
 }
