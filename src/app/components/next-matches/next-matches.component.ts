@@ -148,7 +148,7 @@ export class NextMatchesComponent implements OnChanges, AfterViewInit, OnDestroy
   private buildFallbackActions(match: NextMatch, actionLabel: string): MatchCardAction[] {
     return [
       {
-        icon: '<i class="fa fa-calendar ms-2" aria-hidden="true"></i>',
+        icon: '<i class="fa fa-calendar" aria-hidden="true"></i>',
         cssClass: 'mt-1',
         handler: () => this.openModalForMatch('SET_DATE', match),
       },
