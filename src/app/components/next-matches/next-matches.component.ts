@@ -17,8 +17,9 @@ import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { DataService } from '../../../services/data.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
 import { BASE_SLIDER_CONFIG } from '../../config/slider.config';
-import { MatchCardComponent, MatchCardPlayerSlot, MatchCardSchedule } from '../match-card/match-card.component';
+import { MatchCardAction, MatchCardComponent, MatchCardPlayerSlot, MatchCardSchedule } from '../match-card/match-card.component';
 import { SwiperManager } from '../../utils/helpers/swiper.manager';
+import { ModalService } from '../../../services/modal.service';
 
 type NextMatch = IMatch & {
   group_name?: string | null;
@@ -56,7 +57,10 @@ export class NextMatchesComponent implements OnChanges, AfterViewInit, OnDestroy
     this.swiperConfig
   );
 
-  constructor(private readonly dataService: DataService) { }
+  constructor(
+    private readonly dataService: DataService,
+    private readonly modalService: ModalService,
+  ) { }
 
   // 🔁 Sincronizza Swiper quando cambiano i match
   ngOnChanges(changes: SimpleChanges): void {
@@ -132,31 +136,53 @@ export class NextMatchesComponent implements OnChanges, AfterViewInit, OnDestroy
     return {
       date: null,
       fallbackLabel,
-      actions: [
-        {
-          label: actionLabel,
-          icon: '<i class="fa fa-calendar ms-2" aria-hidden="true"></i>',
-          cssClass: 'mt-1',
-          handler: () => console.log('Apri modale: SET_DATE', match),
-        },
-        {
-          label: 'Registra',
-          icon: '<i class="fa fa-floppy-o ms-1" aria-hidden="true"></i>',
-          cssClass: ['bg-primary', 'text-white'],
-          handler: () => console.log('Apri modale: ADD_MATCH', match),
-        },
-        {
-          label: 'Live',
-          icon: '<div class="circle-live"></div>',
-          cssClass: ['bg-secondary', 'text-white', 'position-relative'],
-          handler: () => console.log('Apri modale: MANUAL_POINTS', match),
-        },
-      ],
+      actions: this.buildFallbackActions(match, actionLabel),
       showTime: true
     };
   }
 
   onMatchClick(match: NextMatch): void {
+    this.emitMatchSelection(match);
+  }
+
+  private buildFallbackActions(match: NextMatch, actionLabel: string): MatchCardAction[] {
+    return [
+      {
+        label: actionLabel,
+        icon: '<i class="fa fa-calendar ms-2" aria-hidden="true"></i>',
+        cssClass: 'mt-1',
+        handler: () => this.openModalForMatch('SET_DATE', match),
+      },
+      {
+        label: 'Registra',
+        icon: '<i class="fa fa-floppy-o ms-1" aria-hidden="true"></i>',
+        cssClass: ['bg-primary', 'text-white'],
+        handler: () => this.openModalForMatch('ADD_MATCH', match),
+      },
+      {
+        label: 'Live',
+        icon: '<div class="circle-live"></div>',
+        cssClass: ['bg-secondary', 'text-white', 'position-relative'],
+        handler: () => this.openModalForMatch('MANUAL_POINTS', match),
+      },
+    ];
+  }
+
+  private openModalForMatch(
+    modalKey: 'SET_DATE' | 'ADD_MATCH' | 'MANUAL_POINTS',
+    match: NextMatch,
+  ): void {
+    const modalName = this.modalService.MODALS?.[modalKey];
+    if (!modalName) {
+      console.warn(`[NextMatchesComponent] Modal key "${modalKey}" is not registered.`);
+      return;
+    }
+
+    this.emitMatchSelection(match);
+    this.modalService.openModal(modalName, { match });
+  }
+
+  private emitMatchSelection(match: NextMatch): void {
     this.matchClick.emit(match);
   }
 }
