@@ -148,19 +148,16 @@ export class NextMatchesComponent implements OnChanges, AfterViewInit, OnDestroy
   private buildFallbackActions(match: NextMatch, actionLabel: string): MatchCardAction[] {
     return [
       {
-        label: actionLabel,
         icon: '<i class="fa fa-calendar ms-2" aria-hidden="true"></i>',
         cssClass: 'mt-1',
         handler: () => this.openModalForMatch('SET_DATE', match),
       },
       {
-        label: 'Registra',
         icon: '<i class="fa fa-floppy-o ms-1" aria-hidden="true"></i>',
         cssClass: ['bg-primary', 'text-white'],
         handler: () => this.openModalForMatch('ADD_MATCH', match),
       },
       {
-        label: 'Live',
         icon: '<div class="circle-live"></div>',
         cssClass: ['bg-secondary', 'text-white', 'position-relative'],
         handler: () => this.openModalForMatch('MANUAL_POINTS', match),
