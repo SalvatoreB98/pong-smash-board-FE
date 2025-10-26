@@ -17,12 +17,7 @@ import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { DataService } from '../../../services/data.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
 import { BASE_SLIDER_CONFIG } from '../../config/slider.config';
-import {
-  MatchCardAction,
-  MatchCardComponent,
-  MatchCardPlayerSlot,
-  MatchCardSchedule
-} from '../match-card/match-card.component';
+import { MatchCardComponent, MatchCardPlayerSlot, MatchCardSchedule } from '../match-card/match-card.component';
 import { SwiperManager } from '../../utils/helpers/swiper.manager';
 
 type NextMatch = IMatch & {
@@ -134,17 +129,29 @@ export class NextMatchesComponent implements OnChanges, AfterViewInit, OnDestroy
       };
     }
 
-    const action: MatchCardAction = {
-      label: actionLabel,
-      icon: '<i class="fa fa-calendar ms-2" aria-hidden="true"></i>',
-      cssClass: 'mt-1',
-      handler: null
-    };
-
     return {
       date: null,
       fallbackLabel,
-      action,
+      actions: [
+        {
+          label: actionLabel,
+          icon: '<i class="fa fa-calendar ms-2" aria-hidden="true"></i>',
+          cssClass: 'mt-1',
+          handler: () => console.log('Apri modale: SET_DATE', match),
+        },
+        {
+          label: 'Registra',
+          icon: '<i class="fa fa-floppy-o ms-1" aria-hidden="true"></i>',
+          cssClass: ['bg-primary', 'text-white'],
+          handler: () => console.log('Apri modale: ADD_MATCH', match),
+        },
+        {
+          label: 'Live',
+          icon: '<div class="circle-live"></div>',
+          cssClass: ['bg-secondary', 'text-white', 'position-relative'],
+          handler: () => console.log('Apri modale: MANUAL_POINTS', match),
+        },
+      ],
       showTime: true
     };
   }

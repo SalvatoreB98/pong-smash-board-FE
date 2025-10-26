@@ -228,13 +228,62 @@
     }
   }
 
-  .match-card__schedule-action {
+}
+
+.match-card__footer {
+  .match-card__actions {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
 
     button {
-      font-size: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      min-width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      padding: 0 0.5rem;
+
+      &.bg-primary {
+        background: #284aa6;
+        color: #fff;
+      }
+
+      &.bg-secondary {
+        background: #c76360;
+        color: #fff;
+      }
+
+      &:hover {
+        filter: brightness(1.1);
+      }
+
+      .circle-live {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: red;
+        animation: pulse 1.2s infinite ease-in-out;
+      }
     }
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
 

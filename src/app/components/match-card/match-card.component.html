@@ -124,13 +124,38 @@
                 <i [class]="schedule.iconClass || 'fa fa-clock-o'" aria-hidden="true"></i>
                 {{ schedule.fallbackLabel }}
               </div>
-              <div class="match-card__schedule-action" *ngIf="schedule.action as scheduleAction">
-                <button type="button" class="tertiary" [ngClass]="scheduleAction.cssClass"
-                  (click)="onAction(scheduleAction, $event)">
-                  <span>{{ scheduleAction.label }}</span>
-                  <span class="match-card__icon" *ngIf="scheduleAction.icon" [innerHTML]="scheduleAction.icon"></span>
-                </button>
-              </div>
+              <ng-container *ngIf="getScheduleActions() as scheduleActions">
+                <div class="match-card__actions" *ngIf="scheduleActions.length || schedule.action">
+                  <ng-container *ngIf="scheduleActions.length; else singleScheduleAction">
+                    <button
+                      *ngFor="let scheduleAction of scheduleActions; trackBy: trackByAction"
+                      type="button"
+                      class="btn btn-sm"
+                      [ngClass]="scheduleAction.cssClass"
+                      [disabled]="scheduleAction.disabled"
+                      [attr.aria-label]="scheduleAction.ariaLabel ?? scheduleAction.label ?? ''"
+                      [attr.title]="scheduleAction.tooltip ?? scheduleAction.label ?? ''"
+                      (click)="onAction(scheduleAction, $event)">
+                      <span class="match-card__icon" *ngIf="scheduleAction.icon" [innerHTML]="scheduleAction.icon"></span>
+                      <span *ngIf="scheduleAction.label">{{ scheduleAction.label }}</span>
+                    </button>
+                  </ng-container>
+                  <ng-template #singleScheduleAction>
+                    <button
+                      *ngIf="schedule.action as scheduleAction"
+                      type="button"
+                      class="btn btn-sm"
+                      [ngClass]="scheduleAction.cssClass"
+                      [disabled]="scheduleAction.disabled"
+                      [attr.aria-label]="scheduleAction.ariaLabel ?? scheduleAction.label ?? ''"
+                      [attr.title]="scheduleAction.tooltip ?? scheduleAction.label ?? ''"
+                      (click)="onAction(scheduleAction, $event)">
+                      <span class="match-card__icon" *ngIf="scheduleAction.icon" [innerHTML]="scheduleAction.icon"></span>
+                      <span *ngIf="scheduleAction.label">{{ scheduleAction.label }}</span>
+                    </button>
+                  </ng-template>
+                </div>
+              </ng-container>
             </div>
           </ng-template>
         </ng-container>
