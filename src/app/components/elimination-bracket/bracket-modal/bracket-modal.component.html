@@ -35,13 +35,13 @@
                     </div>
                     <div class="player">
                       <img [src]="match.slots[0]?.player?.image_url || 'default-player.jpg'" alt="" />
-                      <span>{{ match.slots[0]?.player?.nickname || 'TBD' }}</span>
+                      <span>{{ match.slots[0]?.player?.nickname || '--' }}</span>
                       <strong *ngIf="match.player1Score !== null">{{ match.player1Score }}</strong>
                     </div>
 
                     <div class="player">
                       <img [src]="match.slots[1]?.player?.image_url || 'default-player.jpg'" alt="" />
-                      <span>{{ match.slots[1]?.player?.nickname || 'TBD' }}</span>
+                      <span>{{ match.slots[1]?.player?.nickname || '--' }}</span>
                       <strong *ngIf="match.player2Score !== null">{{ match.player2Score }}</strong>
                     </div>
 
@@ -70,12 +70,12 @@
                   </div>
                   <div class="player">
                     <img [src]="match.slots[0]?.player?.image_url || 'default-player.jpg'" alt="" />
-                    <span>{{ match.slots[0]?.player?.nickname || 'TBD' }}</span>
+                    <span>{{ match.slots[0]?.player?.nickname || '--' }}</span>
                     <strong *ngIf="match.player1Score !== null">{{ match.player1Score }}</strong>
                   </div>
                   <div class="player">
                     <img [src]="match.slots[1]?.player?.image_url || 'default-player.jpg'" alt="" />
-                    <span>{{ match.slots[1]?.player?.nickname || 'TBD' }}</span>
+                    <span>{{ match.slots[1]?.player?.nickname || '--' }}</span>
                     <strong *ngIf="match.player2Score !== null">{{ match.player2Score }}</strong>
                   </div>
                 </div>
@@ -100,13 +100,13 @@
 
                       <div class="player">
                         <img [src]="match.slots[0]?.player?.image_url || 'default-player.jpg'" alt="" />
-                        <span>{{ match.slots[0]?.player?.nickname || 'TBD' }}</span>
+                        <span>{{ match.slots[0]?.player?.nickname || '--' }}</span>
                         <strong *ngIf="match.player1Score !== null">{{ match.player1Score }}</strong>
                       </div>
 
                       <div class="player">
                         <img [src]="match.slots[1]?.player?.image_url || 'default-player.jpg'" alt="" />
-                        <span>{{ match.slots[1]?.player?.nickname || 'TBD' }}</span>
+                        <span>{{ match.slots[1]?.player?.nickname || '--' }}</span>
                         <strong *ngIf="match.player2Score !== null">{{ match.player2Score }}</strong>
                       </div>
 
@@ -137,13 +137,13 @@
 
                 <div class="player">
                   <img [src]="match.slots[0]?.player?.image_url || 'default-player.jpg'" alt="" />
-                  <span>{{ match.slots[0]?.player?.nickname || 'TBD' }}</span>
+                  <span>{{ match.slots[0]?.player?.nickname || '--' }}</span>
                   <strong *ngIf="match.player1Score !== null">{{ match.player1Score }}</strong>
                 </div>
 
                 <div class="player">
                   <img [src]="match.slots[1]?.player?.image_url || 'default-player.jpg'" alt="" />
-                  <span>{{ match.slots[1]?.player?.nickname || 'TBD' }}</span>
+                  <span>{{ match.slots[1]?.player?.nickname || '--' }}</span>
                   <strong *ngIf="match.player2Score !== null">{{ match.player2Score }}</strong>
                 </div>
 

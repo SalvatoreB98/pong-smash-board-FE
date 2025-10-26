@@ -2,8 +2,12 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
   OnDestroy,
-  OnInit,
+  Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -13,7 +17,12 @@ import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { DataService } from '../../../services/data.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
 import { BASE_SLIDER_CONFIG } from '../../config/slider.config';
-import { MatchCardAction, MatchCardComponent, MatchCardPlayerSlot, MatchCardSchedule } from '../match-card/match-card.component';
+import {
+  MatchCardAction,
+  MatchCardComponent,
+  MatchCardPlayerSlot,
+  MatchCardSchedule
+} from '../match-card/match-card.component';
 import { SwiperManager } from '../../utils/helpers/swiper.manager';
 
 type NextMatch = IMatch & {
@@ -34,32 +43,36 @@ type NextMatch = IMatch & {
   templateUrl: './next-matches.component.html',
   styleUrls: ['./next-matches.component.scss']
 })
-export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
-  nextMatches: NextMatch[] = [];
-  @ViewChild('swiperEl2') swiperEl?: ElementRef<HTMLElement>;
-  @ViewChild('nextButton', { read: ElementRef }) nextButton?: ElementRef<HTMLButtonElement>;
-  @ViewChild('prevButton', { read: ElementRef }) prevButton?: ElementRef<HTMLButtonElement>;
-  isLoading: boolean = true;
-  swiperConfig: SwiperOptions = {
+export class NextMatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
+  @Input() nextMatches: NextMatch[] = [];
+  @Input() isLoading: boolean = true;
+  @Output() matchClick = new EventEmitter<NextMatch>();
+
+  @ViewChild('swiperEl') swiperEl?: ElementRef<HTMLElement>;
+
+  readonly swiperConfig: SwiperOptions = {
     ...BASE_SLIDER_CONFIG,
     modules: [Navigation],
-    navigation: {
-      enabled: true,
-    }
+    navigation: true
   };
-  isOverflowing: boolean = false;
-  // Shared Swiper manager avoids duplicated lifecycle code across match sliders.
-  readonly swiperManager = new SwiperManager(() => this.swiperEl?.nativeElement ?? null, this.swiperConfig);
+
+  readonly swiperManager = new SwiperManager(
+    () => this.swiperEl?.nativeElement ?? null,
+    this.swiperConfig
+  );
 
   constructor(private readonly dataService: DataService) { }
 
-  ngOnInit(): void {
-    this.loadMatches();
+  // 🔁 Sincronizza Swiper quando cambiano i match
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['nextMatches']) {
+      this.swiperManager.queueUpdate();
+    }
   }
 
   ngAfterViewInit(): void {
-    this.configureNavigation();
     this.swiperManager.init();
+    this.loadMatches();
   }
 
   ngOnDestroy(): void {
@@ -67,29 +80,17 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async loadMatches(): Promise<void> {
-    const matches = await this.dataService.fetchNextMatches();
-    this.isLoading = false;
-    this.nextMatches = Array.isArray(matches) ? (matches as NextMatch[]) : [];
-
-    // 👇 Garantisce che Swiper parta solo dopo aver popolato il DOM condiviso.
-    this.swiperManager.queueUpdate();
-  }
-
-  private configureNavigation(): void {
-    const nextEl = this.nextButton?.nativeElement;
-    const prevEl = this.prevButton?.nativeElement;
-
-    if (!nextEl || !prevEl) {
-      return;
+    try {
+      const matches = await this.dataService.fetchNextMatches();
+      this.nextMatches = Array.isArray(matches) ? (matches as NextMatch[]) : [];
+    } catch (error) {
+      console.error('Failed to fetch next matches:', error);
+      this.nextMatches = [];
+    } finally {
+      this.isLoading = false;
+      // ⚙️ Riaggiorna Swiper dopo aver popolato il DOM
+      setTimeout(() => this.swiperManager.queueUpdate(), 100);
     }
-
-    this.swiperManager.updateConfig({
-      navigation: {
-        enabled: true,
-        nextEl,
-        prevEl,
-      },
-    });
   }
 
   trackByMatch(index: number, match: NextMatch): string | number {
@@ -97,32 +98,39 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   mapMatchToPlayers(match: NextMatch): MatchCardPlayerSlot[] {
-    // Normalized player payload so the shared match card can render avatars and names.
     return [
       {
         displayName: match?.player1?.name || match?.player1_name || '',
         avatarUrl: match?.player1?.img || match?.player1_img || null,
-        state: 'player',
+        state: 'player'
       },
       {
         displayName: match?.player2?.name || match?.player2_name || '',
         avatarUrl: match?.player2?.img || match?.player2_img || null,
-        state: 'player',
-      },
+        state: 'player'
+      }
     ];
   }
 
   buildSchedule(match: NextMatch, fallbackLabel: string, actionLabel: string): MatchCardSchedule {
     const rawDate = (match as any)?.date ?? null;
-    const parsedDate = rawDate instanceof Date ? rawDate : (rawDate != null ? new Date(rawDate) : null);
-    const normalizedDate = parsedDate && !Number.isNaN(parsedDate.getTime())
-      ? parsedDate
-      : (typeof rawDate === 'string' ? rawDate : null);
+    const parsedDate =
+      rawDate instanceof Date
+        ? rawDate
+        : rawDate != null
+          ? new Date(rawDate)
+          : null;
+    const normalizedDate =
+      parsedDate && !Number.isNaN(parsedDate.getTime())
+        ? parsedDate
+        : typeof rawDate === 'string'
+          ? rawDate
+          : null;
 
     if (normalizedDate) {
       return {
         date: normalizedDate,
-        showTime: true,
+        showTime: true
       };
     }
 
@@ -130,14 +138,18 @@ export class NextMatchesComponent implements OnInit, AfterViewInit, OnDestroy {
       label: actionLabel,
       icon: '<i class="fa fa-calendar ms-2" aria-hidden="true"></i>',
       cssClass: 'mt-1',
-      handler: null,
+      handler: null
     };
 
     return {
       date: null,
       fallbackLabel,
       action,
-      showTime: true,
+      showTime: true
     };
+  }
+
+  onMatchClick(match: NextMatch): void {
+    this.matchClick.emit(match);
   }
 }

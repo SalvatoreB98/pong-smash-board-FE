@@ -232,7 +232,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
 
     if (match?.winnerId === null) {
       actions.push({
-        icon: '<i class="fa fa-file-text-o ms-1" aria-hidden="true"></i>',
+        icon: '<i class="fa fa-floppy-o ms-1" aria-hidden="true"></i>',
         handler: () => this.openModal('ADD_MATCH', {
           player1: match.slots?.[0]?.player ?? null,
           player2: match.slots?.[1]?.player ?? null,

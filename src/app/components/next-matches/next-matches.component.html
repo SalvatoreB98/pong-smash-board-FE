@@ -1,5 +1,7 @@
 <section class="next-matches">
     <h4 class="title text-center">{{ 'next_matches' | translate }}</h4>
+
+    <!-- Skeleton loader -->
     <div *ngIf="isLoading" class="skeleton next-matches__skeleton">
         <div class="skeleton-card placeholder" *ngFor="let _ of [1,2,3]">
             <div class="skeleton-card__header placeholder"></div>
@@ -11,30 +13,22 @@
             <div class="skeleton-card__footer placeholder"></div>
         </div>
     </div>
-    <div class="slider swiper next-matches__slider" #swiperEl2 *ngIf="nextMatches.length; else noMatches">
+
+    <!-- Swiper slider -->
+    <div class="slider swiper next-matches__slider" #swiperEl *ngIf="!isLoading && nextMatches.length; else noMatches">
         <div class="swiper-wrapper">
-            <div class="swiper-slide" style="margin-right: 16px;"
-                *ngFor="let match of nextMatches; trackBy: trackByMatch">
-                <!-- Reuse shared match-card for upcoming matches as well -->
-                <app-match-card
-                    variant="standard"
-                    [cardId]="match.id"
-                    [headerLabel]="match?.group_name || match?.groupName || null"
-                    [players]="mapMatchToPlayers(match)"
-                    [match]="match"
-                    [showScore]="false"
-                    [showVersus]="true"
+            <div class="swiper-slide" *ngFor="let match of nextMatches; trackBy: trackByMatch">
+                <app-match-card variant="standard" [cardId]="match.id"
+                    [headerLabel]="match?.group_name || match?.groupName || null" [players]="mapMatchToPlayers(match)"
+                    [match]="match" [showScore]="false" [showVersus]="true"
                     [schedule]="buildSchedule(match, ('no_date' | translate), ('define_date' | translate))"
-                ></app-match-card>
+                    (cardClick)="onMatchClick(match)"></app-match-card>
             </div>
         </div>
-        <button *ngIf="!swiperManager.value?.isLocked" #prevButton type="button" class="swiper-button-prev"
-            aria-label="Scroll previous matches"></button>
-        <button *ngIf="!swiperManager.value?.isLocked" #nextButton type="button" class="swiper-button-next"
-            aria-label="Scroll next matches"></button>
     </div>
-</section>
 
-<ng-template #noMatches>
-    <p *ngIf="!isLoading" class="no-matches">{{ 'no_next_matches' | translate }}</p>
-</ng-template>
+    <!-- No matches -->
+    <ng-template #noMatches>
+        <p *ngIf="!isLoading" class="no-matches">{{ 'no_next_matches' | translate }}</p>
+    </ng-template>
+</section>
