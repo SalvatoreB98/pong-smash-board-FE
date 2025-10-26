@@ -128,6 +128,9 @@ export class ManualPointsComponent implements OnChanges, OnInit {
   get showGroupControls(): boolean {
     return this.isGroupMode;
   }
+  get showPlayerControls(): boolean {
+    return this.isGroupMode ? this.step >= 2 : true;
+  }
 
   get selectedGroup(): Group | null {
     const groups = this.availableGroups;

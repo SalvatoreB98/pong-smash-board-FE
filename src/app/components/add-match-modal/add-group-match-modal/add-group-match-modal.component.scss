@@ -29,6 +29,12 @@
     text-decoration: underline;
     cursor: pointer;
     padding: 0;
+    &.edit {
+      color: white;
+      background-color: $primary;
+      padding: 0.2rem 0.5rem;
+      border-radius: $border-radius;
+      margin: 1em;
   }
 }
 
