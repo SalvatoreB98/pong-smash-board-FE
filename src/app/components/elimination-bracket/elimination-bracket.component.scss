@@ -126,11 +126,16 @@
   max-width: 330px;
   margin-left: auto;
 }
-
+.winner-banner__label {
+  opacity: 1;
+  font-weight: 900;
+  font-size: 1.25rem;
+}
 .winner-banner {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 1.25rem;
   padding: 1.2rem 1.5rem;
   border-radius: 1.25rem;
@@ -154,10 +159,10 @@
   &__accent {
     position: absolute;
     inset: -60%;
-    background: radial-gradient(circle at center, rgba(244, 114, 182, 0.2), transparent 65%);
+    background: radial-gradient(circle at center, rgba(78, 62, 10, 0.171), transparent 65%);
     filter: blur(40px);
     opacity: 0.7;
-    animation: pulse-accent 6s ease-in-out infinite;
+    animation: pulse-accent 2s ease-in-out infinite;
   }
 
   &__badge {
@@ -186,8 +191,8 @@
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.16em;
-    opacity: 0.7;
     margin: 0;
+    color: gold;
   }
 
   &__name {
@@ -195,6 +200,7 @@
     font-size: 1.65rem;
     font-weight: 800;
     letter-spacing: -0.02em;
+    text-align: left;
   }
 
   &__subtitle {

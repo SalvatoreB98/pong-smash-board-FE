@@ -16,7 +16,40 @@
         </div>
       </div>
     </header>
-    <section *ngIf="winnerDetails as winner" class="winner-banner" [class.winner-banner--finished]="competitionFinished">
+
+    <button type="button" class="elimination-back-button tertiary"
+      [disabled]="!rounds.length || modalService.isActiveModal(modalService.MODALS['BRACKET'])"
+      (click)="modalService.openModal(modalService.MODALS['BRACKET'])">
+      <span>{{ 'visualize' | translate }}</span>
+      <img src="bracket.png" class="ms-2 me-2" alt="bracket icon" width="75px" />
+      <span>{{ 'view_bracket' | translate }}</span>
+      <span class="ms-2" *ngIf="!rounds.length">
+        <svg width="16" height="16" viewBox="0 0 50 50">
+          <circle cx="25" cy="25" r="20" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"
+            stroke-dasharray="31.415, 31.415" transform="rotate(72 25 25)">
+            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s"
+              repeatCount="indefinite" />
+          </circle>
+        </svg>
+      </span>
+    </button>
+    <div class="bracket" *ngIf="rounds.length; else emptyBracket">
+      <div class="bracket-round" *ngFor="let round of rounds; let i = index; trackBy: trackByRound">
+        <h3>{{ (round.stage ?? round.name) | translate }}</h3>
+
+        <div class="bracket-matches">
+          <!-- Shared match-card renders both admin and read-only bracket slots -->
+          <app-match-card *ngFor="let match of round.matches; trackBy: trackByMatch" variant="bracket"
+            [cardId]="match.id" [readonly]="readonly" [players]="buildBracketPlayers(match, i)"
+            [bracketDate]="match?.matchData?.created" [bracketDateFallback]="'date_to_be_determined' | translate"
+            [setDateAction]="buildSetDateAction(match)" [actions]="buildBracketActions(match, round)"
+            [match]="match"></app-match-card>
+        </div>
+      </div>
+    </div>
+
+    <section *ngIf="winnerDetails as winner" class="winner-banner"
+      [class.winner-banner--finished]="competitionFinished">
       <div class="winner-banner__accent" aria-hidden="true"></div>
       <div class="winner-banner__badge" aria-hidden="true">
         <i class="fa-solid fa-trophy"></i>
@@ -44,36 +77,7 @@
         </div>
       </ng-template>
     </section>
-    <button type="button" class="elimination-back-button tertiary"
-      [disabled]="!rounds.length || modalService.isActiveModal(modalService.MODALS['BRACKET'])"
-      (click)="modalService.openModal(modalService.MODALS['BRACKET'])">
-      <span>{{ 'visualize' | translate }}</span>
-      <img src="bracket.png" class="ms-2 me-2" alt="bracket icon" width="75px" />
-      <span>{{ 'view_bracket' | translate }}</span>
-      <span class="ms-2" *ngIf="!rounds.length">
-        <svg width="16" height="16" viewBox="0 0 50 50">
-          <circle cx="25" cy="25" r="20" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"
-            stroke-dasharray="31.415, 31.415" transform="rotate(72 25 25)">
-            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s"
-              repeatCount="indefinite" />
-          </circle>
-        </svg>
-      </span>
-    </button>
-    <div class="bracket" *ngIf="rounds.length; else emptyBracket">
-      <div class="bracket-round" *ngFor="let round of rounds; let i = index; trackBy: trackByRound">
-        <h3>{{ (round.stage ?? round.name) | translate }}</h3>
-
-        <div class="bracket-matches">
-          <!-- Shared match-card renders both admin and read-only bracket slots -->
-          <app-match-card *ngFor="let match of round.matches; trackBy: trackByMatch" variant="bracket"
-            [cardId]="match.id" [readonly]="readonly" [players]="buildBracketPlayers(match, i)"
-            [bracketDate]="match?.matchData?.created" [bracketDateFallback]="'date_to_be_determined' | translate"
-            [setDateAction]="buildSetDateAction(match)" [actions]="buildBracketActions(match, round)" [match]="match"></app-match-card>
-        </div>
-      </div>
-    </div>
-
+    
     <footer class="elimination-footer">
       <i class="fa-solid fa-hammer"></i>
       <span>{{ 'elimination_mode_work_in_progress' | translate }}</span>
