@@ -391,6 +391,14 @@
         "it": "Aggiungi giocatori",
         "en": "Add players"
     },
+    "players_limit_remaining": {
+        "it": "Posti disponibili:",
+        "en": "Spots remaining:"
+    },
+    "players_limit_reached": {
+        "it": "Limite di 32 giocatori per competizione raggiunto.",
+        "en": "Maximum of 32 players per competition reached."
+    },
     "add": {
         "it": "Aggiungi",
         "en": "Add"
