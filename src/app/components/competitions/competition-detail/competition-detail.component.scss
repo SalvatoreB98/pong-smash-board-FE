@@ -92,6 +92,16 @@
   .swiper-slide {
     width: auto;
     display: flex;
+    margin-right: 0!important;
+    width: 90px;
+    pointer-events: none;
+    user-select: none;
+    .player-name {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 9ch;
+    }
   }
 
   .swiper-button-prev,
