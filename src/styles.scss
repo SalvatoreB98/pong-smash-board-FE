@@ -8,6 +8,39 @@
 @import 'swiper/css/navigation';
 @import 'style/skeleton';
 
+:root {
+    --motion-duration-short: 180ms;
+    --motion-duration-medium: 320ms;
+    --motion-duration-long: 620ms;
+    --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --motion-shadow-subtle: 0 0.75rem 2rem -1rem rgba(13, 24, 38, 0.35);
+    --motion-shadow-strong: 0 1.6rem 3.4rem -1.4rem rgba(6, 14, 26, 0.55);
+}
+
+@keyframes motion-fade-in-up {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes motion-heading-underline {
+    from {
+        opacity: 0;
+        transform: scaleX(0.6);
+    }
+
+    to {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
 * {
     box-sizing: border-box;
 }
@@ -15,6 +48,132 @@
 [href] {
     all: unset;
     color: white;
+}
+
+:where(h2, .motion-heading) {
+    position: relative;
+    animation: motion-fade-in-up var(--motion-duration-long) var(--motion-ease-out) both;
+    letter-spacing: 0.01em;
+    will-change: transform, opacity;
+}
+
+:where(h2, .motion-heading)::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-end: -0.35em;
+    inline-size: min(7rem, 55%);
+    block-size: 0.2em;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(110, 150, 255, 0.4), rgba(255, 115, 99, 0.45));
+    transform-origin: left;
+    pointer-events: none;
+    animation: motion-heading-underline var(--motion-duration-medium) var(--motion-ease-out) calc(var(--motion-duration-short) / 2) both;
+}
+
+:where(.my-card,
+        .match-card,
+        .preview-card,
+        .feature-tile,
+        .form-card,
+        .player-card,
+        .other-card,
+        .insight-card,
+        .skeleton-card,
+        .match-card-placeholder,
+        .summary,
+        .comp) {
+    animation: motion-fade-in-up var(--motion-duration-medium) var(--motion-ease-out) both;
+    transition: transform var(--motion-duration-medium) var(--motion-ease-out),
+        box-shadow var(--motion-duration-medium) var(--motion-ease-out),
+        filter var(--motion-duration-medium) ease;
+    will-change: transform, box-shadow, filter;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    :where(.my-card,
+            .match-card,
+            .preview-card,
+            .feature-tile,
+            .form-card,
+            .player-card,
+            .other-card,
+            .insight-card,
+            .skeleton-card,
+            .match-card-placeholder,
+            .summary,
+            .comp):hover {
+        transform: translate3d(0, -6px, 0);
+        box-shadow: var(--motion-shadow-subtle);
+    }
+}
+
+:where(.my-card,
+        .match-card,
+        .preview-card,
+        .feature-tile,
+        .form-card,
+        .player-card,
+        .other-card,
+        .insight-card,
+        .skeleton-card,
+        .match-card-placeholder,
+        .summary,
+        .comp):focus-visible {
+    transform: translate3d(0, -4px, 0);
+    box-shadow: var(--motion-shadow-strong);
+    outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :where(h2, .motion-heading),
+    :where(h2, .motion-heading)::after,
+    :where(.my-card,
+            .match-card,
+            .preview-card,
+            .feature-tile,
+            .form-card,
+            .player-card,
+            .other-card,
+            .insight-card,
+            .skeleton-card,
+            .match-card-placeholder,
+            .summary,
+            .comp) {
+        animation-duration: 1ms;
+        animation-iteration-count: 1;
+        transition-duration: 1ms;
+    }
+
+    :where(.my-card,
+            .match-card,
+            .preview-card,
+            .feature-tile,
+            .form-card,
+            .player-card,
+            .other-card,
+            .insight-card,
+            .skeleton-card,
+            .match-card-placeholder,
+            .summary,
+            .comp):hover,
+    :where(.my-card,
+            .match-card,
+            .preview-card,
+            .feature-tile,
+            .form-card,
+            .player-card,
+            .other-card,
+            .insight-card,
+            .skeleton-card,
+            .match-card-placeholder,
+            .summary,
+            .comp):focus-visible {
+        transform: none;
+        box-shadow: none;
+        outline: 2px solid rgba(110, 150, 255, 0.55);
+        outline-offset: 4px;
+    }
 }
 
 @media (max-width: 600px) {
