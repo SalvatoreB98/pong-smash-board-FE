@@ -23,7 +23,7 @@ export class RankingService {
             this.http.get<IRankingResponse>(url)
           );
         },
-        60 * 1000 // TTL 1 minuto
+        10 * 1000 // TTL 10 secondi
       );
       this.fetcherMap.set(competition_id, fetcher);
     }
