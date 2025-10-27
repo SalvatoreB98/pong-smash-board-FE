@@ -1,11 +1,7 @@
 <div class="wrapper" *ngIf="userState$ | async as state">
     <h2>{{ 'profile' | translate }}</h2>
 
-    <section>
-        <app-player-detail [player]="'Mario'" [totalPlayed]="20" [wins]="12" [winRate]="60"
-            [monthlyWinRates]="{ '01': 50, '02': 70, '03': 30 }" [badges]="['gold', 'silver']"></app-player-detail>
-    </section>
-
+    
     <section>
         <form [formGroup]="form" class="form-dark profile-form">
             <div class="my-card p-3">
@@ -17,24 +13,29 @@
                     </label>
                     <label style="cursor: pointer;" for="file-upload" class="description">{{ 'avatar_upload_info' | translate }}</label>
                 </div>
-
+                
                 <label class="field">
                     <span class="label text-center">{{ 'nickname_label_edit' | translate }}</span>
                     <input class="input" type="text" [placeholder]="'nickname' | translate" formControlName="nickname"
-                        autocomplete="off" />
+                    autocomplete="off" />
                     <small class="error" *ngIf="form.get('nickname')?.invalid">
                         {{ 'nickname_error' | translate }}
                     </small>
                 </label>
-
+                
                 <button type="button" class="primary w-100 m-1" (click)="saveProfile($event)" [disabled]="form.invalid">
                     {{ 'edit' | translate }}
                 </button>
             </div>
         </form>
     </section>
-
+    
     <ng-template #noComp>{{ 'no_competition' | translate }}</ng-template>
+    
+    <section>
+        <app-player-detail [player]="'Mario'" [totalPlayed]="20" [wins]="12" [winRate]="60"
+            [monthlyWinRates]="{ '01': 50, '02': 70, '03': 30 }" [badges]="['gold', 'silver']"></app-player-detail>
+    </section>
 </div>
 
 <app-bottom-navbar></app-bottom-navbar>
