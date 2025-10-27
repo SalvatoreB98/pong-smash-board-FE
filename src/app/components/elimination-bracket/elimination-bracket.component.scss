@@ -122,16 +122,19 @@
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
 }
+
 .elimination-back-button {
   max-width: 330px;
   margin-left: auto;
 }
+
 .winner-banner__label {
   color: $yellow !important;
   opacity: 1;
   font-weight: 900;
   font-size: 1.25rem;
 }
+
 .winner-banner {
   position: relative;
   display: inline-flex;
@@ -140,12 +143,25 @@
   gap: 1.25rem;
   padding: 1.2rem 1.5rem;
   border-radius: 1.25rem;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(129, 140, 248, 0.35));
   border: 0.0625rem solid rgba(99, 102, 241, 0.35);
   box-shadow: 0 1.5rem 3rem rgba(15, 23, 42, 0.35);
   overflow: hidden;
   color: white;
   animation: highlight 2.4s ease-in-out 1;
+
+  .overlay {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/winner-banner.png');
+    background-position: bottom;
+    transform: scaleX(-100%);
+    background-size: cover;
+    opacity: 0.5;
+    pointer-events: none;
+  }
 
   &::after {
     content: '';
@@ -333,6 +349,7 @@
 }
 
 @keyframes pulse-accent {
+
   0%,
   100% {
     transform: scale(0.95) rotate(0deg);

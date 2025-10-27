@@ -50,6 +50,7 @@
 
     <section *ngIf="winnerDetails as winner" class="winner-banner"
       [class.winner-banner--finished]="competitionFinished">
+      <div class="overlay"></div>
       <div class="winner-banner__accent" aria-hidden="true"></div>
       <div class="winner-banner__badge" aria-hidden="true">
         <i class="fa-solid fa-trophy"></i>
