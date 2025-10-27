@@ -88,6 +88,29 @@
         margin: auto;
     }
 
+    .selected-group,
+    .selected-players {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: black;
+        padding: 0 0rem 0 0.5rem;
+        border-radius: $border-radius;
+        margin-bottom: 1rem;
+        margin-top: 2em;
+
+        img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .vs {
+            margin: 0 1rem;
+        }
+    }
+
 }
 
 .step-actions {
@@ -286,14 +309,4 @@ button:disabled {
         padding: 1em 5em;
     }
 
-}
-
-.selected-group,
-.selected-players {
-    justify-content: center;
-    background-color: black;
-    padding: 1rem;
-    border-radius: $border-radius;
-    margin-bottom: 1rem;
-    margin-top: 2em;
 }
