@@ -27,6 +27,12 @@ main {
     transition: all 0.5s ease-in-out, filter 0.2s ease-in-out;
 }
 
+.my-card {
+    background: $dark;
+    border: $border;
+    border-radius: $border-radius;
+}
+
 #page-container {
     padding-top: 4.6em;
 }
@@ -100,10 +106,8 @@ h3 {
 
 // Buttons
 .button-container {
-    max-width: 31.25em;
     margin: auto;
-    padding: 1em;
-
+    width: 95%;
     button {
         all: unset;
         cursor: pointer;
@@ -254,7 +258,8 @@ section {
     cursor: cell;
 }
 
-section.matches, section.next-matches {
+section.matches,
+section.next-matches {
     padding: 0;
 }
 
@@ -407,10 +412,12 @@ button.secondary-color-button {
 .secondary {
     background-color: $secondary !important;
 }
+
 .tertiary {
     background-color: $tertiary !important;
     border: 1px solid #ffffff7a;
 }
+
 .bg-secondary {
     background-color: $secondary !important;
 }
@@ -507,6 +514,7 @@ button.secondary-color-button {
     max-width: 700px;
     margin: auto;
 }
+
 @media screen and (max-width: 1400px) {
     .my-modal {
         padding-bottom: 0;

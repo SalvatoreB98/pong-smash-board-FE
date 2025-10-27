@@ -1,12 +1,12 @@
 // Variables
 // Base e Sfondi
-$dark: #05131c; // Base scura, come prima
+$dark: #090e19; 
 $dark2: #020b12;
 $bg: black; // Sfondo ancora più scuro, leggermente più freddo per coerenza
 $gradient: linear-gradient(180deg, #020b12 10%, #05131c 90%); // Gradiente migliorato per profondità
 $gradient-reverse: linear-gradient(180deg, $dark 10%, #020b12 90%); // Versione inversa
 $field: #111827;
-
+$border: 0.0625rem solid rgba(255, 255, 255, 0.05);
 // Colori Principali e di Accento
 $primary: #284aa6; // Blu primario forte
 $primary-light: #6e96ff; // Versione più chiara del blu primario
