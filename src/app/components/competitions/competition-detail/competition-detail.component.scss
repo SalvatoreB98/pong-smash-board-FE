@@ -57,22 +57,68 @@
   gap: 1em;
 }
 
+
 .competition-players-container {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  gap: 0.625em;
+  width: 100%;
 
   .players {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 0.5em;
+    min-width: 7.5em;
   }
 
   .delete {
     transition: all 0.2s ease-in-out;
     transform: scale(1);
+  }
+}
+
+.competition-players__slider {
+  cursor: grab;
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  padding: 0.5rem;
+
+  .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .swiper-slide {
+    width: auto;
+    display: flex;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &::after {
+      font-size: 1rem;
+    }
+
+    &:hover:not(.swiper-button-disabled) {
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0.4;
+    }
   }
 }
 
@@ -83,6 +129,14 @@
   border-radius: $border-radius;
   overflow-y: auto;
   background: $gradient;
+  position: relative;
+}
+
+.no-players {
+  margin-top: 0.75em;
+  text-align: center;
+  opacity: 0.8;
+  font-weight: 500;
 }
 
 .code {
@@ -196,6 +250,15 @@
   .top__actions {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .slider {
+    padding: 0.5rem 0;
+
+    .swiper-button-prev,
+    .swiper-button-next {
+      display: none;
+    }
   }
 
   .detail-actions {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, inject, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnChanges, OnDestroy, SimpleChanges, inject, Input, Output, ViewChild, ElementRef } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 import { CompetitionType, ICompetition } from '../../../../api/competition.api';
 import { ModalService } from '../../../../services/modal.service';
@@ -8,10 +8,13 @@ import { LoaderService } from '../../../../services/loader.service';
 import { TranslationService } from '../../../../services/translation.service';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
-import { ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DropdownAction, DropdownService } from '../../../../services/dropdown.service';
 import { Router } from '@angular/router';
+import { Navigation } from 'swiper/modules';
+import { SwiperOptions } from 'swiper/types';
+import { BASE_SLIDER_CONFIG } from '../../../config/slider.config';
+import { SwiperManager } from '../../../utils/helpers/swiper.manager';
 
 @Component({
   selector: 'app-competition-detail',
@@ -19,14 +22,24 @@ import { Router } from '@angular/router';
   templateUrl: './competition-detail.component.html',
   styleUrl: './competition-detail.component.scss'
 })
-export class CompetitionDetailComponent implements OnDestroy {
+export class CompetitionDetailComponent implements OnChanges, AfterViewInit, OnDestroy {
 
   @Input() competition: ICompetition | null = null;
 
   @ViewChild('competitionDetail', { static: true }) competitionDetailRef!: ElementRef<HTMLElement>;
+  @ViewChild('playersSlider') playersSlider?: ElementRef<HTMLElement>;
 
-  ngOnChanges() {
-    console.log('Competition input changed:', this.competition);
+  swiperConfig: SwiperOptions = {
+    ...BASE_SLIDER_CONFIG,
+    modules: [Navigation],
+    navigation: true
+  };
+  private playersSwiperManager = new SwiperManager(() => this.playersSlider?.nativeElement ?? null, this.swiperConfig);
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['competition']) {
+      this.playersSwiperManager.queueUpdate();
+    }
   }
   @Output() actionSelected = new EventEmitter<{ action: string, competition: ICompetition | null }>();
   @Output() changeCompetitionSelected = new EventEmitter<ICompetition>();
@@ -50,15 +63,19 @@ export class CompetitionDetailComponent implements OnDestroy {
   ];
 
   ngOnInit() {
-    console.log('CompetitionDetailComponent initialized with competition:', this.competition?.id);
-    this.activeCompetition$.subscribe(comp => {
-      console.log('Active competition updated:', comp);
+    this.subscriptions.add(this.activeCompetition$.subscribe(comp => {
       this.competition = comp;
-    });
+      this.playersSwiperManager.queueUpdate();
+    }));
+  }
+
+  ngAfterViewInit(): void {
+    this.playersSwiperManager.init();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    this.playersSwiperManager.destroy();
   }
 
   isEmpty(array: any): boolean {
@@ -125,6 +142,7 @@ export class CompetitionDetailComponent implements OnDestroy {
     this.competitionService.removePlayerFromCompetition(this.competition.id, playerId).subscribe(() => {
       this.competition?.players?.splice(this.competition.players.findIndex(p => p.id === playerId), 1);
       this.loader.showToast(this.translateService.translate('player_removed'), MSG_TYPE.SUCCESS);
+      this.playersSwiperManager.queueUpdate();
     });
   }
 

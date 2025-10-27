@@ -30,25 +30,31 @@
   </div>
 
   <!-- Giocatori -->
-  <div class="players-container d-flex justify-content-between align-items-center">
-    <div class="competition-players-container">
-      <button class="add players" (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
-        <i class="fa fa-circle-plus"></i>
-        <span class="player-name">
-          {{ "add" | translate }}
-        </span>
-      </button>
-      <button class="players" *ngFor="let p of competition?.['players']">
-        <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
-        <img *ngIf="!p.image_url" class="avatar" [src]="'default-player.jpg'" />
-        <span class="player-name">{{ p.nickname }}</span>
-        <button class="delete" (click)="requestPlayerDeletion(p.id)">
-          <i class="fa-solid fa-trash-o"></i>
-        </button>
-      </button>
-      <div *ngIf="isEmpty(competition?.['players'])">
-        {{ "no_players" | translate }}
+  <div class="players-container">
+    <div class="competition-players-container slider swiper competition-players__slider" #playersSlider>
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <button class="add players" (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
+            <i class="fa fa-circle-plus"></i>
+            <span class="player-name">
+              {{ "add" | translate }}
+            </span>
+          </button>
+        </div>
+        <div class="swiper-slide" *ngFor="let p of competition?.['players']">
+          <button class="players">
+            <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
+            <img *ngIf="!p.image_url" class="avatar" [src]="'default-player.jpg'" />
+            <span class="player-name">{{ p.nickname }}</span>
+            <button class="delete" (click)="requestPlayerDeletion(p.id)">
+              <i class="fa-solid fa-trash-o"></i>
+            </button>
+          </button>
+        </div>
       </div>
+    </div>
+    <div class="no-players" *ngIf="isEmpty(competition?.['players'])">
+      {{ "no_players" | translate }}
     </div>
   </div>
 
