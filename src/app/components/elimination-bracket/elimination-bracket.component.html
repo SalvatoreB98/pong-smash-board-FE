@@ -16,6 +16,7 @@
         </div>
       </div>
     </header>
+
     <button type="button" class="elimination-back-button tertiary"
       [disabled]="!rounds.length || modalService.isActiveModal(modalService.MODALS['BRACKET'])"
       (click)="modalService.openModal(modalService.MODALS['BRACKET'])">
@@ -41,11 +42,42 @@
           <app-match-card *ngFor="let match of round.matches; trackBy: trackByMatch" variant="bracket"
             [cardId]="match.id" [readonly]="readonly" [players]="buildBracketPlayers(match, i)"
             [bracketDate]="match?.matchData?.created" [bracketDateFallback]="'date_to_be_determined' | translate"
-            [setDateAction]="buildSetDateAction(match)" [actions]="buildBracketActions(match, round)" [match]="match"></app-match-card>
+            [setDateAction]="buildSetDateAction(match)" [actions]="buildBracketActions(match, round)"
+            [match]="match"></app-match-card>
         </div>
       </div>
     </div>
 
+    <section *ngIf="winnerDetails as winner" class="winner-banner"
+      [class.winner-banner--finished]="competitionFinished">
+      <div class="winner-banner__accent" aria-hidden="true"></div>
+      <div class="winner-banner__badge" aria-hidden="true">
+        <i class="fa-solid fa-trophy"></i>
+      </div>
+      <div class="winner-banner__content">
+        <p class="winner-banner__label">{{ 'competition_winner_title' | translate }}</p>
+        <h3 class="winner-banner__name">{{ winner.displayName }}</h3>
+        <p class="winner-banner__subtitle">{{ 'competition_winner_subtitle' | translate }}</p>
+        <div class="winner-banner__matchup" *ngIf="winner.opponentName">
+          <span class="winner-banner__matchup-text">{{ 'competition_winner_vs' | translate }}</span>
+          <span class="winner-banner__opponent">{{ winner.opponentName }}</span>
+          <span class="winner-banner__score" *ngIf="winner.scoreLabel">
+            <span aria-hidden="true">•</span>
+            <span class="winner-banner__score-label">{{ 'competition_winner_score' | translate }}</span>
+            <span class="winner-banner__score-value">{{ winner.scoreLabel }}</span>
+          </span>
+        </div>
+      </div>
+      <ng-container *ngIf="winner.avatarUrl; else winnerPlaceholder">
+        <img [src]="winner.avatarUrl" [alt]="winner.displayName" class="winner-banner__avatar" width="72" height="72" />
+      </ng-container>
+      <ng-template #winnerPlaceholder>
+        <div class="winner-banner__avatar winner-banner__avatar--placeholder">
+          <i class="fa-solid fa-user"></i>
+        </div>
+      </ng-template>
+    </section>
+    
     <footer class="elimination-footer">
       <i class="fa-solid fa-hammer"></i>
       <span>{{ 'elimination_mode_work_in_progress' | translate }}</span>

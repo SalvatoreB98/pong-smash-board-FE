@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 import { ICompetition } from '../../../api/competition.api';
 import { TranslatePipe } from '../../utils/translate.pipe';
-import { EliminationMatchSlot, EliminationRound } from '../../interfaces/elimination-bracket.interface';
+import { EliminationMatch, EliminationMatchSlot, EliminationRound } from '../../interfaces/elimination-bracket.interface';
 import { ModalService } from '../../../services/modal.service';
 import { IPlayer } from '../../../services/players.service';
 import { IMatch } from '../../interfaces/matchesInterfaces';
@@ -25,6 +25,14 @@ export interface EliminationModalEvent {
   roundLabel?: KnockoutStage | string | null;
 }
 
+interface WinnerBannerData {
+  id: number | string;
+  displayName: string;
+  avatarUrl: string | null;
+  opponentName?: string;
+  scoreLabel?: string | null;
+}
+
 @Component({
   selector: 'app-elimination-bracket',
   standalone: true,
@@ -41,11 +49,14 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
   private translationService = inject(TranslationService);
   @Output() matchRoundClicked = new EventEmitter<EliminationModalEvent>();
   private knockoutSubscription?: Subscription;
+  winnerDetails: WinnerBannerData | null = null;
+  competitionFinished = false;
 
   ngOnInit() {
     this.knockoutSubscription = this.dataService.knockoutObs.subscribe(knockout => {
       if (!knockout) {
         this.rounds = [];
+        this.updateWinner();
         return;
       }
 
@@ -58,14 +69,20 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
 
       this.rounds = mapKnockoutResponse(knockout);
       console.log('Updated rounds from knockout subscription:', this.rounds);
+      this.updateWinner();
     });
 
     this.ensureKnockoutData();
+    this.updateWinner();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['competition'] && !changes['competition'].firstChange) {
       this.ensureKnockoutData(true);
+    }
+
+    if (changes['competition'] || changes['rounds']) {
+      this.updateWinner();
     }
   }
 
@@ -77,6 +94,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
     const competitionId = this.competition?.id;
     if (!competitionId) {
       this.rounds = [];
+      this.updateWinner();
       return;
     }
 
@@ -94,6 +112,8 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
     if (matchesCompetition && !force) {
       this.rounds = mapKnockoutResponse(cached);
       console.log('Updated rounds from knockout subscription:', this.rounds);
+
+      this.updateWinner();
 
       return;
     }
@@ -255,5 +275,100 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
     }
 
     return actions;
+  }
+
+  private updateWinner() {
+    this.competitionFinished = this.isCompetitionFinished();
+    if (!this.competitionFinished) {
+      this.winnerDetails = null;
+      return;
+    }
+
+    const finalMatch = this.getFinalMatch();
+    if (!finalMatch) {
+      this.winnerDetails = null;
+      return;
+    }
+
+    const winningSlot = finalMatch.slots.find(slot => this.isSlotWinner(slot, finalMatch.winnerId));
+    if (!winningSlot || !winningSlot.player) {
+      this.winnerDetails = null;
+      return;
+    }
+
+    const opponentSlot = finalMatch.slots.find(slot => slot !== winningSlot);
+    const opponentName = opponentSlot?.player
+      ? opponentSlot.player.nickname || opponentSlot.player.name || undefined
+      : undefined;
+    const { winnerScore, opponentScore } = this.getWinnerScores(finalMatch, winningSlot === finalMatch.slots[0]);
+    const scoreLabel = winnerScore != null && opponentScore != null ? `${winnerScore} - ${opponentScore}` : null;
+
+    this.winnerDetails = {
+      id: winningSlot.player.id,
+      displayName: winningSlot.player.nickname || winningSlot.player.name || '',
+      avatarUrl: winningSlot.player.image_url ?? null,
+      opponentName,
+      scoreLabel,
+    } satisfies WinnerBannerData;
+  }
+
+  private getWinnerScores(match: any, winnerIsFirstSlot: boolean): { winnerScore: number | null; opponentScore: number | null } {
+    const player1Score = typeof match.player1Score === 'number' ? match.player1Score : null;
+    const player2Score = typeof match.player2Score === 'number' ? match.player2Score : null;
+
+    if (winnerIsFirstSlot) {
+      return { winnerScore: player1Score, opponentScore: player2Score };
+    }
+
+    return { winnerScore: player2Score, opponentScore: player1Score };
+  }
+
+  private getFinalMatch(): EliminationMatch | null {
+    const finalRound = this.getFinalRound();
+    if (!finalRound) {
+      return null;
+    }
+
+    return finalRound.matches.find(match => match?.winnerId != null) ?? null;
+  }
+
+  private getFinalRound(): EliminationRound | null {
+    if (!Array.isArray(this.rounds) || !this.rounds.length) {
+      return null;
+    }
+
+    return this.rounds.reduce((latest, current) => {
+      if (!latest) {
+        return current;
+      }
+      return current.roundNumber >= latest.roundNumber ? current : latest;
+    });
+  }
+
+  private isCompetitionFinished(): boolean {
+    const statusRaw = (
+      this.competition?.['status'] ??
+      this.competition?.['state'] ??
+      this.competition?.['competitionStatus'] ??
+      null
+    );
+    if (typeof statusRaw === 'string' && statusRaw.trim()) {
+      const normalized = statusRaw.trim().toLowerCase();
+      if (['completed', 'finished', 'ended', 'closed'].some(flag => normalized.includes(flag))) {
+        return true;
+      }
+    }
+
+    const endDate = this.competition?.end_date ?? this.competition?.['endDate'] ?? null;
+    if (endDate) {
+      return true;
+    }
+
+    const finalRound = this.getFinalRound();
+    if (!finalRound || !finalRound.matches.length) {
+      return false;
+    }
+
+    return finalRound.matches.every(match => match?.winnerId != null);
   }
 }

@@ -67,7 +67,7 @@
                     <h3>{{ "other_competitions" | translate }}</h3>
                     <div class="other-competitions-container">
                         <ng-container *ngFor="let c of competitionsWithoutActive$ | async; trackBy: trackById">
-                            <div class="comp text-center">
+                            <div class="comp my-card text-center">
                                 <strong>{{ c.name }}</strong>
 
                                 <small *ngIf="c.start_date">
@@ -124,7 +124,7 @@
 
             <!-- Bottoni -->
             <section>
-                <div class="buttons-add">
+                <div class="buttons-add d-flex" style="gap: 1em;">
                     <div class="button-container" style="max-width: 37.5em;">
                         <button class="button-primary-ping secondary-color-button"
                             (click)="modalService.openModal(modalService.MODALS['JOIN_COMPETITION'])">
