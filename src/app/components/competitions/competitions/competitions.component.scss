@@ -8,7 +8,6 @@
     padding: 2rem 1.25rem 6rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
 }
 
 .wrapper>section,
@@ -223,9 +222,11 @@
         .container-action {
             display: flex;
             place-items: center;
+
             button {
                 margin: 2.5px;
             }
+
             .comp__actions {
                 align-self: flex-end;
                 text-align: center;

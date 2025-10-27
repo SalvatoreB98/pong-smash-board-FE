@@ -57,20 +57,6 @@
     will-change: transform, opacity;
 }
 
-:where(h2, .motion-heading)::after {
-    content: '';
-    position: absolute;
-    inset-inline-start: 0;
-    inset-block-end: -0.35em;
-    inline-size: min(7rem, 55%);
-    block-size: 0.2em;
-    border-radius: 999px;
-    background: linear-gradient(90deg, rgba(110, 150, 255, 0.4), rgba(255, 115, 99, 0.45));
-    transform-origin: left;
-    pointer-events: none;
-    animation: motion-heading-underline var(--motion-duration-medium) var(--motion-ease-out) calc(var(--motion-duration-short) / 2) both;
-}
-
 :where(.my-card,
         .match-card,
         .preview-card,
