@@ -251,6 +251,22 @@
         "it": "Servono almeno due giocatori per generare il tabellone.",
         "en": "At least two players are required to generate the bracket."
     },
+    "competition_winner_title": {
+        "it": "Campione",
+        "en": "Champion"
+    },
+    "competition_winner_subtitle": {
+        "it": "La competizione è terminata.",
+        "en": "The competition has finished."
+    },
+    "competition_winner_vs": {
+        "it": "ha sconfitto",
+        "en": "defeated"
+    },
+    "competition_winner_score": {
+        "it": "Risultato",
+        "en": "Final score"
+    },
     "competition_sets_label": {
         "it": "Set (meglio di)",
         "en": "Sets (best of)"
