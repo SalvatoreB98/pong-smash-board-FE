@@ -16,6 +16,12 @@
   border-top-right-radius: 0;
 }
 
+.selected-group, .selected-players {
+  background-color: $dark;
+  padding: 1rem;
+  border-radius: $border-radius;
+  margin-bottom: 1rem;
+}
 .selected-group {
   display: flex;
   justify-content: space-between;

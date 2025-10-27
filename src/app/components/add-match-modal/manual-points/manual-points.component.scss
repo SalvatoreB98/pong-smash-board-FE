@@ -126,7 +126,7 @@ button {
 }
 
 .reset {
-    background-color: $dark;
+    background-color: $contrast;
 }
 
 .player-indicator {
@@ -286,4 +286,14 @@ button:disabled {
         padding: 1em 5em;
     }
 
+}
+
+.selected-group,
+.selected-players {
+    justify-content: center;
+    background-color: black;
+    padding: 1rem;
+    border-radius: $border-radius;
+    margin-bottom: 1rem;
+    margin-top: 2em;
 }
