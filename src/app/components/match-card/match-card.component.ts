@@ -73,7 +73,7 @@ export class MatchCardComponent {
   @Input() actions: MatchCardAction[] = [];
   @Input() schedule?: MatchCardSchedule | null;
   @Input() match?: unknown;
-
+  @Input() isFirstRound = false;
   @Output() cardClick = new EventEmitter<void>();
   @Output() actionTriggered = new EventEmitter<MatchCardAction>();
 

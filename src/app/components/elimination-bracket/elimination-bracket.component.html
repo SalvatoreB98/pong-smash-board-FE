@@ -45,14 +45,14 @@
       <div class="bracket" *ngIf="visibleRounds.length; else filteredEmptyBracket">
         <div class="bracket-round" *ngFor="let round of visibleRounds; let i = index; trackBy: trackByRound" [class.final]="round.name === 'final'">
           <h3>{{ (round.stage ?? round.name) | translate }}</h3>
-
           <div class="bracket-matches">
             <!-- Shared match-card renders both admin and read-only bracket slots -->
             <app-match-card *ngFor="let match of round.matches; trackBy: trackByMatch" variant="bracket"
               [cardId]="match.id" [readonly]="readonly" [players]="buildBracketPlayers(match, i)"
               [bracketDate]="match?.matchData?.created" [bracketDateFallback]="'date_to_be_determined' | translate"
               [setDateAction]="buildSetDateAction(match)" [actions]="buildBracketActions(match, round)"
-              [match]="match"></app-match-card>
+              [match]="match" [isFirstRound]="round.roundNumber === 1">
+            </app-match-card>
           </div>
         </div>
       </div>
