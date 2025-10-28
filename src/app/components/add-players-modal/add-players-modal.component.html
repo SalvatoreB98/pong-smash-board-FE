@@ -86,6 +86,8 @@
                             </button>
                         </div>
                         <div class="text-center mt-2">
+                            <ng-container *ngIf="remainingSlots > 0; else limitReached">
+                            </ng-container>
                             <ng-template #limitReached>
                                 <span class="text-danger">{{ 'players_limit_reached' | translate }}</span>
                             </ng-template>
