@@ -75,6 +75,8 @@ export class BracketModalComponent implements AfterViewInit {
       this.totalRows = firstRound.matches.length * 2 - 1;
     }
     this.computeSides();
+    this.centerGrid();
+
   }
 
   ngAfterViewInit() {
@@ -247,7 +249,7 @@ export class BracketModalComponent implements AfterViewInit {
     const gHeight = grid.scrollHeight;
 
     this.offsetX = (cWidth - gWidth) / 2;
-    this.offsetY = (cHeight - gHeight) / 2;
+    this.offsetY = 0;
     this.applyTransform();
   }
 
