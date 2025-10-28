@@ -30,19 +30,21 @@
               {{ slot.waitingLabel }}
             </span>
             <ng-container *ngSwitchDefault>
-              <ng-container *ngIf="slot.state === 'empty' && !readonly; else slotActionButton">
+              <ng-container *ngIf="slot.state === 'empty' && !readonly && isFirstRound; else slotActionButton">
                 <button type="button" class="match-card__add-player tertiary"
                   (click)="openAddPlayerModal(match, i, $event)" [attr.aria-label]="'add_player' | translate">
                   <i class="fa fa-user-plus" aria-hidden="true"></i>
                 </button>
               </ng-container>
               <ng-template #slotActionButton>
-                <button type="button" class="match-card__add-player tertiary" *ngIf="slot.action as slotAction"
-                  (click)="onAction(slotAction, $event)" [disabled]="slotAction.disabled"
-                  [attr.title]="slotAction.tooltip ?? slotAction.label ?? ''" [ngClass]="slotAction.cssClass">
-                  <span class="match-card__icon" *ngIf="slotAction.icon" [innerHTML]="slotAction.icon"></span>
-                  <span *ngIf="slotAction.label">{{ slotAction.label }}</span>
-                </button>
+                <ng-container *ngIf="isFirstRound">
+                  <button type="button" class="match-card__add-player tertiary" *ngIf="slot.action as slotAction"
+                    (click)="onAction(slotAction, $event)" [disabled]="slotAction.disabled"
+                    [attr.title]="slotAction.tooltip ?? slotAction.label ?? ''" [ngClass]="slotAction.cssClass">
+                    <span class="match-card__icon" *ngIf="slotAction.icon" [innerHTML]="slotAction.icon"></span>
+                    <span *ngIf="slotAction.label">{{ slotAction.label }}</span>
+                  </button>
+                </ng-container>
               </ng-template>
             </ng-container>
           </ng-container>
@@ -127,30 +129,24 @@
               <ng-container *ngIf="getScheduleActions() as scheduleActions">
                 <div class="match-card__actions" *ngIf="scheduleActions.length || schedule.action">
                   <ng-container *ngIf="scheduleActions.length; else singleScheduleAction">
-                    <button
-                      *ngFor="let scheduleAction of scheduleActions; trackBy: trackByAction"
-                      type="button"
-                      class="btn btn-sm"
-                      [ngClass]="scheduleAction.cssClass"
-                      [disabled]="scheduleAction.disabled"
+                    <button *ngFor="let scheduleAction of scheduleActions; trackBy: trackByAction" type="button"
+                      class="btn btn-sm" [ngClass]="scheduleAction.cssClass" [disabled]="scheduleAction.disabled"
                       [attr.aria-label]="scheduleAction.ariaLabel ?? scheduleAction.label ?? ''"
                       [attr.title]="scheduleAction.tooltip ?? scheduleAction.label ?? ''"
                       (click)="onAction(scheduleAction, $event)">
-                      <span class="match-card__icon" *ngIf="scheduleAction.icon" [innerHTML]="scheduleAction.icon"></span>
+                      <span class="match-card__icon" *ngIf="scheduleAction.icon"
+                        [innerHTML]="scheduleAction.icon"></span>
                       <span *ngIf="scheduleAction.label">{{ scheduleAction.label }}</span>
                     </button>
                   </ng-container>
                   <ng-template #singleScheduleAction>
-                    <button
-                      *ngIf="schedule.action as scheduleAction"
-                      type="button"
-                      class="btn btn-sm"
-                      [ngClass]="scheduleAction.cssClass"
-                      [disabled]="scheduleAction.disabled"
+                    <button *ngIf="schedule.action as scheduleAction" type="button" class="btn btn-sm"
+                      [ngClass]="scheduleAction.cssClass" [disabled]="scheduleAction.disabled"
                       [attr.aria-label]="scheduleAction.ariaLabel ?? scheduleAction.label ?? ''"
                       [attr.title]="scheduleAction.tooltip ?? scheduleAction.label ?? ''"
                       (click)="onAction(scheduleAction, $event)">
-                      <span class="match-card__icon" *ngIf="scheduleAction.icon" [innerHTML]="scheduleAction.icon"></span>
+                      <span class="match-card__icon" *ngIf="scheduleAction.icon"
+                        [innerHTML]="scheduleAction.icon"></span>
                       <span *ngIf="scheduleAction.label">{{ scheduleAction.label }}</span>
                     </button>
                   </ng-template>
