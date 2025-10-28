@@ -47,7 +47,8 @@
                             <label for="nickname" class="form-label">{{ 'nickname' | translate }}</label>
                             <input type="text" id="nickname" class="form-control input-field" formControlName="nickname"
                                 [placeholder]="'insert_nickname' | translate" />
-                            <div class="error" *ngIf="addPlayerForm.get('nickname')?.invalid && (addPlayerForm.get('nickname')?.dirty || addPlayerForm.get('nickname')?.touched)">
+                            <div class="error"
+                                *ngIf="addPlayerForm.get('nickname')?.invalid && (addPlayerForm.get('nickname')?.dirty || addPlayerForm.get('nickname')?.touched)">
                                 <small class="text-danger">
                                     {{ 'nickname_required' | translate }}
                                 </small>
@@ -58,6 +59,7 @@
                             <label for="email" class="form-label">{{ 'email' | translate }}
                                 <div class="info-input" title="{{ 'email_info' | translate }}">
                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    <span class="not-mandatory">{{ 'not_mandatory' | translate }}</span>
                                 </div>
                             </label>
                             <input type="text" id="email" class="form-control input-field" formControlName="email"

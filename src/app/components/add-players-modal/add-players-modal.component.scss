@@ -26,3 +26,9 @@ p {
   background: $primary;
   transform: scale(1.05);
 }
+.not-mandatory {
+    opacity: 0.5;
+    font-style: italic;
+    font-size: 0.75em;
+    margin-left: 0.5em;
+}
