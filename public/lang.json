@@ -356,7 +356,7 @@
         "en": "Continue"
     },
     "nickname_error": {
-        "it": "Il nickname deve contenere tra i 3 e i 20 caratteri.",
+        "it": "Il nickname deve contenere tra i 3 e i 10 caratteri.",
         "en": "The nickname must be between 3 and 20 characters."
     },
     "invalid_credentials": {

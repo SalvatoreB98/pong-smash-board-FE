@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, ChangeDetectionStrategy, inject, OnInit, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { firstValueFrom } from 'rxjs';
@@ -49,7 +49,7 @@ export class CompleteProfileComponent implements OnInit {
     private translateService: TranslationService,
   ) {
     this.form = this.fb.group({
-      nickname: new FormControl<string | null>(''),
+      nickname: new FormControl<string | null>('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]),
       avatar: this.fb.control<File | null>(null),
     });
     

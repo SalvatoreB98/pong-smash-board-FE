@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private sb: SupabaseClient = createClient(environment.supabase.url, environment.supabase.ANON);
 
   form: FormGroup = this.fb.group({
-    nickname: new FormControl<string | null>('', [Validators.required, Validators.minLength(3)]),
+    nickname: new FormControl<string | null>('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]),
     avatar: this.fb.control<File | null>(null),
   });
 
