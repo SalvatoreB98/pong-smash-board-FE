@@ -81,9 +81,16 @@
 
                         <div class="button-container d-flex justify-content-center">
                             <button type="button" (click)="addPlayer()" style="width: 100%; text-align: center;"
-                                [disabled]="addPlayerForm.invalid">
+                                [disabled]="addPlayerForm.invalid || remainingSlots === 0">
                                 {{ "add_player" | translate }}
                             </button>
+                        </div>
+                        <div class="text-center mt-2">
+                            <ng-container *ngIf="remainingSlots > 0; else limitReached">
+                            </ng-container>
+                            <ng-template #limitReached>
+                                <span class="text-danger">{{ 'players_limit_reached' | translate }}</span>
+                            </ng-template>
                         </div>
                     </form>
                 </div>

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { CompetitionService } from '../../../services/competitions.service';
 import { UserService } from '../../../services/user.service';
@@ -8,9 +8,11 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
 import { API_PATHS } from '../../../api/api.config';
 import { LoaderService } from '../../../services/loader.service';
+import { ModalService } from '../../../services/modal.service';
 import { MSG_TYPE } from '../../utils/enum';
 import { firstValueFrom } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { DataService } from '../../../services/data.service';
 import { TranslationService } from '../../../services/translation.service';
@@ -37,8 +39,12 @@ export class AddPlayersModalComponent extends ModalComponent {
   private competitionService = inject(CompetitionService);
   private dataService = inject(DataService);
   private translateService = inject(TranslationService);
+  private destroyRef = inject(DestroyRef);
   private isAdding = false;
   copied = false;
+
+  readonly maxPlayers = 32;
+  private currentPlayersCount = 0;
 
   addPlayerForm: FormGroup = this.fb.group({
     name: [''],
@@ -53,15 +59,39 @@ export class AddPlayersModalComponent extends ModalComponent {
 
   private sb: SupabaseClient = createClient(environment.supabase.url, environment.supabase.ANON);
 
-  addPlayer() {
-    if (this.addPlayerForm.valid) {
-      const { name, surname, nickname, file } = this.addPlayerForm.value;
-      const previewUrl = file ? URL.createObjectURL(file) : null;
+  constructor() {
+    super(inject(ModalService));
+    this.activeCompetition$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(comp => {
+        this.currentPlayersCount = comp?.players?.length ?? 0;
+      });
+  }
 
-      this.playersToAdd.push({ name, surname, nickname, file, previewUrl });
-      this.addPlayerForm.reset();
-      this.resetFile();
+  get remainingSlots(): number {
+    return Math.max(this.maxPlayers - (this.currentPlayersCount + this.playersToAdd.length), 0);
+  }
+
+  private hasReachedLimit(): boolean {
+    return this.currentPlayersCount + this.playersToAdd.length >= this.maxPlayers;
+  }
+
+  addPlayer() {
+    if (!this.addPlayerForm.valid) {
+      return;
     }
+
+    if (this.hasReachedLimit()) {
+      this.loader.showToast(this.translateService.translate('players_limit_reached'), MSG_TYPE.ERROR);
+      return;
+    }
+
+    const { name, surname, nickname, file } = this.addPlayerForm.value;
+    const previewUrl = file ? URL.createObjectURL(file) : null;
+
+    this.playersToAdd.push({ name, surname, nickname, file, previewUrl });
+    this.addPlayerForm.reset();
+    this.resetFile();
   }
 
   removePlayer(index: number) {
@@ -88,6 +118,10 @@ export class AddPlayersModalComponent extends ModalComponent {
   async addPlayers(event?: Event) {
     if (this.isAdding) {
       console.warn("⚠️ addPlayers già in corso, chiamata bloccata.");
+      return;
+    }
+    if (this.currentPlayersCount + this.playersToAdd.length > this.maxPlayers) {
+      this.loader.showToast(this.translateService.translate('players_limit_reached'), MSG_TYPE.ERROR);
       return;
     }
     const button = this.resolveButton(event);
