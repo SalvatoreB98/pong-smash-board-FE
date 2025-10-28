@@ -51,11 +51,26 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
   private knockoutSubscription?: Subscription;
   winnerDetails: WinnerBannerData | null = null;
   competitionFinished = false;
+  roundFilters: Array<{ key: string | null; label: string }> = [];
+  selectedRoundFilter: string | null = null;
+
+  get visibleRounds(): EliminationRound[] {
+    if (!Array.isArray(this.rounds) || !this.rounds.length) {
+      return [];
+    }
+
+    if (!this.selectedRoundFilter) {
+      return this.rounds;
+    }
+
+    return this.rounds.filter(round => this.buildRoundKey(round) === this.selectedRoundFilter);
+  }
 
   ngOnInit() {
     this.knockoutSubscription = this.dataService.knockoutObs.subscribe(knockout => {
       if (!knockout) {
         this.rounds = [];
+        this.refreshRoundFilters();
         this.updateWinner();
         return;
       }
@@ -69,6 +84,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
 
       this.rounds = mapKnockoutResponse(knockout);
       console.log('Updated rounds from knockout subscription:', this.rounds);
+      this.refreshRoundFilters();
       this.updateWinner();
     });
 
@@ -82,6 +98,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
     }
 
     if (changes['competition'] || changes['rounds']) {
+      this.refreshRoundFilters();
       this.updateWinner();
     }
   }
@@ -94,6 +111,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
     const competitionId = this.competition?.id;
     if (!competitionId) {
       this.rounds = [];
+      this.refreshRoundFilters();
       this.updateWinner();
       return;
     }
@@ -113,6 +131,8 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
       this.rounds = mapKnockoutResponse(cached);
       console.log('Updated rounds from knockout subscription:', this.rounds);
 
+      this.refreshRoundFilters();
+
       this.updateWinner();
 
       return;
@@ -129,6 +149,10 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
 
   trackByMatch(index: number, _match: unknown) {
     return index;
+  }
+
+  trackByFilter(index: number, filter: { key: string | null }) {
+    return filter.key ?? `all-${index}`;
   }
   openModal(modalName: string, options: {
     player1?: IPlayer | null;
@@ -370,5 +394,92 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
     }
 
     return finalRound.matches.every(match => match?.winnerId != null);
+  }
+
+  selectRoundFilter(filterKey: string | null) {
+    this.selectedRoundFilter = filterKey;
+  }
+
+  private refreshRoundFilters() {
+    const filters: Array<{ key: string | null; label: string }> = [];
+    const uniqueRounds = new Map<string, string>();
+
+    for (const round of this.rounds ?? []) {
+      const key = this.buildRoundKey(round);
+      if (!key || uniqueRounds.has(key)) {
+        continue;
+      }
+
+      uniqueRounds.set(key, this.buildRoundLabel(round, key));
+    }
+
+    if (uniqueRounds.size > 0) {
+      const allRoundsLabel = this.translationService.translate('all_rounds');
+      const fallbackAllLabel = this.translationService.translate('all');
+      const label =
+        (allRoundsLabel && allRoundsLabel !== 'all_rounds' ? allRoundsLabel : null) ||
+        fallbackAllLabel ||
+        'All';
+      filters.push({ key: null, label });
+    }
+
+    uniqueRounds.forEach((label, key) => {
+      filters.push({ key, label });
+    });
+
+    this.roundFilters = filters;
+
+    if (this.selectedRoundFilter && !uniqueRounds.has(this.selectedRoundFilter)) {
+      this.selectedRoundFilter = null;
+    }
+  }
+
+  private buildRoundKey(round: EliminationRound | null | undefined): string | null {
+    if (!round) {
+      return null;
+    }
+
+    const stage = typeof round.stage === 'string' && round.stage.trim() ? round.stage.trim() : null;
+    if (stage) {
+      return stage;
+    }
+
+    const name = typeof round.name === 'string' && round.name.trim() ? round.name.trim() : null;
+    if (name) {
+      return name;
+    }
+
+    if (typeof round.roundNumber === 'number' && Number.isFinite(round.roundNumber)) {
+      return `round-${round.roundNumber}`;
+    }
+
+    return null;
+  }
+
+  private buildRoundLabel(round: EliminationRound | null | undefined, fallback: string): string {
+    if (!round) {
+      return fallback;
+    }
+
+    const stage = typeof round.stage === 'string' && round.stage.trim() ? round.stage.trim() : null;
+    if (stage) {
+      return this.translationService.translate(stage) || stage;
+    }
+
+    const name = typeof round.name === 'string' && round.name.trim() ? round.name.trim() : null;
+    if (name) {
+      return name;
+    }
+
+    if (typeof round.roundNumber === 'number' && Number.isFinite(round.roundNumber)) {
+      const roundLabel = this.translationService.translate('round');
+      if (roundLabel && roundLabel !== 'round') {
+        return `${roundLabel} ${round.roundNumber}`;
+      }
+
+      return `Round ${round.roundNumber}`;
+    }
+
+    return fallback;
   }
 }
