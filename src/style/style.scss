@@ -514,7 +514,9 @@ button.secondary-color-button {
     max-width: 700px;
     margin: auto;
 }
-
+.text-danger {
+    color: $contrast !important;
+}
 @media screen and (max-width: 1400px) {
     .my-modal {
         padding-bottom: 0;

@@ -48,7 +48,7 @@
 </div>
 
 <!-- STEP 2 – NOME -->
-<div class="steps-wrapper" *ngIf="step == 2">
+<div class="steps-wrapper" *ngIf="step == 3">
     <form class="form-card m-auto mt-3" [formGroup]="competitionForm" (keydown.enter)="nextStep()">
         <label class="field">
             <span class="label">{{ 'competition_name_label' | translate }}</span>
@@ -62,7 +62,7 @@
 </div>
 
 <!-- STEP 3 – TIPOLOGIA -->
-<div class="steps-wrapper" *ngIf="step == 3">
+<div class="steps-wrapper" *ngIf="step == 2">
     <form class="form-card m-auto mt-3" [formGroup]="competitionForm" (keydown.enter)="nextStep()">
         <div class="field">
             <span class="label">{{ 'competition_type_label' | translate }}</span>
@@ -89,6 +89,9 @@
                     </ng-template>
                 </label>
             </div>
+        </div>
+        <div *ngIf="managementForm.get('managementCtrl')?.value !== 'admin'">
+            <p class="text-danger text-center">{{ 'not_available_description' | translate }}</p>
         </div>
     </form>
 </div>

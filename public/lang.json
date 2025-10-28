@@ -284,8 +284,12 @@
         "en": "Competitions"
     },
     "not_available": {
-        "it": "In arrivo presto 🚀",
-        "en": "Coming soon 🚀"
+        "it": "Non disponibile ❌",
+        "en": "Not available ❌"
+    },
+    "not_available_description": {
+        "it": "Alcune modalità, come l’eliminazione diretta o la fase mista con gironi, richiedono la gestione admin. Torna indietro e seleziona Gestione admin per crearle.",
+        "en": "Some modes, like single elimination or group stage with knockout, require admin management. Go back and select Admin management to create them."
     },
     "no_competitions": {
         "it": "Nessuna competizione ancora. Crea la tua prima competizione per iniziare a registrare partite, classifiche e statistiche.",

@@ -27,28 +27,38 @@ export class AddCompetitionModalComponent {
   managementForm: FormGroup;
 
   getCompetitionTypes(): { value: CompetitionType; icon: string; labelKey: string; descriptionKey?: string; badgeKey?: string; disabled?: boolean; }[] {
-    return [
-      {
-        value: 'league',
-        icon: '/numbered-list.png',
-        labelKey: 'competition_type_league',
-        descriptionKey: 'competition_type_league_description'
-      },
-      {
-        value: 'elimination',
-        icon: '/vs.svg',
-        labelKey: 'competition_type_elimination',
-        descriptionKey: 'competition_type_elimination_description',
-        badgeKey: 'beta_label',
-        disabled: this.managementForm.get('managementCtrl')?.value !== 'admin'
-      },
-      {
-        value: 'group_knockout',
-        icon: '/trophy.png',
-        labelKey: 'competition_type_group_knockout',
-        descriptionKey: 'competition_type_group_knockout_description',
-      }
-    ];
+    if (this.managementForm.get('managementCtrl')?.value !== 'admin') {
+      return [
+        {
+          value: 'league',
+          icon: '/numbered-list.png',
+          labelKey: 'competition_type_league',
+          descriptionKey: 'competition_type_league_description'
+        }
+      ];
+    } else {
+      return [
+        {
+          value: 'league',
+          icon: '/numbered-list.png',
+          labelKey: 'competition_type_league',
+          descriptionKey: 'competition_type_league_description'
+        },
+        {
+          value: 'elimination',
+          icon: '/vs.svg',
+          labelKey: 'competition_type_elimination',
+          descriptionKey: 'competition_type_elimination_description',
+          badgeKey: 'beta_label',
+        },
+        {
+          value: 'group_knockout',
+          icon: '/trophy.png',
+          labelKey: 'competition_type_group_knockout',
+          descriptionKey: 'competition_type_group_knockout_description',
+        }
+      ];
+    }
   }
 
   constructor(private fb: FormBuilder, public modalService: ModalService, private competitionService: CompetitionService, private loaderService: LoaderService, private userService: UserService) {
@@ -154,9 +164,9 @@ export class AddCompetitionModalComponent {
       case 1:
         return this.managementForm.invalid;
       case 2:
-        return this.competitionForm.get('nameCtrl')?.invalid ?? true;
-      case 3:
         return this.competitionForm.get('typeCtrl')?.invalid ?? true;
+      case 3:
+        return this.competitionForm.get('nameCtrl')?.invalid ?? true;
       case 4:
         return this.competitionForm.get('setsCtrl')?.invalid ?? true;
       case 5:

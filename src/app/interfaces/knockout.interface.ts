@@ -37,7 +37,7 @@ export interface KnockoutMatch {
 
 export interface KnockoutRound {
   name?: string | null;
-  order?: number | string | null;
+  order: number;
   matches?: (KnockoutMatch | null | undefined)[];
 }
 
@@ -92,10 +92,7 @@ export function mapKnockoutResponse(response: Pick<KnockoutResponse, 'rounds'>):
     .map((round, roundIndex) => {
       const stage = toKnockoutStage(round.name);
       const roundOrderFromStage = knockoutStageOrder(stage);
-      const roundOrder =
-        roundOrderFromStage !== Number.POSITIVE_INFINITY
-          ? roundOrderFromStage
-          : toRoundOrder(round.order, roundIndex + 1);
+      const roundOrder = round.order;
       const roundLabel = stage ?? (round.name ? String(round.name) : null);
       const matches = Array.isArray(round.matches) ? round.matches : [];
 
