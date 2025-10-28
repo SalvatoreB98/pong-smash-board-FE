@@ -189,10 +189,7 @@
 }
 
 .other-competitions-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    width: 100%;
+    display: flex;
 }
 
 .others {
@@ -216,7 +213,6 @@
         cursor: pointer;
         display: grid;
         grid-template-columns: 1fr;
-        margin: 1em;
         max-width: 300px;
 
         .container-action {

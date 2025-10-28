@@ -199,7 +199,7 @@
     margin-top: 1.5rem;
     max-width: 37.5em;
     margin: auto;
-    padding: 0;
+    padding: 1rem;
 
     h3 {
         font-size: 1rem;
@@ -217,7 +217,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 1em;
 
         &:hover {
             background: $dark;
