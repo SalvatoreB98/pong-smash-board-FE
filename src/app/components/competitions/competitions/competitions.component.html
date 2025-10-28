@@ -63,9 +63,9 @@
 
             <!-- Altre competizioni -->
             <ng-container *ngIf="competitions$ | async as competitions">
-                <section class="others" *ngIf="competitions.length > 0">
+                <section class="others mt-5" *ngIf="competitions.length > 0">
                     <h3>{{ "other_competitions" | translate }}</h3>
-                    <div class="other-competitions-container">
+                    <div class="other-competitions-container mb-5">
                         <ng-container *ngFor="let c of competitionsWithoutActive$ | async; trackBy: trackById">
                             <div class="comp my-card text-center">
                                 <strong>{{ c.name }}</strong>

@@ -50,7 +50,7 @@
     color: white;
 }
 
-:where(h2, .motion-heading) {
+:where(h2, .motion-heading, .skeleton-card) {
     position: relative;
     animation: motion-fade-in-up var(--motion-duration-long) var(--motion-ease-out) both;
     letter-spacing: 0.01em;
@@ -58,6 +58,7 @@
 }
 
 :where(.my-card,
+        h3, h4,
         .match-card,
         .preview-card,
         .feature-tile,

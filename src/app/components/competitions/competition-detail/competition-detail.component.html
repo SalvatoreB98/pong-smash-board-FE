@@ -28,57 +28,73 @@
     </span>
     <i [ngClass]="['fa-solid', getCompetitionTypeIcon(competition?.type)]"></i>
   </div>
+  <div class="mt-3 players-number">
+    <i class="fa fa-users me-2"></i>
+    <span class="value number">
+      {{ competition?.['players']?.length || 0 }}
+    </span>
 
-  <!-- Giocatori -->
-  <div class="players-container">
-    <div class="competition-players-container slider swiper competition-players__slider" #playersSlider>
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <button class="add players" (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
-            <i class="fa fa-circle-plus"></i>
-            <span class="player-name">
-              {{ "add" | translate }}
-            </span>
-          </button>
+
+    <div class="value" *ngIf="competition?.['players'] !== undefined">
+      <span class="of ms-1">
+        of
+      </span>
+      {{
+      (competition?.['players']?.length || 0) <= 2 ? 2 : (competition?.['players']?.length || 0) <=4 ? 4 :
+        (competition?.['players']?.length || 0) <=8 ? 8 : (competition?.['players']?.length || 0) <=16 ? 16 : 32 }}
         </div>
-        <div class="swiper-slide" *ngFor="let p of competition?.['players']">
-          <button class="players">
-            <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
-            <img *ngIf="!p.image_url" class="avatar" [src]="'default-player.jpg'" />
-            <span class="player-name">{{ p.nickname }}</span>
-            <button class="delete" (click)="requestPlayerDeletion(p.id)">
-              <i class="fa-solid fa-trash-o"></i>
+
+    </div>
+    <!-- Giocatori -->
+    <div class="players-container">
+      <div class="competition-players-container slider swiper competition-players__slider" #playersSlider>
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <button class="add players" (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
+              <i class="fa fa-circle-plus"></i>
+              <span class="player-name">
+                {{ "add" | translate }}
+              </span>
             </button>
-          </button>
+          </div>
+          <div class="swiper-slide" *ngFor="let p of competition?.['players']">
+            <button class="players">
+              <img *ngIf="p.image_url" class="avatar" [src]="p.image_url" />
+              <img *ngIf="!p.image_url" class="avatar" [src]="'default-player.jpg'" />
+              <span class="player-name">{{ p.nickname }}</span>
+              <button class="delete" (click)="requestPlayerDeletion(p.id)">
+                <i class="fa-solid fa-trash-o"></i>
+              </button>
+            </button>
+          </div>
         </div>
       </div>
+      <div class="no-players" *ngIf="isEmpty(competition?.['players'])">
+        {{ "no_players" | translate }}
+      </div>
     </div>
-    <div class="no-players" *ngIf="isEmpty(competition?.['players'])">
-      {{ "no_players" | translate }}
-    </div>
-  </div>
 
-  <!-- Azioni -->
-  <div class="detail-actions">
-    <ng-container *ngIf="(competition?.players?.length || 0) >= 2">
-      <button class="button-primary-ping flex-grow-1" id="add-match-button" (click)="goToMatches(competition?.id)">
-        <span>
-           {{ "view_or_manage_matches" | translate }}
-        </span>
-        <i class="fa-solid fa-table-tennis-paddle-ball ms-2"></i>
+    <!-- Azioni -->
+    <div class="detail-actions">
+      <ng-container *ngIf="(competition?.players?.length || 0) >= 2">
+        <button class="button-primary-ping flex-grow-1" id="add-match-button" (click)="goToMatches(competition?.id)">
+          <span>
+            {{ "view_or_manage_matches" | translate }}
+          </span>
+          <i class="fa-solid fa-table-tennis-paddle-ball ms-2"></i>
+        </button>
+      </ng-container>
+
+      <button type="button" class="button-secondary-ping secondary" id="add-players-button"
+        (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
+        {{ "add_players" | translate }}
+        <i class="fa-solid fa-users ms-2"></i>
       </button>
-    </ng-container>
 
-    <button type="button" class="button-secondary-ping secondary" id="add-players-button"
-      (click)="modalService.openModal(modalService.MODALS['ADD_PLAYERS'])">
-      {{ "add_players" | translate }}
-      <i class="fa-solid fa-users ms-2"></i>
-    </button>
-
-    <button #detailMenuTrigger type="button" class="menu-trigger" aria-haspopup="true"
-      [attr.aria-label]="'actions' | translate" (click)="dropdownService.open(detailMenuActions, $event)"
-      [attr.data-competition-id]="competition?.id ?? ''" data-dropdown-source="competition-detail">
-      <span aria-hidden="true">⋮</span>
-    </button>
+      <button #detailMenuTrigger type="button" class="menu-trigger" aria-haspopup="true"
+        [attr.aria-label]="'actions' | translate" (click)="dropdownService.open(detailMenuActions, $event)"
+        [attr.data-competition-id]="competition?.id ?? ''" data-dropdown-source="competition-detail">
+        <span aria-hidden="true">⋮</span>
+      </button>
+    </div>
   </div>
-</div>

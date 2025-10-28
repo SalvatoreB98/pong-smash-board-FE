@@ -15,7 +15,20 @@
     text-align: left;
   }
 }
-
+.value {
+  display: inline-block;
+  &.number {
+    font-weight: bold;
+    font-size: 1em;
+  }
+  .of {
+    font-weight: 100;
+  }
+}
+.players-number {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
 .info {
   position: absolute;
   top: 0;

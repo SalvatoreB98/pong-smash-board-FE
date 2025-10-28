@@ -1250,5 +1250,9 @@
     "not_mandatory": {
         "it": "Non obbligatorio",
         "en": "Not mandatory"
+    },
+    "number_of_players": {
+        "it": "N. di giocatori",
+        "en": "N. of players"
     }
 }
