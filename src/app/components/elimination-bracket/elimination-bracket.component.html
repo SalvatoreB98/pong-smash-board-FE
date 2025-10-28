@@ -43,7 +43,7 @@
       </div>
 
       <div class="bracket" *ngIf="visibleRounds.length; else filteredEmptyBracket">
-        <div class="bracket-round" *ngFor="let round of visibleRounds; let i = index; trackBy: trackByRound">
+        <div class="bracket-round" *ngFor="let round of visibleRounds; let i = index; trackBy: trackByRound" [class.final]="round.name === 'final'">
           <h3>{{ (round.stage ?? round.name) | translate }}</h3>
 
           <div class="bracket-matches">
