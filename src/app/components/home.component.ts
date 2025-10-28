@@ -40,7 +40,7 @@ type MatchWithContext = IMatch & {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent, SetMatchDateModalComponent, AddPlayerModalComponent],
+  imports: [CommonModule, TranslatePipe, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent, SetMatchDateModalComponent, AddPlayerModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -111,6 +111,22 @@ export class HomeComponent {
     this.knockout$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(knockout => this.handleKnockoutUpdate(knockout));
+  }
+
+  navigateToCompetitions() {
+    this.router.navigate(['/competitions']);
+  }
+
+  openAddMatchModal() {
+    this.modalService.openModal(this.modalService.MODALS['ADD_MATCH']);
+  }
+
+  openManualPointsModal() {
+    this.modalService.openModal(this.modalService.MODALS['MANUAL_POINTS']);
+  }
+
+  openAddPlayerModal() {
+    this.modalService.openModal(this.modalService.MODALS['ADD_PLAYER']);
   }
 
   setClickedMatch(match: IMatch) {

@@ -1,4 +1,28 @@
 <ng-container *ngIf="userState$ | async">
+  <div class="home-toolbar">
+    <button type="button" class="home-toolbar__icon-button" (click)="navigateToCompetitions()"
+      aria-label="Apri impostazioni competizioni" title="Competitions">
+      <i class="fa fa-cog" aria-hidden="true"></i>
+    </button>
+
+    <div class="home-toolbar__actions">
+      <button type="button" class="home-toolbar__button" (click)="openAddMatchModal()">
+        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+        <span>{{ 'add_match' | translate }}</span>
+      </button>
+
+      <button type="button" class="home-toolbar__button" (click)="openManualPointsModal()">
+        <i class="fa fa-sliders" aria-hidden="true"></i>
+        <span>{{ 'manual_points' | translate }}</span>
+      </button>
+
+      <button type="button" class="home-toolbar__button" (click)="openAddPlayerModal()">
+        <i class="fa fa-user-plus" aria-hidden="true"></i>
+        <span>{{ 'add_player' | translate }}</span>
+      </button>
+    </div>
+  </div>
+
   <ng-container [ngSwitch]="activeCompetition?.type">
     <app-elimination-bracket *ngSwitchCase="'elimination'" (matchRoundClicked)="onClickMatchRound($event)"
       [competition]="activeCompetition" [rounds]="eliminationRounds"></app-elimination-bracket>
