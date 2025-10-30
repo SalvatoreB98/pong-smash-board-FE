@@ -199,8 +199,9 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
     return match.roundLabel ?? round.stage ?? round.name ?? '';
   }
 
-  buildBracketPlayers(match: any, roundIndex: number): MatchCardPlayerSlot[] {
+  buildBracketPlayers(match: any, round: EliminationRound | null | undefined): MatchCardPlayerSlot[] {
     // Repackages bracket slots so the shared card can render the admin/read-only states.
+    const isFirstRound = this.isFirstRound(round);
     return (match?.slots ?? []).map((slot: EliminationMatchSlot, slotIndex: number) => {
       if (slot?.player) {
         return {
@@ -214,7 +215,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
       }
 
       const waitingLabel = this.translationService.translate('elimination_waiting_player');
-      if (roundIndex === 0 && !this.readonly) {
+      if (isFirstRound && !this.readonly) {
         return {
           state: 'empty',
           action: {
@@ -231,6 +232,33 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
         waitingLabel,
       } satisfies MatchCardPlayerSlot;
     });
+  }
+
+  private isFirstRound(round: EliminationRound | null | undefined): boolean {
+    if (!round || !Array.isArray(this.rounds) || !this.rounds.length) {
+      return false;
+    }
+
+    const directIndex = this.rounds.indexOf(round);
+    if (directIndex !== -1) {
+      return directIndex === 0;
+    }
+
+    if (typeof round.roundNumber === 'number' && Number.isFinite(round.roundNumber)) {
+      const earliestRoundNumber = this.rounds.reduce<number | null>((acc, current) => {
+        if (typeof current.roundNumber === 'number' && Number.isFinite(current.roundNumber)) {
+          return acc == null ? current.roundNumber : Math.min(acc, current.roundNumber);
+        }
+
+        return acc;
+      }, null);
+
+      if (earliestRoundNumber != null) {
+        return round.roundNumber === earliestRoundNumber;
+      }
+    }
+
+    return false;
   }
 
   buildSetDateAction(match: any): MatchCardAction | null {
