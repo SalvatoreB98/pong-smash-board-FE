@@ -3,1921 +3,2242 @@
         "it": "Italiano",
         "en": "Italian",
         "es": "italiano",
-        "de": "Italienisch"
+        "de": "Italienisch",
+        "fr": "Italian"
     },
     "english": {
         "it": "Inglese",
         "en": "English",
         "es": "Inglés",
-        "de": "Englisch"
+        "de": "Englisch",
+        "fr": "English"
     },
     "spanish": {
         "it": "Spagnolo",
         "en": "Spanish",
         "es": "Español",
-        "de": "Spanisch"
+        "de": "Spanisch",
+        "fr": "Spanish"
     },
     "german": {
         "it": "Tedesco",
         "en": "German",
         "es": "alemán",
-        "de": "Deutsch"
+        "de": "Deutsch",
+        "fr": "German"
     },
     "add_match": {
         "it": "Registra partita",
         "en": "Add match",
         "es": "Añadir partido",
-        "de": "Spiel hinzufügen"
+        "de": "Spiel hinzufügen",
+        "fr": "Add match"
     },
     "matches": {
         "it": "Ultime partite",
         "en": "Last matches",
         "es": "Últimos partidos",
-        "de": "Letzte Spiele"
+        "de": "Letzte Spiele",
+        "fr": "Last matches"
     },
     "date": {
         "it": "Data",
         "en": "Date",
         "es": "Fecha",
-        "de": "Datum"
+        "de": "Datum",
+        "fr": "Date"
     },
     "player1": {
         "it": "Giocatore 1",
         "en": "Player 1",
         "es": "Jugador 1",
-        "de": "Spieler 1"
+        "de": "Spieler 1",
+        "fr": "Player 1"
     },
     "players": {
         "it": "Giocatori",
         "en": "Players",
         "es": "Jugadores",
-        "de": "Spieler"
+        "de": "Spieler",
+        "fr": "Players"
     },
     "select_player": {
         "it": "Seleziona un giocatore",
         "en": "Select a player",
         "es": "Selecciona un jugador",
-        "de": "Spieler auswählen"
+        "de": "Spieler auswählen",
+        "fr": "Select a player"
     },
     "Select a player": {
         "it": "Seleziona un giocatore",
         "en": "Select a player",
         "es": "Selecciona un jugador",
-        "de": "Spieler auswählen"
+        "de": "Spieler auswählen",
+        "fr": "Select a player"
     },
     "player2": {
         "it": "Giocatore 2",
         "en": "Player 2",
         "es": "Jugador 2",
-        "de": "Spieler 2"
+        "de": "Spieler 2",
+        "fr": "Player 2"
     },
     "score1": {
         "it": "Punteggio 1",
         "en": "Score 1",
         "es": "Puntuación 1",
-        "de": "Punktzahl 1"
+        "de": "Punktzahl 1",
+        "fr": "Score 1"
     },
     "score2": {
         "it": "Punteggio 2",
         "en": "Score 2",
         "es": "Puntuación 2",
-        "de": "Punktzahl 2"
+        "de": "Punktzahl 2",
+        "fr": "Score 2"
     },
     "add_set_points": {
         "it": "Aggiungi i punti dei set",
         "en": "Add set points",
         "es": "Añadir puntos del set",
-        "de": "Satzpunkte hinzufügen"
+        "de": "Satzpunkte hinzufügen",
+        "fr": "Add set points"
     },
     "Add set points": {
         "it": "Aggiungi i punti dei set",
         "en": "Add set points",
         "es": "Añadir puntos del set",
-        "de": "Satzpunkte hinzufügen"
+        "de": "Satzpunkte hinzufügen",
+        "fr": "Add set points"
     },
     "cancel": {
         "it": "Annulla",
         "en": "Cancel",
         "es": "Cancelar",
-        "de": "Abbrechen"
+        "de": "Abbrechen",
+        "fr": "Cancel"
     },
     "add_match_cta": {
         "it": "Aggiungi partita",
         "en": "Add match",
         "es": "Añadir partido",
-        "de": "Spiel hinzufügen"
+        "de": "Spiel hinzufügen",
+        "fr": "Add match"
     },
     "loader": {
         "it": "Caricamento in corso...",
         "en": "Loading...",
         "es": "Cargando...",
-        "de": "Wird geladen..."
+        "de": "Wird geladen...",
+        "fr": "Loading..."
     },
     "Loader": {
         "it": "Caricamento in corso...",
         "en": "Loading...",
         "es": "Cargando...",
-        "de": "Wird geladen..."
+        "de": "Wird geladen...",
+        "fr": "Loading..."
     },
     "Search player": {
         "it": "Cerca giocatore",
         "en": "Search player",
         "es": "Buscar jugador",
-        "de": "Spieler suchen"
+        "de": "Spieler suchen",
+        "fr": "Search player"
     },
     "Select player": {
         "it": "Cerca giocatore",
         "en": "Search player",
         "es": "Buscar jugador",
-        "de": "Spieler suchen"
+        "de": "Spieler suchen",
+        "fr": "Search player"
     },
     "register": {
         "it": "O registrati",
         "en": "Or sign up",
         "es": "O regístrate",
-        "de": "Oder registriere dich"
+        "de": "Oder registriere dich",
+        "fr": "Or sign up"
     },
     "here": {
         "it": "qui",
         "en": "here",
         "es": "aquí",
-        "de": "hier"
+        "de": "hier",
+        "fr": "here"
     },
     "register_google": {
         "it": "Registrati con Google",
         "en": "Sign up with Google",
         "es": "Regístrate con Google",
-        "de": "Mit Google registrieren"
+        "de": "Mit Google registrieren",
+        "fr": "Sign up with Google"
     },
     "profile": {
         "it": "Profilo",
         "en": "Profile",
         "es": "Perfil",
-        "de": "Profil"
+        "de": "Profil",
+        "fr": "Profile"
     },
     "match_details": {
         "it": "Dettagli partita",
         "en": "Match details",
         "es": "Detalles del partido",
-        "de": "Spieldetails"
+        "de": "Spieldetails",
+        "fr": "Match details"
     },
     "match_general_info": {
         "it": "Informazioni generali",
         "en": "General information",
         "es": "Información general",
-        "de": "Allgemeine Informationen"
+        "de": "Allgemeine Informationen",
+        "fr": "General information"
     },
     "Scontri set diretti": {
         "it": "Scontri set diretti",
         "en": "Direct set clashes",
         "es": "Choques de sets directos",
-        "de": "Direkte Zusammenstöße"
+        "de": "Direkte Zusammenstöße",
+        "fr": "Direct set clashes"
     },
     "classifica": {
         "it": "Classifica",
         "en": "Standings",
         "es": "Clasificación",
-        "de": "Tabelle"
+        "de": "Tabelle",
+        "fr": "Standings"
     },
     "rank": {
         "it": "Ranking",
         "en": "Rank",
         "es": "Rango",
-        "de": "Rang"
+        "de": "Rang",
+        "fr": "Rank"
     },
     "partiteTot": {
         "it": "TOT",
         "en": "TOT.",
         "es": "TOT.",
-        "de": "GESAMT."
+        "de": "GESAMT.",
+        "fr": "TOT."
     },
     "partiteTotTitle": {
         "it": "Partite totali giocate",
         "en": "Total matches played",
         "es": "Total de partidos jugados",
-        "de": "Gesamtzahl der gespielten Spiele"
+        "de": "Gesamtzahl der gespielten Spiele",
+        "fr": "Total matches played"
     },
     "vittorie": {
         "it": "V",
         "en": "W",
         "es": "W.",
-        "de": "W"
+        "de": "W",
+        "fr": "W"
     },
     "vittorieTitle": {
         "it": "Numero di vittorie",
         "en": "Number of wins",
         "es": "Número de victorias",
-        "de": "Anzahl der Siege"
+        "de": "Anzahl der Siege",
+        "fr": "Number of wins"
     },
     "sconfitte": {
         "it": "S",
         "en": "L",
         "es": "l",
-        "de": "L"
+        "de": "L",
+        "fr": "L"
     },
     "sconfitteTitle": {
         "it": "Numero di sconfitte",
         "en": "Number of losses",
         "es": "Número de pérdidas",
-        "de": "Anzahl der Verluste"
+        "de": "Anzahl der Verluste",
+        "fr": "Number of losses"
     },
     "rating": {
         "it": "Pt",
         "en": "Pts",
         "es": "Pts",
-        "de": "Pts"
+        "de": "Pts",
+        "fr": "Pts"
     },
     "ratingTitle": {
         "it": "Punteggio basato sulla percentuale di vittorie/partite giocate",
         "en": "Score based on win percentage / matches played",
         "es": "Puntuación basada en porcentaje de victorias/partidos jugados",
-        "de": "Ergebnis basierend auf der Siegquote / den gespielten Spielen"
+        "de": "Ergebnis basierend auf der Siegquote / den gespielten Spielen",
+        "fr": "Score based on win percentage / matches played"
     },
     "ratingEloTitle": {
         "it": "Rating ELO",
         "en": "ELO Rating",
         "es": "Clasificación ELO",
-        "de": "ELO-Bewertung"
+        "de": "ELO-Bewertung",
+        "fr": "ELO Rating"
     },
     "winRate": {
         "it": "Win Rate",
         "en": "Win Rate",
         "es": "Tasa de victorias",
-        "de": "Gewinnrate"
+        "de": "Gewinnrate",
+        "fr": "Win Rate"
     },
     "winRateTitle": {
         "it": "Percentuale vittorie su partite giocate",
         "en": "Win percentage over matches played",
         "es": "Porcentaje de victorias sobre partidos jugados",
-        "de": "Gewinnprozentsatz über gespielte Spiele"
+        "de": "Gewinnprozentsatz über gespielte Spiele",
+        "fr": "Win percentage over matches played"
     },
     "scontriDiretti": {
         "it": "Scontri set diretti",
         "en": "Head-to-head sets",
         "es": "Conjuntos cara a cara",
-        "de": "Kopf-an-Kopf-Sets"
+        "de": "Kopf-an-Kopf-Sets",
+        "fr": "Head-to-head sets"
     },
     "vs": {
         "it": "VS",
         "en": "VS",
         "es": "VS",
-        "de": "VS"
+        "de": "VS",
+        "fr": "VS"
     },
     "nessunDato": {
         "it": "Nessun dato",
         "en": "No data",
         "es": "Sin datos",
-        "de": "Keine Daten"
+        "de": "Keine Daten",
+        "fr": "No data"
     },
     "matches_not_found": {
         "it": "Nessuna partita trovata, aggiungine una!",
         "en": "No matches found, add one!",
         "es": "No se encontraron partidos, ¡añade uno!",
-        "de": "Keine Spiele gefunden, füge eines hinzu!"
+        "de": "Keine Spiele gefunden, füge eines hinzu!",
+        "fr": "No matches found, add one!"
     },
     "add_competition": {
         "it": "Aggiungi competizione",
         "en": "Add competition",
         "es": "Añadir competición",
-        "de": "Wettbewerb hinzufügen"
+        "de": "Wettbewerb hinzufügen",
+        "fr": "Add competition"
     },
     "competition_name_label": {
         "it": "Nome della competizione",
         "en": "Competition name",
         "es": "Nombre de la competición",
-        "de": "Name des Wettbewerbs"
+        "de": "Name des Wettbewerbs",
+        "fr": "Competition name"
     },
     "competition_name_placeholder": {
         "it": "Es. Pong League 2025",
         "en": "e.g., Pong League 2025",
         "es": "por ejemplo, Pong League 2025",
-        "de": "z. B. Pong League 2025"
+        "de": "z. B. Pong League 2025",
+        "fr": "e.g., Pong League 2025"
     },
     "competition_name_error_minlength": {
         "it": "Inserisci almeno 3 caratteri.",
         "en": "Enter at least 3 characters.",
         "es": "Introduzca al menos 3 caracteres.",
-        "de": "Gib mindestens 3 Zeichen ein."
+        "de": "Gib mindestens 3 Zeichen ein.",
+        "fr": "Enter at least 3 characters."
     },
     "competition_type_label": {
         "it": "Tipologia",
         "en": "Type",
         "es": "Tipo",
-        "de": "Typ"
+        "de": "Typ",
+        "fr": "Type"
     },
     "competition_type_elimination": {
         "it": "Eliminazione diretta",
         "en": "Single elimination",
         "es": "Eliminación directa",
-        "de": "K.-o.-Modus"
+        "de": "K.-o.-Modus",
+        "fr": "Single elimination"
     },
     "competition_type_elimination_description": {
         "it": "Bracket a eliminazione diretta, chi perde è fuori.",
         "en": "Single elimination bracket, lose and you are out.",
         "es": "Cuadro de eliminación directa: si pierdes quedas fuera.",
-        "de": "K.-o.-Baum – eine Niederlage bedeutet das Aus."
+        "de": "K.-o.-Baum – eine Niederlage bedeutet das Aus.",
+        "fr": "Single elimination bracket, lose and you are out."
     },
     "competition_type_league": {
         "it": "Campionato",
         "en": "League",
         "es": "liga",
-        "de": "Liga"
+        "de": "Liga",
+        "fr": "League"
     },
     "competition_type_league_description": {
         "it": "Ogni giocatore affronta tutti gli avversari, classifica a punti.",
         "en": "Everyone plays everyone, standings decide the winner.",
         "es": "Todos juegan contra todos, la clasificación decide el ganador.",
-        "de": "Jeder spielt gegen jeden, die Rangliste entscheidet über den Gewinner."
+        "de": "Jeder spielt gegen jeden, die Rangliste entscheidet über den Gewinner.",
+        "fr": "Everyone plays everyone, standings decide the winner."
     },
     "competition_type_group_knockout": {
         "it": "Misto",
         "en": "Group and knockout",
         "es": "Grupo y eliminatoria",
-        "de": "Gruppe und Knockout"
+        "de": "Gruppe und Knockout",
+        "fr": "Group and knockout"
     },
     "competition_type_group_knockout_description": {
         "it": "Fase a gironi con eliminazione diretta finale (in arrivo).",
         "en": "Group phase followed by a knockout bracket (coming soon).",
         "es": "Fase de grupos seguida de una llave eliminatoria (próximamente).",
-        "de": "Gruppenphase, gefolgt von einer K.-o.-Runde (in Kürze)."
+        "de": "Gruppenphase, gefolgt von einer K.-o.-Runde (in Kürze).",
+        "fr": "Group phase followed by a knockout bracket (coming soon)."
     },
     "group_knockout_board_title": {
         "it": "Fase a gironi",
         "en": "Group stage",
         "es": "Fase de grupos",
-        "de": "Gruppenphase"
+        "de": "Gruppenphase",
+        "fr": "Group stage"
     },
     "group_knockout_finals_title": {
         "it": "Fase finali",
         "en": "Final stage",
         "es": "etapa final",
-        "de": "Letzte Phase"
+        "de": "Letzte Phase",
+        "fr": "Final stage"
     },
     "group_knockout_finals_empty": {
         "it": "La fase finale non è ancora disponibile.",
         "en": "The final stage is not available yet.",
         "es": "La etapa final aún no está disponible.",
-        "de": "Die Endstufe ist noch nicht verfügbar."
+        "de": "Die Endstufe ist noch nicht verfügbar.",
+        "fr": "The final stage is not available yet."
     },
     "group_knockout_board_empty": {
         "it": "Nessun giocatore qualificato al tabellone.",
         "en": "No qualified players for the bracket.",
         "es": "No hay jugadores clasificados para el cuadro.",
-        "de": "Keine qualifizierten Spieler für das Bracket."
+        "de": "Keine qualifizierten Spieler für das Bracket.",
+        "fr": "No qualified players for the bracket."
     },
     "beta_label": {
         "it": "Beta",
         "en": "Beta",
         "es": "Beta",
-        "de": "Beta"
+        "de": "Beta",
+        "fr": "Beta"
     },
     "round": {
         "it": "Turno",
         "en": "Round",
         "es": "redondo",
-        "de": "Rund"
+        "de": "Rund",
+        "fr": "Round"
     },
     "elimination_mode_description": {
         "it": "Questa competizione è in modalità eliminazione diretta.",
         "en": "This competition is in single elimination mode.",
         "es": "Esta competición está en modo eliminación directa.",
-        "de": "Dieser Wettbewerb findet im K.-o.-Modus statt."
+        "de": "Dieser Wettbewerb findet im K.-o.-Modus statt.",
+        "fr": "This competition is in single elimination mode."
     },
     "elimination_waiting_player": {
         "it": "Chi sarà a passare il turno?",
         "en": "Waiting for player",
         "es": "esperando al jugador",
-        "de": "Warten auf Spieler"
+        "de": "Warten auf Spieler",
+        "fr": "Waiting for player"
     },
     "elimination_mode_work_in_progress": {
         "it": "La modalità eliminazione è in sviluppo: presto potrai registrare incontri e avanzamenti automatici.",
         "en": "Elimination mode is under development: soon you will record matches and automatic advancements.",
         "es": "El modo de eliminación está en desarrollo: pronto podrás registrar partidos y avances automáticos.",
-        "de": "Der Eliminationsmodus befindet sich in Entwicklung: Bald kannst du Spiele und automatische Fortschritte erfassen."
+        "de": "Der Eliminationsmodus befindet sich in Entwicklung: Bald kannst du Spiele und automatische Fortschritte erfassen.",
+        "fr": "Elimination mode is under development: soon you will record matches and automatic advancements."
     },
     "elimination_not_enough_players": {
         "it": "Servono almeno due giocatori per generare il tabellone.",
         "en": "At least two players are required to generate the bracket.",
         "es": "Se requieren al menos dos jugadores para generar el grupo.",
-        "de": "Zur Generierung des Brackets sind mindestens zwei Spieler erforderlich."
+        "de": "Zur Generierung des Brackets sind mindestens zwei Spieler erforderlich.",
+        "fr": "At least two players are required to generate the bracket."
     },
     "competition_winner_title": {
         "it": "Campione",
         "en": "Champion",
         "es": "Campeón",
-        "de": "Champion"
+        "de": "Champion",
+        "fr": "Champion"
     },
     "competition_winner_subtitle": {
         "it": "La competizione è terminata.",
         "en": "The competition has finished.",
         "es": "La competición ha terminado.",
-        "de": "Der Wettbewerb ist beendet."
+        "de": "Der Wettbewerb ist beendet.",
+        "fr": "The competition has finished."
     },
     "competition_winner_vs": {
         "it": "ha sconfitto",
         "en": "defeated",
         "es": "derrotado",
-        "de": "besiegt"
+        "de": "besiegt",
+        "fr": "defeated"
     },
     "competition_winner_score": {
         "it": "Risultato",
         "en": "Final score",
         "es": "Puntuación final",
-        "de": "Endergebnis"
+        "de": "Endergebnis",
+        "fr": "Final score"
     },
     "competition_sets_label": {
         "it": "Set (meglio di)",
         "en": "Sets (best of)",
         "es": "Sets (al mejor de)",
-        "de": "Sätze (Best of)"
+        "de": "Sätze (Best of)",
+        "fr": "Sets (best of)"
     },
     "competition_points_label": {
         "it": "Punti a",
         "en": "Points to",
         "es": "apunta a",
-        "de": "Zeigt auf"
+        "de": "Zeigt auf",
+        "fr": "Points to"
     },
     "competition_action_create": {
         "it": "Crea",
         "en": "Create",
         "es": "Crear",
-        "de": "Erstellen"
+        "de": "Erstellen",
+        "fr": "Create"
     },
     "competitions": {
         "it": "Competizioni",
         "en": "Competitions",
         "es": "Competiciones",
-        "de": "Wettbewerbe"
+        "de": "Wettbewerbe",
+        "fr": "Competitions"
     },
     "not_available": {
         "it": "Non disponibile ❌",
         "en": "Not available ❌",
         "es": "No disponible ❌",
-        "de": "Nicht verfügbar ❌"
+        "de": "Nicht verfügbar ❌",
+        "fr": "Not available ❌"
     },
     "not_available_description": {
         "it": "Alcune modalità, come l’eliminazione diretta o la fase mista con gironi, richiedono la gestione admin. Torna indietro e seleziona Gestione admin per crearle.",
         "en": "Some modes, like single elimination or group stage with knockout, require admin management. Go back and select Admin management to create them.",
         "es": "Algunos modos, como la eliminación directa o la fase de grupos con eliminatoria, requieren la gestión del administrador. Vuelve atrás y selecciona Gestión del administrador para crearlos.",
-        "de": "Einige Modi, etwa der K.-o.-Modus oder eine Gruppenphase mit Finalrunde, erfordern die Verwaltung durch den Organisator. Gehe zurück und wähle die Admin-Verwaltung, um sie zu erstellen."
+        "de": "Einige Modi, etwa der K.-o.-Modus oder eine Gruppenphase mit Finalrunde, erfordern die Verwaltung durch den Organisator. Gehe zurück und wähle die Admin-Verwaltung, um sie zu erstellen.",
+        "fr": "Some modes, like single elimination or group stage with knockout, require admin management. Go back and select Admin management to create them."
     },
     "no_competitions": {
         "it": "Nessuna competizione ancora. Crea la tua prima competizione per iniziare a registrare partite, classifiche e statistiche.",
         "en": "No competitions yet. Create your first competition to start tracking matches, standings and stats.",
         "es": "Aún no hay competiciones. Crea tu primera competición para empezar a registrar partidos, clasificaciones y estadísticas.",
-        "de": "Noch keine Wettbewerbe. Erstelle deinen ersten Wettbewerb, um Spiele, Tabellen und Statistiken zu verfolgen."
+        "de": "Noch keine Wettbewerbe. Erstelle deinen ersten Wettbewerb, um Spiele, Tabellen und Statistiken zu verfolgen.",
+        "fr": "No competitions yet. Create your first competition to start tracking matches, standings and stats."
     },
     "register_title": {
         "it": "Registrati",
         "en": "Signup",
         "es": "Regístrate",
-        "de": "Anmelden"
+        "de": "Anmelden",
+        "fr": "Signup"
     },
     "complete_profile": {
         "it": "Completa il tuo profilo",
         "en": "Complete your profile",
         "es": "Completa tu perfil",
-        "de": "Vervollständige dein Profil"
+        "de": "Vervollständige dein Profil",
+        "fr": "Complete your profile"
     },
     "edit_profile": {
         "it": "Modifica profilo",
         "en": "Edit profile",
         "es": "Editar perfil",
-        "de": "Profil bearbeiten"
+        "de": "Profil bearbeiten",
+        "fr": "Edit profile"
     },
     "paragraph_complete": {
         "it": "Per iniziare a registrare partite, classifiche e statistiche, aggiungi un'immagine (opzionale) e scegli un nickname.",
         "en": "To start tracking matches, standings and stats, complete your profile.",
         "es": "Para empezar a registrar partidos, clasificaciones y estadísticas, completa tu perfil.",
-        "de": "Um Spiele, Tabellen und Statistiken zu verfolgen, vervollständige dein Profil."
+        "de": "Um Spiele, Tabellen und Statistiken zu verfolgen, vervollständige dein Profil.",
+        "fr": "To start tracking matches, standings and stats, complete your profile."
     },
     "nickname_label": {
         "it": "Inserisci il tuo nickname",
         "en": "Enter your nickname",
         "es": "Introduce tu apodo",
-        "de": "Gib deinen Spitznamen ein"
+        "de": "Gib deinen Spitznamen ein",
+        "fr": "Enter your nickname"
     },
     "nickname_label_edit": {
         "it": "Modifica il tuo nickname",
         "en": "Edit your nickname",
         "es": "Edita tu apodo",
-        "de": "Bearbeite deinen Spitznamen"
+        "de": "Bearbeite deinen Spitznamen",
+        "fr": "Edit your nickname"
     },
     "nickname": {
         "it": "Nickname",
         "en": "Nickname",
         "es": "Apodo",
-        "de": "Spitzname"
+        "de": "Spitzname",
+        "fr": "Nickname"
     },
     "competition_choice": {
         "it": "Scegli se avviare una nuova competizione o unirti a una già esistente.",
         "en": "Choose whether to start a new competition or join an existing one.",
         "es": "Elige si quieres iniciar una nueva competición o unirte a una existente.",
-        "de": "Wähle, ob du einen neuen Wettbewerb startest oder einem bestehenden beitrittst."
+        "de": "Wähle, ob du einen neuen Wettbewerb startest oder einem bestehenden beitrittst.",
+        "fr": "Choose whether to start a new competition or join an existing one."
     },
     "starts_competition_title": {
         "it": "Crea o partecipa a una competizione",
         "en": "Create or join a competition",
         "es": "Crea o únete a una competición",
-        "de": "Erstelle oder tritt einem Wettbewerb bei"
+        "de": "Erstelle oder tritt einem Wettbewerb bei",
+        "fr": "Create or join a competition"
     },
     "create_competition": {
         "it": "Crea",
         "en": "Create a competition",
         "es": "Crear una competición",
-        "de": "Einen Wettbewerb erstellen"
+        "de": "Einen Wettbewerb erstellen",
+        "fr": "Create a competition"
     },
     "create_competition_cta": {
         "it": "Crea una competizione",
         "en": "Create a competition",
         "es": "Crear una competición",
-        "de": "Einen Wettbewerb erstellen"
+        "de": "Einen Wettbewerb erstellen",
+        "fr": "Create a competition"
     },
     "join_competition": {
         "it": "Unisciti",
         "en": "Join a competition",
         "es": "Únete a una competición",
-        "de": "Einem Wettbewerb beitreten"
+        "de": "Einem Wettbewerb beitreten",
+        "fr": "Join a competition"
     },
     "create_competition_info": {
         "it": "Crea una nuova competizione per iniziare a registrare partite, classifiche e statistiche.",
         "en": "Create a new competition to start tracking matches, standings and stats.",
         "es": "Crea una nueva competición para empezar a registrar partidos, clasificaciones y estadísticas.",
-        "de": "Erstelle einen neuen Wettbewerb, um Spiele, Tabellen und Statistiken zu verfolgen."
+        "de": "Erstelle einen neuen Wettbewerb, um Spiele, Tabellen und Statistiken zu verfolgen.",
+        "fr": "Create a new competition to start tracking matches, standings and stats."
     },
     "join_competition_info": {
         "it": "Unisciti a una competizione esistente per iniziare a registrare partite, classifiche e statistiche.",
         "en": "Join an existing competition to start tracking matches, standings and stats.",
         "es": "Únete a una competición existente para empezar a registrar partidos, clasificaciones y estadísticas.",
-        "de": "Tritt einem bestehenden Wettbewerb bei, um Spiele, Tabellen und Statistiken zu verfolgen."
+        "de": "Tritt einem bestehenden Wettbewerb bei, um Spiele, Tabellen und Statistiken zu verfolgen.",
+        "fr": "Join an existing competition to start tracking matches, standings and stats."
     },
     "email_not_confirmed": {
         "it": "Il tuo indirizzo email non è stato confermato. Controlla la tua casella di posta per il link di conferma.",
         "en": "Your email address has not been confirmed. Check your inbox for the confirmation link.",
         "es": "Tu dirección de correo electrónico no ha sido confirmada. Revisa tu bandeja de entrada para encontrar el enlace de confirmación.",
-        "de": "Deine E-Mail-Adresse wurde nicht bestätigt. Überprüfe deinen Posteingang nach dem Bestätigungslink."
+        "de": "Deine E-Mail-Adresse wurde nicht bestätigt. Überprüfe deinen Posteingang nach dem Bestätigungslink.",
+        "fr": "Your email address has not been confirmed. Check your inbox for the confirmation link."
     },
     "continue": {
         "it": "Continua",
         "en": "Continue",
         "es": "Continuar",
-        "de": "Fortfahren"
+        "de": "Fortfahren",
+        "fr": "Continue"
     },
     "nickname_error": {
         "it": "Il nickname deve contenere tra i 3 e i 10 caratteri.",
         "en": "The nickname must be between 3 and 20 characters.",
         "es": "El apodo debe tener entre 3 y 20 caracteres.",
-        "de": "Der Spitzname muss zwischen 3 und 20 Zeichen lang sein."
+        "de": "Der Spitzname muss zwischen 3 und 20 Zeichen lang sein.",
+        "fr": "The nickname must be between 3 and 20 characters."
     },
     "invalid_credentials": {
         "it": "Credenziali non valide. Riprova o registrati.",
         "en": "Invalid credentials. Please try again.",
         "es": "Credenciales no válidas. Inténtalo de nuevo.",
-        "de": "Ungültige Anmeldedaten. Bitte versuche es erneut."
+        "de": "Ungültige Anmeldedaten. Bitte versuche es erneut.",
+        "fr": "Invalid credentials. Please try again."
     },
     "edit": {
         "it": "Modifica",
         "en": "Edit",
         "es": "Editar",
-        "de": "Bearbeiten"
+        "de": "Bearbeiten",
+        "fr": "Edit"
     },
     "active_competition": {
         "it": "Competizione attiva",
         "en": "Active competition",
         "es": "Competición activa",
-        "de": "Aktiver Wettbewerb"
+        "de": "Aktiver Wettbewerb",
+        "fr": "Active competition"
     },
     "activeCompetition_createdBy": {
         "it": "Creata da",
         "en": "Created by",
         "es": "Creada por",
-        "de": "Erstellt von"
+        "de": "Erstellt von",
+        "fr": "Created by"
     },
     "best_of": {
         "it": "Al meglio di",
         "en": "Best of",
         "es": "Al mejor de",
-        "de": "Best-of"
+        "de": "Best-of",
+        "fr": "Best of"
     },
     "points_number": {
         "it": "Punti a",
         "en": "Points to",
         "es": "apunta a",
-        "de": "Zeigt auf"
+        "de": "Zeigt auf",
+        "fr": "Points to"
     },
     "name": {
         "it": "Nome",
         "en": "Name",
         "es": "Nombre",
-        "de": "Name"
+        "de": "Name",
+        "fr": "Name"
     },
     "add_players": {
         "it": "Aggiungi giocatori",
         "en": "Add players",
         "es": "Añadir jugadores",
-        "de": "Spieler hinzufügen"
+        "de": "Spieler hinzufügen",
+        "fr": "Add players"
     },
     "players_limit_remaining": {
         "it": "Posti disponibili:",
         "en": "Spots remaining:",
         "es": "Plazas restantes:",
-        "de": "Verbleibende Plätze:"
+        "de": "Verbleibende Plätze:",
+        "fr": "Spots remaining:"
     },
     "players_limit_reached": {
         "it": "Limite di 32 giocatori per competizione raggiunto.",
         "en": "Maximum of 32 players per competition reached.",
         "es": "Se alcanzó un máximo de 32 jugadores por competición.",
-        "de": "Maximal 32 Spieler pro Wettbewerb erreicht."
+        "de": "Maximal 32 Spieler pro Wettbewerb erreicht.",
+        "fr": "Maximum of 32 players per competition reached."
     },
     "add": {
         "it": "Aggiungi",
         "en": "Add",
         "es": "Añadir",
-        "de": "Hinzufügen"
+        "de": "Hinzufügen",
+        "fr": "Add"
     },
     "partecipants": {
         "it": "Partecipanti",
         "en": "Participants",
         "es": "Participantes",
-        "de": "Teilnehmer"
+        "de": "Teilnehmer",
+        "fr": "Participants"
     },
     "no_players": {
         "it": "Nessun giocatore ancora. Aggiungi i primi giocatori per iniziare a registrare partite, classifiche e statistiche.",
         "en": "No players yet. Add the first players to start tracking matches, standings and stats.",
         "es": "Aún no hay jugadores. Añade a los primeros jugadores para empezar a registrar partidos, clasificaciones y estadísticas.",
-        "de": "Noch keine Spieler. Füge die ersten Spieler hinzu, um Spiele, Tabellen und Statistiken zu verfolgen."
+        "de": "Noch keine Spieler. Füge die ersten Spieler hinzu, um Spiele, Tabellen und Statistiken zu verfolgen.",
+        "fr": "No players yet. Add the first players to start tracking matches, standings and stats."
     },
     "other_competitions": {
         "it": "Altre",
         "en": "Other",
         "es": "Otros",
-        "de": "Andere"
+        "de": "Andere",
+        "fr": "Other"
     },
     "type": {
         "it": "Tipologia",
         "en": "Type",
         "es": "Tipo",
-        "de": "Typ"
+        "de": "Typ",
+        "fr": "Type"
     },
     "home": {
         "it": "Home",
         "en": "Home",
         "es": "Inicio",
-        "de": "Startseite"
+        "de": "Startseite",
+        "fr": "Home"
     },
     "no_players_small": {
         "it": "Ancora nessun giocatore",
         "en": "No players yet",
         "es": "Aún no hay jugadores",
-        "de": "Noch keine Spieler"
+        "de": "Noch keine Spieler",
+        "fr": "No players yet"
     },
     "insert_players_init": {
         "it": "Condividi il codice di invito ai tuoi amici per permettere loro di unirsi alla competizione e iniziare a registrare partite, <br> clicca qui per copiarlo negli appunti.",
         "en": "Share the invitation code with your friends to allow them to join the competition and start recording matches, <br> click here to copy it to the clipboard.",
         "es": "Comparte el código de invitación con tus amigos para permitirles unirse a la competición y empezar a registrar partidos. <br> Haz clic aquí para copiarlo al portapapeles.",
-        "de": "Teile den Einladungscode mit deinen Freunden, damit sie dem Wettbewerb beitreten und mit dem Erfassen der Spiele beginnen können. <br> Klicke hier, um ihn in die Zwischenablage zu kopieren."
+        "de": "Teile den Einladungscode mit deinen Freunden, damit sie dem Wettbewerb beitreten und mit dem Erfassen der Spiele beginnen können. <br> Klicke hier, um ihn in die Zwischenablage zu kopieren.",
+        "fr": "Share the invitation code with your friends to allow them to join the competition and start recording matches, <br> click here to copy it to the clipboard."
     },
     "invitation_code": {
         "it": "Codice di invito",
         "en": "Invitation code",
         "es": "Código de invitación",
-        "de": "Einladungscode"
+        "de": "Einladungscode",
+        "fr": "Invitation code"
     },
     "invitation_code_info": {
         "it": "Condividi questo codice con i tuoi amici per permettere loro di unirsi alla competizione.",
         "en": "Share this code with your friends to allow them to join the competition.",
         "es": "Comparte este código con tus amigos para permitirles unirse a la competición.",
-        "de": "Teile diesen Code mit deinen Freunden, damit sie dem Wettbewerb beitreten können."
+        "de": "Teile diesen Code mit deinen Freunden, damit sie dem Wettbewerb beitreten können.",
+        "fr": "Share this code with your friends to allow them to join the competition."
     },
     "send_invitation_by_email": {
         "it": "Invia link per accedere via email",
         "en": "Send access link by email",
         "es": "Enviar enlace de acceso por correo",
-        "de": "Zugangslink per E-Mail senden"
+        "de": "Zugangslink per E-Mail senden",
+        "fr": "Send access link by email"
     },
     "send_invitation_by_email_info": {
         "it": "Invia link per accedere ai tuoi amici tramite email per permettere loro di unirsi alla competizione.",
         "en": "Send access link to your friends via email to allow them to join the competition.",
         "es": "Envía el enlace de acceso a tus amigos por correo electrónico para que puedan unirse a la competición.",
-        "de": "Sende deinen Freunden den Zugangslink per E-Mail, damit sie dem Wettbewerb beitreten können."
+        "de": "Sende deinen Freunden den Zugangslink per E-Mail, damit sie dem Wettbewerb beitreten können.",
+        "fr": "Send access link to your friends via email to allow them to join the competition."
     },
     "invite": {
         "it": "Invita giocatori (email)",
         "en": "Invite players",
         "es": "Invitar jugadores",
-        "de": "Spieler einladen"
+        "de": "Spieler einladen",
+        "fr": "Invite players"
     },
     "invite_info": {
         "it": "Invita i tuoi amici a unirsi alla competizione tramite email.",
         "en": "Invite your friends to join the competition via email.",
         "es": "Invita a tus amigos a unirse a la competición por correo electrónico.",
-        "de": "Lade deine Freunde per E-Mail zur Teilnahme am Wettbewerb ein."
+        "de": "Lade deine Freunde per E-Mail zur Teilnahme am Wettbewerb ein.",
+        "fr": "Invite your friends to join the competition via email."
     },
     "add_manually": {
         "it": "Aggiungi giocatori manualmente",
         "en": "Add players manually",
         "es": "Añade jugadores manualmente",
-        "de": "Spieler manuell hinzufügen"
+        "de": "Spieler manuell hinzufügen",
+        "fr": "Add players manually"
     },
     "add_manually_info": {
         "it": "Aggiungi i giocatori uno ad uno. (Irreversibile).",
         "en": "Add players one by one by entering their nickname. (Irreversible).",
         "es": "Añade a los jugadores uno a uno introduciendo su apodo. (Irreversible).",
-        "de": "Füge die Spieler einzeln hinzu, indem du ihren Spitznamen eingibst. (Unumkehrbar)."
+        "de": "Füge die Spieler einzeln hinzu, indem du ihren Spitznamen eingibst. (Unumkehrbar).",
+        "fr": "Add players one by one by entering their nickname. (Irreversible)."
     },
     "competition_management": {
         "it": "Gestione delle partite",
         "en": "Match management",
         "es": "Gestión de partidos",
-        "de": "Spielmanagement"
+        "de": "Spielmanagement",
+        "fr": "Match management"
     },
     "management_admin": {
         "it": "Gestita dall'organizzatore",
         "en": "Organizer controlled",
         "es": "Organizador controlado",
-        "de": "Veranstaltergesteuert"
+        "de": "Veranstaltergesteuert",
+        "fr": "Organizer controlled"
     },
     "management_admin_desc": {
         "it": "Solo l'organizzatore può inserire partite e risultati.",
         "en": "Only the organizer can add matches and results.",
         "es": "Sólo el organizador puede añadir partidos y resultados.",
-        "de": "Nur der Veranstalter kann Spiele und Ergebnisse hinzufügen."
+        "de": "Nur der Veranstalter kann Spiele und Ergebnisse hinzufügen.",
+        "fr": "Only the organizer can add matches and results."
     },
     "management_self": {
         "it": "Gestione libera",
         "en": "Self managed",
         "es": "Autogestionado",
-        "de": "Selbstverwaltet"
+        "de": "Selbstverwaltet",
+        "fr": "Self managed"
     },
     "management_self_desc": {
         "it": "Tutti i partecipanti possono inserire partite liberamente.",
         "en": "All participants can add matches freely.",
         "es": "Todos los participantes pueden añadir partidos libremente.",
-        "de": "Alle Teilnehmer können frei Matches hinzufügen."
+        "de": "Alle Teilnehmer können frei Matches hinzufügen.",
+        "fr": "All participants can add matches freely."
     },
     "steps": {
         "it": "Step",
         "en": "Steps",
         "es": "Pasos",
-        "de": "Schritte"
+        "de": "Schritte",
+        "fr": "Steps"
     },
     "step": {
         "it": "Step",
         "en": "Step",
         "es": "paso",
-        "de": "Schritt"
+        "de": "Schritt",
+        "fr": "Step"
     },
     "select_management": {
         "it": "Seleziona la modalità di gestione delle partite",
         "en": "Select match management mode",
         "es": "Seleccionar modo de gestión de partidos",
-        "de": "Wähle den Spielverwaltungsmodus"
+        "de": "Wähle den Spielverwaltungsmodus",
+        "fr": "Select match management mode"
     },
     "next_step": {
         "it": "Prossimo step",
         "en": "Next step",
         "es": "Siguiente paso",
-        "de": "Nächster Schritt"
+        "de": "Nächster Schritt",
+        "fr": "Next step"
     },
     "management_type": {
         "it": "Scegli il tipo di gestione",
         "en": "Choose management type",
         "es": "Elige tipo de gestión",
-        "de": "Wähle den Verwaltungstyp"
+        "de": "Wähle den Verwaltungstyp",
+        "fr": "Choose management type"
     },
     "management_type_admin": {
         "it": "Gestita dall'organizzatore, solo l'admin inserisce partite e risultati.  ",
         "en": "Organizer controlled, only the admin adds matches and results.  ",
         "es": "Controlado por el organizador; solo el admin añade partidos y resultados.  ",
-        "de": "Vom Veranstalter gesteuert; nur der Admin trägt Spiele und Ergebnisse ein.  "
+        "de": "Vom Veranstalter gesteuert; nur der Admin trägt Spiele und Ergebnisse ein.  ",
+        "fr": "Organizer controlled, only the admin adds matches and results.  "
     },
     "management_type_self": {
         "it": "Gestione libera, tutti i partecipanti possono inserire partite liberamente.",
         "en": "Self managed, all participants can add matches freely.",
         "es": "Autogestionado: todos los participantes pueden añadir partidos libremente.",
-        "de": "Selbstverwaltet: Alle Teilnehmenden können Spiele frei hinzufügen."
+        "de": "Selbstverwaltet: Alle Teilnehmenden können Spiele frei hinzufügen.",
+        "fr": "Self managed, all participants can add matches freely."
     },
     "admin_only": {
         "it": "Solo admin",
         "en": "Admin only",
         "es": "Sólo administrador",
-        "de": "Nur Administrator"
+        "de": "Nur Administrator",
+        "fr": "Admin only"
     },
     "free_management": {
         "it": "Gestione libera",
         "en": "Free management",
         "es": "Gestión libre",
-        "de": "Freie Verwaltung"
+        "de": "Freie Verwaltung",
+        "fr": "Free management"
     },
     "back": {
         "it": "Indietro",
         "en": "Back",
         "es": "Atrás",
-        "de": "Zurück"
+        "de": "Zurück",
+        "fr": "Back"
     },
     "join_or_create": {
         "it": "Unisciti o crea altra competizione",
         "en": "Join or create another competition",
         "es": "Únete o crea otra competición",
-        "de": "Tritt einem weiteren Wettbewerb bei oder erstelle einen neuen"
+        "de": "Tritt einem weiteren Wettbewerb bei oder erstelle einen neuen",
+        "fr": "Join or create another competition"
     },
     "add_players_to_competition": {
         "it": "Aggiungi almeno 2 giocatori alla competizione",
         "en": "Add at least 2 players to competition",
         "es": "Añade al menos 2 jugadores a la competición.",
-        "de": "Füge mindestens 2 Spieler zum Wettbewerb hinzu"
+        "de": "Füge mindestens 2 Spieler zum Wettbewerb hinzu",
+        "fr": "Add at least 2 players to competition"
     },
     "add_player": {
         "it": "Aggiungi giocatore",
         "en": "Add player",
         "es": "Añadir jugador",
-        "de": "Spieler hinzufügen"
+        "de": "Spieler hinzufügen",
+        "fr": "Add player"
     },
     "join": {
         "it": "Unisciti a una competizione esistente per iniziare a registrare partite, classifiche e statistiche.",
         "en": "Join an existing competition to start recording matches, rankings, and statistics.",
         "es": "Únete a una competición existente para empezar a registrar partidos, clasificaciones y estadísticas.",
-        "de": "Tritt einem bestehenden Wettbewerb bei, um Spiele, Ranglisten und Statistiken zu erfassen."
+        "de": "Tritt einem bestehenden Wettbewerb bei, um Spiele, Ranglisten und Statistiken zu erfassen.",
+        "fr": "Join an existing competition to start recording matches, rankings, and statistics."
     },
     "create": {
         "it": "Crea una nuova competizione per iniziare a registrare partite, classifiche e statistiche.",
         "en": "Create a new competition to start recording matches, rankings, and statistics.",
         "es": "Crea una nueva competición para empezar a registrar partidos, clasificaciones y estadísticas.",
-        "de": "Erstelle einen neuen Wettbewerb, um Spiele, Ranglisten und Statistiken zu erfassen."
+        "de": "Erstelle einen neuen Wettbewerb, um Spiele, Ranglisten und Statistiken zu erfassen.",
+        "fr": "Create a new competition to start recording matches, rankings, and statistics."
     },
     "join_cta": {
         "it": "Unisciti a una esistente",
         "en": "Join an existing competition",
         "es": "Únete a una competición existente",
-        "de": "Tritt einem bestehenden Wettbewerb bei"
+        "de": "Tritt einem bestehenden Wettbewerb bei",
+        "fr": "Join an existing competition"
     },
     "create_cta": {
         "it": "Crea una nuova competizione",
         "en": "Create a new competition",
         "es": "Crear una nueva competición",
-        "de": "Einen neuen Wettbewerb erstellen"
+        "de": "Einen neuen Wettbewerb erstellen",
+        "fr": "Create a new competition"
     },
     "pt": {
         "it": "PT",
         "en": "PT",
         "es": "PT",
-        "de": "PT"
+        "de": "PT",
+        "fr": "PT"
     },
     "wr_percent": {
         "it": "WR%",
         "en": "WR%",
         "es": "WR%",
-        "de": "WR%"
+        "de": "WR%",
+        "fr": "WR%"
     },
     "login": {
         "it": "Login",
         "en": "Login",
         "es": "Iniciar sesión",
-        "de": "Anmelden"
+        "de": "Anmelden",
+        "fr": "Login"
     },
     "enter_email": {
         "it": "Inserisci la tua email",
         "en": "Enter your email",
         "es": "Introduce tu correo electrónico",
-        "de": "Gib deine E-Mail ein"
+        "de": "Gib deine E-Mail ein",
+        "fr": "Enter your email"
     },
     "enter_password": {
         "it": "Inserisci la tua password",
         "en": "Enter your password",
         "es": "Introduce tu contraseña",
-        "de": "Gib dein Passwort ein"
+        "de": "Gib dein Passwort ein",
+        "fr": "Enter your password"
     },
     "confirm_password": {
         "it": "Conferma la tua password",
         "en": "Confirm your password",
         "es": "Confirma tu contraseña",
-        "de": "Bestätige dein Passwort"
+        "de": "Bestätige dein Passwort",
+        "fr": "Confirm your password"
     },
     "login_google": {
         "it": "Entra con Google",
         "en": "Log in with Google",
         "es": "Inicia sesión con Google",
-        "de": "Mit Google anmelden"
+        "de": "Mit Google anmelden",
+        "fr": "Log in with Google"
     },
     "logout": {
         "it": "Esci",
         "en": "Log Out",
         "es": "Cerrar sesión",
-        "de": "Abmelden"
+        "de": "Abmelden",
+        "fr": "Log Out"
     },
     "menu_works": {
         "it": "menu funziona!",
         "en": "menu works!",
         "es": "¡El menú funciona!",
-        "de": "Menü funktioniert!"
+        "de": "Menü funktioniert!",
+        "fr": "menu works!"
     },
     "add_user": {
         "it": "Aggiungi utente",
         "en": "Add user",
         "es": "Añadir usuario",
-        "de": "Benutzer hinzufügen"
+        "de": "Benutzer hinzufügen",
+        "fr": "Add user"
     },
     "first_name": {
         "it": "Nome",
         "en": "First name",
         "es": "nombre",
-        "de": "Vorname"
+        "de": "Vorname",
+        "fr": "First name"
     },
     "insert_name": {
         "it": "Inserisci nome",
         "en": "Enter name",
         "es": "Introduce el nombre",
-        "de": "Namen eingeben"
+        "de": "Namen eingeben",
+        "fr": "Enter name"
     },
     "last_name": {
         "it": "Cognome",
         "en": "Last name",
         "es": "apellido",
-        "de": "Nachname"
+        "de": "Nachname",
+        "fr": "Last name"
     },
     "insert_last_name": {
         "it": "Inserisci cognome",
         "en": "Enter last name",
         "es": "Introduce el apellido",
-        "de": "Gib den Nachnamen ein"
+        "de": "Gib den Nachnamen ein",
+        "fr": "Enter last name"
     },
     "insert_nickname": {
         "it": "Inserisci nickname",
         "en": "Enter nickname",
         "es": "Introduce el apodo",
-        "de": "Spitznamen eingeben"
+        "de": "Spitznamen eingeben",
+        "fr": "Enter nickname"
     },
     "image": {
         "it": "Immagine",
         "en": "Image",
         "es": "Imagen",
-        "de": "Bild"
+        "de": "Bild",
+        "fr": "Image"
     },
     "added_users": {
         "it": "Giocatori da aggiungere",
         "en": "Players to be added",
         "es": "Jugadores por añadir",
-        "de": "Spieler, die hinzugefügt werden sollen"
+        "de": "Spieler, die hinzugefügt werden sollen",
+        "fr": "Players to be added"
     },
     "no_players_added": {
         "it": "Qui puoi aggiungere più giocatori alla volta, inserisci un nickname e clicca su 'Aggiungi giocatore' per aggiungerlo.",
         "en": "Here you can add multiple players at once, enter a nickname (and an optional photo) and click 'Add player' to add him.",
         "es": "Aquí puedes añadir varios jugadores a la vez: introduce un apodo (y una foto opcional) y pulsa «Añadir jugador» para incorporarlo.",
-        "de": "Hier kannst du mehrere Spieler auf einmal hinzufügen: Gib einen Spitznamen (und optional ein Foto) ein und klicke auf „Spieler hinzufügen“."
+        "de": "Hier kannst du mehrere Spieler auf einmal hinzufügen: Gib einen Spitznamen (und optional ein Foto) ein und klicke auf „Spieler hinzufügen“.",
+        "fr": "Here you can add multiple players at once, enter a nickname (and an optional photo) and click 'Add player' to add him."
     },
     "sets": {
         "it": "SET",
         "en": "SETS",
         "es": "CONJUNTOS",
-        "de": "SETZT"
+        "de": "SETZT",
+        "fr": "SETS"
     },
     "set": {
         "it": "set",
         "en": "set",
         "es": "set",
-        "de": "Satz"
+        "de": "Satz",
+        "fr": "set"
     },
     "advantage": {
         "it": "Ai vantaggi",
         "en": "Advantage",
         "es": "ventaja",
-        "de": "Vorteil"
+        "de": "Vorteil",
+        "fr": "Advantage"
     },
     "no_competition": {
         "it": "Nessuna competizione attiva",
         "en": "No active competition",
         "es": "Sin competición activa",
-        "de": "Kein aktiver Wettbewerb"
+        "de": "Kein aktiver Wettbewerb",
+        "fr": "No active competition"
     },
     "loader_alt": {
         "it": "Caricamento",
         "en": "Loading",
         "es": "Cargando",
-        "de": "Laden"
+        "de": "Laden",
+        "fr": "Loading"
     },
     "small_loader_alt": {
         "it": "Caricamento",
         "en": "Loading",
         "es": "Cargando",
-        "de": "Laden"
+        "de": "Laden",
+        "fr": "Loading"
     },
     "avatar_alt": {
         "it": "avatar",
         "en": "avatar",
         "es": "avatar",
-        "de": "Avatar"
+        "de": "Avatar",
+        "fr": "avatar"
     },
     "join_competition_description": {
         "it": "Unisciti a una competizione esistente <br> con il <strong>codice</strong> fornito dal tuo organizzatore <br> o membro della competizione",
         "en": "Join an existing competition <br> with the <strong>code</strong> provided by your organizer <br> or competition member",
         "es": "Únete a una competición existente <br> con el <strong>código</strong> facilitado por tu organizador <br> o miembro de la competición",
-        "de": "Tritt einem bestehenden Wettbewerb <br> mit dem <strong>Code</strong> bei, den du von deinem Organisator <br> oder einem Wettbewerbsmitglied erhalten hast."
+        "de": "Tritt einem bestehenden Wettbewerb <br> mit dem <strong>Code</strong> bei, den du von deinem Organisator <br> oder einem Wettbewerbsmitglied erhalten hast.",
+        "fr": "Join an existing competition <br> with the <strong>code</strong> provided by your organizer <br> or competition member"
     },
     "join_cta2": {
         "it": "Unisciti",
         "en": "Join",
         "es": "Únete",
-        "de": "Beitreten"
+        "de": "Beitreten",
+        "fr": "Join"
     },
     "competition_code": {
         "it": "Codice competizione",
         "en": "Competition code",
         "es": "Código de la competición",
-        "de": "Wettbewerbscode"
+        "de": "Wettbewerbscode",
+        "fr": "Competition code"
     },
     "where": {
         "it": "Dove trovare il codice competizione?",
         "en": "Where to find the competition code?",
         "es": "¿Dónde encontrar el código del concurso?",
-        "de": "Wo finde ich den Wettbewerbscode?"
+        "de": "Wo finde ich den Wettbewerbscode?",
+        "fr": "Where to find the competition code?"
     },
     "create_first_competition": {
         "it": "Crea la tua prima competizione",
         "en": "Create your first competition",
         "es": "Crea tu primera competición",
-        "de": "Erstelle deinen ersten Wettbewerb"
+        "de": "Erstelle deinen ersten Wettbewerb",
+        "fr": "Create your first competition"
     },
     "competition_error": {
         "it": "Errore durante l'unione alla competizione. Controlla il codice e riprova.",
         "en": "Error joining the competition.",
         "es": "Error al unirte a la competición.",
-        "de": "Fehler bei der Teilnahme am Wettbewerb."
+        "de": "Fehler bei der Teilnahme am Wettbewerb.",
+        "fr": "Error joining the competition."
     },
     "manage_competition": {
         "it": "Gestisci competizione",
         "en": "Manage competition",
         "es": "Gestionar la competición",
-        "de": "Wettbewerb managen"
+        "de": "Wettbewerb managen",
+        "fr": "Manage competition"
     },
     "admin_managed_error": {
         "it": "Questa competizione è gestita dall'organizzatore. Non puoi unirti autonomamente.",
         "en": "This competition is managed by the organizer. You cannot join it on your own.",
         "es": "Este concurso está gestionado por el organizador. No puedes unirte a él por tu cuenta.",
-        "de": "Dieser Wettbewerb wird vom Veranstalter verwaltet. Du kannst nicht alleine daran teilnehmen."
+        "de": "Dieser Wettbewerb wird vom Veranstalter verwaltet. Du kannst nicht alleine daran teilnehmen.",
+        "fr": "This competition is managed by the organizer. You cannot join it on your own."
     },
     "join_competition_instructions": {
         "it": "Chiedi di darti il codice, si trova nel tab 'Competizioni dell'organizzatore'",
         "en": "Ask for the code, it's located in the 'Organizer's competitions' tab",
         "es": "Pide el código; se encuentra en la pestaña «Competiciones del organizador».",
-        "de": "Frag nach dem Code – er befindet sich im Tab „Wettbewerbe des Organisators“."
+        "de": "Frag nach dem Code – er befindet sich im Tab „Wettbewerbe des Organisators“.",
+        "fr": "Ask for the code, it's located in the 'Organizer's competitions' tab"
     },
     "error_725B9C": {
         "it": "Giocatore già esistente nella competizione.",
         "en": "Player already exists in the competition.",
         "es": "El jugador ya existe en la competición.",
-        "de": "Der Spieler ist bereits im Wettbewerb vorhanden."
+        "de": "Der Spieler ist bereits im Wettbewerb vorhanden.",
+        "fr": "Player already exists in the competition."
     },
     "not_enough_players": {
         "it": "Non ci sono abbastanza giocatori per aggiungere una partita. Clicca su <b>Aggiungi giocatori </b>",
         "en": "There are not enough players to add a match. Click on <b>Add players</b>",
         "es": "No hay suficientes jugadores para añadir un partido. Haz clic en <b>Añadir jugadores</b>",
-        "de": "Es sind nicht genügend Spieler vorhanden, um ein Spiel hinzuzufügen. Klicke auf <b>Spieler hinzufügen</b>"
+        "de": "Es sind nicht genügend Spieler vorhanden, um ein Spiel hinzuzufügen. Klicke auf <b>Spieler hinzufügen</b>",
+        "fr": "There are not enough players to add a match. Click on <b>Add players</b>"
     },
     "player": {
         "it": "giocatore",
         "en": "player",
         "es": "jugador",
-        "de": "Spieler"
+        "de": "Spieler",
+        "fr": "player"
     },
     "compile_fields": {
         "it": "Compila tutti i campi obbligatori",
         "en": "Fill in all required fields",
         "es": "Rellena todos los campos obligatorios.",
-        "de": "Fülle alle Pflichtfelder aus."
+        "de": "Fülle alle Pflichtfelder aus.",
+        "fr": "Fill in all required fields"
     },
     "delete_error": {
         "it": "Errore durante l'eliminazione della competizione. Riprova più tardi.",
         "en": "Error deleting competition. Please try again later.",
         "es": "Error al eliminar la competición. Inténtalo de nuevo más tarde.",
-        "de": "Fehler beim Löschen des Wettbewerbs. Bitte versuche es später erneut."
+        "de": "Fehler beim Löschen des Wettbewerbs. Bitte versuche es später erneut.",
+        "fr": "Error deleting competition. Please try again later."
     },
     "delete_success": {
         "it": "Competizione eliminata con successo.",
         "en": "Competition deleted successfully.",
         "es": "Competición eliminada correctamente.",
-        "de": "Wettbewerb erfolgreich gelöscht."
+        "de": "Wettbewerb erfolgreich gelöscht.",
+        "fr": "Competition deleted successfully."
     },
     "insert_email": {
         "it": "Inserisci email",
         "en": "Enter email",
         "es": "Ingrese el correo electrónico",
-        "de": "Gib deine E-Mail-Adresse ein"
+        "de": "Gib deine E-Mail-Adresse ein",
+        "fr": "Enter email"
     },
     "email": {
         "it": "E-mail",
         "en": "E-mail",
         "es": "correo electrónico",
-        "de": "E-Mail"
+        "de": "E-Mail",
+        "fr": "E-mail"
     },
     "email_info": {
         "it": "L'email è utile per inviare notifiche sulle partite direttamente al giocatore. Inseriscila per far ricevere aggiornamenti sul torneo. Puoi anche lasciarla vuota.",
         "en": "Email is used to send match notifications directly to the player. Enter it to send tournament updates. You can also leave it blank.",
         "es": "El correo electrónico se usa para enviar notificaciones de partidos directamente al jugador. Escríbelo para enviar actualizaciones del torneo. También puedes dejarlo en blanco.",
-        "de": "E-Mail wird verwendet, um Spielbenachrichtigungen direkt an den Spieler zu senden. Gib sie ein, um Turnier-Updates zu verschicken. Du kannst das Feld auch leer lassen."
+        "de": "E-Mail wird verwendet, um Spielbenachrichtigungen direkt an den Spieler zu senden. Gib sie ein, um Turnier-Updates zu verschicken. Du kannst das Feld auch leer lassen.",
+        "fr": "Email is used to send match notifications directly to the player. Enter it to send tournament updates. You can also leave it blank."
     },
     "email_invalid": {
         "it": "Inserisci un'email valida.",
         "en": "Enter a valid email.",
         "es": "Ingrese un correo electrónico válido.",
-        "de": "Gib eine gültige E-Mail-Adresse ein."
+        "de": "Gib eine gültige E-Mail-Adresse ein.",
+        "fr": "Enter a valid email."
     },
     "visualize": {
         "it": "Visualizza",
         "en": "Visualize",
         "es": "visualizar",
-        "de": "Visualisieren"
+        "de": "Visualisieren",
+        "fr": "Visualize"
     },
     "code_copied": {
         "it": "Codice copiato negli appunti!",
         "en": "Code copied to clipboard!",
         "es": "¡Código copiado al portapapeles!",
-        "de": "Code in die Zwischenablage kopiert!"
+        "de": "Code in die Zwischenablage kopiert!",
+        "fr": "Code copied to clipboard!"
     },
     "code_copy_error": {
         "it": "Errore durante la copia del codice.",
         "en": "Failed to copy code.",
         "es": "No se pudo copiar el código.",
-        "de": "Code konnte nicht kopiert werden."
+        "de": "Code konnte nicht kopiert werden.",
+        "fr": "Failed to copy code."
     },
     "code_not_available": {
         "it": "Codice non disponibile.",
         "en": "Code not available.",
         "es": "Código no disponible.",
-        "de": "Code nicht verfügbar."
+        "de": "Code nicht verfügbar.",
+        "fr": "Code not available."
     },
     "summary": {
         "it": "Riepilogo",
         "en": "Summary",
         "es": "Resumen",
-        "de": "Übersicht"
+        "de": "Übersicht",
+        "fr": "Summary"
     },
     "of": {
         "it": "di",
         "en": "of",
         "es": "de",
-        "de": "von"
+        "de": "von",
+        "fr": "of"
     },
     "add_manual_set_points": {
         "it": "Segna punti in diretta",
         "en": "Add points live",
         "es": "Añadir puntos en directo",
-        "de": "Punkte live hinzufügen"
+        "de": "Punkte live hinzufügen",
+        "fr": "Add points live"
     },
     "live": {
         "it": "Live",
         "en": "Live",
         "es": "en vivo",
-        "de": "Lebe"
+        "de": "Lebe",
+        "fr": "Live"
     },
     "details": {
         "it": "Dettagli",
         "en": "Details",
         "es": "Detalles",
-        "de": "Details"
+        "de": "Details",
+        "fr": "Details"
     },
     "otherwise": {
         "it": "Oppure",
         "en": "Or",
         "es": "O",
-        "de": "Oder"
+        "de": "Oder",
+        "fr": "Or"
     },
     "add_manual_set_points_description": {
         "it": "Tieni traccia dei punti durante la partita con un tap o con la voce",
         "en": "Keep track of points during the match with a tap or with your voice",
         "es": "Controla los puntos durante el partido con un toque o con tu voz.",
-        "de": "Verfolge die Punkte während des Spiels mit einem Tipp oder mit deiner Stimme."
+        "de": "Verfolge die Punkte während des Spiels mit einem Tipp oder mit deiner Stimme.",
+        "fr": "Keep track of points during the match with a tap or with your voice"
     },
     "add_match_description": {
         "it": "Aggiungi una partita manualmente inserendo i giocatori e il punteggio finale",
         "en": "Add a match manually by entering the players and the final score",
         "es": "Añade un partido manualmente introduciendo a los jugadores y el marcador final.",
-        "de": "Füge ein Spiel manuell hinzu, indem du die Spieler und das Endergebnis eingibst."
+        "de": "Füge ein Spiel manuell hinzu, indem du die Spieler und das Endergebnis eingibst.",
+        "fr": "Add a match manually by entering the players and the final score"
     },
     "file_too_large": {
         "it": "Il file è troppo grande. La dimensione massima è 40MB.",
         "en": "The file is too large. The maximum size is 40MB.",
         "es": "El archivo es demasiado grande. El tamaño máximo es 40 MB.",
-        "de": "Die Datei ist zu groß. Die maximale Größe beträgt 40 MB."
+        "de": "Die Datei ist zu groß. Die maximale Größe beträgt 40 MB.",
+        "fr": "The file is too large. The maximum size is 40MB."
     },
     "invalid_points": {
         "it": "Attenzione: questo torneo prevede un massimo di 11 punti per set. Controlla meglio i punti inseriti.",
         "en": "Warning: this tournament has a maximum of 11 points per set. Please check the points entered.",
         "es": "Atención: este torneo tiene un máximo de 11 puntos por set. Comprueba los puntos introducidos.",
-        "de": "Achtung: Dieses Turnier erlaubt maximal 11 Punkte pro Satz. Bitte überprüfe die eingegebenen Punkte."
+        "de": "Achtung: Dieses Turnier erlaubt maximal 11 Punkte pro Satz. Bitte überprüfe die eingegebenen Punkte.",
+        "fr": "Warning: this tournament has a maximum of 11 points per set. Please check the points entered."
     },
     "tipology": {
         "it": "Tipologia",
         "en": "Type",
         "es": "Tipo",
-        "de": "Typ"
+        "de": "Typ",
+        "fr": "Type"
     },
     "number_equal": {
         "it": "La partita non può avere un numero di set pari",
         "en": "The match cannot have an even number of sets",
         "es": "El partido no puede tener un número par de sets.",
-        "de": "Das Spiel darf keine gerade Anzahl an Sätzen haben"
+        "de": "Das Spiel darf keine gerade Anzahl an Sätzen haben",
+        "fr": "The match cannot have an even number of sets"
     },
     "no_active_competition": {
         "it": "Non ci sono competizioni attive. Crea o unisciti a una competizione per iniziare a registrare partite, classifiche e statistiche.",
         "en": "There are no active competitions. Create or join a competition to start tracking matches, standings and stats.",
         "es": "No hay competiciones activas. Crea o únete a una competición para empezar a registrar partidos, clasificaciones y estadísticas.",
-        "de": "Es gibt keine aktiven Wettbewerbe. Erstelle einen Wettbewerb oder tritt einem bei, um Spiele, Tabellen und Statistiken zu verfolgen."
+        "de": "Es gibt keine aktiven Wettbewerbe. Erstelle einen Wettbewerb oder tritt einem bei, um Spiele, Tabellen und Statistiken zu verfolgen.",
+        "fr": "There are no active competitions. Create or join a competition to start tracking matches, standings and stats."
     },
     "manual_points_description": {
         "it": "Registra i punti in diretta durante la partita, inizia selezionando i giocatori.",
         "en": "Record points live during the match, start by selecting players.",
         "es": "Registra los puntos en directo durante el partido; empieza seleccionando a los jugadores.",
-        "de": "Erfasse die Punkte live während des Spiels, indem du zuerst die Spieler auswählst."
+        "de": "Erfasse die Punkte live während des Spiels, indem du zuerst die Spieler auswählst.",
+        "fr": "Record points live during the match, start by selecting players."
     },
     "manual_points": {
         "it": "Punti in diretta",
         "en": "Live points",
         "es": "puntos en vivo",
-        "de": "Live-Punkte"
+        "de": "Live-Punkte",
+        "fr": "Live points"
     },
     "reset_points": {
         "it": "Azzera punti",
         "en": "Reset points",
         "es": "Reiniciar puntos",
-        "de": "Punkte zurücksetzen"
+        "de": "Punkte zurücksetzen",
+        "fr": "Reset points"
     },
     "microphone_info": {
         "it": "Clicca per abilitare il microfono e pronuncia i punteggi ad alta voce (es. 'uno a zero', 'due a uno', 'quattro a quattro', 'undici a sette')",
         "en": "Click to enable the microphone and say the scores out loud (e.g., 'one to zero', 'two to one', 'four to four', 'eleven to seven')",
         "es": "Haz clic para habilitar el micrófono y decir las puntuaciones en voz alta (por ejemplo, \"uno a cero\", \"dos a uno\", \"cuatro a cuatro\", \"once a siete\")",
-        "de": "Klicke, um das Mikrofon zu aktivieren und die Ergebnisse laut auszusprechen (z. B. „eins vor null“, „zwei vor eins“, „vier vor vier“, „elf vor sieben“)."
+        "de": "Klicke, um das Mikrofon zu aktivieren und die Ergebnisse laut auszusprechen (z. B. „eins vor null“, „zwei vor eins“, „vier vor vier“, „elf vor sieben“).",
+        "fr": "Click to enable the microphone and say the scores out loud (e.g., 'one to zero', 'two to one', 'four to four', 'eleven to seven')"
     },
     "save_points": {
         "it": "Salva set",
         "en": "Save set",
         "es": "Guardar set",
-        "de": "Satz speichern"
+        "de": "Satz speichern",
+        "fr": "Save set"
     },
     "completed_match_save": {
         "it": "Salva Partita",
         "en": "Save Match",
         "es": "Guardar partido",
-        "de": "Spiel speichern"
+        "de": "Spiel speichern",
+        "fr": "Save Match"
     },
     "match_summary": {
         "it": "Riepilogo partita",
         "en": "Match summary",
         "es": "Resumen del partido",
-        "de": "Spielzusammenfassung"
+        "de": "Spielzusammenfassung",
+        "fr": "Match summary"
     },
     "competition_details": {
         "it": "Dettagli competizione",
         "en": "Competition details",
         "es": "Detalles de la competición",
-        "de": "Wettbewerbsdetails"
+        "de": "Wettbewerbsdetails",
+        "fr": "Competition details"
     },
     "edit_competition": {
         "it": "Modifica competizione",
         "en": "Edit competition",
         "es": "Editar competición",
-        "de": "Wettbewerb bearbeiten"
+        "de": "Wettbewerb bearbeiten",
+        "fr": "Edit competition"
     },
     "close": {
         "it": "Chiudi",
         "en": "Close",
         "es": "Cerrar",
-        "de": "Schließen"
+        "de": "Schließen",
+        "fr": "Close"
     },
     "is_part_of_competition": {
         "it": "Vuoi partecipare alla competizione come giocatore?",
         "en": "Do you want to join the competition as a player?",
         "es": "¿Quieres unirte a la competición como jugador?",
-        "de": "Möchtest du dem Wettbewerb als Spieler beitreten?"
+        "de": "Möchtest du dem Wettbewerb als Spieler beitreten?",
+        "fr": "Do you want to join the competition as a player?"
     },
     "is_part_of_competition_info": {
         "it": "Clicca qui se vuoi partecipare alla competizione che stai creando. In questo modo sarai un giocatore del torneo.",
         "en": "Click here if you want to participate in the competition you are creating. This way you will be a player in the tournament.",
         "es": "Haz clic aquí si quieres participar en la competición que estás creando. Así formarás parte del torneo como jugador.",
-        "de": "Klicke hier, wenn du am Wettbewerb teilnehmen möchtest, den du erstellst. So spielst du beim Turnier mit."
+        "de": "Klicke hier, wenn du am Wettbewerb teilnehmen möchtest, den du erstellst. So spielst du beim Turnier mit.",
+        "fr": "Click here if you want to participate in the competition you are creating. This way you will be a player in the tournament."
     },
     "yes": {
         "it": "Sì",
         "en": "Yes",
         "es": "Sí",
-        "de": "Ja"
+        "de": "Ja",
+        "fr": "Yes"
     },
     "no": {
         "it": "No",
         "en": "No",
         "es": "No",
-        "de": "Nein"
+        "de": "Nein",
+        "fr": "No"
     },
     "quarterfinals": {
         "it": "Quarti di finale",
         "en": "Quarterfinals",
         "es": "Cuartos de final",
-        "de": "Viertelfinale"
+        "de": "Viertelfinale",
+        "fr": "Quarterfinals"
     },
     "semifinals": {
         "it": "Semifinali",
         "en": "Semifinals",
         "es": "Semifinales",
-        "de": "Halbfinale"
+        "de": "Halbfinale",
+        "fr": "Semifinals"
     },
     "final": {
         "it": "Finale",
         "en": "Final",
         "es": "Final",
-        "de": "Finale"
+        "de": "Finale",
+        "fr": "Final"
     },
     "one_sixteenth_finals": {
         "it": "Sedicesimi di finale",
         "en": "Round of 32",
         "es": "dieciseisavos de final",
-        "de": "Runde der letzten 32"
+        "de": "Runde der letzten 32",
+        "fr": "Round of 32"
     },
     "one_eighth_finals": {
         "it": "Ottavi di finale",
         "en": "Round of 16",
         "es": "octavos de final",
-        "de": "Achtelfinale"
+        "de": "Achtelfinale",
+        "fr": "Round of 16"
     },
     "quarter_finals": {
         "it": "Quarti di finale",
         "en": "Quarterfinals",
         "es": "Cuartos de final",
-        "de": "Viertelfinale"
+        "de": "Viertelfinale",
+        "fr": "Quarterfinals"
     },
     "semi_finals": {
         "it": "Semifinali",
         "en": "Semifinals",
         "es": "Semifinales",
-        "de": "Halbfinale"
+        "de": "Halbfinale",
+        "fr": "Semifinals"
     },
     "finals": {
         "it": "Finale",
         "en": "Final",
         "es": "Final",
-        "de": "Finale"
+        "de": "Finale",
+        "fr": "Final"
     },
     "view_details": {
         "it": "Vedi dettagli",
         "en": "View details",
         "es": "Ver detalles",
-        "de": "Details anzeigen"
+        "de": "Details anzeigen",
+        "fr": "View details"
     },
     "are_you_sure": {
         "it": "Sei sicuro?",
         "en": "Are you sure?",
         "es": "¿Estás seguro?",
-        "de": "Bist du sicher?"
+        "de": "Bist du sicher?",
+        "fr": "Are you sure?"
     },
     "are-you-sure-delete-player": {
         "it": "Sei sicuro di voler eliminare il giocatore?",
         "en": "Are you sure you want to delete the player?",
         "es": "¿Estás seguro de que quieres eliminar al jugador?",
-        "de": "Bist du sicher, dass du den Spieler löschen möchtest?"
+        "de": "Bist du sicher, dass du den Spieler löschen möchtest?",
+        "fr": "Are you sure you want to delete the player?"
     },
     "are-you-sure-delete-competition": {
         "it": "Sei sicuro di voler eliminare la competizione?",
         "en": "Are you sure you want to delete the competition?",
         "es": "¿Estás seguro de que quieres eliminar la competición?",
-        "de": "Bist du sicher, dass du den Wettbewerb löschen möchtest?"
+        "de": "Bist du sicher, dass du den Wettbewerb löschen möchtest?",
+        "fr": "Are you sure you want to delete the competition?"
     },
     "delete_player": {
         "it": "Elimina giocatore",
         "en": "Delete player",
         "es": "Eliminar jugador",
-        "de": "Spieler löschen"
+        "de": "Spieler löschen",
+        "fr": "Delete player"
     },
     "delete": {
         "it": "Elimina",
         "en": "Delete",
         "es": "Eliminar",
-        "de": "Löschen"
+        "de": "Löschen",
+        "fr": "Delete"
     },
     "group_knockout_board_group": {
         "it": "Girone",
         "en": "Group",
         "es": "Grupo",
-        "de": "Gruppe"
+        "de": "Gruppe",
+        "fr": "Group"
     },
     "group_knockout_board_wins": {
         "it": "Vittorie",
         "en": "Wins",
         "es": "Victorias",
-        "de": "Siege"
+        "de": "Siege",
+        "fr": "Wins"
     },
     "group_knockout_board_losses": {
         "it": "Sconfitte",
         "en": "Losses",
         "es": "Pérdidas",
-        "de": "Verluste"
+        "de": "Verluste",
+        "fr": "Losses"
     },
     "group_knockout_board_points_for": {
         "it": "Punti fatti",
         "en": "Points for",
         "es": "Puntos por",
-        "de": "Punkte für"
+        "de": "Punkte für",
+        "fr": "Points for"
     },
     "group_knockout_board_points": {
         "it": "Differenza punti set",
         "en": "Set points difference",
         "es": "Diferencia de puntos de set",
-        "de": "Differenz der eingestellten Punkte"
+        "de": "Differenz der eingestellten Punkte",
+        "fr": "Set points difference"
     },
     "group_knockout_board_player": {
         "it": "Giocatore",
         "en": "Player",
         "es": "Jugador",
-        "de": "Spieler"
+        "de": "Spieler",
+        "fr": "Player"
     },
     "select_group": {
         "it": "Seleziona girone",
         "en": "Select group",
         "es": "Seleccionar grupo",
-        "de": "Gruppe auswählen"
+        "de": "Gruppe auswählen",
+        "fr": "Select group"
     },
     "player_removed": {
         "it": "Giocatore rimosso con successo.",
         "en": "Player removed successfully.",
         "es": "El jugador se eliminó exitosamente.",
-        "de": "Spieler erfolgreich entfernt."
+        "de": "Spieler erfolgreich entfernt.",
+        "fr": "Player removed successfully."
     },
     "how_title": {
         "it": "Dalla registrazione al torneo completo in 3 step",
         "en": "From registration to full tournament in 3 steps",
         "es": "Del registro al torneo completo en 3 pasos",
-        "de": "Von der Registrierung bis zum vollständigen Turnier in 3 Schritten"
+        "de": "Von der Registrierung bis zum vollständigen Turnier in 3 Schritten",
+        "fr": "From registration to full tournament in 3 steps"
     },
     "how_subtitle": {
         "it": "Dalla creazione della competizione alle analisi post-partita: ogni passaggio è guidato e pronto per essere condiviso con il tuo team.",
         "en": "From creating the competition to post-match analytics: every step is guided and ready to share with your team.",
         "es": "Desde la creación de la competición hasta el análisis posterior al partido: cada paso está guiado y listo para compartir con tu equipo.",
-        "de": "Von der Erstellung des Wettbewerbs bis zur Analyse nach dem Spiel: Jeder Schritt ist geführt und kann mit deinem Team geteilt werden."
+        "de": "Von der Erstellung des Wettbewerbs bis zur Analyse nach dem Spiel: Jeder Schritt ist geführt und kann mit deinem Team geteilt werden.",
+        "fr": "From creating the competition to post-match analytics: every step is guided and ready to share with your team."
     },
     "how_step1_title": {
         "it": "Definisci il tuo format",
         "en": "Define your format",
         "es": "Define tu formato",
-        "de": "Lege dein Format fest"
+        "de": "Lege dein Format fest",
+        "fr": "Define your format"
     },
     "how_step1_text": {
         "it": "Scegli gironi, eliminazione diretta o format misti, imposta regole di punteggio e crea in pochi clic la tua lobby.",
         "en": "Pick groups, single elimination or mixed formats, set scoring rules and spin up your lobby in a few clicks.",
         "es": "Elige liguillas, eliminación directa o formatos mixtos, define las reglas de puntuación y prepara tu lobby en unos clics.",
-        "de": "Wähle Gruppen-, K.-o.- oder Mischformate, lege die Punkteregeln fest und richte deine Lobby mit wenigen Klicks ein."
+        "de": "Wähle Gruppen-, K.-o.- oder Mischformate, lege die Punkteregeln fest und richte deine Lobby mit wenigen Klicks ein.",
+        "fr": "Pick groups, single elimination or mixed formats, set scoring rules and spin up your lobby in a few clicks."
     },
     "how_step2_title": {
         "it": "Invita, registra, ingaggia",
         "en": "Invite, register, engage",
         "es": "Invitar, registrarse, participar",
-        "de": "Einladen, registrieren, engagieren"
+        "de": "Einladen, registrieren, engagieren",
+        "fr": "Invite, register, engage"
     },
     "how_step2_text": {
         "it": "Invita giocatori e staff, registra iscrizioni, assegna campi e tieni tutti sincronizzati con notifiche e tabelloni aggiornati.",
         "en": "Invite players and staff, register sign-ups, assign tables and keep everyone in sync with notifications and live bracket.",
         "es": "Invita a jugadores y staff, registra inscripciones, asigna mesas y mantén a todos sincronizados con notificaciones y cuadro en directo.",
-        "de": "Lade Spieler und Staff ein, registriere Anmeldungen, weise Tische zu und halte alle mit Benachrichtigungen und Live-Bracket auf dem Laufenden."
+        "de": "Lade Spieler und Staff ein, registriere Anmeldungen, weise Tische zu und halte alle mit Benachrichtigungen und Live-Bracket auf dem Laufenden.",
+        "fr": "Invite players and staff, register sign-ups, assign tables and keep everyone in sync with notifications and live bracket."
     },
     "how_step3_title": {
         "it": "Monitora e racconta",
         "en": "Monitor and tell the story",
         "es": "Supervisa y cuenta la historia",
-        "de": "Beobachte und erzähle die Geschichte"
+        "de": "Beobachte und erzähle die Geschichte",
+        "fr": "Monitor and tell the story"
     },
     "how_step3_text": {
         "it": "Registra i set in tempo reale, aggiorna classifiche automatiche e genera report condivisibili con statistiche dettagliate.",
         "en": "Log sets in real time, update automatic leaderboards and publish shareable reports with detailed statistics.",
         "es": "Registra los sets en tiempo real, actualiza clasificaciones automáticas y publica informes compartibles con estadísticas detalladas.",
-        "de": "Protokolliere Sätze in Echtzeit, aktualisiere automatische Ranglisten und veröffentliche teilbare Berichte mit detaillierten Statistiken."
+        "de": "Protokolliere Sätze in Echtzeit, aktualisiere automatische Ranglisten und veröffentliche teilbare Berichte mit detaillierten Statistiken.",
+        "fr": "Log sets in real time, update automatic leaderboards and publish shareable reports with detailed statistics."
     },
     "how_cta1": {
         "it": "Apri il tuo torneo",
         "en": "Open your tournament",
         "es": "Abre tu torneo",
-        "de": "Starte dein Turnier"
+        "de": "Starte dein Turnier",
+        "fr": "Open your tournament"
     },
     "how_cta2": {
         "it": "Prova la demo live",
         "en": "Try the live demo",
         "es": "Prueba la demo en vivo",
-        "de": "Probiere die Live-Demo aus"
+        "de": "Probiere die Live-Demo aus",
+        "fr": "Try the live demo"
     },
     "insight_title": {
         "it": "Insight in tempo reale",
         "en": "Real-time insights",
         "es": "Información en tiempo real",
-        "de": "Einblicke in Echtzeit"
+        "de": "Einblicke in Echtzeit",
+        "fr": "Real-time insights"
     },
     "insight_spotlight": {
         "it": "Player spotlight",
         "en": "Player spotlight",
         "es": "Jugador destacado",
-        "de": "Spieler im Rampenlicht"
+        "de": "Spieler im Rampenlicht",
+        "fr": "Player spotlight"
     },
     "insight_value": {
         "it": "+22% rally vinti",
         "en": "+22% rallies won",
         "es": "+22% de rallyes ganados",
-        "de": "+22 % gewonnene Rallyes"
+        "de": "+22 % gewonnene Rallyes",
+        "fr": "+22% rallies won"
     },
     "insight_cta": {
         "it": "Accedi alle analytics",
         "en": "Access analytics",
         "es": "Accede a las analíticas",
-        "de": "Greife auf Analysen zu"
+        "de": "Greife auf Analysen zu",
+        "fr": "Access analytics"
     },
     "cta_panel_title": {
         "it": "Pronto a trasformare la tua prossima competizione?",
         "en": "Ready to transform your next competition?",
         "es": "¿Listo para transformar tu próxima competición?",
-        "de": "Bist du bereit, deinen nächsten Wettbewerb zu verändern?"
+        "de": "Bist du bereit, deinen nächsten Wettbewerb zu verändern?",
+        "fr": "Ready to transform your next competition?"
     },
     "cta_panel_subtitle": {
         "it": "Crea un account gratuito...",
         "en": "Create a free account...",
         "es": "Crea una cuenta gratuita...",
-        "de": "Erstelle ein kostenloses Konto..."
+        "de": "Erstelle ein kostenloses Konto...",
+        "fr": "Create a free account..."
     },
     "cta_panel_cta": {
         "it": "Crea account gratuito",
         "en": "Create free account",
         "es": "Crear cuenta gratuita",
-        "de": "Kostenloses Konto erstellen"
+        "de": "Kostenloses Konto erstellen",
+        "fr": "Create free account"
     },
     "faq_stat2": {
         "it": "engagement sponsor",
         "en": "sponsor engagement",
         "es": "compromiso del patrocinador",
-        "de": "Engagement von Sponsoren"
+        "de": "Engagement von Sponsoren",
+        "fr": "sponsor engagement"
     },
     "faq_stat3": {
         "it": "supporto dedicato",
         "en": "dedicated support",
         "es": "soporte dedicado",
-        "de": "engagierte Unterstützung"
+        "de": "engagierte Unterstützung",
+        "fr": "dedicated support"
     },
     "faq_a1": {
         "it": "Certo, puoi impostare palette, loghi...",
         "en": "Of course, you can set palettes, logos...",
         "es": "Por supuesto, puedes definir paletas, logotipos...",
-        "de": "Natürlich kannst du Paletten, Logos ... festlegen."
+        "de": "Natürlich kannst du Paletten, Logos ... festlegen.",
+        "fr": "Of course, you can set palettes, logos..."
     },
     "faq_q2": {
         "it": "È previsto un supporto per l'onboarding del team?",
         "en": "Is there onboarding support for the team?",
         "es": "¿Existe soporte de incorporación para el equipo?",
-        "de": "Gibt es Onboarding-Unterstützung für das Team?"
+        "de": "Gibt es Onboarding-Unterstützung für das Team?",
+        "fr": "Is there onboarding support for the team?"
     },
     "faq_a2": {
         "it": "Il nostro team Customer Success ti accompagna...",
         "en": "Our Customer Success team supports you...",
         "es": "Nuestro equipo de éxito del cliente le apoya...",
-        "de": "Unser Customer Success Team unterstützt du..."
+        "de": "Unser Customer Success Team unterstützt du...",
+        "fr": "Our Customer Success team supports you..."
     },
     "faq_q3": {
         "it": "Posso integrare Pong Smash Board con altri strumenti?",
         "en": "Can I integrate Pong Smash Board with other tools?",
         "es": "¿Puedo integrar Pong Smash Board con otras herramientas?",
-        "de": "Kann ich Pong Smash Board mit anderen Tools integrieren?"
+        "de": "Kann ich Pong Smash Board mit anderen Tools integrieren?",
+        "fr": "Can I integrate Pong Smash Board with other tools?"
     },
     "faq_a3": {
         "it": "Sì, l'API aperta permette di collegare...",
         "en": "Yes, the open API allows you to connect...",
         "es": "Sí, la API abierta te permite conectarte...",
-        "de": "Ja, die offene API ermöglicht dir die Verbindung..."
+        "de": "Ja, die offene API ermöglicht dir die Verbindung...",
+        "fr": "Yes, the open API allows you to connect..."
     },
     "faq_cta1": {
         "it": "Accedi alla piattaforma",
         "en": "Access the platform",
         "es": "Accede a la plataforma",
-        "de": "Greif auf die Plattform zu"
+        "de": "Greif auf die Plattform zu",
+        "fr": "Access the platform"
     },
     "faq_cta2": {
         "it": "Richiedi una demo guidata",
         "en": "Request a guided demo",
         "es": "Solicita una demo guiada",
-        "de": "Fordere eine geführte Demo an"
+        "de": "Fordere eine geführte Demo an",
+        "fr": "Request a guided demo"
     },
     "highlight1_title": {
         "it": "Gestione intuitiva delle competizioni",
         "en": "Intuitive competition management",
         "es": "Gestión intuitiva de la competición",
-        "de": "Intuitives Wettbewerbsmanagement"
+        "de": "Intuitives Wettbewerbsmanagement",
+        "fr": "Intuitive competition management"
     },
     "highlight1_desc": {
         "it": "Crea tornei a gironi o ad eliminazione, personalizza regole e lascia che la piattaforma pensi a calendario e classifiche.",
         "en": "Create group or knockout tournaments, customize rules and let the platform handle schedules and rankings.",
         "es": "Crea torneos de liguilla o eliminatorios, personaliza las reglas y deja que la plataforma gestione calendarios y clasificaciones.",
-        "de": "Erstelle Gruppen- oder K.-o.-Turniere, passe die Regeln an und überlass der Plattform Spielpläne und Tabellen."
+        "de": "Erstelle Gruppen- oder K.-o.-Turniere, passe die Regeln an und überlass der Plattform Spielpläne und Tabellen.",
+        "fr": "Create group or knockout tournaments, customize rules and let the platform handle schedules and rankings."
     },
     "highlight2_title": {
         "it": "Match tracking in tempo reale",
         "en": "Real-time match tracking",
         "es": "Seguimiento de partidos en tiempo real",
-        "de": "Spielverfolgung in Echtzeit"
+        "de": "Spielverfolgung in Echtzeit",
+        "fr": "Real-time match tracking"
     },
     "highlight2_desc": {
         "it": "Aggiorna risultati e statistiche live, sincronizzati con tutti i dispositivi della tua squadra o del tuo club.",
         "en": "Update results and live stats, synchronized across all your team or club devices.",
         "es": "Actualiza resultados y estadísticas en directo, sincronizados en todos los dispositivos de tu equipo o club.",
-        "de": "Aktualisiere Ergebnisse und Live-Statistiken, synchronisiert auf allen Geräten deines Teams oder Clubs."
+        "de": "Aktualisiere Ergebnisse und Live-Statistiken, synchronisiert auf allen Geräten deines Teams oder Clubs.",
+        "fr": "Update results and live stats, synchronized across all your team or club devices."
     },
     "highlight3_title": {
         "it": "Insights da coach professionista",
         "en": "Professional coach insights",
         "es": "Perspectivas del entrenador profesional",
-        "de": "Einblicke von professionellen Trainern"
+        "de": "Einblicke von professionellen Trainern",
+        "fr": "Professional coach insights"
     },
     "highlight3_desc": {
         "it": "Analizza performance, identifica i trend dei giocatori e prepara le prossime sfide con report visivi e smart analytics.",
         "en": "Analyze performance, identify player trends and prepare upcoming challenges with visual reports and smart analytics.",
         "es": "Analiza el rendimiento, identifica tendencias de los jugadores y prepara los próximos desafíos con informes visuales y analíticas inteligentes.",
-        "de": "Analysiere Leistungen, erkenne Spielertrends und bereite kommende Herausforderungen mit visuellen Berichten und smarten Analysen vor."
+        "de": "Analysiere Leistungen, erkenne Spielertrends und bereite kommende Herausforderungen mit visuellen Berichten und smarten Analysen vor.",
+        "fr": "Analyze performance, identify player trends and prepare upcoming challenges with visual reports and smart analytics."
     },
     "footer_link": {
         "it": "Pagina di presentazione",
         "en": "Landing page",
         "es": "Página de destino",
-        "de": "Landingpage"
+        "de": "Landingpage",
+        "fr": "Landing page"
     },
     "view_or_manage_matches": {
         "it": "Visualizza o gestisci",
         "en": "View or manage matches",
         "es": "Ver o gestionar partidos",
-        "de": "Spiele ansehen oder verwalten"
+        "de": "Spiele ansehen oder verwalten",
+        "fr": "View or manage matches"
     },
     "avatar_upload_info": {
         "it": "Clicca per caricare un'immagine (opzionale)",
         "en": "Click to upload an image (optional)",
         "es": "Haz clic para cargar una imagen (opcional)",
-        "de": "Klicke hier, um ein Bild hochzuladen (optional)"
+        "de": "Klicke hier, um ein Bild hochzuladen (optional)",
+        "fr": "Click to upload an image (optional)"
     },
     "next_matches": {
         "it": "Prossime partite",
         "en": "Next matches",
         "es": "Próximos partidos",
-        "de": "Nächste Spiele"
+        "de": "Nächste Spiele",
+        "fr": "Next matches"
     },
     "no_next_matches": {
         "it": "Nessuna partita in programma.",
         "en": "No matches scheduled.",
         "es": "No hay partidos programados.",
-        "de": "Keine Spiele geplant."
+        "de": "Keine Spiele geplant.",
+        "fr": "No matches scheduled."
     },
     "no_date": {
         "it": "Nessuna data",
         "en": "No date",
         "es": "sin fecha",
-        "de": "Kein Datum"
+        "de": "Kein Datum",
+        "fr": "No date"
     },
     "define_date": {
         "it": "Imposta",
         "en": "Set a date",
         "es": "Programar una fecha",
-        "de": "Datum festlegen"
+        "de": "Datum festlegen",
+        "fr": "Set a date"
     },
     "go_to_competition": {
         "it": "Visualizza",
         "en": "Go to competition",
         "es": "ir a la competición",
-        "de": "Gehe zum Wettbewerb"
+        "de": "Gehe zum Wettbewerb",
+        "fr": "Go to competition"
     },
     "manage": {
         "it": "Gestisci",
         "en": "Manage",
         "es": "Administrar",
-        "de": "Verwalten"
+        "de": "Verwalten",
+        "fr": "Manage"
     },
     "hero_badge": {
         "it": "Piattaforma sportiva universale",
         "en": "Universal sports platform",
         "es": "Plataforma deportiva universal",
-        "de": "Universelle Sportplattform"
+        "de": "Universelle Sportplattform",
+        "fr": "Universal sports platform"
     },
     "hero_title": {
         "it": "Organizza, gestisci e condividi i tuoi tornei con",
         "en": "Organize, manage and share your tournaments with",
         "es": "Organiza, gestiona y comparte tus torneos con",
-        "de": "Organisiere, verwalte und teile deine Turniere mit"
+        "de": "Organisiere, verwalte und teile deine Turniere mit",
+        "fr": "Organize, manage and share your tournaments with"
     },
     "hero_subtitle": {
         "it": "Dimentica i gruppi WhatsApp e i fogli Excel. Crea in pochi secondi tornei belli, automatici e professionali.",
         "en": "Forget WhatsApp groups and messy spreadsheets. Create stunning, automatic, professional tournaments in seconds.",
         "es": "Olvídate de los grupos de WhatsApp y de las hojas de cálculo desordenadas. Crea en segundos torneos espectaculares, automáticos y profesionales.",
-        "de": "Vergiss WhatsApp-Gruppen und chaotische Tabellen. Erstelle in Sekunden beeindruckende, automatische Profiturniere."
+        "de": "Vergiss WhatsApp-Gruppen und chaotische Tabellen. Erstelle in Sekunden beeindruckende, automatische Profiturniere.",
+        "fr": "Forget WhatsApp groups and messy spreadsheets. Create stunning, automatic, professional tournaments in seconds."
     },
     "cta_start": {
         "it": "Crea il tuo torneo",
         "en": "Create your tournament",
         "es": "Crea tu torneo",
-        "de": "Erstelle dein Turnier"
+        "de": "Erstelle dein Turnier",
+        "fr": "Create your tournament"
     },
     "cta_login": {
         "it": "Accedi",
         "en": "Log in",
         "es": "Iniciar sesión",
-        "de": "Anmelden"
+        "de": "Anmelden",
+        "fr": "Log in"
     },
     "cta_more": {
         "it": "Scopri di più",
         "en": "Learn more",
         "es": "Saber más",
-        "de": "Mehr erfahren"
+        "de": "Mehr erfahren",
+        "fr": "Learn more"
     },
     "hero_socialproof": {
         "it": "Più di 200 tornei gestiti senza stress",
         "en": "Over 200 tournaments managed effortlessly",
         "es": "Más de 200 torneos gestionados sin esfuerzo",
-        "de": "Über 200 Turniere mühelos gemeistert"
+        "de": "Über 200 Turniere mühelos gemeistert",
+        "fr": "Over 200 tournaments managed effortlessly"
     },
     "preview_header": {
         "it": "Finale in corso",
         "en": "Final in progress",
         "es": "Final en curso",
-        "de": "Finale in Bearbeitung"
+        "de": "Finale in Bearbeitung",
+        "fr": "Final in progress"
     },
     "preview_live": {
         "it": "LIVE",
         "en": "LIVE",
         "es": "EN VIVO",
-        "de": "LEBEN"
+        "de": "LEBEN",
+        "fr": "LIVE"
     },
     "preview_team1": {
         "it": "FC Birra Moretti",
         "en": "FC Birra Moretti",
         "es": "FC Birra Moretti",
-        "de": "FC Birra Moretti"
+        "de": "FC Birra Moretti",
+        "fr": "FC Birra Moretti"
     },
     "preview_team1_rank": {
         "it": "1° in classifica",
         "en": "1st in ranking",
         "es": "1º en el ranking",
-        "de": "1. im Ranking"
+        "de": "1. im Ranking",
+        "fr": "1st in ranking"
     },
     "preview_team2": {
         "it": "Real Spritz",
         "en": "Real Spritz",
         "es": "verdadero spritz",
-        "de": "Echter Spritz"
+        "de": "Echter Spritz",
+        "fr": "Real Spritz"
     },
     "preview_team2_rank": {
         "it": "2° in classifica",
         "en": "2nd in ranking",
         "es": "2do en el ranking",
-        "de": "2. im Ranking"
+        "de": "2. im Ranking",
+        "fr": "2nd in ranking"
     },
     "preview_progress": {
         "it": "Torneo al 68%",
         "en": "Tournament 68% complete",
         "es": "Torneo 68% completado",
-        "de": "Turnier zu 68 % abgeschlossen"
+        "de": "Turnier zu 68 % abgeschlossen",
+        "fr": "Tournament 68% complete"
     },
     "preview_footer_auto": {
         "it": "Aggiornamento automatico",
         "en": "Auto-updating",
         "es": "Actualización automática",
-        "de": "Automatische Aktualisierung"
+        "de": "Automatische Aktualisierung",
+        "fr": "Auto-updating"
     },
     "preview_footer_stats": {
         "it": "Statistiche e punteggi live",
         "en": "Live stats and scores",
         "es": "Estadísticas y puntuaciones en vivo",
-        "de": "Live-Statistiken und Ergebnisse"
+        "de": "Live-Statistiken und Ergebnisse",
+        "fr": "Live stats and scores"
     },
     "preview_footer_cta": {
         "it": "Prova ora",
         "en": "Try now",
         "es": "Pruébalo ahora",
-        "de": "Probiere es jetzt aus"
+        "de": "Probiere es jetzt aus",
+        "fr": "Try now"
     },
     "features_title": {
         "it": "Tutto ciò che serve per un torneo perfetto",
         "en": "Everything you need for a perfect tournament",
         "es": "Todo lo que necesitas para un torneo perfecto",
-        "de": "Alles, was du für ein perfektes Turnier brauchst"
+        "de": "Alles, was du für ein perfektes Turnier brauchst",
+        "fr": "Everything you need for a perfect tournament"
     },
     "features_subtitle": {
         "it": "Gestione smart, statistiche automatiche, notifiche push e un design che conquista.",
         "en": "Smart management, auto stats, push notifications and a beautiful design.",
         "es": "Gestión inteligente, estadísticas automáticas, notificaciones push y un bonito diseño.",
-        "de": "Intelligente Verwaltung, automatische Statistiken, Push-Benachrichtigungen und ein schönes Design."
+        "de": "Intelligente Verwaltung, automatische Statistiken, Push-Benachrichtigungen und ein schönes Design.",
+        "fr": "Smart management, auto stats, push notifications and a beautiful design."
     },
     "features_cta": {
         "it": "Crea il tuo torneo",
         "en": "Create your tournament",
         "es": "Crea tu torneo",
-        "de": "Erstelle dein Turnier"
+        "de": "Erstelle dein Turnier",
+        "fr": "Create your tournament"
     },
     "why_title": {
         "it": "Perché non basta più WhatsApp o Facebook",
         "en": "Why WhatsApp and Facebook aren't enough",
         "es": "Por qué WhatsApp y Facebook no son suficientes",
-        "de": "Warum WhatsApp und Facebook nicht ausreichen"
+        "de": "Warum WhatsApp und Facebook nicht ausreichen",
+        "fr": "Why WhatsApp and Facebook aren't enough"
     },
     "why_subtitle": {
         "it": "Sport Board automatizza tutto ciò che gli altri ti fanno fare a mano. E ti fa fare un figurone.",
         "en": "Sport Board automates everything others make you do manually — and makes you look good doing it.",
         "es": "Sport Board automatiza todo lo que los demás te obligan a hacer manualmente y te hace quedar genial haciéndolo.",
-        "de": "Sport Board automatisiert alles, was andere dich manuell erledigen lassen – und sorgt dafür, dass du dabei gut aussiehst."
+        "de": "Sport Board automatisiert alles, was andere dich manuell erledigen lassen – und sorgt dafür, dass du dabei gut aussiehst.",
+        "fr": "Sport Board automates everything others make you do manually — and makes you look good doing it."
     },
     "why_point1": {
         "it": "Classifiche e calendari generati automaticamente",
         "en": "Automatic rankings and schedules",
         "es": "Clasificaciones y calendarios automáticos",
-        "de": "Automatische Tabellen und Spielpläne"
+        "de": "Automatische Tabellen und Spielpläne",
+        "fr": "Automatic rankings and schedules"
     },
     "why_point2": {
         "it": "Aggiornamenti e notifiche in tempo reale",
         "en": "Real-time updates and notifications",
         "es": "Actualizaciones y notificaciones en tiempo real",
-        "de": "Aktualisierungen und Benachrichtigungen in Echtzeit"
+        "de": "Aktualisierungen und Benachrichtigungen in Echtzeit",
+        "fr": "Real-time updates and notifications"
     },
     "why_point3": {
         "it": "Design professionale, zero confusione",
         "en": "Professional design, zero confusion",
         "es": "Diseño profesional, cero confusión",
-        "de": "Professionelles Design, keine Verwirrung"
+        "de": "Professionelles Design, keine Verwirrung",
+        "fr": "Professional design, zero confusion"
     },
     "why_mockup_caption": {
         "it": "Più organizzato. Più bello. Più facile.",
         "en": "More organized. More beautiful. Easier.",
         "es": "Más organizado. Más bonito. Más fácil.",
-        "de": "Besser organisiert. Schöner. Einfacher."
+        "de": "Besser organisiert. Schöner. Einfacher.",
+        "fr": "More organized. More beautiful. Easier."
     },
     "set_date": {
         "it": "Programma data",
         "en": "Schedule match",
         "es": "Programar partido",
-        "de": "Spiel planen"
+        "de": "Spiel planen",
+        "fr": "Schedule match"
     },
     "date_to_be_determined": {
         "it": "Data da definire",
         "en": "Date to be determined",
         "es": "Fecha por determinar",
-        "de": "Datum noch festzulegen"
+        "de": "Datum noch festzulegen",
+        "fr": "Date to be determined"
     },
     "tbd": {
         "it": "Da definire",
         "en": "To be determined",
         "es": "Por determinar",
-        "de": "Noch festzulegen"
+        "de": "Noch festzulegen",
+        "fr": "To be determined"
     },
     "view_bracket": {
         "it": "tabellone",
         "en": "Bracket",
         "es": "Cuadro",
-        "de": "Turnierbaum"
+        "de": "Turnierbaum",
+        "fr": "Bracket"
     },
     "view_list": {
         "it": "elenco",
         "en": "List",
         "es": "Lista",
-        "de": "Liste"
+        "de": "Liste",
+        "fr": "List"
     },
     "bracket": {
         "it": "Tabellone",
         "en": "Bracket",
         "es": "Cuadro",
-        "de": "Turnierbaum"
+        "de": "Turnierbaum",
+        "fr": "Bracket"
     },
     "set_match_date_unavailable": {
         "it": "Ancora non è possibile impostare la data della partita.",
         "en": "Match date cannot be set yet.",
         "es": "La fecha del partido aún no se puede fijar.",
-        "de": "Das Spieldatum kann noch nicht festgelegt werden."
+        "de": "Das Spieldatum kann noch nicht festgelegt werden.",
+        "fr": "Match date cannot be set yet."
     },
     "nickname_required": {
         "it": "Il nickname è obbligatorio. Min 2 caratteri, max 11",
         "en": "Nickname is required. Min 2 characters, max 11.",
         "es": "Se requiere apodo. Mínimo 2 caracteres, máximo 11.",
-        "de": "Spitzname ist erforderlich. Mindestens 2 Zeichen, höchstens 11."
+        "de": "Spitzname ist erforderlich. Mindestens 2 Zeichen, höchstens 11.",
+        "fr": "Nickname is required. Min 2 characters, max 11."
     },
     "edit_players": {
         "it": "Modifica giocatori",
         "en": "Edit players",
         "es": "Editar jugadores",
-        "de": "Spieler bearbeiten"
+        "de": "Spieler bearbeiten",
+        "fr": "Edit players"
     },
     "all": {
         "it": "Tutti",
         "en": "All",
         "es": "Todos",
-        "de": "Alle"
+        "de": "Alle",
+        "fr": "All"
     },
     "not_mandatory": {
         "it": "Non obbligatorio",
         "en": "Not mandatory",
         "es": "No obligatorio",
-        "de": "Nicht zwingend erforderlich"
+        "de": "Nicht zwingend erforderlich",
+        "fr": "Not mandatory"
     },
     "number_of_players": {
         "it": "N. di giocatori",
-        "en": "N. of players"
+        "en": "N. of players",
+        "fr": "N. of players"
     },
     "current_match_date": {
         "it": "Data attuale",
-        "en": "Current date"
+        "en": "Current date",
+        "fr": "Current date"
     },
     "set_match_date_description": {
         "it": "Scegli la data in cui si giocherà questa partita.",
-        "en": "Choose the date when this match will be played."
+        "en": "Choose the date when this match will be played.",
+        "fr": "Choose the date when this match will be played."
     },
     "set_match_date_cta": {
         "it": "Salva data",
