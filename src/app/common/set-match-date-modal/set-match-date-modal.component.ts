@@ -69,7 +69,7 @@ export class SetMatchDateModalComponent implements OnChanges {
     }
 
     try {
-      return new Intl.DateTimeFormat(undefined, { dateStyle: 'long' }).format(parsed);
+      return new Intl.DateTimeFormat(undefined, { dateStyle: 'long', timeStyle: 'short' }).format(parsed);
     } catch (error) {
       console.warn('[SetMatchDateModal] Failed to format date', error);
       return this.formatAsInputValue(parsed);
@@ -108,7 +108,7 @@ export class SetMatchDateModalComponent implements OnChanges {
     }
 
     const dateValue = this.form.controls.date.value.trim();
-    const payloadDate = dateValue.length ? dateValue : null;
+    const payloadDate = dateValue.length ? this.toISOString(dateValue) : null;
 
     this.isSubmitting = true;
     this.loader.startLittleLoader();
@@ -156,7 +156,7 @@ export class SetMatchDateModalComponent implements OnChanges {
     this.match = {
       ...this.match,
       ...response.match,
-      date: updatedDate ?? response.match.date ?? this.form.controls.date.value,
+      date: response.match.date ?? updatedDate ?? this.form.controls.date.value,
     } as MatchWithContext;
 
     if (updatedDate) {
@@ -167,10 +167,6 @@ export class SetMatchDateModalComponent implements OnChanges {
   private formatInputValue(value: string | number | Date | null | undefined): string {
     if (!value) {
       return '';
-    }
-
-    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
-      return value;
     }
 
     const parsed = this.parseDate(value);
@@ -212,10 +208,17 @@ export class SetMatchDateModalComponent implements OnChanges {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 
   private todayInputValue(): string {
     return this.formatAsInputValue(new Date());
+  }
+
+  private toISOString(value: string): string {
+    const parsed = this.parseDate(value);
+    return parsed ? parsed.toISOString() : value;
   }
 }

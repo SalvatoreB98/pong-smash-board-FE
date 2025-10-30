@@ -33,11 +33,11 @@
       <label class="set-date-modal__label" for="match-date">{{ 'date' | translate }}</label>
       <input
         class="set-date-modal__input"
-        type="date"
+        type="datetime-local"
         id="match-date"
         name="match-date"
         formControlName="date"
-        [max]="'9999-12-31'"
+        [max]="'9999-12-31T23:59'"
       />
       <div class="set-date-modal__field-error" *ngIf="form.controls.date.invalid && (form.controls.date.touched || attemptedSubmit)">
         {{ 'set_match_date_required' | translate }}
