@@ -1921,18 +1921,30 @@
     },
     "set_match_date_cta": {
         "it": "Salva data",
-        "en": "Save date"
+        "en": "Save date",
+        "es": "Guardar fecha",
+        "de": "Datum speichern",
+        "fr": "Enregistrer la date"
     },
     "set_match_date_required": {
         "it": "Seleziona una data per continuare.",
-        "en": "Select a date to continue."
+        "en": "Select a date to continue.",
+        "es": "Selecciona una fecha para continuar.",
+        "de": "Wählen Sie ein Datum, um fortzufahren.",
+        "fr": "Sélectionnez une date pour continuer."
     },
     "set_match_date_success": {
         "it": "Data della partita aggiornata!",
-        "en": "Match date updated!"
+        "en": "Match date updated!",
+        "es": "¡Fecha del partido actualizada!",
+        "de": "Spieldatum aktualisiert!",
+        "fr": "Date du match mise à jour!"
     },
     "set_match_date_error": {
         "it": "Impossibile aggiornare la data della partita.",
-        "en": "Unable to update the match date."
+        "en": "Unable to update the match date.",
+        "es": "No se puede actualizar la fecha del partido.",
+        "de": "Das Spieldatum kann nicht aktualisiert werden.",
+        "fr": "Impossible de mettre à jour la date du match."
     }
 }
