@@ -1909,8 +1909,30 @@
     },
     "number_of_players": {
         "it": "N. di giocatori",
-        "en": "N. of players",
-        "es": "N. de jugadores",
-        "de": "Anzahl der Spieler"
+        "en": "N. of players"
+    },
+    "current_match_date": {
+        "it": "Data attuale",
+        "en": "Current date"
+    },
+    "set_match_date_description": {
+        "it": "Scegli la data in cui si giocherà questa partita.",
+        "en": "Choose the date when this match will be played."
+    },
+    "set_match_date_cta": {
+        "it": "Salva data",
+        "en": "Save date"
+    },
+    "set_match_date_required": {
+        "it": "Seleziona una data per continuare.",
+        "en": "Select a date to continue."
+    },
+    "set_match_date_success": {
+        "it": "Data della partita aggiornata!",
+        "en": "Match date updated!"
+    },
+    "set_match_date_error": {
+        "it": "Impossibile aggiornare la data della partita.",
+        "en": "Unable to update the match date."
     }
 }

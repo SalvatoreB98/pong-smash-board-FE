@@ -372,30 +372,36 @@ export class HomeComponent {
     this.player1Selected = event.player1 ?? null;
     this.player2Selected = event.player2 ?? null;
     const stage = toKnockoutStage(event.roundName ?? event.roundLabel ?? null);
+    const roundLabel = event.roundLabel
+      ? typeof event.roundLabel === 'string'
+        ? event.roundLabel
+        : this.translateService.translate(event.roundLabel)
+      : stage
+        ? this.translateService.translate(stage)
+        : undefined;
+    const resolvedMatch = event.match
+      ? {
+        ...event.match,
+        competitionType: 'elimination' as CompetitionMode,
+        competitionName: this.activeCompetition?.name ?? undefined,
+        roundName: stage,
+        roundLabel,
+      } as MatchWithContext
+      : undefined;
 
     if (event.modalName === 'SHOW_MATCH') {
       if (!event.match) {
         return;
       }
 
-      const roundLabel = event.roundLabel
-        ? typeof event.roundLabel === 'string'
-          ? event.roundLabel
-          : this.translateService.translate(event.roundLabel)
-        : stage
-          ? this.translateService.translate(stage)
-          : undefined;
-
-      this.clickedMatch = {
-        ...event.match,
-        competitionType: 'elimination',
-        competitionName: this.activeCompetition?.name ?? undefined,
-        roundName: stage,
-        roundLabel,
-      };
+      this.clickedMatch = resolvedMatch;
       this.roundTypeOfMatch = stage;
       this.modalService.openModal(this.modalService.MODALS['SHOW_MATCH']);
       return;
+    }
+
+    if (event.modalName === 'SET_DATE') {
+      this.clickedMatch = resolvedMatch;
     }
 
     this.roundTypeOfMatch = stage;

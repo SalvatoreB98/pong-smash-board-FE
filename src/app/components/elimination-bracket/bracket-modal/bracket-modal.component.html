@@ -1,6 +1,6 @@
-<div class="bracket-container" #bracketContainer (mousedown)="onDragStart($event)" (mouseup)="onDragEnd()"
-  (mouseleave)="onDragEnd()" (mousemove)="onDragMove($event)" (wheel)="onWheel($event)"
-  (touchstart)="onDragStart($event)" (touchmove)="onDragMove($event)" (touchend)="onDragEnd()">
+<div class="bracket-container" #bracketContainer (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerUp($event)" (pointerleave)="onPointerUp($event)" (wheel)="onWheel($event)">
   <!-- ZOOM CONTROLS -->
   <div class="bracket-controls">
     <button (click)="zoomOut()">−</button>
