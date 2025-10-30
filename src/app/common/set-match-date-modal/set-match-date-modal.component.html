@@ -9,16 +9,15 @@
           {{ round }}
         </span>
       </div>
-
       <div class="set-date-modal__players">
         <figure class="set-date-modal__player">
-          <img class="set-date-modal__avatar" [src]="match?.player1_img || defaultAvatar" (error)="onImageError($event)" alt="" />
-          <figcaption class="set-date-modal__player-name">{{ match?.player1_name || ('player1' | translate) }}</figcaption>
+          <img class="set-date-modal__avatar" [src]="match?.player1?.img || defaultAvatar" (error)="onImageError($event)" alt="" />
+          <figcaption class="set-date-modal__player-name">{{ match?.player1?.name || ('player1' | translate) }}</figcaption>
         </figure>
         <span class="set-date-modal__versus">{{ 'vs' | translate }}</span>
         <figure class="set-date-modal__player">
-          <img class="set-date-modal__avatar" [src]="match?.player2_img || defaultAvatar" (error)="onImageError($event)" alt="" />
-          <figcaption class="set-date-modal__player-name">{{ match?.player2_name || ('player2' | translate) }}</figcaption>
+          <img class="set-date-modal__avatar" [src]="match?.player2?.img || defaultAvatar" (error)="onImageError($event)" alt="" />
+          <figcaption class="set-date-modal__player-name">{{ match?.player2?.name || ('player2' | translate) }}</figcaption>
         </figure>
       </div>
 
@@ -47,11 +46,12 @@
       <p class="set-date-modal__error" *ngIf="errorKey">{{ errorKey | translate }}</p>
 
       <div class="set-date-modal__actions">
-        <button type="button" class="set-date-modal__button tertiary" (click)="onCancel()" [disabled]="isSubmitting">
+        <button type="button" class="set-date-modal__button tertiary text-center" (click)="onCancel()" [disabled]="isSubmitting">
           {{ 'cancel' | translate }}
         </button>
-        <button type="submit" class="set-date-modal__button primary" [disabled]="form.invalid || isSubmitting">
-          <span *ngIf="!isSubmitting">{{ 'set_match_date_cta' | translate }}</span>
+        <button type="submit" class="set-date-modal__button primary text-center" [disabled]="form.invalid || isSubmitting">
+          <span *ngIf="!isSubmitting">{{ 'set_match_date_cta' | translate }} 💾
+          </span>
           <span *ngIf="isSubmitting" class="set-date-modal__spinner" aria-hidden="true"></span>
         </button>
       </div>

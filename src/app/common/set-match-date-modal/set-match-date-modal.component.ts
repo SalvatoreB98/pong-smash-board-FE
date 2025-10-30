@@ -14,8 +14,22 @@ type MatchWithContext = IMatch & {
   competitionName?: string;
   roundName?: KnockoutStage | null;
   roundLabel?: KnockoutStage | string | null;
+  id: number;
+  group_id: string;
+  group_name: string;
+  date: string | number | null;
+  player1: PlayerSummary;
+  player2: PlayerSummary;
 };
+export interface PlayerSummary {
+  id: number;
+  name: string;
+  img: string;
+}
 
+export interface MatchDto {
+
+}
 @Component({
   selector: 'app-set-match-date-modal',
   imports: [...SHARED_IMPORTS],
