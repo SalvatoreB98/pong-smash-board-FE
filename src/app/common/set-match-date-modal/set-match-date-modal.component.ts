@@ -39,7 +39,7 @@ export interface MatchDto {
 
 
 export class SetMatchDateModalComponent implements OnChanges {
-  @Input() match: MatchWithContext | undefined;
+  @Input() match: any;
 
   private readonly fb = inject(FormBuilder);
   private readonly matchService = inject(MatchService);
