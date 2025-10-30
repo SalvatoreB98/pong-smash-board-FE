@@ -72,6 +72,10 @@ export class BracketModalComponent implements AfterViewInit, OnDestroy {
   private hasMoved = false;
   private activePointerId: number | null = null;
   private modalElement: HTMLElement | null = null;
+  // 🔹 Per pinch zoom
+  private activePointers: Map<number, PointerEvent> = new Map();
+  private initialPinchDistance: number | null = null;
+  private initialZoomLevel = 1;
 
   constructor(private renderer: Renderer2) { }
 
@@ -149,6 +153,12 @@ export class BracketModalComponent implements AfterViewInit, OnDestroy {
     return splitRoundsCount - colIndexFromZero;
   }
 
+  private getDistance(p1: PointerEvent, p2: PointerEvent): number {
+    const dx = p2.clientX - p1.clientX;
+    const dy = p2.clientY - p1.clientY;
+    return Math.hypot(dx, dy);
+  }
+
   /** -----------------------
    *  ZOOM
    *  ---------------------- */
@@ -173,6 +183,16 @@ export class BracketModalComponent implements AfterViewInit, OnDestroy {
    *  DRAG
    *  ---------------------- */
   onPointerDown(event: PointerEvent) {
+    // --- 🔹 Inizio gestione pinch ---
+    this.activePointers.set(event.pointerId, event);
+
+    if (this.activePointers.size === 2) {
+      const [p1, p2] = Array.from(this.activePointers.values());
+      this.initialPinchDistance = this.getDistance(p1, p2);
+      this.initialZoomLevel = this.zoomLevel;
+      this.isDragging = false; // disattiva il drag durante pinch
+      return;
+    }
     const target = event.target as HTMLElement;
     if (target.closest('button')) return;
 
@@ -198,6 +218,22 @@ export class BracketModalComponent implements AfterViewInit, OnDestroy {
   }
 
   onPointerMove(event: PointerEvent) {
+    // --- 🔹 Gestione pinch in movimento ---
+    if (this.activePointers.has(event.pointerId)) {
+      this.activePointers.set(event.pointerId, event);
+    }
+
+    if (this.activePointers.size === 2) {
+      const [p1, p2] = Array.from(this.activePointers.values());
+      const newDistance = this.getDistance(p1, p2);
+      if (this.initialPinchDistance) {
+        const scaleChange = newDistance / this.initialPinchDistance;
+        this.zoomLevel = Math.min(2, Math.max(0.5, this.initialZoomLevel * scaleChange));
+        this.applyTransform();
+      }
+      return;
+    }
+    // --- 🔹 Fine pinch ---
     if (!this.isDragging) return;
     if (this.activePointerId !== null && event.pointerId !== this.activePointerId) return;
 
@@ -212,6 +248,11 @@ export class BracketModalComponent implements AfterViewInit, OnDestroy {
   }
 
   onPointerUp(event?: PointerEvent) {
+    // --- 🔹 Pulizia pinch ---
+    event ? this.activePointers.delete(event.pointerId) : null;
+    if (this.activePointers.size < 2) {
+      this.initialPinchDistance = null;
+    }
     if (!this.hasMoved) {
       this.pendingDX = 0;
       this.pendingDY = 0;
@@ -351,5 +392,7 @@ export class BracketModalComponent implements AfterViewInit, OnDestroy {
     if (this.modalElement) {
       this.renderer.removeClass(this.modalElement, 'no-scroll');
     }
+    this.activePointers.clear();
+    this.initialPinchDistance = null;
   }
 }
