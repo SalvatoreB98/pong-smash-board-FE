@@ -11,7 +11,8 @@ export class TranslationService {
     { code: "it", label: "italian" },
     { code: "en", label: "english" },
     { code: "es", label: "spanish" },
-    { code: "de", label: "german" }
+    { code: "de", label: "german" },
+    { code: "fr", label: "french" }
   ]
 
   /** Dizionario delle traduzioni */
@@ -37,6 +38,8 @@ export class TranslationService {
       this.setLanguage('es', true); // setta spagnolo se il browser è in ES
     } else if (userLanguage.startsWith('de')) {
       this.setLanguage('de', true); // setta tedesco se il browser è in DE
+    } else if (userLanguage.startsWith('fr')) {
+      this.setLanguage('fr', true); // setta francese se il browser è in FR
     } else {
       this.setLanguage('en', true); // fallback
     }
