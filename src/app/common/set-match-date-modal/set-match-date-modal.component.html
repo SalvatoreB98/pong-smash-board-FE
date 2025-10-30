@@ -1,7 +1,66 @@
-<pre class="mt-3">
-    {{ match | json }}
-</pre>
+<ng-container *ngIf="match; else unavailable">
+  <div class="set-date-modal">
+    <section class="set-date-modal__match">
+      <div class="set-date-modal__meta" *ngIf="match?.competitionName || match?.roundLabel">
+        <span class="set-date-modal__meta-item" *ngIf="match?.competitionName as competition">
+          {{ competition }}
+        </span>
+        <span class="set-date-modal__meta-item" *ngIf="match?.roundLabel as round">
+          {{ round }}
+        </span>
+      </div>
 
-<p class="mt-3">
+      <div class="set-date-modal__players">
+        <figure class="set-date-modal__player">
+          <img class="set-date-modal__avatar" [src]="match?.player1_img || defaultAvatar" (error)="onImageError($event)" alt="" />
+          <figcaption class="set-date-modal__player-name">{{ match?.player1_name || ('player1' | translate) }}</figcaption>
+        </figure>
+        <span class="set-date-modal__versus">{{ 'vs' | translate }}</span>
+        <figure class="set-date-modal__player">
+          <img class="set-date-modal__avatar" [src]="match?.player2_img || defaultAvatar" (error)="onImageError($event)" alt="" />
+          <figcaption class="set-date-modal__player-name">{{ match?.player2_name || ('player2' | translate) }}</figcaption>
+        </figure>
+      </div>
+
+      <p class="set-date-modal__current" *ngIf="currentDateLabel as currentLabel">
+        <span class="set-date-modal__current-label">{{ 'current_match_date' | translate }}:</span>
+        <span class="set-date-modal__current-value">{{ currentLabel }}</span>
+      </p>
+    </section>
+
+    <form class="set-date-modal__form" [formGroup]="form" (ngSubmit)="onSubmit($event)">
+      <p class="set-date-modal__description">{{ 'set_match_date_description' | translate }}</p>
+
+      <label class="set-date-modal__label" for="match-date">{{ 'date' | translate }}</label>
+      <input
+        class="set-date-modal__input"
+        type="date"
+        id="match-date"
+        name="match-date"
+        formControlName="date"
+        [max]="'9999-12-31'"
+      />
+      <div class="set-date-modal__field-error" *ngIf="form.controls.date.invalid && (form.controls.date.touched || attemptedSubmit)">
+        {{ 'set_match_date_required' | translate }}
+      </div>
+
+      <p class="set-date-modal__error" *ngIf="errorKey">{{ errorKey | translate }}</p>
+
+      <div class="set-date-modal__actions">
+        <button type="button" class="set-date-modal__button tertiary" (click)="onCancel()" [disabled]="isSubmitting">
+          {{ 'cancel' | translate }}
+        </button>
+        <button type="submit" class="set-date-modal__button primary" [disabled]="form.invalid || isSubmitting">
+          <span *ngIf="!isSubmitting">{{ 'set_match_date_cta' | translate }}</span>
+          <span *ngIf="isSubmitting" class="set-date-modal__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-container>
+
+<ng-template #unavailable>
+  <p class="set-date-modal__unavailable">
     {{ 'set_match_date_unavailable' | translate }}
-</p>
+  </p>
+</ng-template>
