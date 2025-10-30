@@ -19,6 +19,7 @@
   scroll-snap-align: start;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease;
+  margin-right: 1em;
 
   &--clickable {
     cursor: pointer;
@@ -219,16 +220,19 @@
 
   .match-card__time {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
     gap: 0.4rem;
     font-size: 0.75rem;
     opacity: 0.8;
-
-    &.match-card__time-label {
-      opacity: 0.65;
-    }
   }
 
+}
+
+.match-card__time-label {
+  font-size: 0.5em;
+  opacity: 0.65;
 }
 
 .match-card__footer {
@@ -276,6 +280,7 @@
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 0.3;

@@ -168,4 +168,31 @@ export class MatchCardComponent {
       action => !!action && action.visible !== false
     ) as MatchCardAction[];
   }
+  formatLocalDateTime(dateStr: string | Date): string {
+    let date: Date;
+    if (typeof dateStr === 'string') {
+      // Prova a creare la data partendo da "11/1/25 - 5:33 AM"
+      // Aggiungo "20" davanti all'anno se è a due cifre
+      const normalized = dateStr.replace(
+        /(\d{1,2})\/(\d{1,2})\/(\d{2})/,
+        (_, m, d, y) => `${m}/${d}/20${y}`
+      );
+      date = new Date(normalized);
+    } else {
+      date = dateStr;
+    }
+
+    // Controllo validità
+    if (isNaN(date.getTime())) return 'Data non valida';
+
+    // Formatto in base al fuso orario locale del browser
+    return date.toLocaleString('it-IT', {
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
 }
