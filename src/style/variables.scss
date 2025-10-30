@@ -19,7 +19,7 @@ $tertiary: #142145; // Arancione per un terzo livello di accento
 // Colori Semantici (rimasti invariati in quanto già ben definiti)
 $green: #568566;
 $orange: #ffa10b; // Ho allineato $orange a $light per coerenza, se sono intesi come lo stesso colore.
-
+$primary-gradient: linear-gradient(135deg, #ff7b00, #ff3d7f);
 // Gradiente Speciale (ho mantenuto la tua struttura, ma ho usato $dark-blu come base per renderlo più coerente)
 $gradient2: linear-gradient(90deg, #192745c8 0%, #122137 50%, $dark 100%);
 $gradientlight: linear-gradient(90deg, #122137 0%, #192745c8 50%, $dark 100%);
