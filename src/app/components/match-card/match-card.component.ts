@@ -168,11 +168,12 @@ export class MatchCardComponent {
       action => !!action && action.visible !== false
     ) as MatchCardAction[];
   }
+
   formatLocalDateTime(dateStr: string | Date): string {
     let date: Date;
     if (typeof dateStr === 'string') {
-      // Prova a creare la data partendo da "11/1/25 - 5:33 AM"
-      // Aggiungo "20" davanti all'anno se è a due cifre
+      // Prova a creare la data partendo da un formato come "11/1/25 - 5:33 AM"
+      // Aggiunge "20" all'anno se è a due cifre per evitare ambiguità
       const normalized = dateStr.replace(
         /(\d{1,2})\/(\d{1,2})\/(\d{2})/,
         (_, m, d, y) => `${m}/${d}/20${y}`
@@ -182,10 +183,13 @@ export class MatchCardComponent {
       date = dateStr;
     }
 
-    // Controllo validità
-    if (isNaN(date.getTime())) return 'Data non valida';
+    // Controlla se la data creata è valida
+    if (isNaN(date.getTime())) {
+      return 'Data non valida';
+    }
 
-    // Formatto in base al fuso orario locale del browser
+    // Utilizza toLocaleString con il fuso orario del browser.
+    // Questo gestisce automaticamente l'ora legale (DST) per la data specificata.
     return date.toLocaleString('it-IT', {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       day: '2-digit',
