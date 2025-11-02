@@ -278,7 +278,16 @@
     }
   }
 }
-
+button.edit {
+  all: unset;
+  cursor: pointer;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  i {
+    font-size: 1rem;
+  }
+}
 @keyframes pulse {
 
   0%,

@@ -4,6 +4,7 @@ import { NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { ModalService } from '../../../services/modal.service';
 import { AddPlayerModalComponent } from '../modals/add-player-modal/add-player-modal.component';
+import { MODALS } from '../../utils/enum';
 
 // Centralized match card component shared by league, next matches, and bracket views.
 export type MatchCardVariant = 'standard' | 'bracket';
@@ -198,5 +199,18 @@ export class MatchCardComponent {
       hour: '2-digit',
       minute: '2-digit',
     });
+  }
+  onEditSchedule(event?: MouseEvent): void {
+    const correctAction = {
+      label: 'Edit Schedule',
+      event: MODALS['SET_DATE'],
+      handler: () => {
+        this.modalService.openModal(MODALS['SET_DATE'], {
+          match: this.match
+        });
+      }
+    };
+    
+    this.onAction(correctAction, event);
   }
 }

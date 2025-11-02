@@ -113,10 +113,13 @@
       <footer class="match-card__footer" *ngIf="schedule || footerLabel">
         <span class="match-card__footer-text" *ngIf="footerLabel">{{ footerLabel }}</span>
         <ng-container *ngIf="schedule">
-          <div class="match-card__time" *ngIf="schedule.date; else scheduleFallback">
-            <i [class]="schedule.iconClass || 'fa fa-clock-o'" aria-hidden="true"></i>
-            {{ formatLocalDateTime(schedule.date) }}
-          </div>
+          <ng-container *ngIf="!readonly">
+            <label class="match-card__time" *ngIf="schedule.date; else scheduleFallback">
+              <i [class]="schedule.iconClass || 'fa fa-clock-o'" aria-hidden="true"></i>
+              {{ formatLocalDateTime(schedule.date) }}
+              <button type="button" class="edit" (click)="onEditSchedule($event)"><i class="fa fa-pencil"></i></button>
+            </label>
+          </ng-container>
           <ng-template #scheduleFallback>
             <ng-container *ngIf="scheduleHasFallback()">
               <div class="match-card__time-label" *ngIf="schedule.fallbackLabel">
