@@ -19,9 +19,10 @@
           <span class="board__th">{{ 'group_knockout_board_points_for' | translate }}</span>
           <span class="board__th">{{ 'group_knockout_board_points' | translate }}</span>
         </div>
-        <div class="board__table-row" *ngFor="let player of group.players; let i = index; trackBy: trackByPlayer">
+        <div class="board__table-row" *ngFor="let player of getPlayers(group); let i = index; trackBy: trackByPlayer"
+          [ngClass]="{ 'board__table-row--qualified': isQualified(player, i) }">
           <div class="board__td board__player-info">
-            <span class="board__position">{{ i + 1 }}</span>
+            <span class="board__position">{{ player.ranking || player.rank || player.position || (i + 1) }}</span>
             <div class="board__avatar" *ngIf="player.imageUrl; else initials">
               <img [src]="player.imageUrl" [alt]="player.nickname || player.name" loading="lazy" />
             </div>
