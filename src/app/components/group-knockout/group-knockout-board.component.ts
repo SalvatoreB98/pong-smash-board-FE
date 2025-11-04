@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslatePipe } from '../../utils/translate.pipe';
 import { ModalService } from '../../../services/modal.service';
-import { Group, GroupPlayer } from '../../interfaces/group.interface';
+import { Group, GroupPlayer, QUALIFIED_PER_GROUP } from '../../interfaces/group.interface';
 
 @Component({
   selector: 'app-group-knockout-board',
@@ -14,6 +14,8 @@ import { Group, GroupPlayer } from '../../interfaces/group.interface';
 export class GroupKnockoutBoardComponent {
   @Input() groups: Group[] = [];
 
+  readonly qualifiedPerGroup = QUALIFIED_PER_GROUP;
+
   constructor(public modalService: ModalService) { }
 
   trackByGroup(_index: number, group: Group) {
@@ -22,6 +24,53 @@ export class GroupKnockoutBoardComponent {
 
   trackByPlayer(_index: number, player: GroupPlayer) {
     return player.id;
+  }
+
+  getPlayers(group: Group): GroupPlayer[] {
+    if (!group?.players?.length) {
+      return [];
+    }
+
+    const players = [...group.players];
+    return players.sort((a, b) => {
+      const rankA = this.resolveRanking(a);
+      const rankB = this.resolveRanking(b);
+
+      if (rankA != null && rankB != null && rankA !== rankB) {
+        return rankA - rankB;
+      }
+
+      if (rankA != null && rankB == null) {
+        return -1;
+      }
+
+      if (rankA == null && rankB != null) {
+        return 1;
+      }
+
+      const pointsA = this.resolvePoints(a);
+      const pointsB = this.resolvePoints(b);
+
+      if (pointsA !== pointsB) {
+        return pointsB - pointsA;
+      }
+
+      const winsA = Number.isFinite(a.wins) ? Number(a.wins) : 0;
+      const winsB = Number.isFinite(b.wins) ? Number(b.wins) : 0;
+      if (winsA !== winsB) {
+        return winsB - winsA;
+      }
+
+      const scoreA = Number.isFinite(a.scoreDifference) ? Number(a.scoreDifference) : 0;
+      const scoreB = Number.isFinite(b.scoreDifference) ? Number(b.scoreDifference) : 0;
+      return scoreB - scoreA;
+    });
+  }
+
+  isQualified(player: GroupPlayer, index: number): boolean {
+    const ranking = this.resolveRanking(player);
+    const effectiveRanking = ranking ?? index + 1;
+    return effectiveRanking > 0 && effectiveRanking <= this.qualifiedPerGroup;
   }
 
   getInitials(player: GroupPlayer): string {
@@ -47,5 +96,28 @@ export class GroupKnockoutBoardComponent {
 
   get totalPlayers(): number {
     return this.groups.reduce((acc, group) => acc + group.players.length, 0);
+  }
+
+  private resolveRanking(player: GroupPlayer): number | null {
+    const candidates = [player.ranking, player.rank, player.position];
+    for (const value of candidates) {
+      if (value == null) {
+        continue;
+      }
+      const numeric = Number(value);
+      if (Number.isFinite(numeric)) {
+        return numeric;
+      }
+    }
+    return null;
+  }
+
+  private resolvePoints(player: GroupPlayer): number {
+    const source = (player as unknown as { points?: number | string }).points;
+    const numeric = Number(source ?? 0);
+    if (Number.isFinite(numeric)) {
+      return numeric;
+    }
+    return 0;
   }
 }

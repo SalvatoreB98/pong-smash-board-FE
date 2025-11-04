@@ -426,6 +426,27 @@
         "de": "Keine qualifizierten Spieler für das Bracket.",
         "fr": "Aucun joueur qualifié pour le tableau."
     },
+    "generate_knockouts": {
+        "it": "Genera eliminazione",
+        "en": "Generate knockouts",
+        "es": "Generar eliminatorias",
+        "de": "K.-o.-Phase generieren",
+        "fr": "Générer l'élimination"
+    },
+    "complete_groups_to_unlock": {
+        "it": "Completa i gironi per sbloccare la fase eliminatoria",
+        "en": "Complete the groups to unlock the knockout stage",
+        "es": "Completa los grupos para desbloquear la fase eliminatoria",
+        "de": "Schließe die Gruppen ab, um die K.-o.-Phase freizuschalten",
+        "fr": "Termine les groupes pour débloquer la phase à élimination"
+    },
+    "generating_knockouts": {
+        "it": "Generazione in corso…",
+        "en": "Generating…",
+        "es": "Generando…",
+        "de": "Wird generiert…",
+        "fr": "Génération en cours…"
+    },
     "beta_label": {
         "it": "Beta",
         "en": "Beta",

@@ -19,6 +19,11 @@ export interface GroupPlayer {
   losses: number;
   matchesPlayed: number;
   scoreDifference?: number;
+  ranking?: number;
+  rank?: number;
+  position?: number;
+  matchesToPlay?: number;
+  matchesRemaining?: number;
 }
 
 export interface GroupStageResponse {
@@ -31,6 +36,8 @@ export interface KnockoutStageData {
   rounds?: (KnockoutRound | null | undefined)[];
   qualifiedPlayers?: (GroupPlayer | KnockoutPlayer | null | undefined)[];
 }
+
+export const QUALIFIED_PER_GROUP = 2;
 
 export function mapGroupPlayerToIPlayer(player: GroupPlayer): IPlayer {
   return {
