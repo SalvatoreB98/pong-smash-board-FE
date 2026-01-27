@@ -190,6 +190,8 @@
 
 .other-competitions-container {
     display: flex;
+    overflow-x: scroll;
+    padding-bottom: 1em;
 }
 
 .others {
