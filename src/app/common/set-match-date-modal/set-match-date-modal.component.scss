@@ -1,0 +1,204 @@
+:host {
+  display: block;
+}
+
+.set-date-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0.5rem 0 1rem;
+  color: #fff;
+}
+
+.set-date-modal__match {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  text-align: center;
+}
+
+.set-date-modal__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.set-date-modal__meta-item {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+}
+
+.set-date-modal__players {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.set-date-modal__player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+}
+
+.set-date-modal__avatar {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.set-date-modal__player-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.set-date-modal__versus {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.set-date-modal__current {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.set-date-modal__current-label {
+  font-weight: 600;
+  margin-right: 0.25rem;
+}
+
+.set-date-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.set-date-modal__description {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+}
+
+.set-date-modal__label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.set-date-modal__input {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+  }
+}
+
+.set-date-modal__field-error {
+  font-size: 0.8rem;
+  color: #ffb3b3;
+}
+
+.set-date-modal__error {
+  margin: 0;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 68, 68, 0.15);
+  color: #ffd7d7;
+  font-size: 0.85rem;
+}
+
+.set-date-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.set-date-modal__button {
+  min-width: 140px;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+
+  &.primary {
+    background: linear-gradient(135deg, #ff7b00, #ff3d7f);
+    color: #fff;
+  }
+
+  &.tertiary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+}
+
+.set-date-modal__spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-right-color: transparent;
+  animation: set-date-spin 0.75s linear infinite;
+}
+
+.set-date-modal__unavailable {
+  margin: 1rem 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@keyframes set-date-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .set-date-modal__players {
+    gap: 1rem;
+  }
+
+  .set-date-modal__avatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .set-date-modal__actions {
+    justify-content: center;
+  }
+}

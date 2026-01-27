@@ -67,7 +67,8 @@
         <div class="field">
             <span class="label">{{ 'competition_type_label' | translate }}</span>
             <div class="segmented" role="radiogroup" [attr.aria-label]="'competition_type_label' | translate">
-                <label class="seg-item" *ngFor="let type of getCompetitionTypes()" [class.disabled]="type.disabled">
+                <label class="seg-item" *ngFor="let type of competitionTypes; trackBy: trackByValue"
+                    [class.disabled]="type.disabled">
                     <ng-container *ngIf="!type.disabled; else disabledType">
                         <input type="radio" [value]="type.value" formControlName="typeCtrl" />
                         <span class="large-img-select">

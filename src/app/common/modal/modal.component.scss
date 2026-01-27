@@ -1,6 +1,9 @@
 .my-modal {
     overflow-y: scroll!important;
 }
+.my-modal.no-scroll {
+    overflow: hidden!important;
+}
 .my-modal.transparent {
     box-shadow: none;
     background-color: transparent;

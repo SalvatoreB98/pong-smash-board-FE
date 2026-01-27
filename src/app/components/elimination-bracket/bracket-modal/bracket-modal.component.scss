@@ -11,6 +11,7 @@
   justify-content: center;
   user-select: none;
   cursor: grab;
+  touch-action: none;
 
   &.dragging {
     cursor: grabbing;

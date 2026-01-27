@@ -25,10 +25,20 @@ export class AddCompetitionModalComponent {
   competitionForm: FormGroup;
   step = 1;
   managementForm: FormGroup;
+  competitionTypes: any[] = [];
 
-  getCompetitionTypes(): { value: CompetitionType; icon: string; labelKey: string; descriptionKey?: string; badgeKey?: string; disabled?: boolean; }[] {
+  ngOnInit() {
+    this.updateCompetitionTypes();
+
+    // 🔄 Aggiorna quando cambia il tipo di gestione
+    this.managementForm.get('managementCtrl')?.valueChanges.subscribe(() => {
+      this.updateCompetitionTypes();
+    });
+  }
+
+  private updateCompetitionTypes() {
     if (this.managementForm.get('managementCtrl')?.value !== 'admin') {
-      return [
+      this.competitionTypes = [
         {
           value: 'league',
           icon: '/numbered-list.png',
@@ -37,7 +47,7 @@ export class AddCompetitionModalComponent {
         }
       ];
     } else {
-      return [
+      this.competitionTypes = [
         {
           value: 'league',
           icon: '/numbered-list.png',
@@ -174,5 +184,8 @@ export class AddCompetitionModalComponent {
       default:
         return false;
     }
+  }
+  trackByValue(index: number, item: any) {
+    return item.value;
   }
 }

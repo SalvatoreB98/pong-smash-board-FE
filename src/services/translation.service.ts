@@ -7,7 +7,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TranslationService {
 
-  public languages = [{ code: "it", label: "italian" }, { code: "en", label: "english" }]
+  public languages = [
+    { code: "it", label: "italian" },
+    { code: "en", label: "english" },
+    { code: "es", label: "spanish" },
+    { code: "de", label: "german" },
+    { code: "fr", label: "french" }
+  ]
 
   /** Dizionario delle traduzioni */
   private translations: { [key: string]: { [lang: string]: string } } = {
@@ -28,6 +34,12 @@ export class TranslationService {
       this.setLanguage(savedLanguage, false); // usa quello salvato
     } else if (userLanguage.startsWith('it')) {
       this.setLanguage('it', true); // setta italiano se il browser è in IT
+    } else if (userLanguage.startsWith('es')) {
+      this.setLanguage('es', true); // setta spagnolo se il browser è in ES
+    } else if (userLanguage.startsWith('de')) {
+      this.setLanguage('de', true); // setta tedesco se il browser è in DE
+    } else if (userLanguage.startsWith('fr')) {
+      this.setLanguage('fr', true); // setta francese se il browser è in FR
     } else {
       this.setLanguage('en', true); // fallback
     }

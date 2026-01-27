@@ -4,6 +4,7 @@ import { NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { ModalService } from '../../../services/modal.service';
 import { AddPlayerModalComponent } from '../modals/add-player-modal/add-player-modal.component';
+import { MODALS } from '../../utils/enum';
 
 // Centralized match card component shared by league, next matches, and bracket views.
 export type MatchCardVariant = 'standard' | 'bracket';
@@ -167,5 +168,49 @@ export class MatchCardComponent {
     return (this.schedule?.actions ?? []).filter(
       action => !!action && action.visible !== false
     ) as MatchCardAction[];
+  }
+
+  formatLocalDateTime(dateStr: string | Date): string {
+    let date: Date;
+    if (typeof dateStr === 'string') {
+      // Prova a creare la data partendo da un formato come "11/1/25 - 5:33 AM"
+      // Aggiunge "20" all'anno se è a due cifre per evitare ambiguità
+      const normalized = dateStr.replace(
+        /(\d{1,2})\/(\d{1,2})\/(\d{2})/,
+        (_, m, d, y) => `${m}/${d}/20${y}`
+      );
+      date = new Date(normalized);
+    } else {
+      date = dateStr;
+    }
+
+    // Controlla se la data creata è valida
+    if (isNaN(date.getTime())) {
+      return 'Data non valida';
+    }
+
+    // Utilizza toLocaleString con il fuso orario del browser.
+    // Questo gestisce automaticamente l'ora legale (DST) per la data specificata.
+    return date.toLocaleString('it-IT', {
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+  onEditSchedule(event?: MouseEvent): void {
+    const correctAction = {
+      label: 'Edit Schedule',
+      event: MODALS['SET_DATE'],
+      handler: () => {
+        this.modalService.openModal(MODALS['SET_DATE'], {
+          match: this.match
+        });
+      }
+    };
+    
+    this.onAction(correctAction, event);
   }
 }

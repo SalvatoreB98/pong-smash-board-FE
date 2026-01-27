@@ -6,6 +6,7 @@ import {
   ElementRef,
   Renderer2,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
 
@@ -15,7 +16,7 @@ import { SHARED_IMPORTS } from '../../../common/imports/shared.imports';
   templateUrl: './bracket-modal.component.html',
   styleUrl: './bracket-modal.component.scss',
 })
-export class BracketModalComponent implements AfterViewInit {
+export class BracketModalComponent implements AfterViewInit, OnDestroy {
   private _rounds: any[] = [];
 
   // ➜ Stato per layout a due lati
@@ -39,17 +40,20 @@ export class BracketModalComponent implements AfterViewInit {
     // calcolo split sinistra/destra
     this.computeSides();
 
-    // dopo aver aggiornato i dati, aggiorno le linee nella prossima tick
-    queueMicrotask(() => this.updateLine());
+    // dopo aver aggiornato i dati, aggiorno le linee e ricentro nella prossima tick
+    queueMicrotask(() => {
+      this.updateLine();
+      this.centerGrid();
+    });
   }
   get rounds(): any[] {
     return this._rounds;
   }
 
   @Input() competitionName: string = '';
-  @ViewChild('bracketGrid') bracketGrid!: ElementRef<HTMLDivElement>;
-  @ViewChild('bracketScale') bracketScale!: ElementRef<HTMLDivElement>;
-  @ViewChild('bracketContainer') bracketContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('bracketGrid') bracketGrid?: ElementRef<HTMLDivElement>;
+  @ViewChild('bracketScale') bracketScale?: ElementRef<HTMLDivElement>;
+  @ViewChild('bracketContainer') bracketContainer?: ElementRef<HTMLDivElement>;
 
   zoomLevel = 1;
   totalRows = 1;
@@ -66,6 +70,12 @@ export class BracketModalComponent implements AfterViewInit {
   private pendingDY = 0;
   private dragThreshold = 5;
   private hasMoved = false;
+  private activePointerId: number | null = null;
+  private modalElement: HTMLElement | null = null;
+  // 🔹 Per pinch zoom
+  private activePointers: Map<number, PointerEvent> = new Map();
+  private initialPinchDistance: number | null = null;
+  private initialZoomLevel = 1;
 
   constructor(private renderer: Renderer2) { }
 
@@ -75,11 +85,20 @@ export class BracketModalComponent implements AfterViewInit {
       this.totalRows = firstRound.matches.length * 2 - 1;
     }
     this.computeSides();
-    this.centerGrid();
-
+    queueMicrotask(() => this.centerGrid());
   }
 
   ngAfterViewInit() {
+    const containerEl = this.bracketContainer?.nativeElement;
+    if (!containerEl) {
+      return;
+    }
+
+    this.modalElement = containerEl.closest('.my-modal');
+    if (this.modalElement) {
+      this.renderer.addClass(this.modalElement, 'no-scroll');
+    }
+
     this.centerGrid();
     this.updateLine();
     const bracketRight = document.querySelector('.side.right .bracket-grid') as HTMLElement | null;
@@ -134,6 +153,12 @@ export class BracketModalComponent implements AfterViewInit {
     return splitRoundsCount - colIndexFromZero;
   }
 
+  private getDistance(p1: PointerEvent, p2: PointerEvent): number {
+    const dx = p2.clientX - p1.clientX;
+    const dy = p2.clientY - p1.clientY;
+    return Math.hypot(dx, dy);
+  }
+
   /** -----------------------
    *  ZOOM
    *  ---------------------- */
@@ -157,9 +182,24 @@ export class BracketModalComponent implements AfterViewInit {
   /** -----------------------
    *  DRAG
    *  ---------------------- */
-  onDragStart(event: MouseEvent | TouchEvent) {
+  onPointerDown(event: PointerEvent) {
+    // --- 🔹 Inizio gestione pinch ---
+    this.activePointers.set(event.pointerId, event);
+
+    if (this.activePointers.size === 2) {
+      const [p1, p2] = Array.from(this.activePointers.values());
+      this.initialPinchDistance = this.getDistance(p1, p2);
+      this.initialZoomLevel = this.zoomLevel;
+      this.isDragging = false; // disattiva il drag durante pinch
+      return;
+    }
     const target = event.target as HTMLElement;
     if (target.closest('button')) return;
+
+    if (!this.bracketContainer) return;
+
+    this.activePointerId = event.pointerId;
+    this.bracketContainer.nativeElement.setPointerCapture(event.pointerId);
 
     this.isDragging = true;
     this.hasMoved = false;
@@ -167,11 +207,8 @@ export class BracketModalComponent implements AfterViewInit {
     this.pendingDX = 0;
     this.pendingDY = 0;
 
-    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
-    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
-
-    this.dragStartX = clientX;
-    this.dragStartY = clientY;
+    this.dragStartX = event.clientX;
+    this.dragStartY = event.clientY;
     this.lastOffsetX = this.offsetX;
     this.lastOffsetY = this.offsetY;
 
@@ -180,14 +217,28 @@ export class BracketModalComponent implements AfterViewInit {
     if (!this.rafId) this.startAnimationLoop();
   }
 
-  onDragMove(event: MouseEvent | TouchEvent) {
+  onPointerMove(event: PointerEvent) {
+    // --- 🔹 Gestione pinch in movimento ---
+    if (this.activePointers.has(event.pointerId)) {
+      this.activePointers.set(event.pointerId, event);
+    }
+
+    if (this.activePointers.size === 2) {
+      const [p1, p2] = Array.from(this.activePointers.values());
+      const newDistance = this.getDistance(p1, p2);
+      if (this.initialPinchDistance) {
+        const scaleChange = newDistance / this.initialPinchDistance;
+        this.zoomLevel = Math.min(2, Math.max(0.5, this.initialZoomLevel * scaleChange));
+        this.applyTransform();
+      }
+      return;
+    }
+    // --- 🔹 Fine pinch ---
     if (!this.isDragging) return;
+    if (this.activePointerId !== null && event.pointerId !== this.activePointerId) return;
 
-    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
-    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
-
-    const dx = clientX - this.dragStartX;
-    const dy = clientY - this.dragStartY;
+    const dx = event.clientX - this.dragStartX;
+    const dy = event.clientY - this.dragStartY;
 
     if (!this.hasMoved && Math.hypot(dx, dy) < this.dragThreshold) return;
     this.hasMoved = true;
@@ -196,22 +247,39 @@ export class BracketModalComponent implements AfterViewInit {
     this.pendingDY = dy;
   }
 
-  onDragEnd() {
+  onPointerUp(event?: PointerEvent) {
+    // --- 🔹 Pulizia pinch ---
+    event ? this.activePointers.delete(event.pointerId) : null;
+    if (this.activePointers.size < 2) {
+      this.initialPinchDistance = null;
+    }
     if (!this.hasMoved) {
       this.pendingDX = 0;
       this.pendingDY = 0;
     }
 
     this.isDragging = false;
-    this.bracketGrid.nativeElement.style.transition = 'transform 0.25s ease-out';
-    this.renderer.removeClass(this.bracketContainer.nativeElement, 'dragging');
+    if (this.bracketGrid) {
+      this.bracketGrid.nativeElement.style.transition = 'transform 0.25s ease-out';
+    }
+    if (this.bracketContainer) {
+      this.renderer.removeClass(this.bracketContainer.nativeElement, 'dragging');
+    }
 
-    cancelAnimationFrame(this.rafId!);
-    this.rafId = null;
+    if (event && this.activePointerId !== null && event.pointerId === this.activePointerId && this.bracketContainer) {
+      this.bracketContainer.nativeElement.releasePointerCapture(this.activePointerId);
+    }
+    this.activePointerId = null;
+
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
   }
 
   /** --- ANIMATION FRAME LOOP --- */
   private startAnimationLoop() {
+    if (!this.bracketGrid) return;
     const grid = this.bracketGrid.nativeElement;
 
     const loop = () => {
@@ -229,6 +297,8 @@ export class BracketModalComponent implements AfterViewInit {
   }
 
   applyTransform() {
+    if (!this.bracketGrid || !this.bracketScale) return;
+
     // Muove solo la griglia
     const grid = this.bracketGrid.nativeElement;
     grid.style.transform = `translate3d(${this.offsetX}px, ${this.offsetY}px, 0)`;
@@ -240,6 +310,7 @@ export class BracketModalComponent implements AfterViewInit {
   }
 
   centerGrid() {
+    if (!this.bracketContainer || !this.bracketGrid) return;
     const container = this.bracketContainer.nativeElement;
     const grid = this.bracketGrid.nativeElement;
 
@@ -315,5 +386,13 @@ export class BracketModalComponent implements AfterViewInit {
         return Math.max(max, cs);
       }, 1);
     }
+  }
+
+  ngOnDestroy() {
+    if (this.modalElement) {
+      this.renderer.removeClass(this.modalElement, 'no-scroll');
+    }
+    this.activePointers.clear();
+    this.initialPinchDistance = null;
   }
 }
