@@ -123,10 +123,11 @@ export class AddMatchModalComponent implements OnInit {
   updateContainers(event: any) {
     this.isShowSetsPointsTrue = this.matchForm.value.isShowSetsPointsTrue;
     const totalPoints = (this.matchForm.value.p1Score || 0) + (this.matchForm.value.p2Score || 0);
-    const totalSets = this.isShowSetsPointsTrue ? Math.max(totalPoints, 1) : 0;
+    const max = this.competition?.sets_type || this.maxSets;
+    const totalSets = this.isShowSetsPointsTrue ? Math.max(Math.min(totalPoints, max), 1) : 0;
 
     this.setsPoints.clear();
-    for (let i = 0; i < totalSets && i < 10; i++) {
+    for (let i = 0; i < totalSets && i < max; i++) {
       this.setsPoints.push(
         this.fb.group(
           {
@@ -246,9 +247,8 @@ export class AddMatchModalComponent implements OnInit {
 
     this.errorsOfSets.length = 0; // Reset errors
 
-    // Se l'input è una stringa con più cifre, prendi solo l'ultima
-    if (!isNaN(value) && typeof control.value === 'string' && control.value.length > 1) {
-      value = Number(control.value.slice(-1));
+    if (!Number.isNaN(value) && typeof control.value === 'string') {
+      value = Number(control.value.trim());
     }
 
     if (isNaN(value) || value < 0) {
@@ -339,4 +339,3 @@ export class AddMatchModalComponent implements OnInit {
     return this.competition?.type === 'group_knockout';
   }
 }
-
