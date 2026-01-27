@@ -119,6 +119,20 @@
                     <input type="radio" formControlName="setsCtrl" [value]="5" />
                     <span class="p-4">5</span>
                 </label>
+                <label class="seg-item">
+                    <input type="radio" formControlName="setsCtrl" [value]="freeSetsSentinel" />
+                    <span class="p-4">Liberi</span>
+                </label>
+            </div>
+            <div class="mt-3" *ngIf="setsCtrl.value === freeSetsSentinel">
+                <label class="label" for="free-sets-input">{{ 'competition_sets_label' | translate }}</label>
+                <input class="input" id="free-sets-input" type="number" formControlName="freeSetsCtrl"
+                    [attr.min]="freeSetsMin" [attr.max]="freeSetsMax" [attr.aria-invalid]="freeSetsCtrl.invalid"
+                    [attr.aria-describedby]="'free-sets-error'" placeholder="1-99" />
+                <small class="error" id="free-sets-error"
+                    *ngIf="freeSetsCtrl.invalid && (freeSetsCtrl.touched || freeSetsCtrl.dirty)">
+                    Inserisci un valore valido tra {{ freeSetsMin }} e {{ freeSetsMax }}.
+                </small>
             </div>
         </div>
     </form>
@@ -177,7 +191,7 @@
             <li class="list-group-item text-light d-flex align-items-center">
                 <i class="fa fa-th me-2 text-secondary"></i>
                 <span class="fw-bold me-2">{{ 'competition_sets_label' | translate }}:</span>
-                <span class="ms-auto">{{ competitionForm.value.setsCtrl }}</span>
+                <span class="ms-auto">{{ effectiveSets }}</span>
             </li>
             <li class="list-group-item text-light d-flex align-items-center">
                 <i class="fa fa-star me-2 text-warning"></i>

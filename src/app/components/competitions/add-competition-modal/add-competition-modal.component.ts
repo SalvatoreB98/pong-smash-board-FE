@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl,
+  FormBuilder, FormGroup, Validators,
   ReactiveFormsModule
 } from '@angular/forms';
 import { TranslatePipe } from '../../../utils/translate.pipe';
-import { ModalComponent } from '../../../common/modal/modal.component';
 import { ModalService } from '../../../../services/modal.service';
-import { DataService } from '../../../../services/data.service';
 import { CompetitionService } from '../../../../services/competitions.service';
 import { LoaderService } from '../../../../services/loader.service';
 import { StepIndicatorComponent } from '../../../common/step-indicator/step-indicator.component';
@@ -26,6 +24,11 @@ export class AddCompetitionModalComponent {
   step = 1;
   managementForm: FormGroup;
   competitionTypes: any[] = [];
+  readonly freeSetsMin = 1;
+  readonly freeSetsMax = 99;
+  readonly freeSetsSentinel = 'FREE';
+  readonly setsModeStandard = 'STANDARD';
+  readonly setsModeFree = 'FREE';
 
   ngOnInit() {
     this.updateCompetitionTypes();
@@ -33,6 +36,27 @@ export class AddCompetitionModalComponent {
     // 🔄 Aggiorna quando cambia il tipo di gestione
     this.managementForm.get('managementCtrl')?.valueChanges.subscribe(() => {
       this.updateCompetitionTypes();
+    });
+
+    this.setsCtrl.valueChanges.subscribe((value) => {
+      if (value === this.freeSetsSentinel) {
+        this.freeSetsCtrl.enable({ emitEvent: false });
+        this.freeSetsCtrl.setValidators([
+          Validators.required,
+          Validators.min(this.freeSetsMin),
+          Validators.max(this.freeSetsMax),
+        ]);
+        this.freeSetsCtrl.updateValueAndValidity({ emitEvent: false });
+        this.freeSetsCtrl.markAsTouched({ onlySelf: true });
+        return;
+      }
+
+      if (this.freeSetsCtrl.enabled) {
+        this.freeSetsCtrl.reset(null, { emitEvent: false });
+        this.freeSetsCtrl.disable({ emitEvent: false });
+      }
+      this.freeSetsCtrl.clearValidators();
+      this.freeSetsCtrl.updateValueAndValidity({ emitEvent: false });
     });
   }
 
@@ -77,7 +101,8 @@ export class AddCompetitionModalComponent {
       {
         nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
         typeCtrl: [null, Validators.required],
-        setsCtrl: [null, Validators.required],
+        setsCtrl: [3, Validators.required],
+        freeSetsCtrl: [{ value: null, disabled: true }],
         pointsCtrl: [null, Validators.required],
       },
     );
@@ -95,18 +120,35 @@ export class AddCompetitionModalComponent {
   get typeCtrl() { return this.competitionForm.get('typeCtrl')!; }
   get hybridCtrl() { return this.competitionForm.get('typeCtrl')!; }
   get setsCtrl() { return this.competitionForm.get('setsCtrl')!; }
+  get freeSetsCtrl() { return this.competitionForm.get('freeSetsCtrl')!; }
   get pointsCtrl() { return this.competitionForm.get('pointsCtrl')!; }
+  get setsMode(): string {
+    return this.setsCtrl.value === this.freeSetsSentinel ? this.setsModeFree : this.setsModeStandard;
+  }
+  get effectiveSets(): number | null {
+    if (this.setsCtrl.value === this.freeSetsSentinel) {
+      const value = Number(this.freeSetsCtrl.value);
+      return Number.isFinite(value) ? value : null;
+    }
+    return this.setsCtrl.value as number;
+  }
 
   submit() {
     if (this.competitionForm.invalid) {
       this.competitionForm.markAllAsTouched();
       return;
     }
+    const effectiveSets = this.effectiveSets;
+    if (effectiveSets === null) {
+      this.freeSetsCtrl.markAsTouched({ onlySelf: true });
+      return;
+    }
     const payload = {
       name: String(this.nameCtrl.value).trim(),
       type: this.typeCtrl.value as CompetitionType,
-      bestOf: this.setsCtrl.value as number,
+      bestOf: effectiveSets,
       pointsTo: this.pointsCtrl.value as number,
+      setsMode: this.setsMode,
     };
     this.addCompetition();
   }
@@ -125,11 +167,17 @@ export class AddCompetitionModalComponent {
         d ? new Date(d).toLocaleDateString("en-CA") : undefined; // → YYYY-MM-DD
 
       const formValue = this.competitionForm.value;
+      const effectiveSets = this.effectiveSets;
+      if (effectiveSets === null) {
+        this.freeSetsCtrl.markAsTouched({ onlySelf: true });
+        return;
+      }
 
       const payload = {
         name: formValue.nameCtrl,
         type: formValue.typeCtrl,            // "league" | "elimination" ...
-        bestOf: formValue.setsCtrl,        // es. 3/5/7
+        bestOf: effectiveSets,        // es. 3/5/7
+        setsMode: this.setsMode,           // STANDARD | FREE (assunzione: backend opzionale)
         pointsTo: formValue.pointsCtrl,    // es. 11/21
         startDate: toYmd(formValue.startDate) ?? undefined,
         endDate: toYmd(formValue.endDate) ?? undefined,
@@ -178,7 +226,8 @@ export class AddCompetitionModalComponent {
       case 3:
         return this.competitionForm.get('nameCtrl')?.invalid ?? true;
       case 4:
-        return this.competitionForm.get('setsCtrl')?.invalid ?? true;
+        return this.competitionForm.get('setsCtrl')?.invalid
+          || (this.setsCtrl.value === this.freeSetsSentinel && this.freeSetsCtrl.invalid);
       case 5:
         return this.competitionForm.get('pointsCtrl')?.invalid ?? true;
       default:
