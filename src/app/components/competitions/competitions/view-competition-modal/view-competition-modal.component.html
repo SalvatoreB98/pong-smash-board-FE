@@ -11,7 +11,9 @@
       <span class="meta-icon" aria-hidden="true">🏆</span>
       <div class="meta-content">
         <span class="label">{{ "best_of" | translate }}</span>
-        <span class="value">{{ competition?.['sets_type'] }}</span>
+        <span class="value">
+          <strong>{{ competition?.['sets_type'] === 99 ? ("free_sets" | translate) : competition?.['sets_type'] }}</strong>
+        </span>
       </div>
     </div>
 

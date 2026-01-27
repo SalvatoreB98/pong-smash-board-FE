@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 import {
   FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule,
-  ValidatorFn, AbstractControl, ValidationErrors
+  AbstractControl
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
@@ -88,8 +88,8 @@ export class AddMatchModalComponent implements OnInit {
       date: [new Date().toISOString().split('T')[0], Validators.required],
       player1: [this.player1?.id, Validators.required],
       player2: [this.player2?.id, Validators.required],
-      p1Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets)]],
-      p2Score: [null, [Validators.required, Validators.min(0), Validators.max(this.maxSets)]],
+      p1Score: [null, [Validators.required, Validators.min(0)]],
+      p2Score: [null, [Validators.required, Validators.min(0)]],
       isShowSetsPointsTrue: [false],
       setsPoints: this.fb.array([]),
       groupId: [null],
@@ -120,7 +120,7 @@ export class AddMatchModalComponent implements OnInit {
     return this.setsPoints.at(index) as FormGroup;
   }
 
-  updateContainers(event: any) {
+  updateContainers() {
     this.isShowSetsPointsTrue = this.matchForm.value.isShowSetsPointsTrue;
     const totalPoints = (this.matchForm.value.p1Score || 0) + (this.matchForm.value.p2Score || 0);
     const totalSets = this.isShowSetsPointsTrue ? Math.max(totalPoints, 1) : 0;
@@ -255,7 +255,7 @@ export class AddMatchModalComponent implements OnInit {
       value = 0;
       this.errorsOfSets.push('number_positive');
     }
-    if (value > max) {
+    if (value > max && max !== 99) {
       value = max;
       this.errorsOfSets.push(`number_maximum ${max}`);
     }
