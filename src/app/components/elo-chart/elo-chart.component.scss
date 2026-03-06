@@ -53,6 +53,16 @@
         &.blue { color: $primary-light; }
         &.orange { color: #f87171; }
         &.green { color: #4ade80; }
+
+        // Index-based (matches CHART_COLORS array in component)
+        &.color-0 { color: #008FFB; }
+        &.color-1 { color: #FF4560; }
+        &.color-2 { color: #00E396; }
+        &.color-3 { color: #FEB019; }
+        &.color-4 { color: #775DD0; }
+        &.color-5 { color: #3F51B5; }
+        &.color-6 { color: #F86624; }
+        &.color-7 { color: #2B908F; }
       }
       .label {
         font-size: 0.75rem;
@@ -119,6 +129,16 @@
               &.blue { background: $primary-light; }
               &.orange { background: #f87171; }
               &.green { background: #4ade80; }
+
+              // Index-based (matches CHART_COLORS array in component)
+              &.color-0 { background: #008FFB; }
+              &.color-1 { background: #FF4560; }
+              &.color-2 { background: #00E396; }
+              &.color-3 { background: #FEB019; }
+              &.color-4 { background: #775DD0; }
+              &.color-5 { background: #3F51B5; }
+              &.color-6 { background: #F86624; }
+              &.color-7 { background: #2B908F; }
             }
           }
 
@@ -128,6 +148,16 @@
             &.blue { color: $primary-light; }
             &.orange { color: #f87171; }
             &.green { color: #4ade80; }
+
+            // Index-based (matches CHART_COLORS array in component)
+            &.color-0 { color: #008FFB; }
+            &.color-1 { color: #FF4560; }
+            &.color-2 { color: #00E396; }
+            &.color-3 { color: #FEB019; }
+            &.color-4 { color: #775DD0; }
+            &.color-5 { color: #3F51B5; }
+            &.color-6 { color: #F86624; }
+            &.color-7 { color: #2B908F; }
           }
         }
 

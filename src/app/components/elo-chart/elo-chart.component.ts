@@ -34,6 +34,12 @@ export type ChartOptions = {
     tooltip: ApexTooltip;
 };
 
+// Up to 8 distinct colors for chart lines
+const CHART_COLORS = [
+    '#008FFB', '#FF4560', '#00E396', '#FEB019',
+    '#775DD0', '#3F51B5', '#F86624', '#2B908F'
+];
+
 @Component({
     selector: 'app-elo-chart',
     standalone: true,
@@ -47,8 +53,7 @@ export class EloChartComponent implements OnChanges {
     @Input() rankings: IRankingItem[] = [];
 
     public chartOptions: Partial<ChartOptions> = {};
-    public player1: IRankingItem | undefined;
-    public player2: IRankingItem | undefined;
+    public players: IRankingItem[] = [];
     public hasData = false;
 
     constructor(private datePipe: DatePipe) {
@@ -56,12 +61,16 @@ export class EloChartComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['rankings'] && this.rankings && this.rankings.length >= 2) {
-            // Selezioniamo i primi due giocatori dalla classifica passata
-            this.player1 = this.rankings[0];
-            this.player2 = this.rankings[1];
-
-            this.updateChartData();
+        if (changes['rankings']) {
+            if (this.rankings && this.rankings.length >= 2) {
+                // Prendi tutti i giocatori passati nell'array rankings
+                this.players = this.rankings;
+                this.updateChartData();
+            } else {
+                this.hasData = false;
+                this.players = [];
+                this.chartOptions.series = [];
+            }
         }
     }
 
@@ -75,7 +84,7 @@ export class EloChartComponent implements OnChanges {
                 toolbar: { show: false },
                 fontFamily: 'inherit'
             },
-            colors: ['#008FFB', '#FF4560', '#00E396'],
+            colors: CHART_COLORS,
             dataLabels: { enabled: false },
             stroke: {
                 curve: 'smooth',
@@ -83,7 +92,7 @@ export class EloChartComponent implements OnChanges {
             },
             markers: {
                 size: 4,
-                colors: ['#008FFB', '#FF4560'],
+                colors: CHART_COLORS,
                 strokeWidth: 0,
                 hover: { size: 2 }
             },
@@ -103,28 +112,24 @@ export class EloChartComponent implements OnChanges {
                 strokeDashArray: 4,
             },
             tooltip: {
-                custom: function ({ series, seriesIndex, dataPointIndex, w }: any) {
-                    // Questa funzione custom verrà sovrascritta durante l'updateChartData
-                    // perché usiamo il `this` component scope.
-                    return '';
-                }
+                custom: function () { return ''; }
             }
         };
     }
 
     private updateChartData() {
-        if (!this.player1 || !this.player2 || !this.player1.history || !this.player2.history) {
+        if (this.players.length < 2) {
             this.hasData = false;
             return;
         }
 
-        const h1 = this.player1.history;
-        const h2 = this.player2.history;
+        const allPlayers = this.players;
 
-        // Estraiamo tutte le date uniche dai due log
+        // Estraiamo tutte le date uniche dai log di tutti i giocatori
         const allDates = new Set<string>();
-        h1.forEach(h => allDates.add(h.date));
-        h2.forEach(h => allDates.add(h.date));
+        allPlayers.forEach(p => {
+            if (p.history) p.history.forEach(h => allDates.add(h.date));
+        });
 
         const sortedDates = Array.from(allDates).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
@@ -152,93 +157,77 @@ export class EloChartComponent implements OnChanges {
             return forms;
         };
 
-        const forms1 = calculateForms(h1);
-        const forms2 = calculateForms(h2);
+        const playerSeries: { name: string; data: [number, number][] }[] = [];
+        const playerTooltipForms: string[][][] = [];
+        const playerNames: string[] = [];
 
-        // Costruiamo la serie di dati "riempiendo i buchi" (carry forward dell'ultimo ELO noto per le date mancanti)
-        let lastElo1 = h1.length > 0 ? h1[0].elo : 1000;
-        let lastElo2 = h2.length > 0 ? h2[0].elo : 1000;
+        allPlayers.forEach((player: IRankingItem) => {
+            const history = player.history || [];
+            const forms = calculateForms(history);
+            const data: [number, number][] = [];
+            const tooltipForms: string[][] = [];
+            let lastElo = history.length > 0 ? history[0].elo : (player.rating ?? 1000);
+            let lastForm: string[] = [];
 
-        const data1: [number, number][] = [];
-        const data2: [number, number][] = [];
+            sortedDates.forEach((dateStr: string, index: number) => {
+                const timestamp = index + 1; // Partita 1, Partita 2, ecc.
+                const idx = history.findIndex((h: { date: string, elo: number }) => h.date === dateStr);
+                if (idx !== -1) {
+                    lastElo = history[idx].elo;
+                    lastForm = forms[idx];
+                }
+                data.push([timestamp, lastElo]);
+                tooltipForms.push(lastForm);
+            });
 
-        const tooltipForms1: string[][] = [];
-        const tooltipForms2: string[][] = [];
-
-        let lastForm1: string[] = [];
-        let lastForm2: string[] = [];
-
-        sortedDates.forEach((dateStr, index) => {
-            const timestamp = index + 1; // Partita 1, Partita 2, ecc.
-
-            const idx1 = h1.findIndex(h => h.date === dateStr);
-            if (idx1 !== -1) {
-                lastElo1 = h1[idx1].elo;
-                lastForm1 = forms1[idx1];
-            }
-
-            const idx2 = h2.findIndex(h => h.date === dateStr);
-            if (idx2 !== -1) {
-                lastElo2 = h2[idx2].elo;
-                lastForm2 = forms2[idx2];
-            }
-
-            data1.push([timestamp, lastElo1]);
-            data2.push([timestamp, lastElo2]);
-            tooltipForms1.push(lastForm1);
-            tooltipForms2.push(lastForm2);
+            const name = player.nickname || player.name;
+            playerSeries.push({ name, data });
+            playerTooltipForms.push(tooltipForms);
+            playerNames.push(name);
         });
 
-        const p1Name = this.player1.nickname || this.player1.name;
-        const p2Name = this.player2.nickname || this.player2.name;
+        const colors = allPlayers.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]);
+        const pipe = this.datePipe;
 
-        // Salviamo reference per usarli nel tooltip HTML
         const formatBadge = (str: string) => str.toLowerCase() === 'w' ? 'w' : str.toLowerCase() === 'l' ? 'l' : 'd';
         const renderForm = (form: string[]) => form.length ? form.map(f => `<span class="badge ${formatBadge(f)}">${f}</span>`).join('') : '<span style="opacity:0.5">-</span>';
-
-        const pipe = this.datePipe;
+        const dotColors = ['color-0', 'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7'];
 
         this.chartOptions = {
             ...this.chartOptions,
-            series: [
-                { name: p1Name, data: data1 },
-                { name: p2Name, data: data2 }
-            ],
+            colors: colors,
+            markers: {
+                size: 4,
+                colors: colors,
+                strokeWidth: 0,
+                hover: { size: 2 }
+            },
+            series: playerSeries,
             tooltip: {
                 custom: function ({ series, seriesIndex, dataPointIndex, w }: any) {
-                    const matchNumber = w.globals.seriesX[0][dataPointIndex];
                     const originalDateStr = sortedDates[dataPointIndex];
                     const dateFormatted = pipe.transform(new Date(originalDateStr), 'dd/MM/yyyy • H:mm') || '';
 
-                    const p1Val = series[0][dataPointIndex];
-                    const p2Val = series[1][dataPointIndex];
-
-                    const p1Form = tooltipForms1[dataPointIndex] || [];
-                    const p2Form = tooltipForms2[dataPointIndex] || [];
+                    const playersHtml = playerNames.map((name, i) => {
+                        const val = (series[i] || [])[dataPointIndex] ?? '—';
+                        const form = (playerTooltipForms[i] || [])[dataPointIndex] || [];
+                        const dot = dotColors[i % dotColors.length];
+                        return `
+                            <div class="tt-player">
+                                <div class="tt-top">
+                                    <div class="tt-name"><div class="dot ${dot}"></div>${name}</div>
+                                    <div class="tt-score ${dot}">${val}</div>
+                                </div>
+                                <div class="tt-form">
+                                    <span>Last</span> ${renderForm(form)}
+                                </div>
+                            </div>`;
+                    }).join('');
 
                     return `
                         <div class="custom-tooltip">
                             <div class="tt-header">${dateFormatted}</div>
-                            
-                            <div class="tt-player">
-                                <div class="tt-top">
-                                    <div class="tt-name"><div class="dot blue"></div>${p1Name}</div>
-                                    <div class="tt-score blue">${p1Val}</div>
-                                </div>
-                                <div class="tt-form">
-                                    <span>Last</span> ${renderForm(p1Form)}
-                                </div>
-                            </div>
-
-                            <div class="tt-player">
-                                <div class="tt-top">
-                                    <div class="tt-name"><div class="dot orange"></div>${p2Name}</div>
-                                    <div class="tt-score orange">${p2Val}</div>
-                                </div>
-                                <div class="tt-form">
-                                    <span>Last:</span> ${renderForm(p2Form)}
-                                </div>
-                            </div>
+                            ${playersHtml}
                         </div>
                     `;
                 }

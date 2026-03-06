@@ -1,7 +1,11 @@
 <div class="elo-chart-container" *ngIf="hasData">
   <div class="header">
     <h3>ELO Rating</h3>
-    <p>Andamento ELO partita per partita • {{ player1?.nickname | uppercase }} vs {{ player2?.nickname | uppercase }}</p>
+    <p>Andamento ELO partita per partita ·
+      <span *ngFor="let p of players; let last = last">
+        {{ p.nickname | uppercase }}<span *ngIf="!last"> vs </span>
+      </span>
+    </p>
   </div>
 
   <apx-chart
@@ -18,14 +22,9 @@
   ></apx-chart>
 
   <div class="summary-cards">
-    <div class="card">
-      <div class="player-name">{{ player1?.nickname | uppercase }}</div>
-      <div class="rating blue">{{ player1?.rating }}</div>
-      <div class="label">ELO attuale</div>
-    </div>
-    <div class="card">
-      <div class="player-name">{{ player2?.nickname | uppercase }}</div>
-      <div class="rating orange">{{ player2?.rating }}</div>
+    <div class="card" *ngFor="let p of players; let i = index">
+      <div class="player-name">{{ p.nickname | uppercase }}</div>
+      <div class="rating" [class]="'color-' + i">{{ p.rating }}</div>
       <div class="label">ELO attuale</div>
     </div>
   </div>
