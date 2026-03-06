@@ -3,8 +3,6 @@
 // ── Layout ─────────────────────────────────────────────────────────────────
 .elo-panel {
   padding: 1rem 1rem 6rem;
-  max-width: 50rem;
-  margin: 0 auto;
   min-height: 100vh;
 }
 
@@ -15,7 +13,9 @@
   gap: 1rem;
   padding: 1.5rem 0 1rem;
 
-  &__icon { font-size: 2.5rem; }
+  &__icon {
+    font-size: 2.5rem;
+  }
 
   &__title {
     font-size: 1.75rem;
@@ -67,16 +67,22 @@
 .spinner {
   width: 2.5rem;
   height: 2.5rem;
-  border: 3px solid rgba(255,255,255,0.15);
+  border: 3px solid rgba(255, 255, 255, 0.15);
   border-top-color: $primary-light;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 // ── Leaderboard table ──────────────────────────────────────────────────────
-.elo-table-wrapper { overflow-x: auto; }
+.elo-table-wrapper {
+  overflow-x: auto;
+}
 
 .elo-table-header,
 .elo-table-row {
@@ -92,7 +98,7 @@
   opacity: 0.5;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 0.25rem;
 }
 
@@ -100,17 +106,51 @@
   border-radius: calc($border-radius / 2);
   transition: background 0.15s;
 
-  &:hover { background: rgba(255,255,255,0.04); }
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
 
-  &--gold   { .elo-badge { border-color: gold;   color: gold;   } .rank i { color: gold;   } }
-  &--silver { .elo-badge { border-color: silver; color: silver; } .rank i { color: silver; } }
-  &--bronze { .elo-badge { border-color: #cd7f32; color: #cd7f32; } .rank i { color: #cd7f32; } }
+  &--gold {
+    .elo-badge {
+      border-color: gold;
+      color: gold;
+    }
+
+    .rank i {
+      color: gold;
+    }
+  }
+
+  &--silver {
+    .elo-badge {
+      border-color: silver;
+      color: silver;
+    }
+
+    .rank i {
+      color: silver;
+    }
+  }
+
+  &--bronze {
+    .elo-badge {
+      border-color: #cd7f32;
+      color: #cd7f32;
+    }
+
+    .rank i {
+      color: #cd7f32;
+    }
+  }
 }
 
 .rank {
   font-size: 0.8rem;
   text-align: center;
-  i { margin-right: 2px; }
+
+  i {
+    margin-right: 2px;
+  }
 }
 
 .elo-avatar {
@@ -140,7 +180,7 @@
   gap: 0.2rem;
   font-size: 1rem;
   font-weight: 700;
-  border: 1px solid rgba(255,255,255,0.18);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
   padding: 0.15rem 0.6rem;
 
@@ -151,7 +191,11 @@
 }
 
 // ── Pairing cards ──────────────────────────────────────────────────────────
-.pairing-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.pairing-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
 
 .pairing-card {
   display: grid;
@@ -161,14 +205,24 @@
   padding: 0.65rem 0.75rem;
   border-radius: $border-radius;
   border-left: 3px solid transparent;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   transition: transform 0.12s;
 
-  &:hover { transform: translateX(2px); }
+  &:hover {
+    transform: translateX(2px);
+  }
 
-  &--balanced   { border-color: #4ade80; }
-  &--moderate   { border-color: #facc15; }
-  &--unbalanced { border-color: #f87171; }
+  &--balanced {
+    border-color: #4ade80;
+  }
+
+  &--moderate {
+    border-color: #facc15;
+  }
+
+  &--unbalanced {
+    border-color: #f87171;
+  }
 }
 
 .pairing-idx {
@@ -178,9 +232,21 @@
 }
 
 .pairing-player {
-  &__name   { display: block; font-size: 0.85rem; font-weight: 600; }
-  &__rating { display: block; font-size: 0.72rem; opacity: 0.55; }
-  &--right  { text-align: right; }
+  &__name {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  &__rating {
+    display: block;
+    font-size: 0.72rem;
+    opacity: 0.55;
+  }
+
+  &--right {
+    text-align: right;
+  }
 }
 
 .pairing-vs {
@@ -195,7 +261,7 @@
     font-weight: 700;
     padding: 0.1rem 0.45rem;
     border-radius: 999px;
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
   }
 
   &__chances {
@@ -208,14 +274,22 @@
   }
 }
 
-.diff-balanced   { color: #4ade80; }
-.diff-moderate   { color: #facc15; }
-.diff-unbalanced { color: #f87171; }
+.diff-balanced {
+  color: #4ade80;
+}
+
+.diff-moderate {
+  color: #facc15;
+}
+
+.diff-unbalanced {
+  color: #f87171;
+}
 
 .chance-bar {
   flex: 1;
   height: 0.3rem;
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 999px;
   overflow: hidden;
 
@@ -248,17 +322,22 @@
 
   select {
     width: 100%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: calc($border-radius / 2);
     color: #fff;
     padding: 0.5rem 0.75rem;
     font-size: 0.85rem;
     cursor: pointer;
 
-    &:focus { outline: none; border-color: $primary-light; }
+    &:focus {
+      outline: none;
+      border-color: $primary-light;
+    }
 
-    option { background: #1a1a2e; }
+    option {
+      background: #1a1a2e;
+    }
   }
 }
 
@@ -290,15 +369,22 @@
   flex: 1;
   padding: 0.5rem 0.75rem;
   border-radius: $border-radius;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
   color: #fff;
   font-size: 0.82rem;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 
-  &.active, &:hover { background: rgba(255,255,255,0.15); border-color: $primary-light; }
-  &--draw { opacity: 0.6; }
+  &.active,
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: $primary-light;
+  }
+
+  &--draw {
+    opacity: 0.6;
+  }
 }
 
 .sim-actions {
@@ -317,27 +403,54 @@
   align-items: center;
 
   &__card {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: $border-radius;
     padding: 0.75rem;
     text-align: center;
   }
 
-  &__player { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.25rem; }
-  &__rating { font-size: 1.4rem; font-weight: 700; }
+  &__player {
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  &__rating {
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
 
   &__delta {
     font-size: 1.1rem;
     font-weight: 700;
-    &.positive { color: #4ade80; }
-    &.negative { color: #f87171; }
-    &.neutral  { color: #facc15; }
+
+    &.positive {
+      color: #4ade80;
+    }
+
+    &.negative {
+      color: #f87171;
+    }
+
+    &.neutral {
+      color: #facc15;
+    }
   }
 
-  &__new { font-size: 0.78rem; opacity: 0.55; margin-top: 0.2rem; }
+  &__new {
+    font-size: 0.78rem;
+    opacity: 0.55;
+    margin-top: 0.2rem;
+  }
 
-  &__info { text-align: center; }
-  &__prob { font-size: 0.75rem; opacity: 0.55; }
+  &__info {
+    text-align: center;
+  }
+
+  &__prob {
+    font-size: 0.75rem;
+    opacity: 0.55;
+  }
 }
 
 // ── Buttons ────────────────────────────────────────────────────────────────
@@ -351,22 +464,34 @@
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.15s;
-  &:hover:not(:disabled) { opacity: 0.85; }
-  &:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
 }
 
 .btn-ghost {
   background: transparent;
   color: #fff;
-  border: 1px solid rgba(255,255,255,0.18);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: $border-radius;
   padding: 0.55rem 1.1rem;
   font-size: 0.88rem;
   cursor: pointer;
   transition: border-color 0.15s;
-  &:hover { border-color: $primary-light; }
 
-  &.mt-3 { margin-top: 0.75rem; }
+  &:hover {
+    border-color: $primary-light;
+  }
+
+  &.mt-3 {
+    margin-top: 0.75rem;
+  }
 }
 
 // ── JSON export ────────────────────────────────────────────────────────────
@@ -378,8 +503,8 @@
 }
 
 .json-preview {
-  background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: calc($border-radius / 2);
   padding: 0.75rem;
   font-size: 0.7rem;
@@ -392,12 +517,15 @@
 
 // ── Responsive ─────────────────────────────────────────────────────────────
 @media (max-width: 37.5em) {
+
   .elo-table-header,
   .elo-table-row {
     grid-template-columns: 1.5rem 2rem 1fr 2.5rem 4.5rem;
 
     .stat:nth-child(5),
-    .stat:nth-child(6) { display: none; }
+    .stat:nth-child(6) {
+      display: none;
+    }
   }
 
   .pairing-card {
@@ -405,6 +533,12 @@
     gap: 0.4rem;
   }
 
-  .sim-form { flex-direction: column; }
-  .sim-vs { align-self: center; padding: 0; }
+  .sim-form {
+    flex-direction: column;
+  }
+
+  .sim-vs {
+    align-self: center;
+    padding: 0;
+  }
 }
