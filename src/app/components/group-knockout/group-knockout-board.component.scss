@@ -154,6 +154,16 @@
   background: rgba($background-harmony, 0.85);
 }
 
+.board__table-row--qualified {
+  position: relative;
+  border: 1px solid rgba($primary-ultra-light, 0.45);
+  box-shadow: 0 0 0.75rem rgba($primary-ultra-light, 0.25);
+
+  .board__position {
+    color: $orange;
+  }
+}
+
 .board__th,
 .board__td {
   padding: 0.25rem 0.5rem;
