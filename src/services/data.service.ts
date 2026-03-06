@@ -74,6 +74,8 @@ export interface IRankingItem {
   played: number;
   wins: number;
   winrate: number; // percentuale (es. 62.5)
+  history?: { date: string; elo: number }[];
+  form?: string[];
 }
 export interface IRankingResponse {
   ranking: IRankingItem[];

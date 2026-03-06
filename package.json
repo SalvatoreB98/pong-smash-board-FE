@@ -22,6 +22,8 @@
     "@angular/router": "^19.2.15",
     "@angular/service-worker": "^19.2.15",
     "@supabase/supabase-js": "^2.48.1",
+    "apexcharts": "^5.10.2",
+    "ng-apexcharts": "^1.11.0",
     "ngx-mat-select-search": "^8.0.0",
     "rxjs": "~7.8.0",
     "swiper": "^11.2.10",

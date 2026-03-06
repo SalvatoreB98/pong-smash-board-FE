@@ -29,6 +29,9 @@ import { AddPlayerModalComponent } from './modals/add-player-modal/add-player-mo
 import { combineLatest } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SetMatchDateModalComponent } from '../common/set-match-date-modal/set-match-date-modal.component';
+import { EloChartComponent } from './elo-chart/elo-chart.component';
+import { IRankingItem } from '../../services/data.service';
+import { RankingService } from '../../services/ranking.service';
 
 type MatchWithContext = IMatch & {
   competitionType?: CompetitionMode;
@@ -40,7 +43,7 @@ type MatchWithContext = IMatch & {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, TranslatePipe, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent, SetMatchDateModalComponent, AddPlayerModalComponent],
+  imports: [CommonModule, TranslatePipe, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent, SetMatchDateModalComponent, AddPlayerModalComponent, EloChartComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -53,8 +56,10 @@ export class HomeComponent {
   groups$ = this.dataService.groupsObs;
   knockout$ = this.dataService.knockoutObs;
   competitionService = inject(CompetitionService);
+  rankingService = inject(RankingService);
   matches: IMatch[] = [];
   matchesElimination: IMatch[] = [];
+  rankings: IRankingItem[] = [];
   isAddMatchModalOpen: boolean = false;
   isShowMatchModalOpen: boolean = false;
   clickedMatch: MatchWithContext | undefined;
@@ -231,6 +236,7 @@ export class HomeComponent {
 
     if (hasChanged || !this.matches.length) {
       await this.loadMatchesForCompetition(activeCompetition.id, { force: hasChanged });
+      await this.fetchRankingsForCompetition(nextId);
       this.lastLoadedCompetitionId = nextId;
     }
   }
@@ -255,6 +261,15 @@ export class HomeComponent {
       console.error('Failed to load matches for competition:', error);
     } finally {
       this.isLoadingMatches = false;
+    }
+  }
+
+  private async fetchRankingsForCompetition(competitionId: string) {
+    try {
+      const res = await this.rankingService.getRanking(competitionId);
+      this.rankings = res.ranking || [];
+    } catch {
+       console.error('Failed to load rankings for chart');
     }
   }
 

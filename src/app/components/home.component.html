@@ -28,6 +28,8 @@
     -->
   </div>
 
+
+
   <ng-container [ngSwitch]="activeCompetition?.type">
     <app-elimination-bracket *ngSwitchCase="'elimination'" (matchRoundClicked)="onClickMatchRound($event)"
       [competition]="activeCompetition" [rounds]="eliminationRounds"></app-elimination-bracket>
@@ -81,3 +83,8 @@
   [modalName]="modalService.MODALS['SET_DATE']">
   <app-set-match-date-modal [match]="clickedMatch"></app-set-match-date-modal>
 </app-modal>
+
+<!-- ELO Chart for quick insight -->
+<div class="px-3">
+  <app-elo-chart [rankings]="rankings"></app-elo-chart>
+</div>

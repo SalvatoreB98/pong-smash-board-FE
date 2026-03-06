@@ -1,0 +1,162 @@
+@use '../../../style/variables.scss' as *;
+
+.elo-chart-container {
+  background: $gradient;
+  border-radius: $border-radius;
+  padding: 1.25rem 1rem;
+  margin-bottom: 1.25rem;
+
+  .header {
+    margin-bottom: 1.5rem;
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      margin: 0 0 0.35rem 0;
+    }
+    p {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.78rem;
+      margin-top: 0.25rem;
+      text-transform: uppercase;
+    }
+  }
+
+  .summary-cards {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    .card {
+      flex: 1;
+      border: 1px solid rgba(255, 255, 255, 0.08); /* light subtle border */
+      border-radius: $border-radius;
+      background: rgba(255, 255, 255, 0.04); /* transparent matching grouping cards */
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.12s;
+
+      &:hover { transform: translateY(-2px); }
+
+      .player-name {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .rating {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+
+        &.blue { color: $primary-light; }
+        &.orange { color: #f87171; }
+        &.green { color: #4ade80; }
+      }
+      .label {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    .summary-cards {
+      flex-direction: column;
+    }
+  }
+}
+
+::ng-deep {
+    /* Custom tooltip styling per design */
+    .apexcharts-tooltip {
+      background: rgba(15, 23, 42, 0.95) !important; /* slater dark */
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5) !important;
+      border-radius: $border-radius !important;
+      color: white !important;
+    }
+    
+    /* Make axis and grid labels visible on dark backgorund */
+    .apexcharts-text tspan {
+      fill: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .custom-tooltip {
+      padding: 12px 16px;
+      font-family: inherit;
+
+      .tt-header {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 12px;
+      }
+
+      .tt-player {
+        margin-bottom: 12px;
+
+        &:last-child { margin-bottom: 0; }
+
+        .tt-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 6px;
+
+          .tt-name {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+
+            .dot {
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              margin-right: 8px;
+              &.blue { background: $primary-light; }
+              &.orange { background: #f87171; }
+              &.green { background: #4ade80; }
+            }
+          }
+
+          .tt-score {
+            font-weight: 700;
+            padding-left: 12px;
+            &.blue { color: $primary-light; }
+            &.orange { color: #f87171; }
+            &.green { color: #4ade80; }
+          }
+        }
+
+        .tt-form {
+          display: flex;
+          align-items: center;
+          font-size: 0.75rem;
+          color: rgba(255, 255, 255, 0.5);
+          padding-left: 16px;
+
+          span { margin-right: 6px; }
+
+          .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 700;
+            font-size: 10px;
+            margin-right: 4px;
+
+            &.w { background: #10b981; } /* emerald/green for win */
+            &.l { background: #ef4444; } /* red for loss */
+            &.d { background: #f59e0b; } /* yellow/amber for draw */
+          }
+        }
+      }
+    }
+}

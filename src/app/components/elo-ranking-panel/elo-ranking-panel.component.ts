@@ -22,12 +22,13 @@ import {
     EloJsonExport,
 } from '../../utils/elo.utils';
 import { MSG_TYPE } from '../../utils/enum';
+import { EloChartComponent } from '../elo-chart/elo-chart.component';
 
 @Component({
     selector: 'app-elo-ranking-panel',
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, FormsModule, TranslatePipe, BottomNavbarComponent],
+    imports: [CommonModule, FormsModule, TranslatePipe, BottomNavbarComponent, EloChartComponent],
     templateUrl: './elo-ranking-panel.component.html',
     styleUrl: './elo-ranking-panel.component.scss',
 })
