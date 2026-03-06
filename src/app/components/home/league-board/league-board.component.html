@@ -1,4 +1,5 @@
 <div class="wrapper">
+  
   <div class="my-card league-wrapper">
     <div class="skeleton-wrapper" *ngIf="isLoading; else leagueContent">
       <section class="skeleton-section">
@@ -18,7 +19,7 @@
           <div class="button placeholder mt-5"></div>
         </div>
       </section>
-
+      
       <section class="skeleton-section stats mt-5">
         <div class="skeleton-title placeholder"></div>
         <div class="stats-placeholder">
@@ -26,12 +27,12 @@
         </div>
       </section>
     </div>
-
+    
     <ng-template #leagueContent>
       <p *ngIf="showEmptyState" class="mt-4 text-center">
         {{ 'matches_not_found' | translate }}
       </p>
-
+      
       <section>
         <app-matches *ngIf="hasMatches" [matches]="matches" [readonly]="readonly"
           (matchEmitter)="onMatchSelected($event)">
@@ -39,7 +40,7 @@
         <div class="buttons-home-matches" *ngIf="!readonly">
           <div class="button-container mt-3">
             <button type="button" (click)="modalService.openModal(modalService.MODALS['ADD_MATCH'])"
-              class="add-match p-2 text-center">
+            class="add-match p-2 text-center">
               {{ 'add_match' | translate }}
               <span class="m-1"></span>
               <i class="fa fa-file-text-o" aria-hidden="true"></i>
@@ -51,21 +52,25 @@
           <div class="button-container">
             <div>
               <button type="button" class="bg-secondary position-relative p-2 text-center"
-                (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
-                {{ 'add_manual_set_points' | translate }}
-                <div class="circle-live"></div>
-              </button>
-            </div>
-            <p class="small text-center mt-3">
+              (click)="modalService.openModal(modalService.MODALS['MANUAL_POINTS'])">
+              {{ 'add_manual_set_points' | translate }}
+              <div class="circle-live"></div>
+            </button>
+          </div>
+          <p class="small text-center mt-3">
               {{ 'add_manual_set_points_description' | translate }}
             </p>
           </div>
         </div>
       </section>
-
+      
       <section>
         <app-stats *ngIf="hasMatches"></app-stats>
       </section>
     </ng-template>
+    
+    <div class="px-3">
+      <app-elo-chart [rankings]="rankings"></app-elo-chart>
+    </div>
   </div>
 </div>

@@ -40,7 +40,7 @@
       (matchSelected)="setClickedMatch($event)"></app-group-knockout>
 
     <app-league-board *ngSwitchDefault [matches]="matches" [isLoading]="isLoadingMatches"
-      (matchSelected)="setClickedMatch($event)">
+      [rankings]="rankings" (matchSelected)="setClickedMatch($event)">
     </app-league-board>
   </ng-container>
 
@@ -83,8 +83,4 @@
   [modalName]="modalService.MODALS['SET_DATE']">
   <app-set-match-date-modal [match]="clickedMatch"></app-set-match-date-modal>
 </app-modal>
-
-<!-- ELO Chart for quick insight -->
-<div class="px-3">
-  <app-elo-chart [rankings]="rankings"></app-elo-chart>
-</div>
+

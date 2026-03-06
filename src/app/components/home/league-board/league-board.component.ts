@@ -5,16 +5,19 @@ import { ModalService } from '../../../../services/modal.service';
 import { TranslatePipe } from '../../../utils/translate.pipe';
 import { StatsComponent } from '../../../common/stats/stats.component';
 import { IMatch } from '../../../interfaces/matchesInterfaces';
+import { EloChartComponent } from '../../elo-chart/elo-chart.component';
+import { IRankingItem } from '../../../../services/data.service';
 
 @Component({
   selector: 'app-league-board',
   standalone: true,
-  imports: [CommonModule, MatchesComponent, TranslatePipe, StatsComponent],
+  imports: [CommonModule, MatchesComponent, TranslatePipe, StatsComponent, EloChartComponent],
   templateUrl: './league-board.component.html',
   styleUrl: './league-board.component.scss'
 })
 export class LeagueBoardComponent {
   @Input() matches: IMatch[] = [];
+  @Input() rankings: IRankingItem[] = [];
   @Input() isLoading = false;
   @Input() readonly = false;
   @Output() matchSelected = new EventEmitter<IMatch>();

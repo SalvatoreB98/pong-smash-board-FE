@@ -29,7 +29,7 @@ import { AddPlayerModalComponent } from './modals/add-player-modal/add-player-mo
 import { combineLatest } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SetMatchDateModalComponent } from '../common/set-match-date-modal/set-match-date-modal.component';
-import { EloChartComponent } from './elo-chart/elo-chart.component';
+
 import { IRankingItem } from '../../services/data.service';
 import { RankingService } from '../../services/ranking.service';
 
@@ -43,7 +43,7 @@ type MatchWithContext = IMatch & {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, TranslatePipe, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent, SetMatchDateModalComponent, AddPlayerModalComponent, EloChartComponent],
+  imports: [CommonModule, TranslatePipe, BottomNavbarComponent, AddMatchModalComponent, ModalComponent, ShowMatchModalComponent, ManualPointsComponent, EliminationBracketComponent, GroupKnockoutComponent, LeagueBoardComponent, AddGroupMatchModalComponent, SetMatchDateModalComponent, AddPlayerModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
