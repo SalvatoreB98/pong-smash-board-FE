@@ -1,0 +1,233 @@
+<div class="elo-panel">
+  <!-- ── HEADER ──────────────────────────────────────── -->
+  <header class="elo-header">
+    <div class="elo-header__icon">⚡</div>
+    <div>
+      <h1 class="elo-header__title">ELO Ranking</h1>
+      <p class="elo-header__sub">Sistema di rating dinamico · K-factor 32</p>
+    </div>
+  </header>
+
+  <!-- ── LOADING ─────────────────────────────────────── -->
+  <div class="elo-loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <span>Calcolo ELO…</span>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- ── LEADERBOARD ───────────────────────────────── -->
+    <section class="elo-section">
+      <h2 class="elo-section__title">🏆 Classifica ELO</h2>
+
+      <div class="elo-table-wrapper">
+        <div class="elo-table-header">
+          <span>#</span>
+          <span></span>
+          <span>Giocatore</span>
+          <span title="Partite giocate">PG</span>
+          <span title="Vittorie">V</span>
+          <span title="Win Rate">WR%</span>
+          <span>Rating ELO</span>
+        </div>
+
+        <div
+          *ngFor="let player of rankings; let i = index; trackBy: trackByPlayerid"
+          class="elo-table-row"
+          [class.elo-table-row--gold]="i === 0"
+          [class.elo-table-row--silver]="i === 1"
+          [class.elo-table-row--bronze]="i === 2"
+        >
+          <span class="rank">
+            <i *ngIf="i < 3" class="fa-solid fa-medal"></i>
+            {{ i + 1 }}
+          </span>
+          <img
+            [src]="player.image_url || '/default-player.jpg'"
+            [alt]="player.nickname"
+            class="elo-avatar"
+          />
+          <span class="player-name">{{ player.nickname || player.name }}</span>
+          <span class="stat">{{ player.played }}</span>
+          <span class="stat">{{ player.wins }}</span>
+          <span class="stat">{{ player.winrate?.toFixed(1) }}%</span>
+          <span class="elo-badge">
+            {{ ratingOf(player) }}
+            <span class="elo-badge__pts">pt</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAIR PLAY PAIRINGS ────────────────────────── -->
+    <section class="elo-section">
+      <h2 class="elo-section__title">🤝 Accoppiamenti Fair Play</h2>
+      <p class="elo-section__desc">
+        Ordinati per minima differenza ELO — le partite più equilibrate prima.
+      </p>
+
+      <div class="pairing-list">
+        <div
+          *ngFor="let p of visiblePairings; trackBy: trackByPairing; let i = index"
+          class="pairing-card"
+          [class.pairing-card--balanced]="balanceClass(p.eloDiff) === 'balanced'"
+          [class.pairing-card--moderate]="balanceClass(p.eloDiff) === 'moderate'"
+          [class.pairing-card--unbalanced]="balanceClass(p.eloDiff) === 'unbalanced'"
+        >
+          <span class="pairing-idx">{{ i + 1 }}</span>
+
+          <div class="pairing-player">
+            <span class="pairing-player__name">{{ p.player1.nickname }}</span>
+            <span class="pairing-player__rating">{{ p.player1.rating }} pt</span>
+          </div>
+
+          <div class="pairing-vs">
+            <div class="pairing-vs__diff" [class]="'diff-' + balanceClass(p.eloDiff)">
+              Δ {{ p.eloDiff }}
+            </div>
+            <div class="pairing-vs__chances">
+              <span>{{ p.winChanceP1Pct }}%</span>
+              <div class="chance-bar">
+                <div
+                  class="chance-bar__fill"
+                  [style.width.%]="p.winChanceP1Pct"
+                ></div>
+              </div>
+              <span>{{ 100 - p.winChanceP1Pct }}%</span>
+            </div>
+          </div>
+
+          <div class="pairing-player pairing-player--right">
+            <span class="pairing-player__name">{{ p.player2.nickname }}</span>
+            <span class="pairing-player__rating">{{ p.player2.rating }} pt</span>
+          </div>
+        </div>
+      </div>
+
+      <button
+        *ngIf="hasMorePairings"
+        class="btn-ghost mt-3"
+        (click)="showMorePairings()"
+      >
+        Mostra altri accoppiamenti ↓
+      </button>
+    </section>
+
+    <!-- ── SIMULATOR ─────────────────────────────────── -->
+    <section class="elo-section">
+      <h2 class="elo-section__title">🔮 Simula Partita</h2>
+      <p class="elo-section__desc">
+        Prevedi l'impatto ELO prima di giocare — nessun dato viene salvato.
+      </p>
+
+      <div class="sim-form">
+        <div class="sim-select-group">
+          <label>Giocatore A</label>
+          <select [(ngModel)]="simPlayerAId" (change)="simResult = null">
+            <option [ngValue]="null" disabled>— Seleziona —</option>
+            <option *ngFor="let r of rankings" [ngValue]="r.playerid">
+              {{ r.nickname || r.name }} ({{ ratingOf(r) }} pt)
+            </option>
+          </select>
+        </div>
+
+        <div class="sim-vs">VS</div>
+
+        <div class="sim-select-group">
+          <label>Giocatore B</label>
+          <select [(ngModel)]="simPlayerBId" (change)="simResult = null">
+            <option [ngValue]="null" disabled>— Seleziona —</option>
+            <option *ngFor="let r of rankings" [ngValue]="r.playerid">
+              {{ r.nickname || r.name }} ({{ ratingOf(r) }} pt)
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sim-winner-group" *ngIf="simPlayerA && simPlayerB">
+        <span class="sim-winner-label">Chi vince?</span>
+        <div class="sim-winner-buttons">
+          <button
+            class="btn-winner"
+            [class.active]="simWinner === 'A'"
+            (click)="simWinner = 'A'"
+          >
+            {{ simPlayerA?.nickname || simPlayerA?.name }}
+          </button>
+          <button
+            class="btn-winner btn-winner--draw"
+            [class.active]="simWinner === 'draw'"
+            (click)="simWinner = 'draw'"
+          >
+            Pari
+          </button>
+          <button
+            class="btn-winner"
+            [class.active]="simWinner === 'B'"
+            (click)="simWinner = 'B'"
+          >
+            {{ simPlayerB?.nickname || simPlayerB?.name }}
+          </button>
+        </div>
+      </div>
+
+      <div class="sim-actions" *ngIf="simPlayerA && simPlayerB">
+        <button
+          class="btn-primary"
+          (click)="runSimulation()"
+          [disabled]="simPlayerAId === simPlayerBId"
+        >
+          ⚡ Calcola
+        </button>
+        <button class="btn-ghost" (click)="resetSimulation()">Reset</button>
+      </div>
+
+      <!-- Risultato simulazione -->
+      <div class="sim-result" *ngIf="simResult">
+        <div class="sim-result__card sim-result__card--A">
+          <div class="sim-result__player">{{ simPlayerA?.nickname || simPlayerA?.name }}</div>
+          <div class="sim-result__rating">{{ ratingOf(simPlayerA!) }}</div>
+          <div class="sim-result__delta" [class]="deltaClass(simResult.deltaA)">
+            {{ deltaSign(simResult.deltaA) }}
+          </div>
+          <div class="sim-result__new">→ {{ simResult.newA }} pt</div>
+        </div>
+
+        <div class="sim-result__info">
+          <div class="sim-result__prob">
+            Prob. A: {{ (simResult.eA * 100).toFixed(1) }}%
+          </div>
+        </div>
+
+        <div class="sim-result__card sim-result__card--B">
+          <div class="sim-result__player">{{ simPlayerB?.nickname || simPlayerB?.name }}</div>
+          <div class="sim-result__rating">{{ ratingOf(simPlayerB!) }}</div>
+          <div class="sim-result__delta" [class]="deltaClass(simResult.deltaB)">
+            {{ deltaSign(simResult.deltaB) }}
+          </div>
+          <div class="sim-result__new">→ {{ simResult.newB }} pt</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── JSON EXPORT ────────────────────────────────── -->
+    <section class="elo-section">
+      <h2 class="elo-section__title">📦 Export JSON</h2>
+      <p class="elo-section__desc">
+        Payload pronto per integrazione backend/frontend con ranking ed accoppiamenti.
+      </p>
+      <div class="export-actions">
+        <button class="btn-primary" (click)="toggleJsonPreview()">
+          {{ showJsonPreview ? 'Chiudi preview' : 'Genera JSON' }}
+        </button>
+        <button class="btn-ghost" *ngIf="jsonPreview" (click)="downloadJson()">
+          ⬇ Scarica file
+        </button>
+      </div>
+      <pre class="json-preview" *ngIf="showJsonPreview && jsonPreview">{{ jsonPreview }}</pre>
+    </section>
+
+  </ng-container>
+
+  <app-bottom-navbar></app-bottom-navbar>
+</div>
