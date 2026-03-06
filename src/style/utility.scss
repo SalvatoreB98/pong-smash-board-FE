@@ -48,7 +48,8 @@ label.field {
     padding-top: 1em;
     padding-bottom: 9.375em;
     transition: filter 0.25s ease-in-out;
-    overflow-y: scroll;
+    max-width: 1000px;
+    margin: auto;
 }
 
 @media screen and (max-width: 33.125em) {

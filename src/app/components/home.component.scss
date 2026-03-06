@@ -5,10 +5,12 @@
         padding: 0;
     }
 }
+
 .wrapper {
     display: flex;
     flex-direction: column;
     gap: 1.5em;
+    max-width: 1000px;
 }
 
 .home-toolbar {
@@ -20,6 +22,7 @@
     flex-wrap: wrap;
     flex-direction: row-reverse;
     margin-top: 3em;
+
     &__actions {
         display: flex;
         gap: 0.5em;
