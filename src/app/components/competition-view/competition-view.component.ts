@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { catchError, distinctUntilChanged, filter, map, of, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CompetitionService } from '../../../services/competitions.service';
+import { RankingService } from '../../../services/ranking.service';
+import { IRankingItem } from '../../../services/data.service';
 import { ICompetition } from '../../../api/competition.api';
 import { IMatch, IMatchSet } from '../../interfaces/matchesInterfaces';
 import { Group, GroupPlayer, mapGroupPlayerToIPlayer } from '../../interfaces/group.interface';
@@ -44,6 +46,7 @@ interface CompetitionViewPayload {
 export class CompetitionViewComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly competitionService = inject(CompetitionService);
+  private readonly rankingService = inject(RankingService);
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
@@ -53,6 +56,7 @@ export class CompetitionViewComponent {
   readonly rounds = signal<EliminationRound[]>([]);
   readonly groups = signal<Group[]>([]);
   readonly qualifiedPlayers = signal<IPlayer[]>([]);
+  readonly rankings = signal<IRankingItem[]>([]);
 
   readonly isLoadingMatches = computed(() => this.isLoading());
 
@@ -86,6 +90,16 @@ export class CompetitionViewComponent {
 
         this.hydrateView(payload as CompetitionViewPayload);
         this.isLoading.set(false);
+
+        const compId = this.competition()?.id;
+        if (compId) {
+          this.rankingService.getRanking(String(compId), false)
+            .then(res => this.rankings.set(res.ranking))
+            .catch(err => {
+              console.error('[CompetitionView] Failed to load rankings', err);
+              this.rankings.set([]);
+            });
+        }
       });
   }
 
@@ -95,6 +109,7 @@ export class CompetitionViewComponent {
     this.rounds.set([]);
     this.groups.set([]);
     this.qualifiedPlayers.set([]);
+    this.rankings.set([]);
   }
 
   private hydrateView(payload: CompetitionViewPayload): void {

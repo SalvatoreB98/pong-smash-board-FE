@@ -5,10 +5,7 @@
       aria-label="Apri impostazioni competizioni" title="Competitions">
       <i class="fa fa-cog" aria-hidden="true"></i>
     </button>
-    <h2 class="text-center">
-      {{ activeCompetition?.name }}
-    </h2>
-    <div></div>
+
     <!--<div class="home-toolbar__actions">
       <button type="button" class="home-toolbar__button" (click)="openAddMatchModal()">
         <i class="fa fa-file-text-o" aria-hidden="true"></i>
@@ -40,7 +37,7 @@
       (matchSelected)="setClickedMatch($event)"></app-group-knockout>
 
     <app-league-board *ngSwitchDefault [matches]="matches" [isLoading]="isLoadingMatches"
-      [rankings]="rankings" (matchSelected)="setClickedMatch($event)">
+      [rankings]="rankings" [competitionId]="activeCompetition?.id" (matchSelected)="setClickedMatch($event)">
     </app-league-board>
   </ng-container>
 
@@ -83,4 +80,4 @@
   [modalName]="modalService.MODALS['SET_DATE']">
   <app-set-match-date-modal [match]="clickedMatch"></app-set-match-date-modal>
 </app-modal>
-
+

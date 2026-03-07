@@ -3,7 +3,6 @@
         <ng-container *ngIf="isLoading; else competitionsContent">
             <div class="competitions-skeleton">
                 <section class="skeleton-heading">
-                    <div class="skeleton-title placeholder"></div>
                 </section>
 
                 <section class="skeleton-section skeleton-active">
@@ -44,12 +43,7 @@
         </ng-container>
 
         <ng-template #competitionsContent>
-            <!-- Titolo -->
-            <section>
-                <h2 class="text-center" style="text-transform: capitalize;">
-                    {{ 'competitions' | translate }}
-                </h2>
-            </section>
+
 
             <!-- Dettaglio competizione attiva -->
             <ng-container *ngIf="activeCompetition$ | async as activeCompetition">

@@ -17,6 +17,7 @@ import { IRankingItem } from '../../../../services/data.service';
 })
 export class LeagueBoardComponent {
   @Input() matches: IMatch[] = [];
+  @Input() competitionId?: string | number;
   @Input() rankings: IRankingItem[] = [];
   @Input() isLoading = false;
   @Input() readonly = false;

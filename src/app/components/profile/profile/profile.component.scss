@@ -78,7 +78,6 @@ input[type="file"] {
   display: grid;
   grid-template: 1fr 0.5fr / 30% 70%;
   justify-items: center;
-  margin-top: 2em;
 
   .upload-container {
     grid-row: span 2;

@@ -65,7 +65,7 @@
       </section>
       
       <section>
-        <app-stats *ngIf="hasMatches"></app-stats>
+        <app-stats *ngIf="hasMatches" [competitionId]="competitionId" [inputMatches]="matches"></app-stats>
       </section>
     </ng-template>
     

@@ -18,10 +18,10 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'callback', component: CallbackComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard, FlowGuard] },
-  { path: 'complete-profile', component: CompleteProfileComponent, canActivate: [AuthGuard] },
-  { path: 'competitions', component: CompetitionsComponent, canActivate: [AuthGuard] },
-  { path: 'elo', component: EloRankingPanelComponent, canActivate: [AuthGuard, FlowGuard] },
-  { path: 'competition/:id', component: CompetitionViewComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard, FlowGuard], data: { title: 'profile' } },
+  { path: 'complete-profile', component: CompleteProfileComponent, canActivate: [AuthGuard], data: { title: 'complete_profile' } },
+  { path: 'competitions', component: CompetitionsComponent, canActivate: [AuthGuard], data: { title: 'competitions' } },
+  { path: 'elo', component: EloRankingPanelComponent, canActivate: [AuthGuard, FlowGuard], data: { title: 'elo_ranking' } },
+  { path: 'competition/:id', component: CompetitionViewComponent, data: { title: 'competition_details' } },
   { path: '**', redirectTo: 'home-page', pathMatch: 'full' }
 ];

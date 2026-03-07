@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DataService } from '../../../services/data.service';
 import { CommonModule } from '@angular/common';
 import { RankingService } from '../../../services/ranking.service';
 import { inject } from '@angular/core';
-import { map, firstValueFrom } from 'rxjs';
+import { map, firstValueFrom, BehaviorSubject } from 'rxjs';
 import { Match, PlayerStanding, HeadToHeadRow } from '../../interfaces/statsInterfaces';
+import { IMatch } from '../../interfaces/matchesInterfaces';
 import { TranslatePipe } from '../../utils/translate.pipe';
 import { SHARED_IMPORTS } from '../imports/shared.imports';
 import { UserService } from '../../../services/user.service';
@@ -18,17 +19,15 @@ type StandingsType = 'WINRATE' | 'WINS';
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })
-export class StatsComponent implements OnInit {
+export class StatsComponent implements OnInit, OnChanges {
+  @Input() competitionId?: string | number;
+  @Input() inputMatches: IMatch[] = [];
+
   private dataService = inject(DataService);
   private rankingService = inject(RankingService);
 
-  headToHead$ = this.dataService.matchesObs.pipe(
-    map(matches => this.calculateHeadToHead(matches.map(match => ({
-      ...match,
-      p1: match.player1_score,
-      p2: match.player2_score
-    }))))
-  );
+  private headToHeadSubject = new BehaviorSubject<HeadToHeadRow[]>([]);
+  headToHead$ = this.headToHeadSubject.asObservable();
 
   // dati “materializzati” (non observable)
   wins: Record<string, number> = {};
@@ -55,11 +54,24 @@ export class StatsComponent implements OnInit {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['competitionId'] && !changes['competitionId'].firstChange) {
+      this.refreshRanking();
+    }
+    if (changes['inputMatches']) {
+      this.recalcHeadToHead();
+    }
+  }
+
   private async refreshRanking() {
     let activeCompetitionId = '';
-    const userState = await firstValueFrom(this.userService.getState());
-    if (userState?.active_competition_id) {
-      activeCompetitionId = String(userState.active_competition_id);
+    if (this.competitionId) {
+      activeCompetitionId = String(this.competitionId);
+    } else {
+      const userState = await firstValueFrom(this.userService.getState());
+      if (userState?.active_competition_id) {
+        activeCompetitionId = String(userState.active_competition_id);
+      }
     }
 
     const res = await this.rankingService.getRanking(activeCompetitionId, false);
@@ -86,13 +98,22 @@ export class StatsComponent implements OnInit {
 
   private recalcAll() {
     this.standings = this.calculateClassifica(this.standingsType);
-    this.headToHeadData = this.calculateHeadToHead(
-      (this.dataService.matches || []).map(match => ({
-        ...match,
-        p1: match.player1_score,
-        p2: match.player2_score
-      }))
-    );
+    this.recalcHeadToHead();
+  }
+
+  private recalcHeadToHead() {
+    const sourceMatches = this.inputMatches && this.inputMatches.length > 0 
+      ? this.inputMatches 
+      : (this.dataService.matches || []);
+
+    const mappedMatches = sourceMatches.map(match => ({
+      ...match,
+      p1: match.player1_score,
+      p2: match.player2_score
+    })) as Match[];
+
+    this.headToHeadData = this.calculateHeadToHead(mappedMatches);
+    this.headToHeadSubject.next(this.headToHeadData);
   }
 
   private calculateClassifica(standingsType: StandingsType): PlayerStanding[] {

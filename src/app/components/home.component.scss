@@ -1,17 +1,5 @@
 @use "../../style/variables.scss" as *;
-@media screen and (max-width: 62.5em) {
-    .wrapper {
-        margin-top: 4.6em;
-        padding: 0;
-    }
-}
 
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5em;
-    max-width: 1000px;
-}
 
 .home-toolbar {
     display: flex;
@@ -22,7 +10,9 @@
     flex-wrap: wrap;
     flex-direction: row-reverse;
     margin-top: 3em;
-
+    position: fixed;
+    right: 0;
+    top: 1em;
     &__actions {
         display: flex;
         gap: 0.5em;

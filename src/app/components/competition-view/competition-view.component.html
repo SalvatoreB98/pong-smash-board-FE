@@ -17,7 +17,8 @@
         [qualifiedPlayers]="qualifiedPlayers()" [rounds]="rounds()" [matches]="matches()" [readonly]="true">
       </app-group-knockout>
 
-      <app-league-board *ngSwitchDefault [matches]="matches()" [isLoading]="isLoadingMatches()" [readonly]="true">
+      <app-league-board *ngSwitchDefault [matches]="matches()" [isLoading]="isLoadingMatches()" [readonly]="true"
+        [competitionId]="activeCompetition.id" [rankings]="rankings()">
       </app-league-board>
     </ng-container>
   </ng-container>

@@ -44,12 +44,19 @@ label.field {
 }
 
 .wrapper {
-    margin-top: $navbar-height;
-    padding-top: 1em;
-    padding-bottom: 9.375em;
-    transition: filter 0.25s ease-in-out;
-    max-width: 1000px;
     margin: auto;
+    margin-top: calc($navbar-height + 1rem); /* slightly more spacing */
+    padding: 2rem 1.25rem 6rem;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+@media screen and (max-width: 62.5em) {
+    .wrapper {
+        padding: 1rem 0.5rem 5rem;
+    }
 }
 
 @media screen and (max-width: 33.125em) {
@@ -163,9 +170,11 @@ small.error {
     width: 1.5em;
     height: 1.5em;
 }
+
 .cancel {
-    background-color: $contrast!important;
+    background-color: $contrast !important;
 }
+
 @keyframes scrollText {
     0% {
         transform: translateX(0);
