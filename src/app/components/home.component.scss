@@ -2,6 +2,10 @@
 
 
 .home-toolbar {
+    @media (max-width: 1140px) {
+        display: none;
+    }
+
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -13,6 +17,7 @@
     position: fixed;
     right: 0;
     top: 1em;
+
     &__actions {
         display: flex;
         gap: 0.5em;
