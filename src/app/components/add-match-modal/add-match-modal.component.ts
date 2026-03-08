@@ -325,7 +325,7 @@ export class AddMatchModalComponent implements OnInit {
       return;
     }
 
-    if (this.isGroupKnockout()) {
+    if (this.isGroupKnockout() && !this.roundOfMatch) {
       control.addValidators(Validators.required);
     } else {
       control.clearValidators();

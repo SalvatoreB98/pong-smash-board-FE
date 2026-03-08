@@ -171,7 +171,7 @@ export class ManualPointsComponent implements OnChanges, OnInit {
 
   private updateMode() {
     const competitionType = this.competition?.type ?? null;
-    this.isGroupMode = this.isGroupKnockout || competitionType === 'group_knockout';
+    this.isGroupMode = (this.isGroupKnockout || competitionType === 'group_knockout') && !this.roundOfMatch;
     this.totalSteps = this.isGroupMode ? 3 : 2;
     this.step = Math.min(this.step, this.totalSteps);
 

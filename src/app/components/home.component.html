@@ -47,7 +47,7 @@
 
 <app-modal [label]="'add_match'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_MATCH'])"
   [modalName]="modalService.MODALS['ADD_MATCH']">
-  <ng-container *ngIf="isGroupKnockoutMode; else standardMatchModal">
+  <ng-container *ngIf="isGroupKnockoutMode && !roundTypeOfMatch; else standardMatchModal">
     <app-add-group-match-modal [isAlreadySelected]="!!player1Selected && !!player2Selected" [player1]="player1Selected"
       [player2]="player2Selected"></app-add-group-match-modal>
   </ng-container>

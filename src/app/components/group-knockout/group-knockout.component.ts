@@ -42,7 +42,7 @@ export class GroupKnockoutComponent {
     this.nextMatches = value?.filter(m => {
       console.log("DEBUG match", m);
       console.log("DEBUG match date", new Date(m.date).getTime(), now);
-      return new Date(m.date).getTime() < now;
+      return new Date(m.date).getTime() > now;
     }) ?? [];
     console.log("DEBUG next matches", this.nextMatches, value);
 
@@ -55,7 +55,6 @@ export class GroupKnockoutComponent {
   modalService = inject(ModalService);
 
   ngOnChanges() {
-    this.nextMatches = this.matches;
   }
 
   onRoundSelected(event: EliminationModalEvent) {

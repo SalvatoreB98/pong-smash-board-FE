@@ -42,6 +42,7 @@ type NextMatch = IMatch & {
 export class NextMatchesComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() nextMatches: NextMatch[] = [];
   @Input() isLoading: boolean = true;
+  @Input() autoFetch: boolean = true;
   @Output() matchClick = new EventEmitter<NextMatch>();
 
   @ViewChild('swiperEl') swiperEl?: ElementRef<HTMLElement>;
@@ -71,7 +72,12 @@ export class NextMatchesComponent implements OnChanges, AfterViewInit, OnDestroy
 
   ngAfterViewInit(): void {
     this.swiperManager.init();
-    this.loadMatches();
+    if (this.autoFetch) {
+      this.loadMatches();
+    } else {
+      this.isLoading = false;
+      setTimeout(() => this.swiperManager.queueUpdate(), 100);
+    }
   }
 
   ngOnDestroy(): void {
