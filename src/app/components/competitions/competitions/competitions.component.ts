@@ -14,6 +14,7 @@ import { ModalService } from '../../../../services/modal.service';
 import { CompetitionDetailComponent } from '../competition-detail/competition-detail.component';
 import { AddPlayersModalComponent } from '../../add-players-modal/add-players-modal.component';
 import { JoinCompetitionModalComponent } from '../../join-competition-modal/join-competition-modal.component';
+import { playersToAddStore } from '../../add-players-modal/add-players-modal.component';
 import { ViewCompetitionModalComponent } from './view-competition-modal/view-competition-modal.component';
 import { EditCompetitionModalComponent } from './edit-competition-modal/edit-competition-modal.component';
 import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
@@ -171,8 +172,14 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
     this.modalService.closeModal();
   }
   onDeleteCancelled() {
+    const isAddPlayersDismiss = this.confirmationBodyKey === 'are_you_sure';
     this.confirmHandler = null;
-    this.modalService.closeModal();
+    
+    if (isAddPlayersDismiss) {
+       this.modalService.openModal(this.modalService.MODALS['ADD_PLAYERS']);
+    } else {
+       this.modalService.closeModal();
+    }
   }
   onDeletePlayerRequested(playerId: number) {
     this.openConfirmation(() => this.competitionDetailComponent.deletePlayer(playerId), 'are-you-sure-delete-player');
@@ -193,6 +200,18 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
     this.confirmationBodyKey = bodyKey;
     this.modalService.openModal(this.modalService.MODALS['ARE_YOU_SURE']);
   }
+
+  onCloseAddPlayersModal() {
+    if (playersToAddStore().length > 0) {
+      this.openConfirmation(() => {
+        playersToAddStore.set([]);
+        this.modalService.closeModal();
+      }, 'are_you_sure'); // Use generic are you sure translation
+    } else {
+      this.modalService.closeModal();
+    }
+  }
+
   updateCompetitionDetail(competition: ICompetition) {
     this.competitionDetail = { ...competition };
     this.cdr.detectChanges();

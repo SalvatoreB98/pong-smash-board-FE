@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { SHARED_IMPORTS } from '../../common/imports/shared.imports';
 import { CompetitionService } from '../../../services/competitions.service';
 import { UserService } from '../../../services/user.service';
@@ -24,6 +24,8 @@ export interface IPlayerToAdd {
   file: File | null;
   previewUrl: string | null;
 }
+
+export const playersToAddStore = signal<IPlayerToAdd[]>([]);
 
 @Component({
   selector: 'app-add-players-modal',
@@ -54,7 +56,7 @@ export class AddPlayersModalComponent extends ModalComponent {
     email: ['', { validators: [Validators.email], updateOn: 'change' }],
   });
 
-  playersToAdd: IPlayerToAdd[] = [];
+  get playersToAdd(): IPlayerToAdd[] { return playersToAddStore(); }
   activeCompetition$ = this.competitionService.activeCompetition$;
 
   private sb: SupabaseClient = createClient(environment.supabase.url, environment.supabase.ANON);
@@ -89,7 +91,7 @@ export class AddPlayersModalComponent extends ModalComponent {
     const { name, surname, nickname, file } = this.addPlayerForm.value;
     const previewUrl = file ? URL.createObjectURL(file) : null;
 
-    this.playersToAdd.push({ name, surname, nickname, file, previewUrl });
+    playersToAddStore.update(p => [...p, { name, surname, nickname, file, previewUrl }]);
     this.addPlayerForm.reset();
     this.resetFile();
   }
@@ -97,7 +99,7 @@ export class AddPlayersModalComponent extends ModalComponent {
   removePlayer(index: number) {
     const preview = this.playersToAdd[index].previewUrl;
     if (preview?.startsWith('blob:')) URL.revokeObjectURL(preview);
-    this.playersToAdd.splice(index, 1);
+    playersToAddStore.update(p => p.filter((_, i) => i !== index));
   }
 
   onFileSelected(event: Event) {
@@ -193,7 +195,7 @@ export class AddPlayersModalComponent extends ModalComponent {
       }
       this.modalService.closeModal();
       this.loader.showToast('Players added successfully!', MSG_TYPE.SUCCESS);
-      this.playersToAdd = [];
+      playersToAddStore.set([]);
     } catch (err) {
       this.isAdding = false;
       console.error(err);

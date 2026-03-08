@@ -17,6 +17,7 @@ export class ModalComponent {
   @Input() isSmall: boolean = false;
   @Input() fullscreen: boolean = false;
   @Input() transparent = false;
+  @Input() preventDefaultClose = false;
   @Output() closeModalEvent = new EventEmitter<void>();
 
   constructor(public modalService: ModalService) { }
@@ -26,9 +27,12 @@ export class ModalComponent {
   }
 
   closeModal(): void {
-    this.modalService.closeModal();
+    if (!this.preventDefaultClose) {
+      this.modalService.closeModal();
+    }
     this.closeModalEvent.emit();
   }
+
   toggleFullscreen(): void {
     this.fullscreen = !this.fullscreen;
   }

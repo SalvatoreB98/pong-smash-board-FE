@@ -153,7 +153,7 @@
     </app-modal>
 
     <app-modal [label]="'add_players'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_PLAYERS'])"
-        [modalName]="modalService.MODALS['ADD_PLAYERS']">
+        [modalName]="modalService.MODALS['ADD_PLAYERS']" [preventDefaultClose]="true" (closeModalEvent)="onCloseAddPlayersModal()">
         <app-add-players-modal></app-add-players-modal>
     </app-modal>
 
