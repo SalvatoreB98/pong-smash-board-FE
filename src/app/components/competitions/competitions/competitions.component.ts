@@ -18,6 +18,7 @@ import { playersToAddStore } from '../../add-players-modal/add-players-modal.com
 import { ViewCompetitionModalComponent } from './view-competition-modal/view-competition-modal.component';
 import { EditCompetitionModalComponent } from './edit-competition-modal/edit-competition-modal.component';
 import { AreYouSureComponent } from '../../../common/are-you-sure/are-you-sure.component';
+import { UnsavedPlayersConfirmComponent } from '../../../common/unsaved-players-confirm/unsaved-players-confirm.component';
 import { DropdownAction, DropdownService } from '../../../../services/dropdown.service';
 import { Utils } from '../../../utils/Utils';
 import { Router } from '@angular/router';
@@ -37,7 +38,8 @@ import { Router } from '@angular/router';
     JoinCompetitionModalComponent,
     ViewCompetitionModalComponent,
     EditCompetitionModalComponent,
-    AreYouSureComponent
+    AreYouSureComponent,
+    UnsavedPlayersConfirmComponent
   ],
   templateUrl: './competitions.component.html',
   styleUrls: ['./competitions.component.scss']
@@ -172,14 +174,8 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
     this.modalService.closeModal();
   }
   onDeleteCancelled() {
-    const isAddPlayersDismiss = this.confirmationBodyKey === 'are_you_sure';
     this.confirmHandler = null;
-    
-    if (isAddPlayersDismiss) {
-       this.modalService.openModal(this.modalService.MODALS['ADD_PLAYERS']);
-    } else {
-       this.modalService.closeModal();
-    }
+    this.modalService.closeModal();
   }
   onDeletePlayerRequested(playerId: number) {
     this.openConfirmation(() => this.competitionDetailComponent.deletePlayer(playerId), 'are-you-sure-delete-player');
@@ -203,13 +199,19 @@ export class CompetitionsComponent implements OnDestroy, OnInit {
 
   onCloseAddPlayersModal() {
     if (playersToAddStore().length > 0) {
-      this.openConfirmation(() => {
-        playersToAddStore.set([]);
-        this.modalService.closeModal();
-      }, 'are_you_sure'); // Use generic are you sure translation
+      this.modalService.openModal(this.modalService.MODALS['UNSAVED_PLAYERS']);
     } else {
       this.modalService.closeModal();
     }
+  }
+
+  onUnsavedPlayersAdd() {
+    this.modalService.openModal(this.modalService.MODALS['ADD_PLAYERS']);
+  }
+
+  onUnsavedPlayersCancel() {
+    playersToAddStore.set([]);
+    this.modalService.closeModal();
   }
 
   updateCompetitionDetail(competition: ICompetition) {

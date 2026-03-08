@@ -175,6 +175,11 @@
         <app-view-competition-modal [competition]="competitionDetail"></app-view-competition-modal>
     </app-modal>
 
+    <app-modal [label]="' '" *ngIf="modalService.isActiveModal(modalService.MODALS['UNSAVED_PLAYERS'])"
+        [modalName]="modalService.MODALS['UNSAVED_PLAYERS']" (closeModalEvent)="modalService.closeModal()">
+        <unsaved-players-confirm (confirmed)="onUnsavedPlayersAdd()" (cancelled)="onUnsavedPlayersCancel()"></unsaved-players-confirm>
+    </app-modal>
+
     <app-modal [label]="'are_you_sure'" *ngIf="modalService.isActiveModal(modalService.MODALS['ARE_YOU_SURE'])"
         [modalName]="modalService.MODALS['ARE_YOU_SURE']" (closeModalEvent)="modalService.closeModal()">
         <are-you-sure [body]="confirmationBodyKey | translate" (confirmed)="onDeleteConfirmed()"

@@ -1,0 +1,36 @@
+@import '../../../styles/variables.scss';
+
+.are-you-sure-modal {
+  text-align: center;
+  padding: 1em;
+  
+  h2 {
+    color: var(--secondary-color);
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    li {
+      background: rgba(255, 255, 255, 0.05);
+      margin-bottom: 0.5em;
+      padding: 0.5em;
+      border-radius: 4px;
+    }
+  }
+
+  .cancel {
+    background-color: transparent;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    padding: 0.5em 1em;
+    border-radius: 4px;
+  }
+
+  .yes {
+    background-color: var(--secondary-color);
+    color: var(--bg-color);
+    padding: 0.5em 1em;
+    border-radius: 4px;
+  }
+}

@@ -65,6 +65,7 @@ export const MODALS: { [key: string]: string } = {
   ARE_YOU_SURE: 'areYouSureModal',
   BRACKET: 'bracket',
   SET_DATE: 'setDateModal',
+  UNSAVED_PLAYERS: 'unsavedPlayersModal',
 };
 
 export enum UserProgressStateEnum {
