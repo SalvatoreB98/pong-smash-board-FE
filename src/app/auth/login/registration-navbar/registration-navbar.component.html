@@ -1,7 +1,7 @@
 <nav>
-    <a *ngIf="!isLogin" routerLink="/login" style="cursor: pointer; gap: 0.625em;" class="d-flex justify-content-center align-items-center">
+    <a *ngIf="!isLogin" (click)="goBack()" style="cursor: pointer; gap: 0.625em;" class="d-flex justify-content-center align-items-center">
         <i class="fa fa-arrow-left"></i>
-        <span> Login </span>
+        <span> {{ 'back' | translate }} </span>
     </a>
     <a></a>
     <div class="dropdown-lang position-relative" (click)="showDropdown = !showDropdown" tabindex="0" (blur)="showDropdown = false" style="display: inline-block;">
