@@ -1,5 +1,5 @@
 // styles
-
+@use "../../../style/variables.scss" as *;
 // ──────────────────────────────────────────────
 // ROOT LAYOUT
 // ──────────────────────────────────────────────
@@ -10,6 +10,8 @@
   background: #000000;
   color: #e0e0e0;
   font-family: 'Segoe UI', system-ui, sans-serif;
+  margin-top: $navbar-height;
+  
 }
 
 // ──────────────────────────────────────────────
