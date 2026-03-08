@@ -7,11 +7,12 @@ import { StatsComponent } from '../../../common/stats/stats.component';
 import { IMatch } from '../../../interfaces/matchesInterfaces';
 import { EloChartComponent } from '../../elo-chart/elo-chart.component';
 import { IRankingItem } from '../../../../services/data.service';
+import { MonthlyWinRatesComponent } from './monthly-win-rates/monthly-win-rates.component';
 
 @Component({
   selector: 'app-league-board',
   standalone: true,
-  imports: [CommonModule, MatchesComponent, TranslatePipe, StatsComponent, EloChartComponent],
+  imports: [CommonModule, MatchesComponent, TranslatePipe, StatsComponent, EloChartComponent, MonthlyWinRatesComponent],
   templateUrl: './league-board.component.html',
   styleUrl: './league-board.component.scss'
 })

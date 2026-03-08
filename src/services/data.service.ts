@@ -59,7 +59,7 @@ interface MatchData extends IMatchResponse {
   totPlayed: Record<string, number>;
   points: any;
   players: string[];
-  monthlyWinRates: Record<string, number>;
+  monthlyWinRates: any;
   badges: Record<string, any>;
   giocatore1Score: number;
   giocatore2Score: number;
@@ -91,7 +91,7 @@ export class DataService {
   wins: Record<string, number> = {};
   totPlayed: Record<string, number> = {};
   raw: any = {};
-  monthlyWinRates: Record<string, number> = {};
+  monthlyWinRates: any = {};
   badges: Record<string, any> = {};
   players: string[] = [];
   loader!: LoaderComponent;
@@ -108,6 +108,7 @@ export class DataService {
   private groupsSubject = new BehaviorSubject<Group[]>([]);
   private knockoutSubject = new BehaviorSubject<KnockoutStageData | null>(null);
   private playersSubject = new BehaviorSubject<string[]>([]);
+  private monthlyWinRatesSubject = new BehaviorSubject<any>({});
   private userStateSub?: Subscription;
 
   public winsObs = this.winsSubject.asObservable();
@@ -118,6 +119,7 @@ export class DataService {
   public groupsObs = this.groupsSubject.asObservable();
   public knockoutObs = this.knockoutSubject.asObservable();
   public playersObs = this.playersSubject.asObservable();
+  public monthlyWinRatesObs = this.monthlyWinRatesSubject.asObservable();
 
   private _loaded = false;                 // abbiamo già i dati?
   private _lastLoadedAt = 0;               // timestamp dell’ultimo load
@@ -297,6 +299,7 @@ export class DataService {
     this.totPlayedSubject.next(this.totPlayed);
     this.pointsSubject.next(this.points);
     this.playersSubject.next(this.players);
+    this.monthlyWinRatesSubject.next(this.monthlyWinRates);
   }
 
   private resetData(): void {
@@ -319,6 +322,7 @@ export class DataService {
     this.totPlayedSubject.next({});
     this.pointsSubject.next({});
     this.playersSubject.next([]);
+    this.monthlyWinRatesSubject.next({});
     this.resetKnockoutCache();
   }
 

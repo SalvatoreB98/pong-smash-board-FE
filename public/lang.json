@@ -797,6 +797,20 @@
         "de": "Einladungscode",
         "fr": "Code d'invitation"
     },
+    "monthly_win_rates": {
+        "it": "Vittorie Mensili",
+        "en": "Monthly Win Rates",
+        "es": "Tasas de Victoria Mensuales",
+        "de": "Monatliche Gewinnraten",
+        "fr": "Taux de Victoire Mensuel"
+    },
+    "monthly_win_rates_description": {
+        "it": "Andamento mensile della percentuale di vittorie",
+        "en": "Monthly trend of win percentage",
+        "es": "Tendencia mensual del porcentaje de victorias",
+        "de": "Monatlicher Trend der Siegquote",
+        "fr": "Tendance mensuelle du pourcentage de victoires"
+    },
     "invitation_code_info": {
         "it": "Condividi questo codice con i tuoi amici per permettere loro di unirsi alla competizione.",
         "en": "Share this code with your friends to allow them to join the competition.",

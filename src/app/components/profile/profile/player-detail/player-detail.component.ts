@@ -36,6 +36,12 @@ export class PlayerDetailComponent {
 
 
   getMonthLabel(month: string) {
+    if (month.includes('-')) {
+      const parts = month.split('-');
+      const monthNumStr = parts[1];
+      const monthName = this.MONTH_MAP[monthNumStr]?.slice(0, 3) || monthNumStr;
+      return `${monthName} ${parts[0]}`;
+    }
     return this.MONTH_MAP[month]?.slice(0, 3) || month;
   }
 }
