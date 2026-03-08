@@ -13,6 +13,7 @@ import { Utils } from '../../../utils/Utils';
 import { StepIndicatorComponent } from '../../../common/step-indicator/step-indicator.component';
 import { Group, mapGroupPlayerToIPlayer } from '../../../interfaces/group.interface';
 import { KnockoutStage } from '../../../utils/enum';
+import { TranslationService } from '../../../../services/translation.service';
 
 @Component({
   selector: 'app-manual-points',
@@ -64,6 +65,7 @@ export class ManualPointsComponent implements OnChanges, OnInit {
     private modalService: ModalService,
     private loaderService: LoaderService,
     private competitionService: CompetitionService,
+    private translationService: TranslationService,
   ) { }
 
   ngOnChanges(changes: any) {
@@ -480,12 +482,12 @@ export class ManualPointsComponent implements OnChanges, OnInit {
 
   saveMatch(target: EventTarget | null) {
     if (!this.isCompleted()) {
-      alert('La partita non è ancora conclusa!');
+      alert(this.translationService.translate('match_not_completed'));
       return;
     }
 
     if (!this.player1 || !this.player2) {
-      alert('Seleziona entrambi i giocatori!');
+      alert(this.translationService.translate('select_both_players'));
       return;
     }
     if (target instanceof HTMLElement) {

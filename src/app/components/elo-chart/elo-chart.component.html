@@ -1,9 +1,9 @@
 <div class="elo-chart-container" *ngIf="hasData">
   <div class="header">
-    <h3>ELO Rating</h3>
-    <p>Andamento ELO partita per partita ·
+    <h3>{{ 'elo_rating_title' | translate }}</h3>
+    <p>{{ 'elo_chart_subtitle' | translate }}
       <span *ngFor="let p of players; let last = last">
-        {{ p.nickname | uppercase }}<span *ngIf="!last"> vs </span>
+        {{ p.nickname | uppercase }}<span *ngIf="!last"> {{ 'vs' | translate }} </span>
       </span>
     </p>
   </div>
@@ -25,13 +25,13 @@
     <div class="card" *ngFor="let p of players; let i = index">
       <div class="player-name">{{ p.nickname | uppercase }}</div>
       <div class="rating" [class]="'color-' + i">{{ p.rating }}</div>
-      <div class="label">ELO attuale</div>
+      <div class="label">{{ 'current_elo' | translate }}</div>
     </div>
   </div>
 </div>
 <div class="elo-chart-container" *ngIf="!hasData">
     <div class="header">
-      <h3>ELO Rating</h3>
-      <p>Dati non sufficienti per mostrare il grafico ELO.</p>
+      <h3>{{ 'elo_rating_title' | translate }}</h3>
+      <p>{{ 'elo_chart_no_data' | translate }}</p>
     </div>
 </div>

@@ -4,24 +4,24 @@
     <!-- ── LOADING ─────────────────────────────────────── -->
     <div class="elo-loading" *ngIf="isLoading">
       <div class="spinner"></div>
-      <span>Calcolo ELO…</span>
+      <span>{{ 'calculating_elo' | translate }}</span>
     </div>
 
     <ng-container *ngIf="!isLoading">
 
       <!-- ── LEADERBOARD ───────────────────────────────── -->
       <section class="elo-section">
-        <h2 class="elo-section__title">🏆 Classifica ELO</h2>
+        <h2 class="elo-section__title">{{ 'elo_leaderboard_title' | translate }}</h2>
 
         <div class="elo-table-wrapper">
           <div class="elo-table-header">
             <span>#</span>
             <span></span>
-            <span>Giocatore</span>
-            <span title="Partite giocate">PG</span>
-            <span title="Vittorie">V</span>
-            <span title="Win Rate">WR%</span>
-            <span>Rating ELO</span>
+            <span>{{ 'player' | translate }}</span>
+            <span [title]="'matches_played' | translate">{{ 'matches_played_short' | translate }}</span>
+            <span [title]="'wins' | translate">{{ 'vittorie' | translate }}</span>
+            <span [title]="'winRate' | translate">WR%</span>
+            <span>{{ 'elo_rating' | translate }}</span>
           </div>
 
           <div *ngFor="let player of rankings; let i = index; trackBy: trackByPlayerid" class="elo-table-row"
@@ -51,9 +51,9 @@
 
       <!-- ── FAIR PLAY PAIRINGS ────────────────────────── -->
       <section class="elo-section">
-        <h2 class="elo-section__title">🤝 Accoppiamenti Fair Play</h2>
+        <h2 class="elo-section__title">{{ 'fair_play_pairings_title' | translate }}</h2>
         <p class="elo-section__desc">
-          Ordinati per minima differenza ELO — le partite più equilibrate prima.
+          {{ 'fair_play_pairings_desc' | translate }}
         </p>
 
         <div class="pairing-list">
@@ -89,34 +89,34 @@
         </div>
 
         <button *ngIf="hasMorePairings" class="btn-ghost mt-3" (click)="showMorePairings()">
-          Mostra altri accoppiamenti ↓
+          {{ 'show_more_pairings' | translate }}
         </button>
       </section>
 
       <!-- ── SIMULATOR ─────────────────────────────────── -->
       <section class="elo-section">
-        <h2 class="elo-section__title">🔮 Simula Partita</h2>
+        <h2 class="elo-section__title">{{ 'simulate_match_title' | translate }}</h2>
         <p class="elo-section__desc">
-          Prevedi l'impatto ELO prima di giocare — nessun dato viene salvato.
+          {{ 'simulate_match_desc' | translate }}
         </p>
 
         <div class="sim-form">
           <div class="sim-select-group">
-            <label>Giocatore A</label>
+            <label>{{ 'player_a' | translate }}</label>
             <select [(ngModel)]="simPlayerAId" (change)="simResult = null">
-              <option [ngValue]="null" disabled>— Seleziona —</option>
+              <option [ngValue]="null" disabled>{{ 'select' | translate }}</option>
               <option *ngFor="let r of rankings" [ngValue]="r.playerid">
                 {{ r.nickname || r.name }} ({{ ratingOf(r) }} pt)
               </option>
             </select>
           </div>
 
-          <div class="sim-vs">VS</div>
+          <div class="sim-vs">{{ 'vs' | translate }}</div>
 
           <div class="sim-select-group">
-            <label>Giocatore B</label>
+            <label>{{ 'player_b' | translate }}</label>
             <select [(ngModel)]="simPlayerBId" (change)="simResult = null">
-              <option [ngValue]="null" disabled>— Seleziona —</option>
+              <option [ngValue]="null" disabled>{{ 'select' | translate }}</option>
               <option *ngFor="let r of rankings" [ngValue]="r.playerid">
                 {{ r.nickname || r.name }} ({{ ratingOf(r) }} pt)
               </option>
@@ -125,14 +125,14 @@
         </div>
 
         <div class="sim-winner-group" *ngIf="simPlayerA && simPlayerB">
-          <span class="sim-winner-label">Chi vince?</span>
+          <span class="sim-winner-label">{{ 'who_wins' | translate }}</span>
           <div class="sim-winner-buttons">
             <button class="btn-winner" [class.active]="simWinner === 'A'" (click)="simWinner = 'A'">
               {{ simPlayerA?.nickname || simPlayerA?.name }}
             </button>
             <button class="btn-winner btn-winner--draw" [class.active]="simWinner === 'draw'"
               (click)="simWinner = 'draw'">
-              Pari
+              {{ 'draw' | translate }}
             </button>
             <button class="btn-winner" [class.active]="simWinner === 'B'" (click)="simWinner = 'B'">
               {{ simPlayerB?.nickname || simPlayerB?.name }}
@@ -142,9 +142,9 @@
 
         <div class="sim-actions" *ngIf="simPlayerA && simPlayerB">
           <button class="btn-primary" (click)="runSimulation()" [disabled]="simPlayerAId === simPlayerBId">
-            ⚡ Calcola
+            {{ 'calculate' | translate }}
           </button>
-          <button class="btn-ghost" (click)="resetSimulation()">Reset</button>
+          <button class="btn-ghost" (click)="resetSimulation()">{{ 'reset' | translate }}</button>
         </div>
 
         <!-- Risultato simulazione -->
@@ -160,7 +160,7 @@
 
           <div class="sim-result__info">
             <div class="sim-result__prob">
-              Prob. A: {{ (simResult.eA * 100).toFixed(1) }}%
+              {{ 'prob_a' | translate }} {{ (simResult.eA * 100).toFixed(1) }}%
             </div>
           </div>
 
@@ -177,16 +177,16 @@
 
       <!-- ── JSON EXPORT ────────────────────────────────── -->
       <section class="elo-section">
-        <h2 class="elo-section__title">📦 Export JSON</h2>
+        <h2 class="elo-section__title">{{ 'export_json_title' | translate }}</h2>
         <p class="elo-section__desc">
-          Payload pronto per integrazione backend/frontend con ranking ed accoppiamenti.
+          {{ 'export_json_desc' | translate }}
         </p>
         <div class="export-actions">
           <button class="btn-primary" (click)="toggleJsonPreview()">
-            {{ showJsonPreview ? 'Chiudi preview' : 'Genera JSON' }}
+            {{ (showJsonPreview ? 'close_preview' : 'generate_json') | translate }}
           </button>
           <button class="btn-ghost" *ngIf="jsonPreview" (click)="downloadJson()">
-            ⬇ Scarica file
+            {{ 'download_file' | translate }}
           </button>
         </div>
         <pre class="json-preview" *ngIf="showJsonPreview && jsonPreview">{{ jsonPreview }}</pre>

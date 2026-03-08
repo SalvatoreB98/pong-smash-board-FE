@@ -1253,11 +1253,11 @@
         "fr": "Il n'y a pas assez de joueurs pour ajouter un match. Cliquez sur <b>Ajouter des joueurs</b>"
     },
     "player": {
-        "it": "giocatore",
-        "en": "player",
-        "es": "jugador",
+        "it": "Giocatore",
+        "en": "Player",
+        "es": "Jugador",
         "de": "Spieler",
-        "fr": "joueur"
+        "fr": "Joueur"
     },
     "compile_fields": {
         "it": "Compila tutti i campi obbligatori",
@@ -2272,12 +2272,235 @@
         "de": "Das Spieldatum kann nicht aktualisiert werden.",
         "fr": "Impossible de mettre à jour la date du match."
     },
-    "free_sets":
-    {
+    "free_sets": {
         "it": "Set liberi",
         "en": "Free sets",
         "es": "Sets libres",
         "de": "Freie Sätze",
         "fr": "Sets libres"
+    },
+    "elo_rating_title": {
+        "it": "ELO Rating",
+        "en": "ELO Rating",
+        "es": "Ranking ELO",
+        "de": "ELO-Rating",
+        "fr": "Classement ELO"
+    },
+    "elo_chart_subtitle": {
+        "it": "Andamento ELO partita per partita ·",
+        "en": "ELO trend match by match ·",
+        "es": "Tendencia ELO partido a partido ·",
+        "de": "ELO-Verlauf Spiel für Spiel ·",
+        "fr": "Tendance ELO match par match ·"
+    },
+    "current_elo": {
+        "it": "ELO attuale",
+        "en": "Current ELO",
+        "es": "ELO actual",
+        "de": "Aktuelles ELO",
+        "fr": "ELO actuel"
+    },
+    "elo_chart_no_data": {
+        "it": "Dati non sufficienti per mostrare il grafico ELO.",
+        "en": "Not enough data to display the ELO chart.",
+        "es": "No hay suficientes datos para mostrar el gráfico ELO.",
+        "de": "Nicht genügend Daten, um das ELO-Diagramm anzuzeigen.",
+        "fr": "Pas assez de données pour afficher le graphique ELO."
+    },
+    "last_form": {
+        "it": "Ultimi",
+        "en": "Last",
+        "es": "Últimos",
+        "de": "Letzte",
+        "fr": "Derniers"
+    },
+    "calculating_elo": {
+        "it": "Calcolo ELO…",
+        "en": "Calculating ELO…",
+        "es": "Calculando ELO…",
+        "de": "Berechne ELO…",
+        "fr": "Calcul de l'ELO…"
+    },
+    "elo_leaderboard_title": {
+        "it": "🏆 Classifica ELO",
+        "en": "🏆 ELO Leaderboard",
+        "es": "🏆 Clasificación ELO",
+        "de": "🏆 ELO-Rangliste",
+        "fr": "🏆 Classement ELO"
+    },
+    "matches_played": {
+        "it": "Partite giocate",
+        "en": "Matches played",
+        "es": "Partidos jugados",
+        "de": "Gespielte Spiele",
+        "fr": "Matchs joués"
+    },
+    "matches_played_short": {
+        "it": "PG",
+        "en": "MP",
+        "es": "PJ",
+        "de": "SP",
+        "fr": "MJ"
+    },
+    "wins": {
+        "it": "Vittorie",
+        "en": "Wins",
+        "es": "Victorias",
+        "de": "Siege",
+        "fr": "Victoires"
+    },
+    "elo_rating": {
+        "it": "Rating ELO",
+        "en": "ELO Rating",
+        "es": "Ranking ELO",
+        "de": "ELO-Rating",
+        "fr": "Classement ELO"
+    },
+    "fair_play_pairings_title": {
+        "it": "🤝 Accoppiamenti Fair Play",
+        "en": "🤝 Fair Play Pairings",
+        "es": "🤝 Emparejamientos Fair Play",
+        "de": "🤝 Fair-Play-Paarungen",
+        "fr": "🤝 Appariements Fair Play"
+    },
+    "fair_play_pairings_desc": {
+        "it": "Ordinati per minima differenza ELO — le partite più equilibrate prima.",
+        "en": "Sorted by minimum ELO difference — most balanced matches first.",
+        "es": "Ordenado por diferencia mínima de ELO — los partidos más equilibrados primero.",
+        "de": "Sortiert nach geringster ELO-Differenz — die ausgeglichensten Spiele zuerst.",
+        "fr": "Trié par différence ELO minimale — les matchs les plus équilibrés d'abord."
+    },
+    "show_more_pairings": {
+        "it": "Mostra altri accoppiamenti ↓",
+        "en": "Show more pairings ↓",
+        "es": "Mostrar más emparejamientos ↓",
+        "de": "Weitere Paarungen anzeigen ↓",
+        "fr": "Afficher plus d'appariements ↓"
+    },
+    "simulate_match_title": {
+        "it": "🔮 Simula Partita",
+        "en": "🔮 Simulate Match",
+        "es": "🔮 Simular partido",
+        "de": "🔮 Spiel simulieren",
+        "fr": "🔮 Simuler le match"
+    },
+    "simulate_match_desc": {
+        "it": "Prevedi l'impatto ELO prima di giocare — nessun dato viene salvato.",
+        "en": "Predict ELO impact before playing — no data is saved.",
+        "es": "Predice el impacto del ELO antes de jugar — no se guardan datos.",
+        "de": "Sagen Sie den ELO-Einfluss vor dem Spielen voraus — es werden keine Daten gespeichert.",
+        "fr": "Prédisez l'impact ELO avant de jouer — aucune donnée n'est enregistrée."
+    },
+    "player_a": {
+        "it": "Giocatore A",
+        "en": "Player A",
+        "es": "Jugador A",
+        "de": "Spieler A",
+        "fr": "Joueur A"
+    },
+    "select": {
+        "it": "— Seleziona —",
+        "en": "— Select —",
+        "es": "— Seleccionar —",
+        "de": "— Auswählen —",
+        "fr": "— Sélectionner —"
+    },
+    "player_b": {
+        "it": "Giocatore B",
+        "en": "Player B",
+        "es": "Jugador B",
+        "de": "Spieler B",
+        "fr": "Joueur B"
+    },
+    "who_wins": {
+        "it": "Chi vince?",
+        "en": "Who wins?",
+        "es": "¿Quién gana?",
+        "de": "Wer gewinnt?",
+        "fr": "Qui gagne ?"
+    },
+    "draw": {
+        "it": "Pari",
+        "en": "Draw",
+        "es": "Empate",
+        "de": "Unentschieden",
+        "fr": "Égalité"
+    },
+    "calculate": {
+        "it": "⚡ Calcola",
+        "en": "⚡ Calculate",
+        "es": "⚡ Calcular",
+        "de": "⚡ Berechnen",
+        "fr": "⚡ Calculer"
+    },
+    "reset": {
+        "it": "Reset",
+        "en": "Reset",
+        "es": "Restablecer",
+        "de": "Zurücksetzen",
+        "fr": "Réinitialiser"
+    },
+    "prob_a": {
+        "it": "Prob. A:",
+        "en": "Prob. A:",
+        "es": "Prob. A:",
+        "de": "Wahrsch. A:",
+        "fr": "Prob. A:"
+    },
+    "export_json_title": {
+        "it": "📦 Export JSON",
+        "en": "📦 JSON Export",
+        "es": "📦 Exportar JSON",
+        "de": "📦 JSON-Export",
+        "fr": "📦 Export JSON"
+    },
+    "export_json_desc": {
+        "it": "Payload pronto per integrazione backend/frontend con ranking ed accoppiamenti.",
+        "en": "Ready-to-use payload for backend/frontend integration with rankings and pairings.",
+        "es": "Payload listo para usar en la integración de backend/frontend con clasificaciones y emparejamientos.",
+        "de": "Einsatzbereiter Payload für Backend-/Frontend-Integration mit Rankings und Paarungen.",
+        "fr": "Charge utile prête à l'emploi pour l'intégration backend/frontend avec classements et appariements."
+    },
+    "close_preview": {
+        "it": "Chiudi preview",
+        "en": "Close preview",
+        "es": "Cerrar vista previa",
+        "de": "Vorschau schließen",
+        "fr": "Fermer l'aperçu"
+    },
+    "generate_json": {
+        "it": "Genera JSON",
+        "en": "Generate JSON",
+        "es": "Generar JSON",
+        "de": "JSON generieren",
+        "fr": "Générer JSON"
+    },
+    "download_file": {
+        "it": "⬇ Scarica file",
+        "en": "⬇ Download file",
+        "es": "⬇ Descargar archivo",
+        "de": "⬇ Datei herunterladen",
+        "fr": "⬇ Télécharger le fichier"
+    },
+    "no_matches_for_selected_round": {
+        "it": "Nessuna partita per il round selezionato",
+        "en": "No matches for the selected round",
+        "es": "No hay partidos para la ronda seleccionada",
+        "de": "Keine Spiele für die ausgewählte Runde",
+        "fr": "Aucun match pour le tour sélectionné"
+    },
+    "match_not_completed": {
+        "it": "La partita non è ancora conclusa!",
+        "en": "The match is not yet completed!",
+        "es": "¡El partido aún no ha concluido!",
+        "de": "Die Partie ist noch nicht beendet!",
+        "fr": "Le match n'est pas encore terminé !"
+    },
+    "select_both_players": {
+        "it": "Seleziona entrambi i giocatori!",
+        "en": "Select both players!",
+        "es": "¡Selecciona a ambos jugadores!",
+        "de": "Wähle beide Spieler aus!",
+        "fr": "Sélectionnez les deux joueurs !"
     }
 }

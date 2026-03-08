@@ -6,6 +6,8 @@ import {
     ViewChild
 } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { TranslatePipe } from '../../utils/translate.pipe';
+import { TranslationService } from '../../../services/translation.service';
 import { IRankingItem } from '../../../services/data.service';
 import {
     ChartComponent,
@@ -43,7 +45,7 @@ const CHART_COLORS = [
 @Component({
     selector: 'app-elo-chart',
     standalone: true,
-    imports: [CommonModule, NgApexchartsModule],
+    imports: [CommonModule, NgApexchartsModule, TranslatePipe],
     providers: [DatePipe],
     templateUrl: './elo-chart.component.html',
     styleUrl: './elo-chart.component.scss'
@@ -56,7 +58,7 @@ export class EloChartComponent implements OnChanges {
     public players: IRankingItem[] = [];
     public hasData = false;
 
-    constructor(private datePipe: DatePipe) {
+    constructor(private datePipe: DatePipe, private translationService: TranslationService) {
         this.initEmptyChart();
     }
 
@@ -188,6 +190,7 @@ export class EloChartComponent implements OnChanges {
 
         const colors = allPlayers.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]);
         const pipe = this.datePipe;
+        const tService = this.translationService;
 
         const formatBadge = (str: string) => str.toLowerCase() === 'w' ? 'w' : str.toLowerCase() === 'l' ? 'l' : 'd';
         const renderForm = (form: string[]) => form.length ? form.map(f => `<span class="badge ${formatBadge(f)}">${f}</span>`).join('') : '<span style="opacity:0.5">-</span>';
@@ -219,7 +222,7 @@ export class EloChartComponent implements OnChanges {
                                     <div class="tt-score ${dot}">${val}</div>
                                 </div>
                                 <div class="tt-form">
-                                    <span>Last</span> ${renderForm(form)}
+                                    <span>${tService.translate('last_form')}</span> ${renderForm(form)}
                                 </div>
                             </div>`;
                     }).join('');
