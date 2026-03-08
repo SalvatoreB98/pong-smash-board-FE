@@ -2517,7 +2517,7 @@
         "de": "Wähle beide Spieler aus!",
         "fr": "Sélectionnez les deux joueurs !"
     },
-    "match_calendar_title": {
+    "match_calendar": {
         "it": "Calendario Partite",
         "en": "Match Calendar",
         "es": "Calendario de Partidos",
