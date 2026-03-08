@@ -1,11 +1,14 @@
+@use 'sass:color';
+@use '../../../style/variables.scss' as *;
+
 :host {
   display: block;
 }
 
-
 .group-knockout-wrapper {
   display: flex;
   flex-direction: column;
+  gap: 2.5rem;
 }
 
 .board-section {
@@ -14,39 +17,95 @@
   gap: 1.5rem;
 }
 
-.finals-section {
+.elimination-section {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.finals-section__title {
+.elimination-section__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.elimination-section__title {
   font-size: 1.5rem;
   font-weight: 600;
+  margin: 0;
+}
+
+.elimination-section__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 999px;
+  background: $orange;
+  color: #0f1014;
+  border: none;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.elimination-section__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  background: rgba($orange, 0.4);
+  transform: none;
+}
+
+.elimination-section__button:not(:disabled):hover {
+  background: color.adjust($orange, $lightness: 4%);
+  transform: translateY(-1px);
+}
+
+.elimination-section__hint {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.elimination-section__loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+
+.elimination-section__spinner {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: $orange;
+  animation: elimination-spinner 0.8s linear infinite;
 }
 
 .no-qualified {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.buttons-home-matches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  max-width: 1000px;
-  margin: auto;
-  p {
-    color: rgb(141, 142, 142);
+@keyframes elimination-spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
-.buttons-home-matches {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-@media screen and (max-width: 62.5em) {
-  .buttons-home-matches {
+@media (max-width: 48rem) {
+  .elimination-section__header {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .elimination-section__button {
+    width: 100%;
   }
 }
