@@ -1,0 +1,415 @@
+// styles
+
+// ──────────────────────────────────────────────
+// ROOT LAYOUT
+// ──────────────────────────────────────────────
+.cal-root {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #000000;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+// ──────────────────────────────────────────────
+// LEFT SIDEBAR
+// ──────────────────────────────────────────────
+.cal-sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: #252526;
+  border-right: 1px solid #333;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+// ─── Mini Month ───
+.mini-month {
+  padding: 0.75rem 0.5rem 0;
+}
+
+.mini-month__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.mini-month__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #ccc;
+}
+
+.mini-month__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  button {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    padding: 0 4px;
+    font-size: 0.65rem;
+    line-height: 1.1;
+    &:hover { color: #fff; }
+  }
+}
+
+.mini-month__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+
+.mini-day-name {
+  font-size: 0.65rem;
+  text-align: center;
+  color: #666;
+  padding: 2px 0;
+}
+
+.mini-cell {
+  font-size: 0.72rem;
+  text-align: center;
+  padding: 3px 1px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #bbb;
+  transition: background 0.15s;
+
+  &:hover { background: #3a3a3a; }
+  &.other-month { opacity: 0.35; }
+  &.today { color: #fff; font-weight: 700; background: #4f6bed; border-radius: 50%; }
+  &.selected { background: rgba(79, 107, 237, 0.35); border-radius: 50%; }
+}
+
+// ─── Sidebar Sections ───
+.sidebar-section {
+  padding: 0.6rem 0.75rem 0.2rem;
+}
+
+.sidebar-section__title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: #666;
+  margin-bottom: 0.4rem;
+}
+
+.sidebar-cal-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+}
+
+.sidebar-cal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #4f6bed;
+  flex-shrink: 0;
+}
+
+// ─── Unscheduled Pool ───
+.unscheduled-pool {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-height: 30px;
+}
+
+.pool-card {
+  background: #4f6bed22;
+  border: 1px solid #4f6bed55;
+  border-left: 3px solid #4f6bed;
+  border-radius: 4px;
+  padding: 0.4rem 0.5rem;
+  cursor: grab;
+  font-size: 0.75rem;
+
+  &:active { cursor: grabbing; }
+
+  .pool-card__vs { font-weight: 600; }
+  small { color: #888; }
+}
+
+// ──────────────────────────────────────────────
+// MAIN AREA
+// ──────────────────────────────────────────────
+.cal-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+// ─── Toolbar ───
+.cal-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: #1f1f1f;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.toolbar-btn {
+  background: transparent;
+  border: 1px solid #444;
+  color: #ccc;
+  border-radius: 4px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  &:hover { background: #333; color: #fff; }
+}
+
+.today-btn {
+  border-color: #4f6bed;
+  color: #9cb0f4;
+  &:hover { background: #4f6bed33; }
+}
+
+.icon-btn { padding: 0.3rem 0.6rem; }
+
+.toolbar-date {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #e0e0e0;
+  margin-left: 0.3rem;
+}
+
+.toolbar-spacer { flex: 1; }
+
+.back-btn {
+  font-size: 0.78rem;
+  color: #888;
+  &:hover { color: #fff; }
+}
+
+// ─── Day Column Header ───
+.cal-day-header {
+  display: flex;
+  padding: 0;
+  border-bottom: 1px solid #2e2e2e;
+  flex-shrink: 0;
+}
+
+.time-gutter {
+  width: 52px;
+  min-width: 52px;
+  flex-shrink: 0;
+}
+
+.allday-label {
+  font-size: 0.65rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+}
+
+.day-col-header {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.day-col-header__num {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  color: #ccc;
+  &.today {
+    background: #4f6bed;
+    color: #fff;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }
+}
+
+.day-col-header__name {
+  font-size: 0.8rem;
+  color: #888;
+  text-transform: uppercase;
+}
+
+// ─── Scrollable Grid ───
+.cal-scroll {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+// ─── All-Day Row ───
+.allday-row {
+  display: flex;
+  border-bottom: 1px solid #2e2e2e;
+  min-height: 30px;
+}
+
+.allday-area {
+  flex: 1;
+  min-height: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+
+  &.cdk-drop-list-dragging { background: rgba(79,107,237,0.06); }
+}
+
+// ─── Hour Grid ───
+.hour-grid {
+  display: flex;
+  position: relative;
+}
+
+.hour-column {
+  width: 52px;
+  min-width: 52px;
+  flex-shrink: 0;
+}
+
+.hour-label {
+  height: 60px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-right: 8px;
+  padding-top: 0;
+
+  span {
+    font-size: 0.65rem;
+    color: #555;
+    transform: translateY(-0.45em);
+    display: block;
+  }
+}
+
+.day-column {
+  flex: 1;
+  border-left: 1px solid #2e2e2e;
+  position: relative;
+}
+
+.hour-cell {
+  height: 60px;
+  border-bottom: 1px solid #2a2a2a;
+  position: relative;
+  transition: background 0.12s;
+
+  &:nth-child(odd) { background: transparent; }
+  &:nth-child(even) { background: rgba(255,255,255,0.01); }
+  &.cdk-drop-list-dragging { background: rgba(79,107,237,0.08); }
+
+  // half-hour tick
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    right: 0;
+    border-bottom: 1px dashed #252525;
+    pointer-events: none;
+  }
+}
+
+// ─── Calendar Event ───
+.cal-event {
+  position: relative;
+  background: #4f6bed;
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  cursor: grab;
+  overflow: hidden;
+  font-size: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  border-left: 3px solid #7b9bf8;
+  z-index: 2;
+  margin: 1px 2px;
+  
+  &:active { cursor: grabbing; }
+
+  &__time { font-size: 0.65rem; color: rgba(255,255,255,0.7); }
+  &__title { font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+
+.allday-event {
+  height: auto !important;
+  width: 100%;
+}
+
+// ─── Now Line ───
+.now-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #e05252;
+  z-index: 10;
+  pointer-events: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #e05252;
+  }
+}
+
+// ─── Drag UI ───
+.drag-placeholder {
+  height: 56px;
+  background: rgba(79,107,237,0.12);
+  border: 2px dashed #4f6bed55;
+  border-radius: 4px;
+  margin: 1px 2px;
+}
+
+.cdk-drag-preview {
+  background: #4f6bed;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  font-size: 0.78rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  border-left: 3px solid #7b9bf8;
+}
+
+.cdk-drag-animating {
+  transition: transform 200ms cubic-bezier(0,0,.2,1);
+}
+
+// ─── Responsiveness ───
+@media (max-width: 700px) {
+  .cal-sidebar { width: 0; min-width: 0; overflow: hidden; }
+  .cal-root { flex-direction: column; }
+}

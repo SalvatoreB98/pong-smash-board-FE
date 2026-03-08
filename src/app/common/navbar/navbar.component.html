@@ -22,6 +22,11 @@
                     <span>ELO</span>
                 </a>
 
+                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async) && activeCompetition?.id" [routerLink]="['/calendar', activeCompetition?.id]" class="button-navbar" routerLinkActive="active" title="Match Calendar">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span class="ms-1">{{ 'match_calendar' | translate }}</span>
+                </a>
+
                 <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/profile" class="button-navbar" routerLinkActive="active">
                     <span>{{"profile" | translate}}</span>
                 </a>
@@ -47,6 +52,9 @@
                             </li>
                             <li class="clickable">
                                 <a routerLink="/elo"> ELO </a>
+                            </li>
+                            <li class="clickable" *ngIf="activeCompetition?.id">
+                                <a [routerLink]="['/calendar', activeCompetition?.id]">📅 {{ 'match_calendar' | translate }}</a>
                             </li>
                             <li class="clickable" style="color: #c76360;">
                                   <a (click)="logout()">{{ 'logout' | translate }}</a>

@@ -15,6 +15,11 @@
                 <i class="fa-solid fa-bolt"></i>
             </a>
         </div>
+        <div class="bottom-navbar-item" *ngIf="activeCompetitionId">
+            <a [routerLink]="['/calendar', activeCompetitionId]" routerLinkActive="active" title="Match Calendar">
+                <i class="fa-regular fa-calendar-days"></i>
+            </a>
+        </div>
         <div class="bottom-navbar-item">
             <a routerLink="/profile" routerLinkActive="active">
                 <i class="fa-solid fa-user"></i>

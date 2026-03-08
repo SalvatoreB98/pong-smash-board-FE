@@ -1,0 +1,136 @@
+<div class="wrapper">
+<div class="cal-root">
+
+  <!-- ── LEFT SIDEBAR ── -->
+  <aside class="cal-sidebar">
+    <!-- mini month picker -->
+    <div class="mini-month">
+      <div class="mini-month__header">
+        <span class="mini-month__label">{{ miniMonthLabel }}</span>
+        <div class="mini-month__nav">
+          <button (click)="miniPrev()"><i class="fa fa-chevron-up"></i></button>
+          <button (click)="miniNext()"><i class="fa fa-chevron-down"></i></button>
+        </div>
+      </div>
+      <div class="mini-month__grid">
+        <span class="mini-day-name" *ngFor="let d of dayNames">{{ d }}</span>
+        <span *ngFor="let cell of miniCells"
+              class="mini-cell"
+              [class.other-month]="!cell.thisMonth"
+              [class.today]="cell.isToday"
+              [class.selected]="cell.isSelected"
+              (click)="selectDay(cell.date)">
+          {{ cell.date.getDate() }}
+        </span>
+      </div>
+    </div>
+
+    <!-- competition label -->
+    <div class="sidebar-section" *ngIf="competition">
+      <div class="sidebar-section__title">Calendari</div>
+      <div class="sidebar-cal-item">
+        <span class="sidebar-cal-dot"></span>
+        <span>{{ competition.name }}</span>
+      </div>
+    </div>
+
+    <!-- unscheduled pool -->
+    <div class="sidebar-section" *ngIf="unscheduledMatches.length > 0">
+      <div class="sidebar-section__title">Da programmare</div>
+      <div cdkDropList id="unscheduled-list"
+           [cdkDropListData]="unscheduledMatches"
+           [cdkDropListConnectedTo]="connectedHourIds"
+           (cdkDropListDropped)="drop($event)"
+           class="unscheduled-pool">
+        <div class="pool-card" *ngFor="let m of unscheduledMatches" cdkDrag>
+          <div class="pool-card__vs">{{ m.player1_name }} <span>vs</span> {{ m.player2_name }}</div>
+          <small *ngIf="m.roundLabel">{{ m.roundLabel }}</small>
+          <div *cdkDragPlaceholder class="drag-placeholder"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section" *ngIf="unscheduledMatches.length === 0 && allScheduledMatches.length > 0">
+      <div class="sidebar-section__title">Da programmare</div>
+      <small style="opacity:.5;padding:0.5rem 0;display:block">Tutte le partite sono programmate ✓</small>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="cal-main">
+
+    <!-- top toolbar -->
+    <div class="cal-toolbar">
+      <button class="toolbar-btn today-btn" (click)="goToToday()">Oggi</button>
+      <button class="toolbar-btn icon-btn" (click)="prevDay()"><i class="fa fa-chevron-left"></i></button>
+      <button class="toolbar-btn icon-btn" (click)="nextDay()"><i class="fa fa-chevron-right"></i></button>
+      <span class="toolbar-date">{{ selectedDayLabel }}</span>
+      <div class="toolbar-spacer"></div>
+      <button class="toolbar-btn back-btn" (click)="goBack()">
+        <i class="fa fa-arrow-left"></i> Indietro
+      </button>
+    </div>
+
+    <!-- day header -->
+    <div class="cal-day-header">
+      <div class="time-gutter"></div>
+      <div class="day-col-header">
+        <span class="day-col-header__num" [class.today]="isToday(selectedDay)">{{ selectedDay.getDate() }}</span>
+        <span class="day-col-header__name">{{ getDayName(selectedDay) }}</span>
+      </div>
+    </div>
+
+    <!-- scrollable hour grid -->
+    <div class="cal-scroll" #calScroll>
+
+      <!-- all-day row (unscheduled drop target) -->
+      <div class="allday-row">
+        <div class="time-gutter allday-label">tutto il giorno</div>
+        <div cdkDropList id="allday-drop"
+             [cdkDropListData]="alldayMatches"
+             [cdkDropListConnectedTo]="connectedHourIds"
+             (cdkDropListDropped)="drop($event)"
+             class="allday-area">
+          <div class="cal-event allday-event" *ngFor="let m of alldayMatches" cdkDrag>
+            {{ m.player1_name }} vs {{ m.player2_name }}
+            <div *cdkDragPlaceholder class="drag-placeholder"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- hour rows -->
+      <div class="hour-grid">
+        <div class="hour-column">
+          <div class="hour-label" *ngFor="let h of hours">
+            <span>{{ h === 0 ? '' : (h + ':00') }}</span>
+          </div>
+        </div>
+        <div class="day-column">
+          <ng-container *ngFor="let h of hours; let hi = index">
+            <div class="hour-cell"
+                 cdkDropList
+                 [id]="'hour-drop-' + hi"
+                 [cdkDropListData]="getMatchesForHour(h)"
+                 [cdkDropListConnectedTo]="connectedHourIds"
+                 (cdkDropListDropped)="dropOnHour($event, h)">
+              <ng-container *ngFor="let m of getMatchesForHour(h)">
+                <div class="cal-event" cdkDrag
+                     [style.height.px]="eventHeight"
+                     (click)="onEventClick(m)">
+                  <div class="cal-event__time">{{ formatDate(m.date) }}</div>
+                  <div class="cal-event__title">{{ m.player1_name }} vs {{ m.player2_name }}</div>
+                  <div *cdkDragPlaceholder class="drag-placeholder"></div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+        <!-- current time line -->
+        <div class="now-line" [style.top.px]="nowLineTop" *ngIf="isToday(selectedDay)"></div>
+      </div>
+
+    </div><!-- /cal-scroll -->
+  </div><!-- /cal-main -->
+</div>
+
+</div>

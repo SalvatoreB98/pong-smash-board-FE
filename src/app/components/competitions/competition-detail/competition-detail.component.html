@@ -83,6 +83,12 @@
           </span>
           <i class="fa-solid fa-table-tennis-paddle-ball ms-2"></i>
         </button>
+        <button class="button-primary-ping flex-grow-1" id="calendar-matches-button" (click)="goToCalendar(competition?.id)">
+          <span>
+            {{ "match_calendar" | translate }}
+          </span>
+          <i class="fa-regular fa-calendar-days ms-2"></i>
+        </button>
       </ng-container>
 
       <button type="button" class="button-secondary-ping secondary" id="add-players-button"

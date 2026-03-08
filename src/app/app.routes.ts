@@ -11,6 +11,7 @@ import { ProfileComponent } from './components/profile/profile/profile.component
 import { CompleteProfileComponent } from './components/profile/complete-profile/complete-profile.component';
 import { CompetitionViewComponent } from './components/competition-view/competition-view.component';
 import { EloRankingPanelComponent } from './components/elo-ranking-panel/elo-ranking-panel.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
 
 export const routes: Routes = [
   { path: 'landing', component: LandingComponent },
@@ -23,5 +24,6 @@ export const routes: Routes = [
   { path: 'competitions', component: CompetitionsComponent, canActivate: [AuthGuard], data: { title: 'competitions' } },
   { path: 'elo', component: EloRankingPanelComponent, canActivate: [AuthGuard, FlowGuard], data: { title: 'elo_ranking' } },
   { path: 'competition/:id', component: CompetitionViewComponent, data: { title: 'competition_details' } },
+  { path: 'calendar/:id', component: CalendarComponent, canActivate: [AuthGuard], data: { title: 'match_calendar' } },
   { path: '**', redirectTo: 'home-page', pathMatch: 'full' }
 ];

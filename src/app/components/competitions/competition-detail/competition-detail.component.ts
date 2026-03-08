@@ -187,4 +187,10 @@ export class CompetitionDetailComponent implements OnChanges, AfterViewInit, OnD
       this.router.navigate(['/home']);
     });
   }
+
+  goToCalendar(compId: number | string = '') {
+    this.competitionService.updateActiveCompetition(compId).subscribe(() => {
+      this.router.navigate(['/calendar', compId]);
+    });
+  }
 }

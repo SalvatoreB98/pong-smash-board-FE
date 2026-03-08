@@ -2516,5 +2516,12 @@
         "es": "¡Selecciona a ambos jugadores!",
         "de": "Wähle beide Spieler aus!",
         "fr": "Sélectionnez les deux joueurs !"
+    },
+    "match_calendar_title": {
+        "it": "Calendario Partite",
+        "en": "Match Calendar",
+        "es": "Calendario de Partidos",
+        "de": "Spielkalender",
+        "fr": "Calendrier des matchs"
     }
 }
