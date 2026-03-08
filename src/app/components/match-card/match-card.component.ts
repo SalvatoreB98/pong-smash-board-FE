@@ -39,7 +39,7 @@ export interface MatchCardPlayerSlot {
   name?: string | null;
   nickname?: string | null;
   displayName?: string | null;
-  avatarUrl?: string | null;
+  avatarUrl?: string | null | undefined;
   score?: number | string | null;
   isWinner?: boolean;
   state?: MatchCardPlayerState;
@@ -210,7 +210,7 @@ export class MatchCardComponent {
         });
       }
     };
-    
+
     this.onAction(correctAction, event);
   }
 }

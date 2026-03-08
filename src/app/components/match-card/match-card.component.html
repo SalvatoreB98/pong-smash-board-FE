@@ -81,7 +81,7 @@
 
       <div class="match-card__players" [ngClass]="{ 'show-versus': showVersus }">
         <div *ngIf="getPlayer(0)" class="match-card__player" [class.winner]="isWinner(getPlayer(0))">
-          <img class="match-card__avatar" [src]="getPlayer(0)?.avatarUrl || defaultAvatar" alt=""
+          <img class="match-card__avatar" [src]="getPlayer(0).avatarUrl || defaultAvatar" alt=""
             (error)="handleImageError($event)" />
           <span class="match-card__name">{{ resolveDisplayName(getPlayer(0)) }}</span>
         </div>
@@ -89,7 +89,7 @@
         <span class="match-card__vs" *ngIf="!showScore && showVersus">{{ versusLabel }}</span>
 
         <div *ngIf="getPlayer(1)" class="match-card__player" [class.winner]="isWinner(getPlayer(1))">
-          <img class="match-card__avatar" [src]="getPlayer(1)?.avatarUrl || defaultAvatar" alt=""
+          <img class="match-card__avatar" [src]="getPlayer(1).avatarUrl || defaultAvatar" alt=""
             (error)="handleImageError($event)" />
           <span class="match-card__name">{{ resolveDisplayName(getPlayer(1)) }}</span>
         </div>

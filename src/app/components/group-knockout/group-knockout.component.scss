@@ -38,11 +38,10 @@
   p {
     color: rgb(141, 142, 142);
   }
-}
-
-.buttons-home-matches {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  @media screen and (min-width: 1000px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media screen and (max-width: 62.5em) {

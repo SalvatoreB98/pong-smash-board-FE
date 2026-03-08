@@ -10,11 +10,31 @@
   gap: 1.5em;
   padding-top: 1em;
   padding-bottom: 5em;
+
+  @media screen and (min-width: 1500px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    >*:nth-child(1) {
+      grid-column: 1 / span 2;
+    }
+  }
 }
 
 .buttons-home-matches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: auto;
+
   p {
     color: rgb(141, 142, 142);
+  }
+
+  @media screen and (min-width: 1000px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }
 

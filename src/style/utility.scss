@@ -45,14 +45,20 @@ label.field {
 
 .wrapper {
     margin: auto;
-    margin-top: calc($navbar-height + 1rem); /* slightly more spacing */
+    margin-top: calc($navbar-height + 1rem);
+    /* slightly more spacing */
     padding: 2rem 1.25rem 6rem;
     max-width: 1000px;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
     @media screen and (max-width: 600px) {
         padding-top: 0;
+    }
+
+    @media screen and (min-width: 1200px) {
+        max-width: none;
     }
 }
 
