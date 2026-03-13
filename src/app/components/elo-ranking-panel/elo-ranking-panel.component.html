@@ -35,7 +35,7 @@
             <span class="player-name">{{ player.nickname || player.name }}</span>
             <span class="stat">{{ player.played }}</span>
             <span class="stat">{{ player.wins }}</span>
-            <span class="stat">{{ player.winrate?.toFixed(1) }}%</span>
+            <span class="stat">{{ player.winrate.toFixed(1) }}%</span>
             <span class="elo-badge">
               {{ ratingOf(player) }}
               <span class="elo-badge__pts">pt</span>
@@ -135,7 +135,7 @@
               {{ 'draw' | translate }}
             </button>
             <button class="btn-winner" [class.active]="simWinner === 'B'" (click)="simWinner = 'B'">
-              {{ simPlayerB?.nickname || simPlayerB?.name }}
+              {{ simPlayerB.nickname || simPlayerB.name }}
             </button>
           </div>
         </div>
@@ -170,31 +170,11 @@
             <div class="sim-result__delta" [class]="deltaClass(simResult.deltaB)">
               {{ deltaSign(simResult.deltaB) }}
             </div>
-            <div class="sim-result__new">→ {{ simResult.newB }} pt</div>
+            <div class="sim-result__new">→ {{ simResult?.newB }} pt</div>
           </div>
         </div>
       </section>
-
-      <!-- ── JSON EXPORT ────────────────────────────────── -->
-      <section class="elo-section">
-        <h2 class="elo-section__title">{{ 'export_json_title' | translate }}</h2>
-        <p class="elo-section__desc">
-          {{ 'export_json_desc' | translate }}
-        </p>
-        <div class="export-actions">
-          <button class="btn-primary" (click)="toggleJsonPreview()">
-            {{ (showJsonPreview ? 'close_preview' : 'generate_json') | translate }}
-          </button>
-          <button class="btn-ghost" *ngIf="jsonPreview" (click)="downloadJson()">
-            {{ 'download_file' | translate }}
-          </button>
-        </div>
-        <pre class="json-preview" *ngIf="showJsonPreview && jsonPreview">{{ jsonPreview }}</pre>
-      </section>
-
     </ng-container>
-
     <app-bottom-navbar></app-bottom-navbar>
   </div>
-
 </div>
