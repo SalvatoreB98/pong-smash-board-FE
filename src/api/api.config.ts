@@ -20,6 +20,7 @@ export const API_PATHS = {
   getCompetitionView: '/api/get-competition-view',
   getKnockouts: '/api/get-knockouts',
   setMatchDate: '/api/set-match-date',
+  getCalendar: '/api/get-calendar',
 }
 
 export const API_AUTH_CONFIG: Record<string, { needsAuth: boolean; methods?: string[] }> = {
@@ -41,6 +42,7 @@ export const API_AUTH_CONFIG: Record<string, { needsAuth: boolean; methods?: str
   [API_PATHS.getCompetitionView]: { needsAuth: false },
   [API_PATHS.getKnockouts]: { needsAuth: false },
   [API_PATHS.setMatchDate]: { needsAuth: true, methods: ['POST'] },
+  [API_PATHS.getCalendar]: { needsAuth: false },
 };
 
 export function findApiConfig(url: string, method: string) {
