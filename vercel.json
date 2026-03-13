@@ -1,7 +1,7 @@
 {
   "version": 2,
   "framework": "angular",
-  "installCommand": "npm install --legacy-peer-deps",
+  "installCommand": "npm install --include=dev --legacy-peer-deps",
   "buildCommand": "npm run build",
   "outputDirectory": "dist/pong-smash-board/browser"
 }
