@@ -39,6 +39,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   form: FormGroup = this.fb.group({
     nickname: new FormControl<string | null>('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]),
     avatar: this.fb.control<File | null>(null),
+    name: new FormControl<string | null>(''),
+    lastname: new FormControl<string | null>(''),
+    birth_date: new FormControl<string | null>(''),
+    racket_blade: new FormControl<string | null>(''),
+    racket_rubber_fh: new FormControl<string | null>(''),
+    racket_rubber_bh: new FormControl<string | null>(''),
+    play_style: new FormControl<string | null>(''),
+    description: new FormControl<string | null>('')
   });
 
   previewUrl: string | null = null;
@@ -54,8 +62,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
       const existingNick = state?.nickname ?? '';
       const existingImg = state?.image_url ?? null;
 
+      const name = state?.name ?? '';
+      const lastname = state?.lastname ?? '';
+      const birth_date = (state as any)?.birth_date ?? '';
+      const racket_blade = (state as any)?.racket_blade ?? '';
+      const racket_rubber_fh = (state as any)?.racket_rubber_fh ?? '';
+      const racket_rubber_bh = (state as any)?.racket_rubber_bh ?? '';
+      const play_style = (state as any)?.play_style ?? '';
+      const description = (state as any)?.description ?? '';
+
       if (existingNick && !this.form.get('nickname')?.value) {
-        this.form.get('nickname')?.setValue(existingNick);
+        this.form.patchValue({
+          nickname: existingNick,
+          name, lastname, birth_date, racket_blade, racket_rubber_fh, racket_rubber_bh, play_style, description
+        });
       }
       if (existingImg && !this.previewUrl) {
         this.currentImageUrl = existingImg;
@@ -143,6 +163,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     const nickname = (this.form.value.nickname || '').trim();
+    const name = (this.form.value.name || '').trim();
+    const lastname = (this.form.value.lastname || '').trim();
+    const birth_date = this.form.value.birth_date;
+    const racket_blade = (this.form.value.racket_blade || '').trim();
+    const racket_rubber_fh = (this.form.value.racket_rubber_fh || '').trim();
+    const racket_rubber_bh = (this.form.value.racket_rubber_bh || '').trim();
+    const play_style = (this.form.value.play_style || '').trim();
+    const description = (this.form.value.description || '').trim();
     const file: File | null = this.form.value.avatar ?? null;
 
     const button = this.resolveButton(event);
@@ -182,13 +210,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
       }
 
+      const payload = {
+        nickname, imageUrl, name, lastname, birth_date, racket_blade, racket_rubber_fh, racket_rubber_bh, play_style, description
+      };
+
       const response = await firstValueFrom(
-        this.http.post<UpdateProfileResponse>(API_PATHS.updateProfile, { nickname, imageUrl })
+        this.http.post<UpdateProfileResponse>(API_PATHS.updateProfile, payload)
       );
 
       this.userService.patchLocal({
         nickname: response.nickname,
         image_url: response.imageUrl ?? null,
+        name: (response as any).name ?? name,
+        lastname: (response as any).lastname ?? lastname,
+        birth_date: (response as any).birth_date ?? birth_date,
+        racket_blade: (response as any).racket_blade ?? racket_blade,
+        racket_rubber_fh: (response as any).racket_rubber_fh ?? racket_rubber_fh,
+        racket_rubber_bh: (response as any).racket_rubber_bh ?? racket_rubber_bh,
+        play_style: (response as any).play_style ?? play_style,
+        description: (response as any).description ?? description,
         state: response.state,
       });
 

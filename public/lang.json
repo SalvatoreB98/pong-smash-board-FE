@@ -2523,5 +2523,75 @@
         "es": "Calendario de Partidos",
         "de": "Spielkalender",
         "fr": "Calendrier des matchs"
+    },
+    "lastname": {
+        "it": "Cognome",
+        "en": "Last name",
+        "es": "Apellido",
+        "de": "Nachname",
+        "fr": "Nom de famille"
+    },
+    "birth_date": {
+        "it": "Data di nascita",
+        "en": "Birth date",
+        "es": "Fecha de nacimiento",
+        "de": "Geburtsdatum",
+        "fr": "Date de naissance"
+    },
+    "play_style": {
+        "it": "Stile di gioco",
+        "en": "Play style",
+        "es": "Estilo de juego",
+        "de": "Spielstil",
+        "fr": "Style de jeu"
+    },
+    "select_style": {
+        "it": "Seleziona stile",
+        "en": "Select style",
+        "es": "Seleccionar estilo",
+        "de": "Stil auswählen",
+        "fr": "Sélectionner un style"
+    },
+    "equipment": {
+        "it": "Equipaggiamento",
+        "en": "Equipment",
+        "es": "Equipamiento",
+        "de": "Ausrüstung",
+        "fr": "Équipement"
+    },
+    "racket_blade": {
+        "it": "Telaio racchetta",
+        "en": "Racket blade",
+        "es": "Madera de la raqueta",
+        "de": "Schlägerholz",
+        "fr": "Bois de raquette"
+    },
+    "rubber_fh": {
+        "it": "Gomma dritto",
+        "en": "Forehand rubber",
+        "es": "Goma de derecha",
+        "de": "Vorhandbelag",
+        "fr": "Revêtement coup droit"
+    },
+    "rubber_bh": {
+        "it": "Gomma rovescio",
+        "en": "Backhand rubber",
+        "es": "Goma de revés",
+        "de": "Rückhandbelag",
+        "fr": "Revêtement revers"
+    },
+    "about_me": {
+        "it": "Su di me",
+        "en": "About me",
+        "es": "Sobre mí",
+        "de": "Über mich",
+        "fr": "À propos de moi"
+    },
+    "describe_yourself": {
+        "it": "Descriviti...",
+        "en": "Describe yourself...",
+        "es": "Descríbete...",
+        "de": "Beschreibe dich...",
+        "fr": "Décrivez-vous..."
     }
 }

@@ -47,6 +47,12 @@ export interface IUserState {
   email: string;
   name: string | null;
   lastname: string | null;
+  birth_date?: string | null;
+  racket_blade?: string | null;
+  racket_rubber_fh?: string | null;
+  racket_rubber_bh?: string | null;
+  play_style?: string | null;
+  description?: string | null;
   competitions?: ICompetition[];
 }
 export interface IJoinCompetitionResponse {
