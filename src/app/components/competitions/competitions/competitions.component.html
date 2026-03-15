@@ -88,7 +88,7 @@
                                 </ng-template>
 
                                 <div class="container-action mt-3">
-                                    
+
                                     <button class="p-1" style="font-size: 0.75em;" type="button"
                                         (click)="goToCompetition(c.id)">
                                         {{'go_to_competition' | translate }}
@@ -153,7 +153,8 @@
     </app-modal>
 
     <app-modal [label]="'add_players'" *ngIf="modalService.isActiveModal(modalService.MODALS['ADD_PLAYERS'])"
-        [modalName]="modalService.MODALS['ADD_PLAYERS']" [preventDefaultClose]="true" (closeModalEvent)="onCloseAddPlayersModal()">
+        [modalName]="modalService.MODALS['ADD_PLAYERS']" [preventDefaultClose]="true"
+        (closeModalEvent)="onCloseAddPlayersModal()">
         <app-add-players-modal></app-add-players-modal>
     </app-modal>
 
@@ -177,7 +178,8 @@
 
     <app-modal [label]="' '" *ngIf="modalService.isActiveModal(modalService.MODALS['UNSAVED_PLAYERS'])"
         [modalName]="modalService.MODALS['UNSAVED_PLAYERS']" (closeModalEvent)="modalService.closeModal()">
-        <unsaved-players-confirm (confirmed)="onUnsavedPlayersAdd()" (cancelled)="onUnsavedPlayersCancel()"></unsaved-players-confirm>
+        <unsaved-players-confirm (confirmed)="onUnsavedPlayersAdd()"
+            (cancelled)="onUnsavedPlayersCancel()"></unsaved-players-confirm>
     </app-modal>
 
     <app-modal [label]="'are_you_sure'" *ngIf="modalService.isActiveModal(modalService.MODALS['ARE_YOU_SURE'])"

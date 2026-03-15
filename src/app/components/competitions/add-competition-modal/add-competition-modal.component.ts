@@ -118,36 +118,30 @@ export class AddCompetitionModalComponent {
   }
 
   private sendCompetition() {
-    if (this.competitionForm.invalid) return;
+    if (this.competitionForm.invalid || this.managementForm.invalid) return;
 
-    try {
-      const toYmd = (d: string | Date | null) =>
-        d ? new Date(d).toLocaleDateString("en-CA") : undefined; // → YYYY-MM-DD
+    const toYmd = (d: any) => d ? new Date(d).toLocaleDateString("en-CA") : undefined;
 
-      const formValue = this.competitionForm.value;
+    // Estrai i valori in modo esplicito
+    const { nameCtrl, typeCtrl, setsCtrl, pointsCtrl, startDate, endDate } = this.competitionForm.value;
+    const { managementCtrl, isPartOfCompetitionCtrl } = this.managementForm.value;
 
-      const payload = {
-        name: formValue.nameCtrl,
-        type: formValue.typeCtrl,            // "league" | "elimination" ...
-        bestOf: formValue.setsCtrl,        // es. 3/5/7
-        pointsTo: formValue.pointsCtrl,    // es. 11/21
-        startDate: toYmd(formValue.startDate) ?? undefined,
-        endDate: toYmd(formValue.endDate) ?? undefined,
-        management: this.managementForm.value.managementCtrl,
-        isPartOfCompetition: this.managementForm.value.isPartOfCompetitionCtrl,
-      };
+    const payload = {
+      name: nameCtrl,
+      type: typeCtrl,
+      bestOf: Number(setsCtrl), // Assicurati che siano numeri
+      pointsTo: Number(pointsCtrl),
+      startDate: toYmd(startDate),
+      endDate: toYmd(endDate),
+      management: managementCtrl,
+      isPartOfCompetition: !!isPartOfCompetitionCtrl, // Forza il cast a booleano
+    };
 
-      console.log('Saving competition...', payload);
-      console.log('Saving competition...', payload);
-      this.competitionService.addCompetition(payload).then((res) => {
-        console.log('Competition added:', res);
-        this.closeModal();
-      });
+    console.log('Payload inviato:', payload);
 
-    } catch (error) {
-      console.log(error)
-    } finally {
-    }
+    this.competitionService.addCompetition(payload)
+      .then(() => this.closeModal())
+      .catch(err => console.error('Errore:', err));
   }
 
   nextStep() {

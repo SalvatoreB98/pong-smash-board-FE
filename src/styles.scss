@@ -58,7 +58,66 @@
 }
 
 :where(.my-card,
-        h3, h4,
+    h3, h4,
+    .match-card,
+    .preview-card,
+    .feature-tile,
+    .form-card,
+    .player-card,
+    .other-card,
+    .insight-card,
+    .skeleton-card,
+    .match-card-placeholder,
+    .summary,
+    .comp) {
+    animation: motion-fade-in-up var(--motion-duration-medium) var(--motion-ease-out) both;
+    transition: transform var(--motion-duration-medium) var(--motion-ease-out),
+        box-shadow var(--motion-duration-medium) var(--motion-ease-out),
+        filter var(--motion-duration-medium) ease;
+    will-change: transform, box-shadow, filter;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+    :where(.my-card,
+        .match-card,
+        .preview-card,
+        .feature-tile,
+        .form-card,
+        .player-card,
+        .other-card,
+        .insight-card,
+        .skeleton-card,
+        .match-card-placeholder,
+        .summary,
+        .comp):hover {
+        transform: translate3d(0, -6px, 0);
+        box-shadow: var(--motion-shadow-subtle);
+    }
+}
+
+:where(.my-card,
+    .match-card,
+    .preview-card,
+    .feature-tile,
+    .form-card,
+    .player-card,
+    .other-card,
+    .insight-card,
+    .skeleton-card,
+    .match-card-placeholder,
+    .summary,
+    .comp):focus-visible {
+    transform: translate3d(0, -4px, 0);
+    box-shadow: var(--motion-shadow-strong);
+    outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    :where(h2, .motion-heading),
+    :where(h2, .motion-heading)::after,
+    :where(.my-card,
         .match-card,
         .preview-card,
         .feature-tile,
@@ -70,32 +129,24 @@
         .match-card-placeholder,
         .summary,
         .comp) {
-    animation: motion-fade-in-up var(--motion-duration-medium) var(--motion-ease-out) both;
-    transition: transform var(--motion-duration-medium) var(--motion-ease-out),
-        box-shadow var(--motion-duration-medium) var(--motion-ease-out),
-        filter var(--motion-duration-medium) ease;
-    will-change: transform, box-shadow, filter;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    :where(.my-card,
-            .match-card,
-            .preview-card,
-            .feature-tile,
-            .form-card,
-            .player-card,
-            .other-card,
-            .insight-card,
-            .skeleton-card,
-            .match-card-placeholder,
-            .summary,
-            .comp):hover {
-        transform: translate3d(0, -6px, 0);
-        box-shadow: var(--motion-shadow-subtle);
+        animation-duration: 1ms;
+        animation-iteration-count: 1;
+        transition-duration: 1ms;
     }
-}
 
-:where(.my-card,
+    :where(.my-card,
+        .match-card,
+        .preview-card,
+        .feature-tile,
+        .form-card,
+        .player-card,
+        .other-card,
+        .insight-card,
+        .skeleton-card,
+        .match-card-placeholder,
+        .summary,
+        .comp):hover,
+    :where(.my-card,
         .match-card,
         .preview-card,
         .feature-tile,
@@ -107,55 +158,6 @@
         .match-card-placeholder,
         .summary,
         .comp):focus-visible {
-    transform: translate3d(0, -4px, 0);
-    box-shadow: var(--motion-shadow-strong);
-    outline: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    :where(h2, .motion-heading),
-    :where(h2, .motion-heading)::after,
-    :where(.my-card,
-            .match-card,
-            .preview-card,
-            .feature-tile,
-            .form-card,
-            .player-card,
-            .other-card,
-            .insight-card,
-            .skeleton-card,
-            .match-card-placeholder,
-            .summary,
-            .comp) {
-        animation-duration: 1ms;
-        animation-iteration-count: 1;
-        transition-duration: 1ms;
-    }
-
-    :where(.my-card,
-            .match-card,
-            .preview-card,
-            .feature-tile,
-            .form-card,
-            .player-card,
-            .other-card,
-            .insight-card,
-            .skeleton-card,
-            .match-card-placeholder,
-            .summary,
-            .comp):hover,
-    :where(.my-card,
-            .match-card,
-            .preview-card,
-            .feature-tile,
-            .form-card,
-            .player-card,
-            .other-card,
-            .insight-card,
-            .skeleton-card,
-            .match-card-placeholder,
-            .summary,
-            .comp):focus-visible {
         transform: none;
         box-shadow: none;
         outline: 2px solid rgba(110, 150, 255, 0.55);
@@ -168,6 +170,7 @@
         font-size: 0.9em;
     }
 }
+
 @media (max-width: 300px) {
     body {
         font-size: 0.75em;
