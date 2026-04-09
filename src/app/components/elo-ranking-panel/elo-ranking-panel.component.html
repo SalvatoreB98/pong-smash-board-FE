@@ -19,7 +19,8 @@
             <span></span>
             <span>{{ 'player' | translate }}</span>
             <span [title]="'matches_played' | translate">{{ 'matches_played_short' | translate }}</span>
-            <span [title]="'wins' | translate">{{ 'vittorie' | translate }}</span>
+            <span [title]="'wins' | translate">{{ 'W' | translate }}</span>
+            <span [title]="'draws' | translate">{{ 'D' | translate }}</span>
             <span [title]="'winRate' | translate">WR%</span>
             <span>{{ 'elo_rating' | translate }}</span>
           </div>
@@ -40,13 +41,14 @@
               {{ ratingOf(player) }}
               <span class="elo-badge__pts">pt</span>
             </span>
+            <span class="stat">{{ player.draws || 0 }}</span>
           </div>
         </div>
       </section>
 
       <!-- ── CHART ─────────────────────────────────────── -->
       <section class="elo-section">
-          <app-elo-chart [rankings]="rankings"></app-elo-chart>
+        <app-elo-chart [rankings]="rankings"></app-elo-chart>
       </section>
 
       <!-- ── FAIR PLAY PAIRINGS ────────────────────────── -->
