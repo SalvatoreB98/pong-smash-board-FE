@@ -143,16 +143,14 @@ export class EloChartComponent implements OnChanges {
         this.hasData = true;
 
         // Funzione per calcolare la "forma" progressiva fino alla partita (ultime 5 giocate)
-        const calculateForms = (history: { date: string, elo: number }[]) => {
+        const calculateForms = (history: { date: string, elo: number, result?: string }[]) => {
             const forms: string[][] = [];
             let currentForm: string[] = [];
             for (let i = 0; i < history.length; i++) {
-                const prevElo = i === 0 ? 1000 : history[i - 1].elo;
-                let result = 'd';
-                if (history[i].elo > prevElo) result = 'w';
-                else if (history[i].elo < prevElo) result = 'l';
+                // Usa il risultato dal backend
+                let result = history[i].result || 'D';
 
-                currentForm.push(result);
+                currentForm.push(result.toUpperCase());
                 if (currentForm.length > 5) currentForm.shift();
                 forms.push([...currentForm]);
             }
@@ -216,25 +214,26 @@ export class EloChartComponent implements OnChanges {
                         const form = (playerTooltipForms[i] || [])[dataPointIndex] || [];
                         const dot = dotColors[i % dotColors.length];
                         return `
-                            <div class="tt-player">
-                                <div class="tt-top">
-                                    <div class="tt-name"><div class="dot ${dot}"></div>${name}</div>
-                                    <div class="tt-score ${dot}">${val}</div>
-                                </div>
-                                <div class="tt-form">
-                                    <span>${tService.translate('last_form')}</span> ${renderForm(form)}
-                                </div>
-                            </div>`;
+                        <div class="tt-player">
+                            <div class="tt-top">
+                                <div class="tt-name"><div class="dot ${dot}"></div>${name}</div>
+                                <div class="tt-score ${dot}">${val}</div>
+                            </div>
+                            <div class="tt-form">
+                                <span>${tService.translate('last_form')}</span> ${renderForm(form)}
+                            </div>
+                        </div>`;
                     }).join('');
 
                     return `
-                        <div class="custom-tooltip">
-                            <div class="tt-header">${dateFormatted}</div>
-                            ${playersHtml}
-                        </div>
-                    `;
+                    <div class="custom-tooltip">
+                        <div class="tt-header">${dateFormatted}</div>
+                        ${playersHtml}
+                    </div>
+                `;
                 }
             }
         };
     }
+
 }
