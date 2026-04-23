@@ -2,9 +2,11 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    DestroyRef,
     OnInit,
     inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
@@ -37,6 +39,7 @@ export class EloRankingPanelComponent implements OnInit {
     private userService = inject(UserService);
     private loaderService = inject(LoaderService);
     private cdr = inject(ChangeDetectorRef);
+    private destroyRef = inject(DestroyRef);
 
     // ── State ──────────────────────────────────────────────────────────────────
     isLoading = true;
@@ -63,6 +66,19 @@ export class EloRankingPanelComponent implements OnInit {
         const state = await firstValueFrom(this.userService.getState());
         this.competitionId = String(state?.active_competition_id ?? '');
         await this.load();
+
+        // Ricarica quando cambia la competizione attiva
+        this.userService.getState()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(async newState => {
+                const newId = String(newState?.active_competition_id ?? '');
+                if (newId && newId !== this.competitionId) {
+                    console.log('[EloRankingPanel] 🧹 Competition changed to', newId, '-> Clearing state and reloading');
+                    this.competitionId = newId;
+                    this.clearState();
+                    await this.load();
+                }
+            });
     }
 
     private async load() {
@@ -81,6 +97,19 @@ export class EloRankingPanelComponent implements OnInit {
             this.isLoading = false;
             this.cdr.markForCheck();
         }
+    }
+
+    private clearState() {
+        this.rankings = [];
+        this.pairings = [];
+        this.simPlayerAId = null;
+        this.simPlayerBId = null;
+        this.simResult = null;
+        this.simWinner = 'A';
+        this.jsonPreview = null;
+        this.showJsonPreview = false;
+        this.pairingLimit = 10;
+        this.cdr.markForCheck();
     }
 
     // ── Simulator ─────────────────────────────────────────────────────────────

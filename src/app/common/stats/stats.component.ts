@@ -58,6 +58,11 @@ export class StatsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['competitionId'] && !changes['competitionId'].firstChange) {
+      // Pulisci subito lo stato interno
+      this.standings = [];
+      this.headToHeadData = [];
+      this.players = [];
+      this.headToHeadSubject.next([]);
       this.refreshRanking();
     }
     if (changes['inputMatches']) {

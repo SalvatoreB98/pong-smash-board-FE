@@ -145,14 +145,20 @@ export class DataService {
     console.log('[DataService] ctor', this._id);
     this.userStateSub = this.userService.userState$().subscribe(state => {
       const competitionId = state?.active_competition_id ?? null;
-      if (competitionId == null) {
-        this.resetKnockoutCache();
-        return;
-      }
+      
+      const normalizedCurrentId = competitionId != null ? String(competitionId) : null;
+      const normalizedStoredId = this._activeCompetitionId != null ? String(this._activeCompetitionId) : null;
 
-      const numericId = Number(competitionId);
-      if (Number.isFinite(numericId) && this._knockoutCompetitionId !== null && this._knockoutCompetitionId !== numericId) {
-        this.resetKnockoutCache();
+      if (normalizedStoredId !== normalizedCurrentId) {
+        console.log('[DataService] 🧹 Active competition changed from', normalizedStoredId, 'to', normalizedCurrentId, '-> Clearing state!');
+        this._activeCompetitionId = normalizedCurrentId;
+        this._loaded = false;
+        this._groupsLoaded = false;
+        this._knockoutLoaded = false;
+        this._loadingPromise = undefined;
+        this._groupsLoadingPromise = undefined;
+        this._knockoutLoadingPromise = undefined;
+        this.resetData();
       }
     });
   }
@@ -325,6 +331,10 @@ export class DataService {
     this.playersSubject.next([]);
     this.monthlyWinRatesSubject.next({});
     this.resetKnockoutCache();
+
+    // Invalida anche la cache del ranking ELO
+    this.rankingService.clearAllCaches();
+    console.log('[DataService] 🗑️ resetData completo + ranking cache cleared');
   }
 
   private generateReturnObject(): MatchData {

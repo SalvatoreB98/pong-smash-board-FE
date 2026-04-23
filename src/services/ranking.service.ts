@@ -53,6 +53,12 @@ export class RankingService {
     }
   }
 
+  /** Svuota tutta la cache di tutte le competizioni */
+  clearAllCaches() {
+    this.fetcherMap.forEach(fetcher => fetcher.clear());
+    this.fetcherMap.clear();
+  }
+
   triggerRefresh() {
     this.refresh$.next();
   }

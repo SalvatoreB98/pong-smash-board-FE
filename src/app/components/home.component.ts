@@ -204,13 +204,26 @@ export class HomeComponent {
 
   private handleCompetitionChange(activeCompetition: ICompetition | null) {
     const previousCompetitionId = this.activeCompetition?.id ?? null;
+    const isChanged = String(previousCompetitionId ?? '') !== String(activeCompetition?.id ?? '');
     this.activeCompetition = activeCompetition;
     this.isEliminationMode = (activeCompetition?.type === 'elimination');
     this.isGroupKnockoutMode = (activeCompetition?.type === 'group_knockout');
 
+    if (isChanged) {
+      // Pulizia immediata UI per evitare dati "sporchi" della competizione precedente
+      this.matches = [];
+      this.matchesElimination = [];
+      this.rankings = [];
+      this.groups = [];
+      this.competitionQualifiedPlayers = [];
+      this.eliminationRounds = [];
+      console.log('[HomeComponent] 🧹 Competition changed, clearing local state');
+    }
+
     if ((this.isEliminationMode || this.isGroupKnockoutMode) && previousCompetitionId !== activeCompetition?.id) {
       this.requestKnockoutData(true);
-    } else {
+    } else if (!isChanged) {
+      // solo se non è cambiata, altrimenti sarà azzerata sopra
       this.groups = [];
       this.competitionQualifiedPlayers = [];
       this.eliminationRounds = [];
