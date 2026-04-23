@@ -213,11 +213,13 @@ export class EloChartComponent implements OnChanges {
                     const originalDateStr = sortedDates[dataPointIndex];
                     const dateFormatted = pipe.transform(new Date(originalDateStr), 'dd/MM/yyyy • H:mm') || '';
 
-                    const playersHtml = playerNames.map((name, i) => {
+                    const tooltipItems = playerNames.map((name, i) => {
                         const val = (series[i] || [])[dataPointIndex] ?? '—';
                         const form = (playerTooltipForms[i] || [])[dataPointIndex] || [];
                         const dot = dotColors[i % dotColors.length];
-                        return `
+                        const valNumber = val !== '—' ? Number(val) : -9999;
+                        
+                        const html = `
                         <div class="tt-player">
                             <div class="tt-top">
                                 <div class="tt-name"><div class="dot ${dot}"></div>${name}</div>
@@ -227,7 +229,14 @@ export class EloChartComponent implements OnChanges {
                                 <span>${tService.translate('last_form')}</span> ${renderForm(form)}
                             </div>
                         </div>`;
-                    }).join('');
+                        
+                        return { html, valNumber };
+                    });
+
+                    // Ordina in modo decrescente in base al punteggio ELO in quello specifico momento
+                    tooltipItems.sort((a, b) => b.valNumber - a.valNumber);
+                    
+                    const playersHtml = tooltipItems.map(item => item.html).join('');
 
                     return `
                     <div class="custom-tooltip">
