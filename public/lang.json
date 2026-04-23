@@ -2593,5 +2593,40 @@
         "es": "Descríbete...",
         "de": "Beschreibe dich...",
         "fr": "Décrivez-vous..."
+    },
+    "unbeaten_streaks": {
+        "it": "Serie di Imbattibilità (Streaks)",
+        "en": "Unbeaten Streaks",
+        "es": "Rachas de imbatibilidad",
+        "de": "Ungeschlagen-Serien",
+        "fr": "Séries d'invincibilité"
+    },
+    "max_unbeaten": {
+        "it": "Record Imbattibilità",
+        "en": "Max Unbeaten Streak",
+        "es": "Récord de imbatibilidad",
+        "de": "Maximal ungeschlagen",
+        "fr": "Record d'invincibilité"
+    },
+    "current_unbeaten": {
+        "it": "Serie di Imbattibilità Attuale",
+        "en": "Current Unbeaten Streak",
+        "es": "Racha de imbatibilidad actual",
+        "de": "Aktuell ungeschlagen",
+        "fr": "Série d'invincibilité actuelle"
+    },
+    "max_short": {
+        "it": "Max",
+        "en": "Max",
+        "es": "Máx",
+        "de": "Max",
+        "fr": "Max"
+    },
+    "current_short": {
+        "it": "Attuale",
+        "en": "Current",
+        "es": "Actual",
+        "de": "Aktuell",
+        "fr": "Actuel"
     }
 }

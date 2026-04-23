@@ -3,8 +3,8 @@
     <div class="position">{{ "rank" | translate }}</div>
     <div class="image"></div>
     <div></div>
-    <div class="streak-max" title="Record Imbattibilità"><i class="fa-solid fa-fire text-warning"></i> Max</div>
-    <div class="streak-current" title="Serie di Imbattibilità Attuale"><i class="fa-solid fa-bolt text-info"></i> Current</div>
+    <div class="streak-max" [title]="'max_unbeaten' | translate"><i class="fa-solid fa-fire text-warning"></i> {{ "max_short" | translate }}</div>
+    <div class="streak-current" [title]="'current_unbeaten' | translate"><i class="fa-solid fa-bolt text-info"></i> {{ "current_short" | translate }}</div>
   </div>
 
   <div *ngFor="let p of streaks; let i = index;" class="stats-container mt-2 my-container">
