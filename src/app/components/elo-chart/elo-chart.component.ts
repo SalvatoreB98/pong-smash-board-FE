@@ -56,6 +56,7 @@ export class EloChartComponent implements OnChanges {
 
     public chartOptions: Partial<ChartOptions> = {};
     public players: IRankingItem[] = [];
+    public cardPlayers: { nickname: string, rating: number, colorIndex: number }[] = [];
     public hasData = false;
 
     constructor(private datePipe: DatePipe, private translationService: TranslationService) {
@@ -237,6 +238,12 @@ export class EloChartComponent implements OnChanges {
                 }
             }
         };
+
+        this.cardPlayers = allPlayers.map((p, i) => ({
+            nickname: p.nickname || p.name,
+            rating: p.rating ?? 1000,
+            colorIndex: i
+        })).sort((a, b) => b.rating - a.rating);
     }
 
 }
