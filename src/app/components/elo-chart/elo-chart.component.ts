@@ -147,10 +147,8 @@ export class EloChartComponent implements OnChanges {
             const forms: string[][] = [];
             let currentForm: string[] = [];
             for (let i = 0; i < history.length; i++) {
-                const prevElo = i === 0 ? 1000 : history[i - 1].elo;
-                let result = 'd';
-                if (history[i].elo > prevElo) result = 'w';
-                else if (history[i].elo < prevElo) result = 'l';
+                // Usa il risultato dal backend
+                let result = history[i].result || 'D';
 
                 currentForm.push(result.toUpperCase());
                 if (currentForm.length > 5) currentForm.shift();
