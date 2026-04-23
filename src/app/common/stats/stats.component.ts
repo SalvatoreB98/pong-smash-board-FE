@@ -104,8 +104,8 @@ export class StatsComponent implements OnInit, OnChanges {
       return {
         id: pId,
         image_url: item.image_url || '/default-player.jpg',
-        nickname: item.nickname,         
-        playerName: item.nickname,
+        nickname: item.nickname || item.name || '',
+        playerName: item.nickname || item.name || '',
         wins: w,
         lost: Math.max(tp - w, 0),
         totalPlayed: tp,
