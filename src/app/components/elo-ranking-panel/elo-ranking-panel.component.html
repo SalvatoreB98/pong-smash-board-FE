@@ -35,7 +35,7 @@
             <span class="player-name">{{ player.nickname || player.name }}</span>
             <span class="stat">{{ player.played }}</span>
             <span class="stat">{{ player.wins }}</span>
-            <span class="stat">{{ player.winrate?.toFixed(1) }}%</span>
+            <span class="stat">{{ player.winrate.toFixed(1) }}%</span>
             <span class="elo-badge">
               {{ ratingOf(player) }}
               <span class="elo-badge__pts">pt</span>
@@ -128,14 +128,14 @@
           <span class="sim-winner-label">{{ 'who_wins' | translate }}</span>
           <div class="sim-winner-buttons">
             <button class="btn-winner" [class.active]="simWinner === 'A'" (click)="simWinner = 'A'">
-              {{ simPlayerA?.nickname || simPlayerA?.name }}
+              {{ simPlayerA.nickname || simPlayerA.name }}
             </button>
             <button class="btn-winner btn-winner--draw" [class.active]="simWinner === 'draw'"
               (click)="simWinner = 'draw'">
               {{ 'draw' | translate }}
             </button>
             <button class="btn-winner" [class.active]="simWinner === 'B'" (click)="simWinner = 'B'">
-              {{ simPlayerB?.nickname || simPlayerB?.name }}
+              {{ simPlayerB.nickname || simPlayerB.name }}
             </button>
           </div>
         </div>
@@ -148,9 +148,9 @@
         </div>
 
         <!-- Risultato simulazione -->
-        <div class="sim-result" *ngIf="simResult">
+        <div class="sim-result" *ngIf="simResult && simPlayerA && simPlayerB">
           <div class="sim-result__card sim-result__card--A">
-            <div class="sim-result__player">{{ simPlayerA?.nickname || simPlayerA?.name }}</div>
+            <div class="sim-result__player">{{ simPlayerA.nickname || simPlayerA.name }}</div>
             <div class="sim-result__rating">{{ ratingOf(simPlayerA!) }}</div>
             <div class="sim-result__delta" [class]="deltaClass(simResult.deltaA)">
               {{ deltaSign(simResult.deltaA) }}
@@ -165,7 +165,7 @@
           </div>
 
           <div class="sim-result__card sim-result__card--B">
-            <div class="sim-result__player">{{ simPlayerB?.nickname || simPlayerB?.name }}</div>
+            <div class="sim-result__player">{{ simPlayerB.nickname || simPlayerB.name }}</div>
             <div class="sim-result__rating">{{ ratingOf(simPlayerB!) }}</div>
             <div class="sim-result__delta" [class]="deltaClass(simResult.deltaB)">
               {{ deltaSign(simResult.deltaB) }}

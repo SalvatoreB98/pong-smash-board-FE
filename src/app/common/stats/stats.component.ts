@@ -75,17 +75,30 @@ export class StatsComponent implements OnInit, OnChanges {
     }
 
     const res = await this.rankingService.getRanking(activeCompetitionId, false);
-    this.standings = res.ranking.map(item => ({
-      id: item.id,
-      image_url: item.image_url || '/default-player.jpg',
-      nickname: item.nickname,         
-      playerName: item.nickname,
-      wins: item.wins,
-      lost: item.played - item.wins || 0,
-      totalPlayed: item.played,
-      winRate: item.winrate ?? 0,
-      rating: item.rating || 0
-    }));
+
+    const globalWins = this.dataService.wins || {};
+    const globalPlayed = this.dataService.totPlayed || {};
+    const globalPoints = this.dataService.points || {};
+
+    this.standings = res.ranking.map(item => {
+      const w = globalWins[item.id] !== undefined ? globalWins[item.id] : item.wins;
+      const tp = globalPlayed[item.id] !== undefined ? globalPlayed[item.id] : item.played;
+      const wr = globalPoints[item.id] !== undefined ? parseFloat(String(globalPoints[item.id])) : (item.winrate ?? 0);
+      
+      return {
+        id: item.id,
+        image_url: item.image_url || '/default-player.jpg',
+        nickname: item.nickname,         
+        playerName: item.nickname,
+        wins: w,
+        lost: Math.max(tp - w, 0),
+        totalPlayed: tp,
+        winRate: wr,
+        rating: item.rating || 0
+      };
+    });
+
+    this.standings = this.calculateClassifica(this.standingsType);
     this.cdr.detectChanges();
 
   }
@@ -117,8 +130,18 @@ export class StatsComponent implements OnInit, OnChanges {
   }
 
   private calculateClassifica(standingsType: StandingsType): PlayerStanding[] {
-    /** IMPLEMENTAZIONE */
-    return this.standings;
+    const players = [...this.standings];
+    if (standingsType === 'WINRATE') {
+      players.sort((a, b) => b.winRate - a.winRate);
+    } else {
+      players.sort((a, b) => {
+        if (b.wins !== a.wins) return b.wins - a.wins;
+        const ar = a.wins / (a.lost || 1);
+        const br = b.wins / (b.lost || 1);
+        return br - ar;
+      });
+    }
+    return players;
   }
 
   private calculateHeadToHead(matches: Match[]): HeadToHeadRow[] {

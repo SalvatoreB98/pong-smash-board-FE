@@ -143,14 +143,16 @@ export class EloChartComponent implements OnChanges {
         this.hasData = true;
 
         // Funzione per calcolare la "forma" progressiva fino alla partita (ultime 5 giocate)
-        const calculateForms = (history: { date: string, elo: number }[]) => {
+        const calculateForms = (sortedHistory: { date: string, elo: number }[]) => {
             const forms: string[][] = [];
             let currentForm: string[] = [];
-            for (let i = 0; i < history.length; i++) {
-                const prevElo = i === 0 ? 1000 : history[i - 1].elo;
+            for (let i = 0; i < sortedHistory.length; i++) {
+                const prevElo = i === 0 ? 1000 : Number(sortedHistory[i - 1].elo || sortedHistory[i - 1]?.['rating' as keyof typeof sortedHistory[0]] || 1000);
+                const currentElo = Number(sortedHistory[i].elo || sortedHistory[i]?.['rating' as keyof typeof sortedHistory[0]] || 1000);
+                
                 let result = 'd';
-                if (history[i].elo > prevElo) result = 'w';
-                else if (history[i].elo < prevElo) result = 'l';
+                if (currentElo > prevElo) result = 'w';
+                else if (currentElo < prevElo) result = 'l';
 
                 currentForm.push(result);
                 if (currentForm.length > 5) currentForm.shift();
@@ -164,7 +166,10 @@ export class EloChartComponent implements OnChanges {
         const playerNames: string[] = [];
 
         allPlayers.forEach((player: IRankingItem) => {
-            const history = player.history || [];
+            const rawHistory = player.history || [];
+            // Sort history chronologically just in case the backend sends it in a different order
+            const history = [...rawHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            
             const forms = calculateForms(history);
             const data: [number, number][] = [];
             const tooltipForms: string[][] = [];
@@ -175,7 +180,7 @@ export class EloChartComponent implements OnChanges {
                 const timestamp = index + 1; // Partita 1, Partita 2, ecc.
                 const idx = history.findIndex((h: { date: string, elo: number }) => h.date === dateStr);
                 if (idx !== -1) {
-                    lastElo = history[idx].elo;
+                    lastElo = Number(history[idx].elo || history[idx]?.['rating' as keyof typeof history[0]] || lastElo);
                     lastForm = forms[idx];
                 }
                 data.push([timestamp, lastElo]);
