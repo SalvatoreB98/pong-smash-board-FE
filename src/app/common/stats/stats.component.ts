@@ -81,12 +81,15 @@ export class StatsComponent implements OnInit, OnChanges {
     const globalPoints = this.dataService.points || {};
 
     this.standings = res.ranking.map(item => {
-      const w = globalWins[item.id] !== undefined ? globalWins[item.id] : item.wins;
-      const tp = globalPlayed[item.id] !== undefined ? globalPlayed[item.id] : item.played;
-      const wr = globalPoints[item.id] !== undefined ? parseFloat(String(globalPoints[item.id])) : (item.winrate ?? 0);
+      // Usiamo playerid come chiave, perché i dizionari (wins, totPlayed) sono indicizzati per playerid
+      const pId = item.playerid || item.id;
+      
+      const w = globalWins[pId] !== undefined ? globalWins[pId] : item.wins;
+      const tp = globalPlayed[pId] !== undefined ? globalPlayed[pId] : item.played;
+      const wr = globalPoints[pId] !== undefined ? parseFloat(String(globalPoints[pId])) : (item.winrate ?? 0);
       
       return {
-        id: item.id,
+        id: pId,
         image_url: item.image_url || '/default-player.jpg',
         nickname: item.nickname,         
         playerName: item.nickname,
