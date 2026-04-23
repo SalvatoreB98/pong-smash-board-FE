@@ -9,13 +9,15 @@ import { IMatch } from '../../interfaces/matchesInterfaces';
 import { TranslatePipe } from '../../utils/translate.pipe';
 import { SHARED_IMPORTS } from '../imports/shared.imports';
 import { UserService } from '../../../services/user.service';
+import { PlayerStreaksComponent } from '../../components/player-streaks/player-streaks.component';
 
 type StandingsType = 'WINRATE' | 'WINS';
 
 
 @Component({
   selector: 'app-stats',
-  imports: [...SHARED_IMPORTS],
+  standalone: true,
+  imports: [...SHARED_IMPORTS, PlayerStreaksComponent],
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })
@@ -61,6 +63,12 @@ export class StatsComponent implements OnInit, OnChanges {
     if (changes['inputMatches']) {
       this.recalcHeadToHead();
     }
+  }
+
+  get allMatches(): IMatch[] {
+    return (this.inputMatches && this.inputMatches.length > 0)
+      ? this.inputMatches
+      : (this.dataService.matches || []);
   }
 
   private async refreshRanking() {
@@ -118,9 +126,7 @@ export class StatsComponent implements OnInit, OnChanges {
   }
 
   private recalcHeadToHead() {
-    const sourceMatches = this.inputMatches && this.inputMatches.length > 0 
-      ? this.inputMatches 
-      : (this.dataService.matches || []);
+    const sourceMatches = this.allMatches;
 
     const mappedMatches = sourceMatches.map(match => ({
       ...match,

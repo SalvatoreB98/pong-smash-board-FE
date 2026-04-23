@@ -1,0 +1,31 @@
+<div class="streaks-container mt-4">
+  <div class="stats-header my-container">
+    <div class="position">{{ "rank" | translate }}</div>
+    <div class="image"></div>
+    <div></div>
+    <div class="streak-max" title="Record Imbattibilità"><i class="fa-solid fa-fire text-warning"></i> Max</div>
+    <div class="streak-current" title="Serie di Imbattibilità Attuale"><i class="fa-solid fa-bolt text-info"></i> Current</div>
+  </div>
+
+  <div *ngFor="let p of streaks; let i = index;" class="stats-container mt-2 my-container">
+    <div class="position">
+      <i *ngIf="i < 3" class="fa-solid fa-medal position-{{ i + 1 }}"></i> 
+      <span *ngIf="i >= 3">{{ i + 1 }}</span>
+    </div>
+    
+    <img [src]="p.image_url" style="object-fit: cover;" alt="avatar" />
+    <div class="name">{{ p.nickname }}</div>
+    
+    <div class="streak-max">
+      <span class="fw-bold">{{ p.maxStreak }}</span>
+    </div>
+    
+    <div class="streak-current">
+      <span [class.text-muted]="p.currentStreak === 0" [class.fw-bold]="p.currentStreak > 0">{{ p.currentStreak }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="streaks.length === 0" class="no-data my-container mt-2 text-center text-muted p-3">
+    {{ "nessunDato" | translate }}
+  </div>
+</div>

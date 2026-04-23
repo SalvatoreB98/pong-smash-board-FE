@@ -1,0 +1,90 @@
+@use '../../../style/variables.scss' as *;
+
+img {
+  width: 3.125em;
+  height: 3.125em;
+  border-radius: 50%;
+}
+
+.streaks-container {
+  width: 100%;
+}
+
+.stats-container,
+.stats-header {
+  margin: auto;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr;
+  align-items: center;
+}
+
+.stats-header {
+  padding: 0 1em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.stats-container {
+  background: $gradient;
+  padding: 0.5em 1em;
+  border-radius: $border-radius;
+
+  &>img,
+  div {
+    text-align: center;
+  }
+
+  .position {
+    text-align: center;
+  }
+
+  .name {
+    text-align: left;
+    font-weight: bold;
+  }
+}
+
+.position-1 {
+  color: gold;
+}
+.position-2 {
+  color: silver;
+}
+.position-3 {
+  color: #cd7f32; // bronze
+}
+
+.text-warning {
+  color: #ffc107;
+}
+
+.text-info {
+  color: #0dcaf0;
+}
+
+.text-muted {
+  color: #6c757d;
+  opacity: 0.6;
+}
+
+.fw-bold {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.mini-info {
+  font-size: 0.7em;
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 37.5em) {
+  .stats-container,
+  .stats-header {
+    grid-template-columns: 0.5fr 1fr 1.5fr 1fr 1fr;
+    gap: 0.5em;
+  }
+  
+  .name {
+    font-size: 0.8em;
+  }
+}
