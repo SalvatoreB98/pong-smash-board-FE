@@ -19,7 +19,8 @@
             <span></span>
             <span>{{ 'player' | translate }}</span>
             <span [title]="'matches_played' | translate">{{ 'matches_played_short' | translate }}</span>
-            <span [title]="'wins' | translate">{{ 'vittorie' | translate }}</span>
+            <span [title]="'wins' | translate">{{ 'W' | translate }}</span>
+            <span [title]="'draws' | translate">{{ 'D' | translate }}</span>
             <span [title]="'winRate' | translate">WR%</span>
             <span>{{ 'elo_rating' | translate }}</span>
           </div>
@@ -40,13 +41,14 @@
               {{ ratingOf(player) }}
               <span class="elo-badge__pts">pt</span>
             </span>
+            <span class="stat">{{ player.draws || 0 }}</span>
           </div>
         </div>
       </section>
 
       <!-- ── CHART ─────────────────────────────────────── -->
       <section class="elo-section">
-          <app-elo-chart [rankings]="rankings"></app-elo-chart>
+        <app-elo-chart [rankings]="rankings"></app-elo-chart>
       </section>
 
       <!-- ── FAIR PLAY PAIRINGS ────────────────────────── -->
@@ -170,31 +172,11 @@
             <div class="sim-result__delta" [class]="deltaClass(simResult.deltaB)">
               {{ deltaSign(simResult.deltaB) }}
             </div>
-            <div class="sim-result__new">→ {{ simResult.newB }} pt</div>
+            <div class="sim-result__new">→ {{ simResult?.newB }} pt</div>
           </div>
         </div>
       </section>
-
-      <!-- ── JSON EXPORT ────────────────────────────────── -->
-      <section class="elo-section">
-        <h2 class="elo-section__title">{{ 'export_json_title' | translate }}</h2>
-        <p class="elo-section__desc">
-          {{ 'export_json_desc' | translate }}
-        </p>
-        <div class="export-actions">
-          <button class="btn-primary" (click)="toggleJsonPreview()">
-            {{ (showJsonPreview ? 'close_preview' : 'generate_json') | translate }}
-          </button>
-          <button class="btn-ghost" *ngIf="jsonPreview" (click)="downloadJson()">
-            {{ 'download_file' | translate }}
-          </button>
-        </div>
-        <pre class="json-preview" *ngIf="showJsonPreview && jsonPreview">{{ jsonPreview }}</pre>
-      </section>
-
     </ng-container>
-
     <app-bottom-navbar></app-bottom-navbar>
   </div>
-
 </div>

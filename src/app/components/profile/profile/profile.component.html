@@ -1,28 +1,82 @@
 <div class="wrapper" *ngIf="userState$ | async as state">
 
-    
     <section>
         <form [formGroup]="form" class="form-dark profile-form">
-            <div class="my-card p-3">
-                <div class="upload-container">
-                    <label for="file-upload" class="custom-file-upload">
-                        <i class="fa fa-upload" aria-hidden="true"></i>
+            <div class="my-card profile-card">
+                
+                <div class="upload-container w-100">
+                    <label for="file-upload" class="custom-file-upload group">
                         <img [src]="previewUrl || '/default-player.jpg'" alt="{{ 'avatar_alt' | translate }}" />
+                        <i class="fa fa-camera upload-icon"></i>
                         <input id="file-upload" type="file" accept="image/*" (change)="onFileSelected($event)" />
                     </label>
-                    <label style="cursor: pointer;" for="file-upload" class="description">{{ 'avatar_upload_info' | translate }}</label>
+                    <label class="description" style="cursor: pointer;" for="file-upload">{{ 'avatar_upload_info' | translate }}</label>
                 </div>
                 
-                <label class="field">
-                    <span class="label text-center">{{ 'nickname_label_edit' | translate }}</span>
-                    <input class="input" type="text" [placeholder]="'nickname' | translate" formControlName="nickname"
-                    autocomplete="off" />
-                    <small class="error" *ngIf="form.get('nickname')?.invalid">
+                <div class="field-group mt-2 mb-2 w-100" style="max-width: 300px;">
+                    <span class="label text-center fw-bold opacity-100">{{ 'nickname_label_edit' | translate }}</span>
+                    <input class="input text-center fs-5 fw-bold" type="text" [placeholder]="'nickname' | translate" formControlName="nickname" autocomplete="off" />
+                    <small class="error text-center text-danger" *ngIf="form.get('nickname')?.invalid">
                         {{ 'nickname_error' | translate }}
                     </small>
-                </label>
+                </div>
+
+                <div class="row-group">
+                    <div class="field-group">
+                        <span class="label text-start">{{ 'name' | translate }}</span>
+                        <input class="input" type="text" [placeholder]="'name' | translate" formControlName="name" />
+                    </div>
+                    <div class="field-group">
+                        <span class="label text-start">{{ 'lastname' | translate }}</span>
+                        <input class="input" type="text" [placeholder]="'lastname' | translate" formControlName="lastname" />
+                    </div>
+                </div>
+
+                <div class="row-group">
+                    <div class="field-group">
+                        <span class="label text-start">{{ 'birth_date' | translate }} <i class="fa fa-calendar ms-1"></i></span>
+                        <input class="input" type="date" formControlName="birth_date" />
+                    </div>
+                    <div class="field-group">
+                        <span class="label text-start">{{ 'play_style' | translate }} <i class="fa-solid fa-table-tennis-paddle-ball ms-1"></i></span>
+                        <select class="input" formControlName="play_style">
+                            <option value="">{{ 'select_style' | translate }}</option>
+                            <option value="Attacker">Attacker</option>
+                            <option value="Defender">Defender</option>
+                            <option value="All-round">All-round</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <i class="fa fa-shield"></i> {{ 'equipment' | translate }}
+                </div>
+
+                <div class="field-group">
+                    <span class="label text-start">{{ 'racket_blade' | translate }}</span>
+                    <input class="input" type="text" formControlName="racket_blade" />
+                </div>
+
+                <div class="row-group">
+                    <div class="field-group">
+                        <span class="label text-start text-danger">{{ 'rubber_fh' | translate }}</span>
+                        <input class="input" type="text" formControlName="racket_rubber_fh" />
+                    </div>
+                    <div class="field-group">
+                        <span class="label text-start" style="color: #4a5568;">{{ 'rubber_bh' | translate }}</span>
+                        <input class="input" type="text" formControlName="racket_rubber_bh" />
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <i class="fa fa-user"></i> {{ 'about_me' | translate }}
+                </div>
+
+                <div class="field-group mb-3">
+                    <textarea class="input" style="min-height: 80px; resize: vertical;" [placeholder]="'describe_yourself' | translate" formControlName="description"></textarea>
+                </div>
                 
-                <button type="button" class="primary w-100 m-1" (click)="saveProfile($event)" [disabled]="form.invalid">
+                <button type="button" class="primary w-100" (click)="saveProfile($event)" [disabled]="form.invalid">
                     {{ 'edit' | translate }}
                 </button>
             </div>

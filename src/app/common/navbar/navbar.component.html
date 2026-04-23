@@ -10,31 +10,37 @@
         <div class="buttons-container d-flex">
 
             <ng-container *ngIf="state.state != PROGRESS_STATE.PROFILE_NOT_COMPLETED">
-                <a *ngIf=" !isMobile && (auth.isLoggedIn$ | async)" routerLink="/home-page" class="button-navbar" routerLinkActive="active">
+                <a *ngIf=" !isMobile && (auth.isLoggedIn$ | async)" routerLink="/home-page" class="button-navbar"
+                    routerLinkActive="active">
                     <span>{{ activeCompetition?.name }}</span>
                 </a>
 
-                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/competitions" class="button-navbar" routerLinkActive="active">
+                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/competitions" class="button-navbar"
+                    routerLinkActive="active">
                     <span>{{"competitions" | translate}}</span>
                 </a>
 
-                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/elo" class="button-navbar" routerLinkActive="active">
+                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/elo" class="button-navbar"
+                    routerLinkActive="active">
                     <span>ELO</span>
                 </a>
 
-                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async) && activeCompetition?.id" [routerLink]="['/calendar', activeCompetition?.id]" class="button-navbar" routerLinkActive="active" title="Match Calendar">
+                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async) && activeCompetition?.id"
+                    [routerLink]="['/calendar', activeCompetition?.id]" class="button-navbar" routerLinkActive="active"
+                    title="Match Calendar">
                     <i class="fa-regular fa-calendar-days"></i>
                     <span class="ms-1">{{ 'match_calendar' | translate }}</span>
                 </a>
 
-                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/profile" class="button-navbar" routerLinkActive="active">
+                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/profile" class="button-navbar"
+                    routerLinkActive="active">
                     <span>{{"profile" | translate}}</span>
                 </a>
             </ng-container>
 
             <a (click)="logout()" *ngIf="!isMobile && (auth.isLoggedIn$ | async)" class="button-navbar">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
-                  <span>{{ 'logout' | translate }}</span>
+                <span>{{ 'logout' | translate }}</span>
             </a>
 
             <ng-container *ngIf="auth.isLoggedIn$ | async">
@@ -54,10 +60,11 @@
                                 <a routerLink="/elo"> ELO </a>
                             </li>
                             <li class="clickable" *ngIf="activeCompetition?.id">
-                                <a [routerLink]="['/calendar', activeCompetition?.id]">📅 {{ 'match_calendar' | translate }}</a>
+                                <a [routerLink]="['/calendar', activeCompetition?.id]">📅 {{ 'match_calendar' |
+                                    translate }}</a>
                             </li>
                             <li class="clickable" style="color: #c76360;">
-                                  <a (click)="logout()">{{ 'logout' | translate }}</a>
+                                <a (click)="logout()">{{ 'logout' | translate }}</a>
                             </li>
                         </ul>
                     </div>
