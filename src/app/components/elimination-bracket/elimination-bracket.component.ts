@@ -261,6 +261,7 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
       }),
       ariaLabel: this.translationService.translate('match_details'),
       tooltip: this.translationService.translate('match_details'),
+      actionType: 'icon'
     });
 
     if (!match?.matchData?.date || match?.matchData?.date === '') {
@@ -271,30 +272,37 @@ export class EliminationBracketComponent implements OnInit, OnDestroy, OnChanges
           roundName: this.getRoundName(round, match),
           roundLabel: this.getRoundLabel(round, match),
         }),
+        actionType: 'icon'
       });
     }
 
     if (match?.winnerId === null) {
-      actions.push({
-        icon: '<i class="fa fa-floppy-o ms-1" aria-hidden="true"></i>',
-        handler: () => this.openModal('ADD_MATCH', {
-          player1: match.slots?.[0]?.player ?? null,
-          player2: match.slots?.[1]?.player ?? null,
-          roundName: round.stage ?? round.name,
-          roundLabel: match.roundLabel ?? round.stage ?? round.name,
-        }),
-      });
+      const isUnsetDate = (!match?.matchData?.date || match?.matchData?.date === '');
 
       actions.push({
-        label: this.translationService.translate('live'),
-        cssClass: ['bg-secondary', 'position-relative'],
-        icon: '<div class="circle-live"></div>',
+        label: 'Punteggio Live',
+        icon: '<i class="fa fa-table-tennis" aria-hidden="true"></i>',
+        tooltip: 'Aggiorna il match punto dopo punto',
         handler: () => this.openModal('MANUAL_POINTS', {
           player1: match.slots?.[0]?.player ?? null,
           player2: match.slots?.[1]?.player ?? null,
           roundName: round.stage ?? round.name,
           roundLabel: match.roundLabel ?? round.stage ?? round.name,
         }),
+        actionType: 'primary'
+      });
+
+      actions.push({
+        label: 'Inserisci Risultato',
+        icon: '<i class="fa fa-check-double" aria-hidden="true"></i>',
+        tooltip: 'Registra il punteggio finale a match concluso',
+        handler: () => this.openModal('ADD_MATCH', {
+          player1: match.slots?.[0]?.player ?? null,
+          player2: match.slots?.[1]?.player ?? null,
+          roundName: round.stage ?? round.name,
+          roundLabel: match.roundLabel ?? round.stage ?? round.name,
+        }),
+        actionType: 'secondary'
       });
     }
 

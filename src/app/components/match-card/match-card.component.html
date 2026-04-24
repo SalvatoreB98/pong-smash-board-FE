@@ -63,10 +63,27 @@
         </div>
       </ng-template>
 
-      <div class="match-card__actions" *ngIf="hasActions()">
-        <button type="button" *ngFor="let action of actions; trackBy: trackByAction" (click)="onAction(action, $event)"
-          [disabled]="action.disabled" class="tertiary" [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
+      <div class="match-card__icon-actions" *ngIf="getBracketIconActions().length">
+        <button type="button" *ngFor="let action of getBracketIconActions(); trackBy: trackByAction"
+          (click)="onAction(action, $event)" [disabled]="action.disabled" class="tertiary"
+          [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
           [attr.title]="action.tooltip ?? action.label ?? ''">
+          <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
+        </button>
+      </div>
+
+      <div class="match-card__main-actions" *ngIf="getBracketPrimaryActions().length || getBracketSecondaryActions().length">
+        <button type="button" *ngFor="let action of getBracketPrimaryActions(); trackBy: trackByAction"
+          class="primary" [ngClass]="action.cssClass" [disabled]="action.disabled"
+          [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
+          [attr.title]="action.tooltip ?? action.label ?? ''" (click)="onAction(action, $event)">
+          <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
+          <span *ngIf="action.label">{{ action.label }}</span>
+        </button>
+        <button type="button" *ngFor="let action of getBracketSecondaryActions(); trackBy: trackByAction"
+          class="secondary" [ngClass]="action.cssClass" [disabled]="action.disabled"
+          [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
+          [attr.title]="action.tooltip ?? action.label ?? ''" (click)="onAction(action, $event)">
           <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
           <span *ngIf="action.label">{{ action.label }}</span>
         </button>
@@ -126,33 +143,34 @@
                 <i [class]="schedule.iconClass || 'fa fa-clock-o'" aria-hidden="true"></i>
                 {{ schedule.fallbackLabel }}
               </div>
+              <!-- Absolute Corner Icons -->
+              <div class="match-card__icon-actions" *ngIf="getIconActions().length">
+                <button type="button" *ngFor="let action of getIconActions(); trackBy: trackByAction"
+                  class="tertiary action-icon" [ngClass]="action.cssClass" [disabled]="action.disabled"
+                  [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
+                  [attr.title]="action.tooltip ?? action.label ?? ''"
+                  (click)="onAction(action, $event)">
+                  <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
+                </button>
+              </div>
+
               <div class="match-card__time match-card__time--fallback">
-                <ng-container *ngIf="getScheduleActions() as scheduleActions">
-                  <div class="match-card__actions" *ngIf="scheduleActions.length || schedule.action">
-                    <ng-container *ngIf="scheduleActions.length; else singleScheduleAction">
-                      <button *ngFor="let scheduleAction of scheduleActions; trackBy: trackByAction" type="button"
-                        class="btn btn-sm" [ngClass]="scheduleAction.cssClass" [disabled]="scheduleAction.disabled"
-                        [attr.aria-label]="scheduleAction.ariaLabel ?? scheduleAction.label ?? ''"
-                        [attr.title]="scheduleAction.tooltip ?? scheduleAction.label ?? ''"
-                        (click)="onAction(scheduleAction, $event)">
-                        <span class="match-card__icon" *ngIf="scheduleAction.icon"
-                          [innerHTML]="scheduleAction.icon"></span>
-                        <span *ngIf="scheduleAction.label">{{ scheduleAction.label }}</span>
-                      </button>
-                    </ng-container>
-                    <ng-template #singleScheduleAction>
-                      <button *ngIf="schedule.action as scheduleAction" type="button" class="btn btn-sm"
-                        [ngClass]="scheduleAction.cssClass" [disabled]="scheduleAction.disabled"
-                        [attr.aria-label]="scheduleAction.ariaLabel ?? scheduleAction.label ?? ''"
-                        [attr.title]="scheduleAction.tooltip ?? scheduleAction.label ?? ''"
-                        (click)="onAction(scheduleAction, $event)">
-                        <span class="match-card__icon" *ngIf="scheduleAction.icon"
-                          [innerHTML]="scheduleAction.icon"></span>
-                        <span *ngIf="scheduleAction.label">{{ scheduleAction.label }}</span>
-                      </button>
-                    </ng-template>
-                  </div>
-                </ng-container>
+                <div class="match-card__main-actions" *ngIf="getPrimaryActions().length || getSecondaryActions().length">
+                  <button type="button" *ngFor="let action of getPrimaryActions(); trackBy: trackByAction"
+                    class="primary" [ngClass]="action.cssClass" [disabled]="action.disabled"
+                    [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
+                    [attr.title]="action.tooltip ?? action.label ?? ''" (click)="onAction(action, $event)">
+                    <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
+                    <span *ngIf="action.label">{{ action.label }}</span>
+                  </button>
+                  <button type="button" *ngFor="let action of getSecondaryActions(); trackBy: trackByAction"
+                    class="secondary" [ngClass]="action.cssClass" [disabled]="action.disabled"
+                    [attr.aria-label]="action.ariaLabel ?? action.label ?? ''"
+                    [attr.title]="action.tooltip ?? action.label ?? ''" (click)="onAction(action, $event)">
+                    <span class="match-card__icon" *ngIf="action.icon" [innerHTML]="action.icon"></span>
+                    <span *ngIf="action.label">{{ action.label }}</span>
+                  </button>
+                </div>
               </div>
             </ng-container>
           </ng-template>

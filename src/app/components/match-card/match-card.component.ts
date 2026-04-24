@@ -19,6 +19,7 @@ export interface MatchCardAction {
   visible?: boolean;
   event?: string | null;
   handler?: (() => void) | null;
+  actionType?: 'primary' | 'secondary' | 'icon';
 }
 
 export interface MatchCardSchedule {
@@ -168,6 +169,30 @@ export class MatchCardComponent {
     return (this.schedule?.actions ?? []).filter(
       action => !!action && action.visible !== false
     ) as MatchCardAction[];
+  }
+
+  getPrimaryActions(): MatchCardAction[] {
+    return this.getScheduleActions().filter(a => a.actionType === 'primary');
+  }
+
+  getSecondaryActions(): MatchCardAction[] {
+    return this.getScheduleActions().filter(a => a.actionType === 'secondary');
+  }
+
+  getIconActions(): MatchCardAction[] {
+    return this.getScheduleActions().filter(a => a.actionType === 'icon' || !a.actionType);
+  }
+
+  getBracketPrimaryActions(): MatchCardAction[] {
+    return this.actions.filter(a => a && a.visible !== false && a.actionType === 'primary');
+  }
+
+  getBracketSecondaryActions(): MatchCardAction[] {
+    return this.actions.filter(a => a && a.visible !== false && a.actionType === 'secondary');
+  }
+
+  getBracketIconActions(): MatchCardAction[] {
+    return this.actions.filter(a => a && a.visible !== false && (a.actionType === 'icon' || !a.actionType));
   }
 
   formatLocalDateTime(dateStr: string | Date): string {
