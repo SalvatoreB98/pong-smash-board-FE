@@ -2628,5 +2628,47 @@
         "es": "Actual",
         "de": "Aktuell",
         "fr": "Actuel"
+    },
+    "training_journal": {
+        "it": "Diario e Allenamento",
+        "en": "Training & Journal",
+        "es": "Diario y Entrenamiento",
+        "de": "Training & Tagebuch",
+        "fr": "Journal & Entraînement"
+    },
+    "training_journal_sub": {
+        "it": "Diario serale, analisi delle difficoltà a fatto freddo e routine mentale",
+        "en": "Evening journal, cold-fact difficulty analysis and mental routines",
+        "es": "Diario nocturno, análisis de dificultades con hechos fríos y rutinas",
+        "de": "Abendtagebuch, Faktenanalyse und mentale Routinen",
+        "fr": "Journal du soir, analyse factuelle et routines mentales"
+    },
+    "tab_evening": {
+        "it": "Diario Serale (90s)",
+        "en": "Evening Journal (90s)",
+        "es": "Diario Nocturno (90s)",
+        "de": "Abendtagebuch (90s)",
+        "fr": "Journal du Soir (90s)"
+    },
+    "tab_difficulties": {
+        "it": "Difficoltà & Fatto Freddo",
+        "en": "Difficulties & Cold Facts",
+        "es": "Dificultades y Hechos Fríos",
+        "de": "Schwierigkeiten & Fakten",
+        "fr": "Difficultés & Faits Froids"
+    },
+    "tab_tests": {
+        "it": "Tracker Test Periodici",
+        "en": "Periodic Tests Tracker",
+        "es": "Test Periódicos",
+        "de": "Periodische Tests",
+        "fr": "Tests Périodiques"
+    },
+    "tab_routine": {
+        "it": "Mantra & Reset Mentale",
+        "en": "Mantra & Mental Reset",
+        "es": "Mantra y Reset Mental",
+        "de": "Mantra & Mental-Reset",
+        "fr": "Mantra & Reset Mental"
     }
 }

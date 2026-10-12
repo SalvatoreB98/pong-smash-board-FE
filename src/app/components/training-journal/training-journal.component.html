@@ -1,0 +1,1363 @@
+<div class="wrapper">
+  <div class="journal-container">
+
+    <!-- ── HEADER ──────────────────────────────────────────────────────────── -->
+    <header class="journal-header">
+      <div class="journal-header__main">
+        <div class="journal-header__icon">
+          <i class="fa-solid fa-book-journal-whills"></i>
+        </div>
+        <div>
+          <h1 class="journal-header__title">{{ 'training_journal' | translate }}</h1>
+          <p class="journal-header__sub">{{ 'training_journal_sub' | translate }}</p>
+        </div>
+      </div>
+
+      <!-- Quick Coaching Metrics Summary Bar -->
+      <div class="journal-kpis">
+        <div class="kpi-card" (click)="setTab('evening')">
+          <span class="kpi-card__label">Sessioni Serali</span>
+          <span class="kpi-card__value">
+            {{ (journalService.eveningEntries$ | async)?.length || 0 }}
+          </span>
+          <span class="kpi-card__sub">90s rifinitura</span>
+        </div>
+
+        <div class="kpi-card" (click)="setTab('difficulties')">
+          <span class="kpi-card__label">Difficoltà Attive</span>
+          <span class="kpi-card__value text-warning">
+            {{ filterDifficulties((journalService.difficulties$ | async) || []).length }}
+          </span>
+          <span class="kpi-card__sub">Piani di recupero</span>
+        </div>
+
+        <div class="kpi-card" (click)="setTab('tests')">
+          <span class="kpi-card__label">Test Monitorati</span>
+          <span class="kpi-card__value text-info">
+            {{ journalService.defaultPeriodicTests.length }}
+          </span>
+          <span class="kpi-card__sub">Fisici & Tecnici</span>
+        </div>
+
+        <div class="kpi-card" (click)="setTab('routine')">
+          <span class="kpi-card__label">Banca Fiducia</span>
+          <span class="kpi-card__value text-gold">
+            {{ (journalService.confidenceVault$ | async)?.length || 0 }}
+          </span>
+          <span class="kpi-card__sub">Momenti chiave</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── MODULE NAVIGATION TABS ─────────────────────────────────────────── -->
+    <nav class="journal-nav" role="tablist">
+      <button
+        type="button"
+        class="journal-nav__tab"
+        [class.journal-nav__tab--active]="activeTab === 'evening'"
+        (click)="setTab('evening')"
+      >
+        <i class="fa-solid fa-moon"></i>
+        <span>{{ 'tab_evening' | translate }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="journal-nav__tab"
+        [class.journal-nav__tab--active]="activeTab === 'difficulties'"
+        (click)="setTab('difficulties')"
+      >
+        <i class="fa-solid fa-crosshairs"></i>
+        <span>{{ 'tab_difficulties' | translate }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="journal-nav__tab"
+        [class.journal-nav__tab--active]="activeTab === 'tests'"
+        (click)="setTab('tests')"
+      >
+        <i class="fa-solid fa-chart-line"></i>
+        <span>{{ 'tab_tests' | translate }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="journal-nav__tab"
+        [class.journal-nav__tab--active]="activeTab === 'routine'"
+        (click)="setTab('routine')"
+      >
+        <i class="fa-solid fa-brain"></i>
+        <span>{{ 'tab_routine' | translate }}</span>
+      </button>
+    </nav>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 1: DIARIO SERALE (90 SECONDI) & BANCA DELLA FIDUCIA               -->
+    <!-- ===================================================================== -->
+    <section *ngIf="activeTab === 'evening'" class="journal-tab-content">
+      
+      <!-- ── 90-Second Evening Journal Card ──────────────────────────────── -->
+      <div class="card-module">
+        <div class="card-module__header">
+          <div class="card-module__title-wrap">
+            <span class="card-module__badge">Serale</span>
+            <h2 class="card-module__title">Diario Serale & Progressi (90 Secondi)</h2>
+          </div>
+          <p class="card-module__desc">
+            3 domande guidate per ancorare l'impegno, i successi e i progressi concreti. 30 secondi ciascuna.
+          </p>
+        </div>
+
+        <!-- 90-Second Micro-Timer -->
+        <div class="evening-timer-box" [class.evening-timer-box--active]="isTimerRunning">
+          <div class="evening-timer-box__display">
+            <div class="timer-circle">
+              <span class="timer-digits">{{ formattedTimer }}</span>
+              <span class="timer-label">{{ isTimerRunning ? 'IN CORSO' : 'TIMER 90s' }}</span>
+            </div>
+            <div class="timer-controls">
+              <button
+                type="button"
+                class="btn-timer"
+                [class.btn-timer--primary]="!isTimerRunning"
+                (click)="isTimerRunning ? pauseTimer() : startTimer()"
+              >
+                <i [class]="isTimerRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play'"></i>
+                <span>{{ isTimerRunning ? 'Pausa' : 'Avvia 90s' }}</span>
+              </button>
+              <button type="button" class="btn-timer btn-timer--ghost" (click)="resetTimer()">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="evening-timer-box__cue">
+            <div class="timer-progress-track">
+              <div class="timer-progress-fill" [style.width.%]="timerProgressPct"></div>
+            </div>
+            <div class="cue-text">
+              <i class="fa-solid fa-compass me-1"></i>
+              <span>{{ currentTimerPhaseCue }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Guided Form -->
+        <form (ngSubmit)="saveEveningEntry()" class="form-dark journal-form">
+          
+          <!-- Field 1: Impegno reale di oggi -->
+          <div class="guided-field">
+            <div class="guided-field__header">
+              <span class="guided-step">1</span>
+              <div>
+                <label class="guided-label" for="realEffortNotes">
+                  Impegno reale di oggi (Valutazione & Intensità)
+                </label>
+                <p class="guided-hint">
+                  Quanto hai dato al tavolo oggi in termini di presenza, grinta e focus sui dettagli?
+                </p>
+              </div>
+            </div>
+
+            <div class="effort-rating-bar">
+              <span class="effort-rating-label">Voto Impegno: <strong>{{ eveningForm.realEffortRating }}/10</strong></span>
+              <input
+                type="range"
+                id="realEffortSlider"
+                min="1"
+                max="10"
+                step="1"
+                [(ngModel)]="eveningForm.realEffortRating"
+                name="realEffortRating"
+                class="form-range"
+              />
+              <div class="range-ticks">
+                <span>1 (Minimo)</span>
+                <span>5 (Medio)</span>
+                <span>8 (Ottimo)</span>
+                <span>10 (Massimo)</span>
+              </div>
+            </div>
+
+            <textarea
+              id="realEffortNotes"
+              [(ngModel)]="eveningForm.realEffortNotes"
+              name="realEffortNotes"
+              rows="3"
+              placeholder="Es. Ho mantenuto un'intensità elevata per 80 minuti di cesto, concentrandomi sulla posizione bassa delle gambe anche quando sopraggiungeva la stanchezza..."
+              class="form-textarea"
+            ></textarea>
+          </div>
+
+          <!-- Field 2: Successi (anche parziali) -->
+          <div class="guided-field">
+            <div class="guided-field__header">
+              <span class="guided-step">2</span>
+              <div>
+                <label class="guided-label" for="successes">
+                  Successi (anche parziali)
+                </label>
+                <p class="guided-hint">
+                  Cosa ha funzionato oggi? Anche piccoli dettagli: una scelta tattica coraggiosa, un colpo provato senza paura, calma sul 9-9.
+                </p>
+              </div>
+            </div>
+
+            <textarea
+              id="successes"
+              [(ngModel)]="eveningForm.successes"
+              name="successes"
+              rows="3"
+              placeholder="Es. Ho tenuto la racchetta costantemente alta sui controtop al tavolo; ho anticipato due servizi corti con il flip di rovescio..."
+              class="form-textarea"
+            ></textarea>
+          </div>
+
+          <!-- Field 3: Progressi concreti -->
+          <div class="guided-field">
+            <div class="guided-field__header">
+              <span class="guided-step">3</span>
+              <div>
+                <label class="guided-label" for="concreteProgress">
+                  Progressi concreti
+                </label>
+                <p class="guided-hint">
+                  Quale miglioramento tangibile o sensazione biomeccanica senti più solida rispetto alla scorsa settimana?
+                </p>
+              </div>
+            </div>
+
+            <textarea
+              id="concreteProgress"
+              [(ngModel)]="eveningForm.concreteProgress"
+              name="concreteProgress"
+              rows="3"
+              placeholder="Es. L'appoggio della gamba destra in arretramento sul topspin incrociato è ora automatico e non perdo più l'equilibrio..."
+              class="form-textarea"
+            ></textarea>
+          </div>
+
+          <div *ngIf="showEveningSuccessAlert" class="alert-box alert-box--success">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Sessione serale registrata con successo! La costanza costruisce campioni.</span>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="submit"
+              class="btn-primary-action"
+              [disabled]="!eveningForm.realEffortNotes.trim() && !eveningForm.successes.trim() && !eveningForm.concreteProgress.trim()"
+            >
+              <i class="fa-solid fa-floppy-disk me-1"></i>
+              <span>Salva Riflessione Serale (90s)</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Past Entries History -->
+        <div class="history-section" *ngIf="(journalService.eveningEntries$ | async) as entries">
+          <h3 class="history-title">
+            <i class="fa-solid fa-clock-rotate-left me-1"></i>
+            Storico Riflessioni Serali ({{ entries.length }})
+          </h3>
+
+          <div *ngIf="entries.length === 0" class="empty-state">
+            Nessuna riflessione serale registrata ancora. Dedica 90 secondi questa sera!
+          </div>
+
+          <div class="entries-list">
+            <div *ngFor="let item of entries; trackBy: trackById" class="entry-card">
+              <div class="entry-card__top">
+                <div class="entry-card__meta">
+                  <span class="entry-date">{{ item.date | date: 'EEEE, d MMMM y' }}</span>
+                  <span class="badge-effort">Impegno {{ item.realEffortRating }}/10</span>
+                  <span class="badge-duration" *ngIf="item.durationSecondsTaken">
+                    <i class="fa-solid fa-stopwatch me-1"></i>{{ item.durationSecondsTaken }}s
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  class="btn-icon-danger"
+                  (click)="deleteEveningEntry(item.id)"
+                  title="Elimina voce"
+                >
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+
+              <div class="entry-card__body">
+                <div class="entry-block" *ngIf="item.realEffortNotes">
+                  <span class="entry-block__label">⚡ Impegno Reale:</span>
+                  <p class="entry-block__text">{{ item.realEffortNotes }}</p>
+                </div>
+                <div class="entry-block" *ngIf="item.successes">
+                  <span class="entry-block__label text-success">🎯 Successi:</span>
+                  <p class="entry-block__text">{{ item.successes }}</p>
+                </div>
+                <div class="entry-block" *ngIf="item.concreteProgress">
+                  <span class="entry-block__label text-info">📈 Progressi Concreti:</span>
+                  <p class="entry-block__text">{{ item.concreteProgress }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Banca della Fiducia (Trust Bank) ────────────────────────────── -->
+      <div class="card-module mt-4">
+        <div class="card-module__header d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <div>
+            <div class="card-module__title-wrap">
+              <span class="card-module__badge card-module__badge--gold">Mental Coaching</span>
+              <h2 class="card-module__title">Banca della Fiducia (Momenti di Orgoglio)</h2>
+            </div>
+            <p class="card-module__desc">
+              Archivio dettagliato dei tuoi migliori momenti al tavolo. Rileggili prima di una gara per riaccendere la certezza interiore.
+            </p>
+          </div>
+
+          <div class="header-buttons">
+            <button
+              type="button"
+              class="btn-booster"
+              (click)="openBoosterModal()"
+            >
+              <i class="fa-solid fa-bolt-lightning me-1"></i>
+              <span>Booster Pre-Gara</span>
+            </button>
+            <button
+              type="button"
+              class="btn-primary-action"
+              (click)="openAddVaultModal()"
+            >
+              <i class="fa-solid fa-plus me-1"></i>
+              <span>Aggiungi Momento</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Vault Cards List -->
+        <div class="vault-grid" *ngIf="(journalService.confidenceVault$ | async) as vaultItems">
+          <div *ngIf="vaultItems.length === 0" class="empty-state">
+            La tua Banca della Fiducia è vuota. Aggiungi il tuo primo momento di orgoglio al tavolo!
+          </div>
+
+          <div
+            *ngFor="let item of vaultItems; trackBy: trackById"
+            class="vault-card"
+            [class.vault-card--favorite]="item.favorite"
+          >
+            <div class="vault-card__header">
+              <div class="vault-card__title-row">
+                <h3 class="vault-card__title">{{ item.title }}</h3>
+                <button
+                  type="button"
+                  class="btn-star"
+                  [class.btn-star--active]="item.favorite"
+                  (click)="toggleFavoriteMoment(item.id)"
+                  title="Imposta come preferito Pre-Gara"
+                >
+                  <i [class]="item.favorite ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
+                </button>
+              </div>
+              <div class="vault-card__meta">
+                <span><i class="fa-regular fa-calendar me-1"></i>{{ item.date | date: 'dd/MM/yyyy' }}</span>
+                <span *ngIf="item.contextOrOpponent" class="ms-2">
+                  <i class="fa-solid fa-location-dot me-1"></i>{{ item.contextOrOpponent }}
+                </span>
+              </div>
+            </div>
+
+            <p class="vault-card__story">{{ item.detailedStory }}</p>
+
+            <div class="vault-card__takeaway" *ngIf="item.takeaway">
+              <span class="takeaway-label">✨ Ancora Mentale:</span>
+              <span class="takeaway-text">"{{ item.takeaway }}"</span>
+            </div>
+
+            <div class="vault-card__footer">
+              <div class="tag-list">
+                <span *ngFor="let tag of item.tags" class="tag-badge">#{{ tag }}</span>
+              </div>
+              <button
+                type="button"
+                class="btn-icon-danger"
+                (click)="deleteMoment(item.id)"
+                title="Rimuovi momento"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 2: ANALISI POST-WORKOUT & "FATTO FREDDO"                           -->
+    <!-- ===================================================================== -->
+    <section *ngIf="activeTab === 'difficulties'" class="journal-tab-content">
+      
+      <div class="card-module">
+        <div class="card-module__header">
+          <div class="card-module__title-wrap">
+            <span class="card-module__badge card-module__badge--cold">Metodo Fatto Freddo</span>
+            <h2 class="card-module__title">Analisi Post-Workout: Difficoltà e Punti da Migliorare</h2>
+          </div>
+          <p class="card-module__desc">
+            Nel tennistavolo d'élite, ogni errore è solo un'informazione biomeccanica e statistica.
+            <strong>Blocco rigoroso dei giudizi emotivi generici:</strong> trasforma le debolezze in fatti misurabili, codici di esercizio e date di recupero.
+          </p>
+        </div>
+
+        <!-- Add Difficulty Form -->
+        <form (ngSubmit)="saveDifficulty()" class="form-dark journal-form">
+          
+          <!-- Errore Tecnico con Detector Giudizi Emotivi -->
+          <div class="form-group mb-3">
+            <label class="form-label" for="technicalError">
+              1. Errore Tecnico Misurabile (FATTO FREDDO) <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              id="technicalError"
+              [ngModel]="diffForm.technicalError"
+              (ngModelChange)="onTechnicalErrorInput($event)"
+              name="technicalError"
+              placeholder="Es. Terza palla sul gomito in ritardo con gambe ferme e racchetta bassa"
+              class="form-control"
+              required
+            />
+
+            <!-- Live Emotional Blocker Banner -->
+            <div *ngIf="emotionalAnalysis.isEmotional" class="alert-box alert-box--warning mt-2">
+              <div class="d-flex align-items-start gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-warning mt-1"></i>
+                <div>
+                  <strong>BLOCCO GIUDIZIO EMOTIVO RILEVATO!</strong>
+                  <p class="mb-1">
+                    Hai scritto: <em>"{{ emotionalAnalysis.detectedPhrases.join(', ') }}"</em>.
+                    I giudizi emotivi generici bloccano la crescita. Trasformalo in un fatto freddo oggettivo!
+                  </p>
+                  <span class="suggestion-highlight">{{ emotionalAnalysis.suggestion }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Misurazione Frequenza (Errori su Tentativi) -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-4 col-sm-6">
+              <label class="form-label" for="errorCount">Errori Riscontrati</label>
+              <div class="input-with-badge">
+                <input
+                  type="number"
+                  id="errorCount"
+                  min="0"
+                  max="100"
+                  [(ngModel)]="diffForm.errorCount"
+                  name="errorCount"
+                  class="form-control"
+                />
+                <span class="input-unit">errori</span>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+              <label class="form-label" for="attemptsCount">Su Totale Tentativi (N)</label>
+              <div class="input-with-badge">
+                <input
+                  type="number"
+                  id="attemptsCount"
+                  min="1"
+                  max="100"
+                  [(ngModel)]="diffForm.attemptsCount"
+                  name="attemptsCount"
+                  class="form-control"
+                />
+                <span class="input-unit">tentativi</span>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-12">
+              <label class="form-label">Tasso d'Errore Calcolato</label>
+              <div class="stat-calc-box">
+                <span class="stat-calc-box__val" [class.text-danger]="calculatedErrorRatePct >= 40">
+                  {{ calculatedErrorRatePct }}%
+                </span>
+                <span class="stat-calc-box__sub">
+                  ({{ diffForm.errorCount }} su {{ diffForm.attemptsCount }} palle)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contesto di gioco specifico -->
+          <div class="form-group mb-3">
+            <label class="form-label" for="diffContext">
+              2. Contesto Specifico di Gioco
+            </label>
+            <input
+              type="text"
+              id="diffContext"
+              [(ngModel)]="diffForm.context"
+              name="context"
+              placeholder="Es. Ricezione su servizio corto tagliato dell'avversario a uscire sul 8-8"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Pianificazione: Codice Esercizio & Giorno di Recupero -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-7">
+              <label class="form-label" for="exerciseCode">
+                3. Codice Esercizio di Recupero (Catalogo Tecnico)
+              </label>
+              <select
+                id="exerciseCode"
+                [ngModel]="diffForm.exerciseCode"
+                (ngModelChange)="onExerciseCodeChange($event)"
+                name="exerciseCode"
+                class="form-select"
+              >
+                <option *ngFor="let ex of journalService.exerciseCatalog; trackBy: trackByCode" [value]="ex.code">
+                  {{ ex.code }}: {{ ex.name }}
+                </option>
+              </select>
+
+              <!-- Exercise Drill Details Card -->
+              <div class="exercise-preview-card mt-2" *ngIf="selectedExerciseInfo">
+                <div class="exercise-preview-card__cat">
+                  <span class="badge-cat">{{ selectedExerciseInfo.category | uppercase }}</span>
+                  <span class="text-muted ms-2">{{ selectedExerciseInfo.recommendedReps }}</span>
+                </div>
+                <p class="exercise-preview-card__desc">{{ selectedExerciseInfo.description }}</p>
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label" for="recoveryDate">
+                4. Scadenza / Giorno di Recupero <span class="text-danger">*</span>
+              </label>
+              <input
+                type="date"
+                id="recoveryDate"
+                [(ngModel)]="diffForm.recoveryDate"
+                name="recoveryDate"
+                class="form-control"
+                required
+              />
+              <span class="form-hint">Entro quale seduta d'allenamento eseguire le serie correttive.</span>
+            </div>
+          </div>
+
+          <div *ngIf="showDiffSuccessAlert" class="alert-box alert-box--success">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Debolezza registrata con successo come FATTO FREDDO e inserita nel piano d'allenamento!</span>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="submit"
+              class="btn-primary-action"
+              [disabled]="!diffForm.technicalError.trim() || emotionalAnalysis.isEmotional"
+            >
+              <i class="fa-solid fa-clipboard-check me-1"></i>
+              <span>Pianifica Recupero Difficoltà</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Difficulties Board & Filters -->
+        <div class="history-section mt-4" *ngIf="(journalService.difficulties$ | async) as diffList">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <h3 class="history-title mb-0">
+              <i class="fa-solid fa-list-check me-1"></i>
+              Registro Difficoltà & Recuperi
+            </h3>
+
+            <!-- Filter Buttons -->
+            <div class="filter-pills">
+              <button
+                type="button"
+                class="filter-pill"
+                [class.filter-pill--active]="difficultyFilter === 'all'"
+                (click)="difficultyFilter = 'all'"
+              >
+                Tutte ({{ diffList.length }})
+              </button>
+              <button
+                type="button"
+                class="filter-pill"
+                [class.filter-pill--active]="difficultyFilter === 'pending'"
+                (click)="difficultyFilter = 'pending'"
+              >
+                Da Lavorare
+              </button>
+              <button
+                type="button"
+                class="filter-pill"
+                [class.filter-pill--active]="difficultyFilter === 'in_recovery'"
+                (click)="difficultyFilter = 'in_recovery'"
+              >
+                In Recupero
+              </button>
+              <button
+                type="button"
+                class="filter-pill"
+                [class.filter-pill--active]="difficultyFilter === 'resolved'"
+                (click)="difficultyFilter = 'resolved'"
+              >
+                Superate
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="filterDifficulties(diffList).length === 0" class="empty-state">
+            Nessuna voce presente per il filtro selezionato. Ottimo lavoro al tavolo!
+          </div>
+
+          <div class="diff-cards-grid">
+            <div
+              *ngFor="let item of filterDifficulties(diffList); trackBy: trackById"
+              class="diff-card"
+              [class.diff-card--resolved]="item.status === 'resolved'"
+              [class.diff-card--recovery]="item.status === 'in_recovery'"
+            >
+              <div class="diff-card__header">
+                <div class="diff-card__badges">
+                  <span class="badge-code">{{ item.exerciseCode }}</span>
+                  <span
+                    class="badge-status"
+                    [class.badge-status--pending]="item.status === 'pending'"
+                    [class.badge-status--recovery]="item.status === 'in_recovery'"
+                    [class.badge-status--resolved]="item.status === 'resolved'"
+                  >
+                    {{ item.status === 'resolved' ? 'Superato' : item.status === 'in_recovery' ? 'In Recupero' : 'Da Lavorare' }}
+                  </span>
+                </div>
+                <div class="diff-card__date">
+                  <i class="fa-regular fa-clock me-1"></i>Scadenza: {{ item.recoveryDate | date: 'dd/MM' }}
+                </div>
+              </div>
+
+              <h4 class="diff-card__title">{{ item.technicalError }}</h4>
+
+              <div class="diff-card__metric">
+                <span class="metric-rate">
+                  Frequenza Errore: <strong>{{ item.errorCount }}/{{ item.attemptsCount }} ({{ item.errorRatePct }}%)</strong>
+                </span>
+                <div class="metric-bar">
+                  <div class="metric-bar-fill" [style.width.%]="item.errorRatePct"></div>
+                </div>
+              </div>
+
+              <div class="diff-card__context" *ngIf="item.context">
+                <span class="label-tiny">Contesto:</span> {{ item.context }}
+              </div>
+
+              <div class="diff-card__exercise">
+                <i class="fa-solid fa-dumbbell me-1"></i>
+                <span>{{ item.exerciseName }}</span>
+              </div>
+
+              <div class="diff-card__notes" *ngIf="item.resolutionNotes">
+                <span class="label-tiny text-success">Esito superamento:</span>
+                <p class="mb-0">{{ item.resolutionNotes }}</p>
+              </div>
+
+              <div class="diff-card__footer">
+                <div class="action-buttons">
+                  <button
+                    *ngIf="item.status !== 'resolved'"
+                    type="button"
+                    class="btn-sm-action btn-sm-action--success"
+                    (click)="changeDifficultyStatus(item.id, 'resolved')"
+                  >
+                    <i class="fa-solid fa-check me-1"></i>
+                    Segna Superato
+                  </button>
+
+                  <button
+                    *ngIf="item.status === 'pending'"
+                    type="button"
+                    class="btn-sm-action btn-sm-action--warning"
+                    (click)="changeDifficultyStatus(item.id, 'in_recovery')"
+                  >
+                    <i class="fa-solid fa-play me-1"></i>
+                    Avvia Recupero
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn-icon-danger"
+                  (click)="deleteDifficulty(item.id)"
+                  title="Elimina voce"
+                >
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 3: TRACKER DEI TEST PERIODICI                                     -->
+    <!-- ===================================================================== -->
+    <section *ngIf="activeTab === 'tests'" class="journal-tab-content">
+      
+      <div class="card-module">
+        <div class="card-module__header d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <div>
+            <div class="card-module__title-wrap">
+              <span class="card-module__badge card-module__badge--cyan">Performance & Benchmarking</span>
+              <h2 class="card-module__title">Tracker dei Test Periodici</h2>
+            </div>
+            <p class="card-module__desc">
+              Monitora i tuoi progressi fisici e tecnici nel tempo con parametri oggettivi e grafici di evoluzione.
+            </p>
+          </div>
+
+          <div class="header-buttons">
+            <button
+              type="button"
+              class="btn-primary-action"
+              (click)="openLogScoreModal()"
+            >
+              <i class="fa-solid fa-plus me-1"></i>
+              <span>Registra Punteggio Test</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Categories (Tutti / Fisici / Tecnici) -->
+        <div class="filter-pills mb-4">
+          <button
+            type="button"
+            class="filter-pill"
+            [class.filter-pill--active]="testCategoryFilter === 'all'"
+            (click)="testCategoryFilter = 'all'"
+          >
+            Tutti i Test
+          </button>
+          <button
+            type="button"
+            class="filter-pill"
+            [class.filter-pill--active]="testCategoryFilter === 'physical'"
+            (click)="testCategoryFilter = 'physical'"
+          >
+            <i class="fa-solid fa-person-running me-1"></i>
+            Test Fisici
+          </button>
+          <button
+            type="button"
+            class="filter-pill"
+            [class.filter-pill--active]="testCategoryFilter === 'technical'"
+            (click)="testCategoryFilter = 'technical'"
+          >
+            <i class="fa-solid fa-table-tennis-paddle-ball me-1"></i>
+            Test Tecnici
+          </button>
+        </div>
+
+        <!-- Test Cards Grid -->
+        <div class="tests-grid">
+          <div
+            *ngFor="let test of filterTests(journalService.defaultPeriodicTests); trackBy: trackById"
+            class="test-summary-card"
+            [class.test-summary-card--selected]="selectedTestId === test.id"
+            (click)="selectTestForChart(test.id)"
+          >
+            <div class="test-summary-card__header">
+              <div class="test-icon-box" [class.test-icon-box--tech]="test.category === 'technical'">
+                <i [class]="test.icon"></i>
+              </div>
+              <div>
+                <span class="test-cat-tag">{{ test.category === 'physical' ? 'Fisico' : 'Tecnico' }}</span>
+                <h3 class="test-name">{{ test.name }}</h3>
+              </div>
+            </div>
+
+            <!-- Stats values -->
+            <ng-container *ngIf="journalService.getTestStats(test) as stats">
+              <div class="test-stats-row">
+                <div class="stat-col">
+                  <span class="stat-col__label">Ultimo Risultato</span>
+                  <span class="stat-col__val">
+                    {{ stats.latestScore !== null ? stats.latestScore + ' ' + test.unit : 'N/D' }}
+                  </span>
+                </div>
+
+                <div class="stat-col">
+                  <span class="stat-col__label">Personal Best</span>
+                  <span class="stat-col__val text-gold">
+                    {{ stats.bestScore !== null ? stats.bestScore + ' ' + test.unit : 'N/D' }}
+                  </span>
+                </div>
+
+                <div class="stat-col" *ngIf="stats.deltaPercentage !== null">
+                  <span class="stat-col__label">Trend</span>
+                  <span
+                    class="stat-col__val"
+                    [class.text-success]="stats.deltaPercentage > 0"
+                    [class.text-danger]="stats.deltaPercentage < 0"
+                  >
+                    <i [class]="stats.deltaPercentage >= 0 ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down'"></i>
+                    {{ stats.deltaPercentage > 0 ? '+' : '' }}{{ stats.deltaPercentage }}%
+                  </span>
+                </div>
+              </div>
+            </ng-container>
+
+            <div class="test-summary-card__footer">
+              <span class="benchmark-pill">Target: {{ test.benchmarkScore }} {{ test.unit }}</span>
+              <button
+                type="button"
+                class="btn-log-quick"
+                (click)="$event.stopPropagation(); openLogScoreModal(test.id)"
+                title="Aggiungi misurazione"
+              >
+                <i class="fa-solid fa-pen-to-square"></i> Log
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Evolution Chart for Selected Test -->
+        <div class="chart-section mt-4" *ngIf="currentSelectedTest as test">
+          <div class="chart-section__header">
+            <div>
+              <span class="badge-cat">{{ test.category | uppercase }}</span>
+              <h3 class="chart-section__title">Evoluzione nel Tempo: {{ test.name }}</h3>
+              <p class="chart-section__desc">{{ test.description }}</p>
+            </div>
+
+            <button
+              type="button"
+              class="btn-primary-action btn-sm"
+              (click)="openLogScoreModal(test.id)"
+            >
+              <i class="fa-solid fa-plus me-1"></i> Nuovo Log
+            </button>
+          </div>
+
+          <!-- ApexCharts Component -->
+          <div class="chart-container" *ngIf="chartOptions.series && chartOptions.series[0]?.data?.length; else noScores">
+            <apx-chart
+              [series]="chartOptions.series!"
+              [chart]="chartOptions.chart!"
+              [xaxis]="chartOptions.xaxis!"
+              [yaxis]="chartOptions.yaxis!"
+              [stroke]="chartOptions.stroke!"
+              [colors]="chartOptions.colors!"
+              [markers]="chartOptions.markers!"
+              [grid]="chartOptions.grid!"
+              [tooltip]="chartOptions.tooltip!"
+              [annotations]="chartOptions.annotations!"
+            ></apx-chart>
+          </div>
+
+          <ng-template #noScores>
+            <div class="empty-state">
+              Nessun log registrato per questo test. Clicca su "Nuovo Log" per iniziare il tracciamento!
+            </div>
+          </ng-template>
+
+          <!-- Scores History Table -->
+          <div class="table-responsive mt-3" *ngIf="journalService.getScoresForTest(test.id) as scores">
+            <table class="table-journal" *ngIf="scores.length > 0">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Punteggio ({{ test.unit }})</th>
+                  <th>Note di Contesto</th>
+                  <th class="text-end">Azione</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of scores; trackBy: trackById">
+                  <td>{{ s.date | date: 'dd/MM/yyyy' }}</td>
+                  <td>
+                    <span class="score-badge">{{ s.score }} {{ test.unit }}</span>
+                  </td>
+                  <td>{{ s.notes || '-' }}</td>
+                  <td class="text-end">
+                    <button
+                      type="button"
+                      class="btn-icon-danger"
+                      (click)="deleteTestScore(s.id)"
+                      title="Elimina voce"
+                    >
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 4: MANTRA & ROUTINE MENTALE (R.R.P.R.)                            -->
+    <!-- ===================================================================== -->
+    <section *ngIf="activeTab === 'routine'" class="journal-tab-content">
+      
+      <!-- ── Personal Mantra Section ─────────────────────────────────────── -->
+      <div class="card-module mb-4">
+        <div class="card-module__header">
+          <div class="card-module__title-wrap">
+            <span class="card-module__badge card-module__badge--purple">Focus Mentale</span>
+            <h2 class="card-module__title">Mantra Personale</h2>
+          </div>
+          <p class="card-module__desc">
+            Frasi in <strong>prima persona</strong>, al <strong>tempo presente</strong>, focalizzate sulle
+            <strong>azioni positive</strong>. Il cervello non processa le negazioni: visualizza l'esecuzione perfetta.
+          </p>
+        </div>
+
+        <!-- Mantra Rules Pill Box -->
+        <div class="rules-pill-box mb-3">
+          <div class="rule-pill">
+            <i class="fa-solid fa-check text-success me-1"></i>
+            <span><strong>1. Prima Persona:</strong> "Io..."</span>
+          </div>
+          <div class="rule-pill">
+            <i class="fa-solid fa-check text-success me-1"></i>
+            <span><strong>2. Tempo Presente:</strong> "Colpisco...", "Respiro..."</span>
+          </div>
+          <div class="rule-pill">
+            <i class="fa-solid fa-check text-success me-1"></i>
+            <span><strong>3. Azione Positiva:</strong> Mai dire "non sbagliare"</span>
+          </div>
+        </div>
+
+        <!-- Add Mantra Form -->
+        <form (ngSubmit)="saveMantra()" class="form-dark journal-form">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label" for="mantraInput">Il tuo Mantra d'Azione</label>
+              <input
+                type="text"
+                id="mantraInput"
+                [ngModel]="mantraForm.text"
+                (ngModelChange)="onMantraInput($event)"
+                name="mantraText"
+                placeholder="Es. Io piego le gambe, aspetto la palla al vertice e spingo deciso in avanti."
+                class="form-control"
+                required
+              />
+
+              <!-- Live Mantra Validation Feedback -->
+              <div *ngIf="!mantraValidation.isValid && mantraForm.text.length > 5" class="alert-box alert-box--warning mt-2">
+                <i class="fa-solid fa-lightbulb me-1"></i>
+                <div>
+                  <div *ngFor="let issue of mantraValidation.issues">⚠️ {{ issue }}</div>
+                  <div *ngFor="let rec of mantraValidation.recommendations" class="mt-1">
+                    💡 <em>{{ rec }}</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label" for="focusAreaSelect">Area di Focus</label>
+              <select
+                id="focusAreaSelect"
+                [(ngModel)]="mantraForm.focusArea"
+                name="focusArea"
+                class="form-select"
+              >
+                <option value="terza_palla">3ª Palla d'Attacco</option>
+                <option value="servizio">Servizio & Tocco</option>
+                <option value="punti_pesanti">Punti Decisivi (9-9)</option>
+                <option value="gambe">Footwork & Gambe</option>
+                <option value="respiro">Respiro & Calma</option>
+                <option value="generale">Generale</option>
+              </select>
+            </div>
+          </div>
+
+          <div *ngIf="showMantraSuccessAlert" class="alert-box alert-box--success mt-2">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Mantra salvato e attivato per la tua routine di gara!</span>
+          </div>
+
+          <div class="form-actions mt-3">
+            <button
+              type="submit"
+              class="btn-primary-action"
+              [disabled]="!mantraForm.text.trim() || !mantraValidation.isValid"
+            >
+              <i class="fa-solid fa-plus me-1"></i>
+              <span>Aggiungi Mantra</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Active Mantras List -->
+        <div class="history-section mt-4" *ngIf="(journalService.mantras$ | async) as mantraList">
+          <h3 class="history-title">
+            <i class="fa-solid fa-shield-halved me-1"></i>
+            I Tuoi Mantra di Gara ({{ mantraList.length }})
+          </h3>
+
+          <div class="mantra-cards-grid">
+            <div
+              *ngFor="let m of mantraList; trackBy: trackById"
+              class="mantra-card"
+              [class.mantra-card--active]="m.isActive"
+            >
+              <div class="mantra-card__header">
+                <span class="badge-focus">{{ m.focusArea | uppercase }}</span>
+                <button
+                  type="button"
+                  class="btn-toggle-active"
+                  [class.btn-toggle-active--on]="m.isActive"
+                  (click)="toggleMantraActive(m.id)"
+                  title="Attiva/disattiva per la sessione odierna"
+                >
+                  <i [class]="m.isActive ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off'"></i>
+                  <span>{{ m.isActive ? 'Attivo' : 'A riposo' }}</span>
+                </button>
+              </div>
+
+              <blockquote class="mantra-quote">
+                "{{ m.text }}"
+              </blockquote>
+
+              <div class="mantra-card__footer">
+                <span class="mantra-hint">Ripetilo mentalmente tra uno scambio e l'altro.</span>
+                <button
+                  type="button"
+                  class="btn-icon-danger"
+                  (click)="deleteMantra(m.id)"
+                  title="Elimina mantra"
+                >
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Micro-routine di reset post-punto (R.R.P.R.) ──────────────────── -->
+      <div class="card-module">
+        <div class="card-module__header d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <div>
+            <div class="card-module__title-wrap">
+              <span class="card-module__badge card-module__badge--cyan">Routine Post-Punto</span>
+              <h2 class="card-module__title">Micro-Routine di Reset Post-Punto (R.R.P.R.)</h2>
+            </div>
+            <p class="card-module__desc">
+              12 secondi tra un punto e l'altro per azzerare la carica emotiva e rientrare nel flusso.
+              <strong>Release -> Review -> Park -> Replace</strong>.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="btn-routine-sim"
+            (click)="isRoutineSimRunning ? stopRoutineSimulation() : startRoutineSimulation()"
+          >
+            <i [class]="isRoutineSimRunning ? 'fa-solid fa-stop' : 'fa-solid fa-play'"></i>
+            <span>{{ isRoutineSimRunning ? 'Ferma Simulatore' : 'Simula Routine (12s)' }}</span>
+          </button>
+        </div>
+
+        <!-- Interactive Routine Simulator Display -->
+        <div *ngIf="isRoutineSimRunning" class="routine-sim-banner">
+          <div class="routine-sim-banner__stepper">
+            <div
+              *ngFor="let s of journalService.resetRoutineSteps; let idx = index"
+              class="sim-step-pill"
+              [class.sim-step-pill--current]="routineStepIndex === idx"
+              [class.sim-step-pill--done]="routineStepIndex > idx"
+            >
+              <span class="sim-step-num">{{ s.stepNumber }}</span>
+              <span class="sim-step-name">{{ s.name }}</span>
+            </div>
+          </div>
+
+          <div class="routine-sim-card">
+            <div class="sim-icon-glow" [style.color]="currentRoutineStep.color">
+              <i [class]="currentRoutineStep.icon"></i>
+            </div>
+            <div class="sim-content">
+              <div class="sim-header-row">
+                <span class="sim-step-badge" [style.background]="currentRoutineStep.color">
+                  FASE {{ currentRoutineStep.stepNumber }}: {{ currentRoutineStep.name }} ({{ currentRoutineStep.shortName }})
+                </span>
+                <span class="sim-countdown">{{ routineStepSecondsLeft }}s</span>
+              </div>
+              <h3 class="sim-tagline">{{ currentRoutineStep.tagline }}</h3>
+              <p class="sim-instruction">{{ currentRoutineStep.instruction }}</p>
+              <div class="sim-cue">
+                <strong>Ancora Corporea:</strong> {{ currentRoutineStep.physicalCue }}
+              </div>
+            </div>
+          </div>
+
+          <div class="sim-actions mt-3">
+            <button type="button" class="btn-ghost" (click)="nextRoutineStep()">
+              Passo Successivo <i class="fa-solid fa-forward-step ms-1"></i>
+            </button>
+            <button type="button" class="btn-ghost" (click)="stopRoutineSimulation()">
+              Chiudi Simulatore
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Steps Interactive Cards Breakdown -->
+        <div class="routine-steps-grid" *ngIf="!isRoutineSimRunning">
+          <div
+            *ngFor="let s of journalService.resetRoutineSteps"
+            class="routine-step-card"
+            [style.border-top-color]="s.color"
+          >
+            <div class="routine-step-card__top">
+              <span class="step-num-badge" [style.background]="s.color">{{ s.stepNumber }}</span>
+              <div class="step-title-wrap">
+                <h3 class="step-name">{{ s.name }}</h3>
+                <span class="step-short">{{ s.shortName }} ({{ s.durationSeconds }}s)</span>
+              </div>
+              <div class="step-icon" [style.color]="s.color">
+                <i [class]="s.icon"></i>
+              </div>
+            </div>
+
+            <h4 class="step-tagline">{{ s.tagline }}</h4>
+            <p class="step-desc">{{ s.instruction }}</p>
+
+            <div class="step-cue-box">
+              <span class="cue-label">Azione Fisica / Trigger:</span>
+              <span class="cue-value">{{ s.physicalCue }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ── MODAL: AGGIUNGI MOMENTO BANCA FIDUCIA ────────────────────────────── -->
+  <div class="journal-modal-backdrop" *ngIf="isAddingVaultMoment">
+    <div class="journal-modal">
+      <div class="journal-modal__header">
+        <h3 class="journal-modal__title">
+          <i class="fa-solid fa-award text-gold me-2"></i>Nuovo Momento di Orgoglio
+        </h3>
+        <button type="button" class="btn-close-modal" (click)="closeAddVaultModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form (ngSubmit)="saveConfidenceMoment()" class="form-dark">
+        <div class="mb-3">
+          <label class="form-label" for="vTitle">Titolo del Momento *</label>
+          <input
+            type="text"
+            id="vTitle"
+            [(ngModel)]="vaultForm.title"
+            name="vTitle"
+            placeholder="Es. Rimonta epica da 0-2 a 3-2 contro giocatore con puntinata"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="row g-2 mb-3">
+          <div class="col-6">
+            <label class="form-label" for="vDate">Data</label>
+            <input
+              type="date"
+              id="vDate"
+              [(ngModel)]="vaultForm.date"
+              name="vDate"
+              class="form-control"
+            />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="vOpp">Avversario o Contesto</label>
+            <input
+              type="text"
+              id="vOpp"
+              [(ngModel)]="vaultForm.contextOrOpponent"
+              name="vOpp"
+              placeholder="Es. Semifinale Campionato a squadre"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="vStory">Cosa hai fatto esattamente? (Dettagli, sensazioni) *</label>
+          <textarea
+            id="vStory"
+            [(ngModel)]="vaultForm.detailedStory"
+            name="vStory"
+            rows="4"
+            placeholder="Descrivi la lucidità tattica, il colpo tirato con coraggio, come hai gestito il battito cardiaco..."
+            class="form-textarea"
+            required
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="vTakeaway">Ancora Mentale da Rievocare in Gara</label>
+          <input
+            type="text"
+            id="vTakeaway"
+            [(ngModel)]="vaultForm.takeaway"
+            name="vTakeaway"
+            placeholder="Es. Gambe basse, respiro calmo, la palla al vertice è sempre mia."
+            class="form-control"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label" for="vTags">Tag (separati da virgola)</label>
+          <input
+            type="text"
+            id="vTags"
+            [(ngModel)]="vaultForm.tagInput"
+            name="vTags"
+            placeholder="Rimonta, Gara, Terza Palla, Freddezza"
+            class="form-control"
+          />
+        </div>
+
+        <div class="journal-modal__footer">
+          <button type="button" class="btn-ghost" (click)="closeAddVaultModal()">Annulla</button>
+          <button type="submit" class="btn-primary-action" [disabled]="!vaultForm.title.trim() || !vaultForm.detailedStory.trim()">
+            Salva nella Banca
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── MODAL: PRE-MATCH BOOSTER (CONFIDENCE SLIDESHOW) ───────────────────── -->
+  <div class="journal-modal-backdrop" *ngIf="isBoosterOpen && (journalService.confidenceVault$ | async) as boosterItems">
+    <div class="journal-modal journal-modal--booster">
+      <div class="journal-modal__header">
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge-booster"><i class="fa-solid fa-bolt-lightning me-1"></i>BOOSTER PRE-GARA</span>
+          <span class="text-muted">Momento {{ boosterIndex + 1 }} di {{ boosterItems.length }}</span>
+        </div>
+        <button type="button" class="btn-close-modal" (click)="closeBoosterModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="booster-content" *ngIf="boosterItems[boosterIndex] as item">
+        <h2 class="booster-title">{{ item.title }}</h2>
+        <div class="booster-meta">
+          <span><i class="fa-solid fa-location-crosshairs me-1"></i>{{ item.contextOrOpponent }}</span>
+          <span class="ms-3"><i class="fa-regular fa-calendar me-1"></i>{{ item.date | date: 'dd/MM/yyyy' }}</span>
+        </div>
+
+        <p class="booster-story">{{ item.detailedStory }}</p>
+
+        <div class="booster-anchor" *ngIf="item.takeaway">
+          <div class="anchor-label">RIEVOCA QUESTA SENSAZIONE ORA:</div>
+          <div class="anchor-quote">"{{ item.takeaway }}"</div>
+        </div>
+      </div>
+
+      <div class="booster-footer">
+        <button type="button" class="btn-ghost" (click)="prevBooster(boosterItems.length)">
+          <i class="fa-solid fa-chevron-left me-1"></i> Precedente
+        </button>
+        <button type="button" class="btn-primary-action" (click)="nextBooster(boosterItems.length)">
+          Successivo <i class="fa-solid fa-chevron-right ms-1"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: REGISTRA PUNTEGGIO TEST PERIODICO ─────────────────────────── -->
+  <div class="journal-modal-backdrop" *ngIf="isLoggingScoreModalOpen">
+    <div class="journal-modal">
+      <div class="journal-modal__header">
+        <h3 class="journal-modal__title">
+          <i class="fa-solid fa-chart-line text-info me-2"></i>Registra Risultato Test
+        </h3>
+        <button type="button" class="btn-close-modal" (click)="closeLogScoreModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form (ngSubmit)="submitTestScore()" class="form-dark">
+        <div class="mb-3">
+          <label class="form-label" for="selectTest">Test da Registrare</label>
+          <select
+            id="selectTest"
+            [(ngModel)]="logScoreForm.testId"
+            name="testId"
+            class="form-select"
+          >
+            <option *ngFor="let t of journalService.defaultPeriodicTests; trackBy: trackById" [value]="t.id">
+              {{ t.name }} (Target: {{ t.benchmarkScore }} {{ t.unit }})
+            </option>
+          </select>
+        </div>
+
+        <div class="row g-2 mb-3">
+          <div class="col-6">
+            <label class="form-label" for="lDate">Data Test</label>
+            <input
+              type="date"
+              id="lDate"
+              [(ngModel)]="logScoreForm.date"
+              name="lDate"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="lScore">Risultato Numerico</label>
+            <input
+              type="number"
+              step="any"
+              id="lScore"
+              [(ngModel)]="logScoreForm.score"
+              name="lScore"
+              placeholder="Es. 28"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label" for="lNotes">Note di Sessione (opzionale)</label>
+          <input
+            type="text"
+            id="lNotes"
+            [(ngModel)]="logScoreForm.notes"
+            name="lNotes"
+            placeholder="Es. Test effettuato dopo 20 min di riscaldamento a secco"
+            class="form-control"
+          />
+        </div>
+
+        <div class="journal-modal__footer">
+          <button type="button" class="btn-ghost" (click)="closeLogScoreModal()">Annulla</button>
+          <button type="submit" class="btn-primary-action">Salva Punteggio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bottom Navbar for mobile views -->
+  <app-bottom-navbar></app-bottom-navbar>
+</div>

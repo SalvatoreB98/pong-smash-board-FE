@@ -32,6 +32,12 @@
                     <span class="ms-1">{{ 'match_calendar' | translate }}</span>
                 </a>
 
+                <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/training-journal" class="button-navbar"
+                    routerLinkActive="active" title="Diario e Allenamento">
+                    <i class="fa-solid fa-book-journal-whills"></i>
+                    <span>{{"training_journal" | translate}}</span>
+                </a>
+
                 <a *ngIf="!isMobile && (auth.isLoggedIn$ | async)" routerLink="/profile" class="button-navbar"
                     routerLinkActive="active">
                     <span>{{"profile" | translate}}</span>
@@ -50,6 +56,12 @@
                 <div *ngIf="isMenuOpen">
                     <div class="curtain">
                         <ul class="list-unstyled p-0 m-0">
+                            <li class="clickable">
+                                <a routerLink="/training-journal">
+                                    <i class="fa-solid fa-book-journal-whills me-1"></i>
+                                    {{"training_journal" | translate}}
+                                </a>
+                            </li>
                             <li class="clickable">
                                 <a routerLink="/profile">{{"profile" | translate}}</a>
                             </li>
